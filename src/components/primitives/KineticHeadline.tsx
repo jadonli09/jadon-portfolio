@@ -14,16 +14,19 @@ export function KineticHeadline({
   as: Tag = "h2",
   delay = 0,
   once = true,
+  balance = true,
 }: {
   text: string;
   className?: string;
   as?: "h1" | "h2" | "h3";
   delay?: number;
   once?: boolean;
+  /** Balance line lengths so the title doesn't wrap one short word per line. */
+  balance?: boolean;
 }) {
   const words = text.split(" ");
   return (
-    <Tag className={cn("inline-block", className)}>
+    <Tag className={cn("block", balance && "text-balance", className)}>
       <motion.span
         className="inline"
         initial="hidden"
@@ -33,7 +36,7 @@ export function KineticHeadline({
         variants={{ hidden: {}, show: {} }}
       >
         {words.map((w, i) => (
-          <span key={i} className="line-mask inline-block align-baseline pb-[0.12em] -mb-[0.12em]" style={{ marginRight: "0.26em" }}>
+          <span key={i} className="inline-block overflow-hidden align-baseline pb-[0.12em] -mb-[0.12em]" style={{ marginRight: "0.26em" }}>
             <motion.span className="inline-block" variants={lineWord} transition={{ duration: 1, ease: EASE }}>
               {w}
             </motion.span>

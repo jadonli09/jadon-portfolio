@@ -14,19 +14,12 @@ import { CIVIC } from "@/lib/data";
 import { cn } from "@/lib/cn";
 import { EASE } from "@/lib/motion";
 
-/** Map story title to its real press photo, if any. */
+/** Map story title to its real press photo, if any. Only photos that genuinely
+ *  match their story are mapped; others are intentionally left blank. */
 const STORY_PHOTOS: Record<string, { src: string; caption: string }> = {
   "The Mayor's Videographer": {
     src: "/img/editing-for-mayor-timeline.jpg",
     caption: "Editing for Mayor Salwan · @li_locked.in",
-  },
-  "Small Business Accessibility": {
-    src: "/img/speaking-at-rally.jpg",
-    caption: "Speaking at a community rally · Fremont, CA",
-  },
-  "HG Nguyen for D7": {
-    src: "/img/acwd-water-contest-1stplace.jpg",
-    caption: "ACWD Water Clip Contest · 1st Place · $600",
   },
 };
 

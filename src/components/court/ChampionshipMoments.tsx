@@ -117,8 +117,6 @@ function GamePhotoStrip() {
     { src: "/img/var-bbal2.jpg", alt: "MSJ Varsity Basketball — second shot", label: "Varsity" },
     { src: "/img/jv-bbal.jpg", alt: "MSJ JV Basketball game", label: "JV Program" },
     { src: "/img/frosh-bbal.jpg", alt: "MSJ Freshman Basketball game", label: "Frosh Program" },
-    { src: "/img/var-bbal1.jpg", alt: "MSJ Varsity Basketball action — repeat", label: "Varsity" },
-    { src: "/img/var-bbal2.jpg", alt: "MSJ Varsity Basketball — wide", label: "Varsity" },
   ];
 
   return (
