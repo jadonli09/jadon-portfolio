@@ -95,6 +95,17 @@
   --selection: rgba(255, 91, 31, 0.3);
 }
 
+[data-world="lockedin"] {
+  --bg: #0a0a0c; /* feed black */
+  --bg-2: #131318;
+  --fg: #f4f1ea;
+  --muted: #8a8a93;
+  --accent: #ff3d81; /* reel pink */
+  --accent-2: #3df0ff; /* screen cyan */
+  --line: rgba(244, 241, 234, 0.12);
+  --selection: rgba(255, 61, 129, 0.3);
+}
+
 [data-world="achievements"] {
   --bg: #0a0907;
   --bg-2: #14110b;

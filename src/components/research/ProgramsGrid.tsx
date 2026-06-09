@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { ExternalLink } from "lucide-react";
 import { TiltCard } from "@/components/primitives/TiltCard";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
+import { Photo } from "@/components/primitives/Photo";
 import { RESEARCH } from "@/lib/data";
 import { cn } from "@/lib/cn";
 
@@ -95,6 +96,53 @@ export function ProgramsGrid() {
                   {prog.detail}
                 </p>
               </div>
+
+              {/* YSJC showcase photo — lab-figure treatment */}
+              {prog.title === "Youth STEM Journal Club" && (
+                <div className="mt-8">
+                  {/* Teal-framed figure */}
+                  <div
+                    className="relative overflow-hidden rounded"
+                    style={{
+                      border: "1px solid rgba(52,224,196,0.35)",
+                      boxShadow: "0 0 0 1px rgba(52,224,196,0.10) inset",
+                    }}
+                  >
+                    {/* 16:9 aspect container */}
+                    <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                      <div className="absolute inset-0">
+                        <Photo
+                          src="/img/ysjc-2025-summer-showcase.jpg"
+                          alt="Youth STEM Journal Club 2025 Summer Showcase — students presenting capstone research to parents"
+                          className="transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Corner tag — lab notebook style */}
+                    <span
+                      className="absolute left-0 top-0 font-mono text-[0.55rem] uppercase tracking-[0.2em] px-2 py-1"
+                      style={{
+                        background: "rgba(10,18,30,0.82)",
+                        color: "rgba(52,224,196,0.85)",
+                        borderRight: "1px solid rgba(52,224,196,0.25)",
+                        borderBottom: "1px solid rgba(52,224,196,0.25)",
+                      }}
+                    >
+                      Fig. 1
+                    </span>
+                  </div>
+
+                  {/* Mono caption */}
+                  <p
+                    className="mt-2 font-mono text-[0.6rem] leading-snug"
+                    style={{ color: "var(--muted)" }}
+                  >
+                    Summer showcase, 2025 — 30 students, capstone presentations to parents.
+                    <span style={{ color: "rgba(52,224,196,0.6)" }}> ↗ youthstemjournal.org</span>
+                  </p>
+                </div>
+              )}
 
               {/* Site link */}
               {prog.site.startsWith("http") || prog.site.includes(".org") || prog.site.includes(".com") ? (

@@ -11,6 +11,7 @@ export type WorldId =
   | "leadership"
   | "court"
   | "about"
+  | "lockedin"
   | "achievements"
   | "contact";
 
@@ -98,7 +99,55 @@ export const WORLDS: WorldMeta[] = [
     blurb: "A solo run up Mission Peak every birthday. A journal kept since eighth grade.",
     art: "quiet editorial",
   },
+  {
+    id: "lockedin",
+    index: "07",
+    title: "Locked In",
+    href: "/locked-in",
+    kicker: "@li_locked.in",
+    blurb: "The content feed — vlogs, the grind, and a gym moment that hit 569k likes in China.",
+    art: "content / video wall",
+  },
 ];
+
+/* ─────────────────────────── LOCKED IN ──────────────────────────── */
+export const LOCKED = {
+  intro:
+    "@li_locked.in is the documentation of a grind — basketball, cooking, study tips, and the discomfort of putting yourself in new positions. 1,400+ followers, 500k+ views in under a month.",
+  metrics: [
+    { value: 1400, suffix: "+", label: "Followers" },
+    { value: 500, suffix: "k+", label: "Views in a month" },
+    { value: 569, suffix: "k", label: "Likes · one DouYin clip" },
+  ],
+  /** Real li_locked.in reels — Instagram blocks third-party iframe embeds, so each
+   *  card links to the live reel. */
+  reels: [
+    "DLRF6eHxs5T",
+    "DZWMdCUNfbd",
+    "DYq5cONMOLs",
+    "DYoHKfPtu3v",
+    "DYdgPNBJN_X",
+    "DX5kwLDRK_G",
+    "DX27M67tZjT",
+    "DXqPCxtjfdx",
+    "DXo3at8h0NU",
+    "DXk8WxzDZrg",
+  ].map((code) => ({ code, url: `https://www.instagram.com/reel/${code}/` })),
+  /** Native video files (the cooking / "feasts" content). */
+  videos: [
+    { src: "/vid/cookingfeasts-2.mp4", poster: "/vid/cookingfeasts-2.jpg", label: "In the kitchen" },
+    { src: "/vid/cooking-feast1.mp4", poster: "/vid/cooking-feast1.jpg", label: "Feast night" },
+    { src: "/vid/cookingfeasts-3.mp4", poster: "/vid/cookingfeasts-3.jpg", label: "Plating up" },
+  ],
+  douyin: {
+    url: "https://www.iesdouyin.com/share/video/7247003661631622458/",
+    likes: "569k",
+    comments: "15k",
+    shares: "36k",
+    creator: "野球帝 / courtman network",
+    note: "A gym moment in China, reposted by a 3.7M-follower hoops account — 569k likes.",
+  },
+} as const;
 
 /* ───────────────────────────── CIVIC ───────────────────────────── */
 export const CIVIC = {
@@ -199,10 +248,10 @@ export const RESEARCH = {
     },
     {
       title: "MSJ STEM-PAC",
-      role: "Co-President (renamed from HOSA)",
-      site: "Iron Chef · 21 participants",
+      role: "Co-President — competition pipeline",
+      site: "science fairs · olympiads",
       detail:
-        "Negotiated liability waivers and cooking checkpoints with admin so students could connect STEM to cooking — bringing dishes to school for teacher judges. Founded the predecessor HOSA chapter in 10th grade.",
+        "Built STEM-PAC (from the HOSA chapter Jadon founded in 10th) into a club that guides students toward real competitions — coaching them into the Alameda County Science Fair (ACSEF), biology and broader STEM olympiads, and other external contests, not just in-house events. Iron Chef (21 participants) and the egg drop are the community glue; the science-fair and olympiad pipeline is the point.",
     },
     {
       title: "UMass Research Intensive",

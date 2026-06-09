@@ -4,6 +4,8 @@ import { Footer } from "@/components/chrome/Footer";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { MissionPeak } from "@/components/about/MissionPeak";
+import { AboutPortrait } from "@/components/about/AboutPortrait";
+import { AboutCameraThread } from "@/components/about/AboutCameraThread";
 import { ABOUT, PROFILE } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -14,21 +16,29 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <World id="about">
-      {/* HERO — quiet editorial */}
-      <section className="mx-auto max-w-5xl px-5 pb-16 pt-36 md:px-9 md:pb-24 md:pt-48">
-        <Reveal>
-          <p className="eyebrow">06 — The Person</p>
-        </Reveal>
-        <KineticHeadline
-          as="h1"
-          text="Documenting the grind."
-          className="mt-6 font-display text-[3.2rem] leading-[0.95] tracking-tight md:text-[7rem]"
-        />
-        <Reveal delay={0.2} className="mt-10 max-w-2xl">
-          <p className="font-serif-i text-2xl italic leading-snug md:text-3xl">
-            {ABOUT.ethos}
-          </p>
-        </Reveal>
+      {/* HERO — quiet editorial with large portrait */}
+      <section className="mx-auto max-w-6xl px-5 pb-16 pt-36 md:px-9 md:pb-24 md:pt-48">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-[1fr_auto] md:items-end md:gap-16">
+          {/* Text column */}
+          <div>
+            <Reveal>
+              <p className="eyebrow">06 — The Person</p>
+            </Reveal>
+            <KineticHeadline
+              as="h1"
+              text="Documenting the grind."
+              className="mt-6 font-display text-[3.2rem] leading-[0.95] tracking-tight md:text-[7rem]"
+            />
+            <Reveal delay={0.2} className="mt-10 max-w-2xl">
+              <p className="font-serif-i text-2xl italic leading-snug md:text-3xl">
+                {ABOUT.ethos}
+              </p>
+            </Reveal>
+          </div>
+
+          {/* Editorial portrait — large, quiet, lots of negative space */}
+          <AboutPortrait />
+        </div>
       </section>
 
       {/* MISSION PEAK */}
@@ -48,15 +58,19 @@ export default function AboutPage() {
           <h2 className="font-display text-3xl md:text-5xl">Off the record</h2>
         </Reveal>
         <RevealGroup className="grid gap-px overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--line)] md:grid-cols-2">
-          {ABOUT.threads.map((t, i) => (
-            <Reveal key={t.title} className="group bg-[var(--bg)] p-8 transition-colors hover:bg-[var(--bg-2)] md:p-12" delay={i * 0.05}>
-              <div className="flex items-baseline justify-between">
-                <h3 className="font-display text-2xl md:text-3xl">{t.title}</h3>
-                <span className="font-mono text-xs text-[var(--muted)]">0{i + 1}</span>
-              </div>
-              <p className="mt-4 max-w-md text-[var(--muted)]">{t.body}</p>
-            </Reveal>
-          ))}
+          {ABOUT.threads.map((t, i) =>
+            t.title === "The Camera" ? (
+              <AboutCameraThread key={t.title} thread={t} index={i} />
+            ) : (
+              <Reveal key={t.title} className="group bg-[var(--bg)] p-8 transition-colors hover:bg-[var(--bg-2)] md:p-12" delay={i * 0.05}>
+                <div className="flex items-baseline justify-between">
+                  <h3 className="font-display text-2xl md:text-3xl">{t.title}</h3>
+                  <span className="font-mono text-xs text-[var(--muted)]">0{i + 1}</span>
+                </div>
+                <p className="mt-4 max-w-md text-[var(--muted)]">{t.body}</p>
+              </Reveal>
+            )
+          )}
         </RevealGroup>
       </section>
 

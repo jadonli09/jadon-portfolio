@@ -4,6 +4,7 @@ import { Footer } from "@/components/chrome/Footer";
 import { CourtHero } from "@/components/court/CourtHero";
 import { CourtTicker } from "@/components/court/CourtTicker";
 import { CourtTimeline } from "@/components/court/CourtTimeline";
+import { ChampionshipMoments } from "@/components/court/ChampionshipMoments";
 import { CourtDouyin } from "@/components/court/CourtDouyin";
 import { CourtBanner } from "@/components/court/CourtBanner";
 
@@ -30,6 +31,9 @@ export default function CourtPage() {
 
       {/* 3. Career timeline — AAU → NCS Champion */}
       <CourtTimeline />
+
+      {/* 3b. Championship moments — mayor, city recognition, game action strip */}
+      <ChampionshipMoments />
 
       {/* 4. DouYin viral moment — stat showpiece */}
       <CourtDouyin />

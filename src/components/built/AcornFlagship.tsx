@@ -5,6 +5,8 @@ import { ArrowUpRight, Zap, Users, BookOpen, Hash } from "lucide-react";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { Magnetic } from "@/components/primitives/Magnetic";
+import { TiltCard } from "@/components/primitives/TiltCard";
+import { Photo } from "@/components/primitives/Photo";
 import { LiveEmbed } from "@/components/built/LiveEmbed";
 import { PROJECTS } from "@/lib/data";
 import { cn } from "@/lib/cn";
@@ -198,6 +200,112 @@ export function AcornFlagship() {
               </p>
             </div>
             <p className="font-mono text-xs text-[var(--muted)]">100 users in first 24 hours</p>
+          </div>
+        </Reveal>
+
+        {/* ── Behind the Build ─────────────────────────────────── */}
+        <Reveal delay={0.35} className="mt-16">
+          <p className="eyebrow mb-6 text-[var(--muted)]">Behind the build</p>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {/* Co-founders */}
+            <TiltCard max={4} className="group">
+              <div
+                className="relative overflow-hidden rounded-xl"
+                style={{
+                  background: "linear-gradient(135deg, rgba(124,156,255,0.08) 0%, rgba(0,0,0,0) 100%)",
+                  border: "1px solid rgba(124,156,255,0.2)",
+                  boxShadow: "0 16px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(124,156,255,0.08) inset",
+                }}
+              >
+                {/* 4:3 aspect container */}
+                <div className="relative w-full" style={{ paddingBottom: "75%" }}>
+                  <div className="absolute inset-0">
+                    <Photo
+                      src="/img/acornprep-cofounders.jpg"
+                      alt="Jadon Li and Pradyun Kanuparthi, AcornPrep co-founders"
+                      className="transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+                    />
+                    {/* Glassy gradient overlay at bottom */}
+                    <div
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-24"
+                      style={{
+                        background: "linear-gradient(to top, rgba(10,14,24,0.72) 0%, transparent 100%)",
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Inline caption over gradient */}
+                <div className="absolute bottom-0 inset-x-0 px-4 py-3">
+                  <p className="font-mono text-[0.6rem] uppercase tracking-widest text-white/70">
+                    The co-founders — Jadon Li &amp; Pradyun Kanuparthi
+                  </p>
+                </div>
+
+                {/* Periwinkle corner accent */}
+                <span
+                  className="absolute right-0 top-0 font-mono text-[0.5rem] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{
+                    background: "rgba(10,14,24,0.8)",
+                    color: "rgba(124,156,255,0.8)",
+                    borderLeft: "1px solid rgba(124,156,255,0.2)",
+                    borderBottom: "1px solid rgba(124,156,255,0.2)",
+                  }}
+                >
+                  Team
+                </span>
+              </div>
+            </TiltCard>
+
+            {/* Gemini meetup */}
+            <TiltCard max={4} className="group">
+              <div
+                className="relative overflow-hidden rounded-xl"
+                style={{
+                  background: "linear-gradient(135deg, rgba(185,255,102,0.06) 0%, rgba(0,0,0,0) 100%)",
+                  border: "1px solid rgba(185,255,102,0.18)",
+                  boxShadow: "0 16px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(185,255,102,0.06) inset",
+                }}
+              >
+                {/* 4:3 aspect container */}
+                <div className="relative w-full" style={{ paddingBottom: "75%" }}>
+                  <div className="absolute inset-0">
+                    <Photo
+                      src="/img/presenting-acornprep-at-gemini-meetup.jpg"
+                      alt="Presenting AcornPrep at the Google Gemini developer meetup"
+                      className="transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+                    />
+                    {/* Glassy gradient overlay at bottom */}
+                    <div
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-24"
+                      style={{
+                        background: "linear-gradient(to top, rgba(10,14,24,0.72) 0%, transparent 100%)",
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Inline caption over gradient */}
+                <div className="absolute bottom-0 inset-x-0 px-4 py-3">
+                  <p className="font-mono text-[0.6rem] uppercase tracking-widest text-white/70">
+                    Presenting at the Google Gemini developer meetup
+                  </p>
+                </div>
+
+                {/* Lime corner accent */}
+                <span
+                  className="absolute right-0 top-0 font-mono text-[0.5rem] uppercase tracking-[0.2em] px-2 py-1"
+                  style={{
+                    background: "rgba(10,14,24,0.8)",
+                    color: "rgba(185,255,102,0.8)",
+                    borderLeft: "1px solid rgba(185,255,102,0.2)",
+                    borderBottom: "1px solid rgba(185,255,102,0.2)",
+                  }}
+                >
+                  Live
+                </span>
+              </div>
+            </TiltCard>
           </div>
         </Reveal>
       </div>

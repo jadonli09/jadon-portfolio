@@ -4,6 +4,7 @@ import { Footer } from "@/components/chrome/Footer";
 import { CivicMasthead } from "@/components/civic/CivicMasthead";
 import { CivicMetricsBand } from "@/components/civic/CivicMetricsBand";
 import { CivicAwardsTicker } from "@/components/civic/CivicAwardsTicker";
+import { CivicFeaturedPress } from "@/components/civic/CivicFeaturedPress";
 import { CivicStories } from "@/components/civic/CivicStories";
 import { CivicCommission } from "@/components/civic/CivicCommission";
 import { CivicInstagramCTA } from "@/components/civic/CivicInstagramCTA";
@@ -30,6 +31,9 @@ export default function CivicPage() {
 
       {/* 3. Awards ticker (first instance — above stories, pace-sets the red accent) */}
       <CivicAwardsTicker />
+
+      {/* 3b. Jennifer Siebel Newsom press feature — standout civic reach moment */}
+      <CivicFeaturedPress />
 
       {/* 4. Editorial stories section */}
       <CivicStories />

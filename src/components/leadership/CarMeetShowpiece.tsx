@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { Counter } from "@/components/primitives/Counter";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
+import { Photo } from "@/components/primitives/Photo";
 import { LEADERSHIP } from "@/lib/data";
 
 /** Abstract supercar silhouette — hand-drawn SVG. Low, wide, sleek profile. */
@@ -144,52 +145,112 @@ function StatCard({
   );
 }
 
-/** Photo/video placeholder frame — implies footage without using assets. */
-function FootageFrame() {
+/** Single photo tile with hover caption and grayscale→color reveal. */
+function PhotoTile({
+  src,
+  alt,
+  caption,
+  className = "",
+}: {
+  src: string;
+  alt: string;
+  caption: string;
+  className?: string;
+}) {
+  const [hovered, setHovered] = useState(false);
   return (
-    <div className="relative aspect-video w-full overflow-hidden border border-[rgba(212,175,106,0.3)] bg-[var(--bg-2)]">
-      {/* Gradient mesh interior */}
-      <div
-        aria-hidden
+    <div
+      className={`group relative overflow-hidden border border-[rgba(212,175,106,0.2)] ${className}`}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      data-cursor-hover
+    >
+      {/* Photo — grayscale until hovered */}
+      <motion.div
         className="absolute inset-0"
+        animate={{ filter: hovered ? "grayscale(0%)" : "grayscale(80%)" }}
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <Photo src={src} alt={alt} className="object-cover" />
+      </motion.div>
+
+      {/* Gold gradient scrim — bottom fade always */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2"
         style={{
-          background: `
-            radial-gradient(ellipse 70% 60% at 30% 40%, rgba(212,175,106,0.12) 0%, transparent 60%),
-            radial-gradient(ellipse 50% 40% at 75% 60%, rgba(110,31,42,0.18) 0%, transparent 55%),
-            linear-gradient(160deg, #120e08 0%, #1e1710 50%, #0c0a08 100%)
-          `,
+          background: "linear-gradient(to top, rgba(12,10,8,0.85) 0%, transparent 100%)",
         }}
+        aria-hidden
       />
 
-      {/* Frame corner marks */}
-      <span aria-hidden className="absolute left-3 top-3 block h-5 w-5 border-l border-t border-[var(--accent)] opacity-50" />
-      <span aria-hidden className="absolute right-3 top-3 block h-5 w-5 border-r border-t border-[var(--accent)] opacity-50" />
-      <span aria-hidden className="absolute bottom-3 left-3 block h-5 w-5 border-b border-l border-[var(--accent)] opacity-50" />
-      <span aria-hidden className="absolute bottom-3 right-3 block h-5 w-5 border-b border-r border-[var(--accent)] opacity-50" />
+      {/* Caption — slides up on hover */}
+      <motion.div
+        className="absolute inset-x-0 bottom-0 px-3 pb-3"
+        initial={{ y: 6, opacity: 0 }}
+        animate={{ y: hovered ? 0 : 6, opacity: hovered ? 1 : 0 }}
+        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--accent)]">
+          {caption}
+        </p>
+      </motion.div>
 
-      {/* Label content */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-        {/* Stylized play ring */}
-        <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[rgba(212,175,106,0.4)]">
-          <div className="ml-1 h-0 w-0 border-b-[7px] border-l-[12px] border-t-[7px] border-b-transparent border-l-[var(--accent)] border-t-transparent opacity-60" />
-        </div>
-        <p className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--muted)]">
-          @msjmeets · Nov 8, 2025
-        </p>
-        <p className="font-mono text-[0.55rem] uppercase tracking-[0.25em] text-[var(--accent)] opacity-50">
-          Event footage
-        </p>
+      {/* Gold corner accent on hover */}
+      <motion.span
+        aria-hidden
+        className="pointer-events-none absolute left-0 top-0 h-px w-10 bg-[var(--accent)]"
+        initial={{ scaleX: 0, originX: 0 }}
+        animate={{ scaleX: hovered ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+      />
+    </div>
+  );
+}
+
+/**
+ * Overlapping collage of carmeet1–4 shown to the right of the body copy.
+ * carmeet1 (yellow McLaren) is the hero — full height, left.
+ * carmeet2–4 stack on the right in a 3-row grid.
+ */
+function CarMeetCollage() {
+  return (
+    <div className="relative flex h-full min-h-[460px] gap-2 md:min-h-[520px]">
+      {/* Left: hero McLaren — tall */}
+      <PhotoTile
+        src="/img/carmeet1.jpg"
+        alt="Yellow McLaren front-on at the MSJ Car Meet"
+        caption="MSJ Car Meet · @msjmeets"
+        className="w-[58%] flex-shrink-0"
+      />
+
+      {/* Right: three stacked frames */}
+      <div className="flex flex-1 flex-col gap-2">
+        <PhotoTile
+          src="/img/carmeet2.jpg"
+          alt="Cars lined up in the lot at the MSJ Car Meet"
+          caption="60+ cars on the lot"
+          className="flex-1"
+        />
+        <PhotoTile
+          src="/img/carmeet3.jpg"
+          alt="Crowd and cars at the MSJ Car Meet event"
+          caption="~200 attendees"
+          className="flex-1"
+        />
+        <PhotoTile
+          src="/img/carmeet4.jpg"
+          alt="Event atmosphere at MSJ Car Meet"
+          caption="Nov 8, 2025"
+          className="flex-1"
+        />
       </div>
 
-      {/* Scanline texture */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(212,175,106,0.6) 2px, rgba(212,175,106,0.6) 3px)",
-        }}
-      />
+      {/* Floating gold event badge — top right */}
+      <div className="absolute -right-2 -top-2 z-10 border border-[var(--accent)] bg-[var(--bg)] px-3 py-1.5 shadow-lg">
+        <p className="font-mono text-[0.55rem] uppercase tracking-widest text-[var(--accent)]">
+          First in MSJ History
+        </p>
+      </div>
     </div>
   );
 }
@@ -282,33 +343,76 @@ export function CarMeetShowpiece() {
             </Reveal>
           </div>
 
-          {/* ── SVG Supercar — parallax scroll ── */}
+          {/* ── Full-bleed hero photo with $35M counter over scrim ── */}
           <motion.div
             style={{ y: silhouetteY, scale: silhouetteScale }}
-            className="pointer-events-none relative z-0 -mx-5 mt-8 md:-mx-9 md:mt-10"
-            aria-hidden
+            className="relative z-0 -mx-5 mt-8 overflow-hidden md:-mx-9 md:mt-10"
+            data-cursor-hover
           >
-            <SupercarSilhouette className="w-full opacity-90" />
-          </motion.div>
+            {/* Aspect-ratio frame */}
+            <div className="relative aspect-[16/7] w-full">
+              <Photo
+                src="/img/carmeet1.jpg"
+                alt="Yellow McLaren front-on at the MSJ Car Meet — $35M+ in cars on the lot"
+                priority
+                className="object-cover"
+              />
 
-          {/* ── Hero stat — $35M+ ── */}
-          <div className="relative z-10 -mt-4 md:-mt-8">
-            <Reveal>
-              <div className="flex flex-wrap items-end gap-3">
+              {/* Dark asphalt scrim — heavier at bottom for type legibility */}
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(to top, rgba(12,10,8,0.88) 0%, rgba(12,10,8,0.30) 40%, rgba(12,10,8,0.10) 100%)",
+                }}
+                aria-hidden
+              />
+              {/* Left-side darkening for the counter readability */}
+              <div
+                className="pointer-events-none absolute inset-y-0 left-0 w-1/2"
+                style={{
+                  background:
+                    "linear-gradient(to right, rgba(12,10,8,0.70) 0%, transparent 100%)",
+                }}
+                aria-hidden
+              />
+
+              {/* Gold top border flash */}
+              <motion.div
+                className="absolute left-0 right-0 top-0 h-[2px] bg-[var(--accent)]"
+                initial={{ scaleX: 0, originX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                aria-hidden
+              />
+
+              {/* ── $35M+ counter overlaid on bottom-left of photo ── */}
+              <div className="absolute bottom-6 left-6 z-10 md:bottom-10 md:left-10">
                 <motion.div style={{ scale: bigNumScale }} className="origin-left">
-                  <p className="font-anton leading-none text-[var(--accent)]"
-                     style={{ fontSize: "clamp(5rem, 18vw, 16rem)" }}>
+                  <p
+                    className="font-anton leading-none text-[var(--accent)]"
+                    style={{ fontSize: "clamp(4rem, 15vw, 13rem)", lineHeight: 1 }}
+                  >
                     <Counter to={35} prefix="$" suffix="M+" duration={2.2} />
                   </p>
                 </motion.div>
+                <p className="mt-1 font-mono text-xs uppercase tracking-widest text-[rgba(212,175,106,0.7)]">
+                  In cars on the lot · {carMeet.date}
+                </p>
               </div>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <p className="mt-1 font-mono text-sm uppercase tracking-widest text-[var(--muted)]">
-                In cars on the lot · {carMeet.date}
-              </p>
-            </Reveal>
-          </div>
+
+              {/* Corner frame marks */}
+              <span aria-hidden className="absolute left-4 top-4 block h-6 w-6 border-l border-t border-[var(--accent)] opacity-50" />
+              <span aria-hidden className="absolute right-4 top-4 block h-6 w-6 border-r border-t border-[var(--accent)] opacity-50" />
+              <span aria-hidden className="absolute bottom-4 right-4 block h-6 w-6 border-b border-r border-[var(--accent)] opacity-50" />
+            </div>
+
+            {/* SVG Supercar silhouette — floats below the photo as a graphic accent */}
+            <div className="pointer-events-none -mt-8 w-full md:-mt-12" aria-hidden>
+              <SupercarSilhouette className="w-full opacity-60" />
+            </div>
+          </motion.div>
 
           {/* ── Pagani callout — special pull-quote ── */}
           <Reveal delay={0.15}>
@@ -375,9 +479,9 @@ export function CarMeetShowpiece() {
               </div>
             </Reveal>
 
-            {/* Footage placeholder */}
+            {/* Car Meet photo collage */}
             <Reveal delay={0.2}>
-              <FootageFrame />
+              <CarMeetCollage />
             </Reveal>
           </div>
 

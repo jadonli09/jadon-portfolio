@@ -7,21 +7,40 @@ import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { TiltCard } from "@/components/primitives/TiltCard";
 import { CivicVideoFrame } from "@/components/civic/CivicVideoFrame";
+import { CivicPressPhoto } from "@/components/civic/CivicPressPhoto";
+import { Photo } from "@/components/primitives/Photo";
 import { CIVIC } from "@/lib/data";
 import { cn } from "@/lib/cn";
+
+/** Map story title to its real press photo, if any. */
+const STORY_PHOTOS: Record<string, { src: string; caption: string }> = {
+  "The Mayor's Videographer": {
+    src: "/img/editing-for-mayor-timeline.jpg",
+    caption: "Editing for Mayor Salwan · @li_locked.in",
+  },
+  "Small Business Accessibility": {
+    src: "/img/speaking-at-rally.jpg",
+    caption: "Speaking at a community rally · Fremont, CA",
+  },
+  "HG Nguyen for D7": {
+    src: "/img/acwd-water-contest-1stplace.jpg",
+    caption: "ACWD Water Clip Contest · 1st Place · $600",
+  },
+};
 
 type Story = (typeof CIVIC.stories)[number];
 
 /** Hover-expanded article card for secondary stories. */
 function ArticleCard({ story, index }: { story: Story; index: number }) {
   const [expanded, setExpanded] = useState(false);
+  const photo = STORY_PHOTOS[story.title];
 
   return (
     <TiltCard max={4} className="h-full">
       <motion.article
         data-cursor-hover
         className={cn(
-          "group relative flex h-full flex-col border border-[var(--line)] bg-[var(--bg)] p-6 transition-colors duration-300 hover:border-[var(--accent)] hover:bg-[var(--bg-2)] md:p-8",
+          "group relative flex h-full flex-col border border-[var(--line)] bg-[var(--bg)] transition-colors duration-300 hover:border-[var(--accent)] hover:bg-[var(--bg-2)]",
         )}
         onHoverStart={() => setExpanded(true)}
         onHoverEnd={() => setExpanded(false)}
@@ -29,44 +48,65 @@ function ArticleCard({ story, index }: { story: Story; index: number }) {
         onBlur={() => setExpanded(false)}
         tabIndex={0}
       >
-        {/* Index + handle row */}
-        <div className="mb-4 flex items-start justify-between gap-3">
-          <span className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-[var(--accent)]">
-            {story.handle}
-          </span>
-          <span className="font-mono text-[0.6rem] text-[var(--muted)] opacity-60">
-            {String(index + 1).padStart(2, "0")}
-          </span>
+        {/* Press photo at the top of the card (if available) */}
+        {photo && (
+          <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16 / 9" }}>
+            {/* Red accent top rule */}
+            <div className="absolute left-0 right-0 top-0 z-10 h-[2px] bg-[var(--accent)]" />
+            <motion.div
+              className="h-full w-full"
+              animate={{ scale: expanded ? 1.04 : 1 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <Photo
+                src={photo.src}
+                alt={photo.caption}
+                className="h-full w-full object-cover"
+              />
+            </motion.div>
+          </div>
+        )}
+
+        <div className="flex flex-1 flex-col p-6 md:p-8">
+          {/* Index + handle row */}
+          <div className="mb-4 flex items-start justify-between gap-3">
+            <span className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-[var(--accent)]">
+              {story.handle}
+            </span>
+            <span className="font-mono text-[0.6rem] text-[var(--muted)] opacity-60">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+          </div>
+
+          {/* Dateline */}
+          <p className="eyebrow mb-3 text-[var(--muted)]">{story.window}</p>
+
+          {/* Title with underline-wipe on hover */}
+          <h3 className="relative mb-3 inline-block font-display text-xl font-semibold leading-tight md:text-2xl">
+            <span className="relative">
+              {story.title}
+              <motion.span
+                className="absolute -bottom-0.5 left-0 h-[1px] bg-[var(--accent)]"
+                initial={{ scaleX: 0, originX: 0 }}
+                animate={{ scaleX: expanded ? 1 : 0 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                style={{ width: "100%" }}
+              />
+            </span>
+          </h3>
+
+          {/* Body */}
+          <p className="mt-auto text-sm leading-relaxed text-[var(--muted)]">{story.body}</p>
+
+          {/* Read-more glyph */}
+          <motion.div
+            className="mt-5 flex items-center gap-1 font-mono text-[0.65rem] uppercase tracking-widest text-[var(--accent)]"
+            animate={{ opacity: expanded ? 1 : 0, y: expanded ? 0 : 4 }}
+            transition={{ duration: 0.3 }}
+          >
+            Full story <ArrowUpRight className="h-3 w-3" />
+          </motion.div>
         </div>
-
-        {/* Dateline */}
-        <p className="eyebrow mb-3 text-[var(--muted)]">{story.window}</p>
-
-        {/* Title with underline-wipe on hover */}
-        <h3 className="relative mb-3 inline-block font-display text-xl font-semibold leading-tight md:text-2xl">
-          <span className="relative">
-            {story.title}
-            <motion.span
-              className="absolute -bottom-0.5 left-0 h-[1px] bg-[var(--accent)]"
-              initial={{ scaleX: 0, originX: 0 }}
-              animate={{ scaleX: expanded ? 1 : 0 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              style={{ width: "100%" }}
-            />
-          </span>
-        </h3>
-
-        {/* Body — always visible but smoothly expands with full opacity */}
-        <p className="mt-auto text-sm leading-relaxed text-[var(--muted)]">{story.body}</p>
-
-        {/* Read-more glyph */}
-        <motion.div
-          className="mt-5 flex items-center gap-1 font-mono text-[0.65rem] uppercase tracking-widest text-[var(--accent)]"
-          animate={{ opacity: expanded ? 1 : 0, y: expanded ? 0 : 4 }}
-          transition={{ duration: 0.3 }}
-        >
-          Full story <ArrowUpRight className="h-3 w-3" />
-        </motion.div>
       </motion.article>
     </TiltCard>
   );
@@ -123,6 +163,8 @@ function LeadFeature({ story }: { story: Story }) {
 
 /** Mayor's Videographer — second hero story, distinct layout. */
 function SecondFeature({ story }: { story: Story }) {
+  const photo = STORY_PHOTOS[story.title];
+
   return (
     <Reveal delay={0.05}>
       <article className="relative flex flex-col border border-[var(--line)] bg-[var(--bg)] p-7 md:flex-row md:items-stretch md:p-0">
@@ -142,9 +184,23 @@ function SecondFeature({ story }: { story: Story }) {
 
           <p className="mt-2 font-mono text-xs text-[var(--muted)]">{story.handle}</p>
 
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-[var(--fg)] md:text-lg">
-            {story.body}
-          </p>
+          <div className="mt-5 grid grid-cols-1 gap-6 md:grid-cols-[1fr_auto]">
+            <p className="max-w-xl text-base leading-relaxed text-[var(--fg)] md:text-lg">
+              {story.body}
+            </p>
+
+            {/* Press photo — editing session */}
+            {photo && (
+              <CivicPressPhoto
+                src={photo.src}
+                alt={photo.caption}
+                caption={photo.caption}
+                variant="frame"
+                aspect="4 / 3"
+                className="w-full md:w-56 shrink-0"
+              />
+            )}
+          </div>
         </div>
 
         {/* Stat sidebar */}

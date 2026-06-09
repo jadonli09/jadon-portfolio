@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { Reveal } from "@/components/primitives/Reveal";
+import { Photo } from "@/components/primitives/Photo";
 import { COURT, PROFILE } from "@/lib/data";
 import { cn } from "@/lib/cn";
 
@@ -100,12 +101,58 @@ export function CourtHero() {
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
   const parallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
   const parallaxOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  // Photo parallax — drifts slower than foreground text
+  const photoY = useTransform(scrollYProgress, [0, 1], ["0%", "28%"]);
 
   return (
     <section
       ref={containerRef}
       className="relative min-h-[100svh] overflow-hidden pt-36 md:pt-48"
     >
+      {/* ── Full-bleed NCS Champions photo — parallax background ── */}
+      <motion.div
+        className="absolute inset-0 z-0"
+        style={{ y: photoY }}
+        data-cursor-hover
+      >
+        {/* Taller than 100% so parallax has room to shift without showing gaps */}
+        <Photo
+          src="/img/ncs-champions.jpg"
+          alt="MSJ Varsity Basketball — NCS Section Champions 2026"
+          priority
+          className="object-top"
+          sizes="100vw"
+        />
+        {/* Duotone orange overlay — bleeds the image into the court brand */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(160deg, rgba(255,91,31,0.35) 0%, rgba(11,11,12,0.0) 50%)",
+            mixBlendMode: "multiply",
+          }}
+          aria-hidden
+        />
+        {/* Dark scrim — ensures all type is legible */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(11,11,12,0.97) 0%, rgba(11,11,12,0.70) 35%, rgba(11,11,12,0.30) 70%, rgba(11,11,12,0.15) 100%)",
+          }}
+          aria-hidden
+        />
+        {/* Right-side fade so the year watermark stays readable */}
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 w-1/2"
+          style={{
+            background:
+              "linear-gradient(to left, rgba(11,11,12,0.80) 0%, transparent 100%)",
+          }}
+          aria-hidden
+        />
+      </motion.div>
+
       {/* Background diagonal ticker */}
       <BackgroundTicker />
 
@@ -129,7 +176,7 @@ export function CourtHero() {
         aria-hidden
       />
 
-      {/* Main content */}
+      {/* Main content — sits above the photo */}
       <motion.div
         className="relative z-10 mx-auto max-w-7xl px-5 md:px-9"
         style={{ y: parallaxY, opacity: parallaxOpacity }}

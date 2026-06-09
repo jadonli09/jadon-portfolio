@@ -3,6 +3,7 @@ import { World } from "@/components/chrome/World";
 import { Footer } from "@/components/chrome/Footer";
 import { LeadershipHero } from "@/components/leadership/LeadershipHero";
 import { CarMeetShowpiece } from "@/components/leadership/CarMeetShowpiece";
+import { FieldPhotoStrip } from "@/components/leadership/FieldPhotoStrip";
 import { WinterBall } from "@/components/leadership/WinterBall";
 import { EventsTicker } from "@/components/leadership/EventsTicker";
 import { EventsLedger } from "@/components/leadership/EventsLedger";
@@ -31,6 +32,9 @@ export default function LeadershipPage() {
 
       {/* 3. Car Meet showpiece — the cinematic centrepiece */}
       <CarMeetShowpiece />
+
+      {/* 3b. In-the-field photo strip — ASB / climbing / fundraising / panels */}
+      <FieldPhotoStrip />
 
       {/* 4. Winter Ball — distinct treatment, built-from-scratch story */}
       <WinterBall />
