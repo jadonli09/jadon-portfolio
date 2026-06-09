@@ -1,26 +1,215 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+  CONNECTIVE TISSUE, NOT A SHARED PALETTE.
+  Each page is its own colour world (set via [data-world] below). What is shared
+  is craft: the type scale, the easing, the grain, the spacing rhythm.
+*/
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-fraunces);
+  --font-grotesk: var(--font-archivo);
+  --font-mono: var(--font-jetbrains);
+  --font-serif: var(--font-instrument);
+  --font-anton: var(--font-anton);
+  --ease-cine: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  /* default world = the cinematic void of the landing page */
+  --bg: #07070a;
+  --bg-2: #101018;
+  --fg: #f4f1ea;
+  --muted: #8a8a99;
+  --accent: #e8b15a; /* warm ember/gold */
+  --accent-2: #d9603f;
+  --line: rgba(244, 241, 234, 0.12);
+  --selection: rgba(232, 177, 90, 0.28);
+}
+
+/* ── WORLD THEMES ─────────────────────────────────────────────── */
+
+[data-world="about"] {
+  --bg: #ece7dd; /* warm paper */
+  --bg-2: #e2dccf;
+  --fg: #1a1714;
+  --muted: #6b655c;
+  --accent: #7a8b6f; /* sage */
+  --accent-2: #b15c3c; /* clay */
+  --line: rgba(26, 23, 20, 0.14);
+  --selection: rgba(122, 139, 111, 0.3);
+}
+
+[data-world="civic"] {
+  --bg: #f3efe6; /* newsprint cream */
+  --bg-2: #e7e1d3;
+  --fg: #14110d;
+  --muted: #5c574e;
+  --accent: #c0392b; /* press red */
+  --accent-2: #14110d;
+  --line: rgba(20, 17, 13, 0.16);
+  --selection: rgba(192, 57, 43, 0.25);
+}
+
+[data-world="research"] {
+  --bg: #060a12; /* deep lab navy */
+  --bg-2: #0c1422;
+  --fg: #e8f1f7;
+  --muted: #6f88a0;
+  --accent: #34e0c4; /* signal teal */
+  --accent-2: #ff5da2; /* volcano-plot magenta */
+  --line: rgba(52, 224, 196, 0.16);
+  --selection: rgba(52, 224, 196, 0.25);
+}
+
+[data-world="built"] {
+  --bg: #0a0b0f; /* slate */
+  --bg-2: #14161d;
+  --fg: #eef0f5;
+  --muted: #7c818f;
+  --accent: #7c9cff; /* electric periwinkle */
+  --accent-2: #b9ff66; /* product lime */
+  --line: rgba(238, 240, 245, 0.1);
+  --selection: rgba(124, 156, 255, 0.28);
+}
+
+[data-world="leadership"] {
+  --bg: #0c0a08; /* asphalt */
+  --bg-2: #15110c;
+  --fg: #f5ecd8;
+  --muted: #9a8c72;
+  --accent: #d4af6a; /* champagne gold */
+  --accent-2: #6e1f2a; /* oxblood */
+  --line: rgba(212, 175, 106, 0.18);
+  --selection: rgba(212, 175, 106, 0.25);
+}
+
+[data-world="court"] {
+  --bg: #0b0b0c;
+  --bg-2: #161617;
+  --fg: #f6f6f4;
+  --muted: #8b8b8e;
+  --accent: #ff5b1f; /* electric orange */
+  --accent-2: #ffffff;
+  --line: rgba(255, 91, 31, 0.2);
+  --selection: rgba(255, 91, 31, 0.3);
+}
+
+[data-world="achievements"] {
+  --bg: #0a0907;
+  --bg-2: #14110b;
+  --fg: #f3ead6;
+  --muted: #948a72;
+  --accent: #e7c873; /* trophy gold */
+  --accent-2: #c8a24a;
+  --line: rgba(231, 200, 115, 0.18);
+  --selection: rgba(231, 200, 115, 0.25);
+}
+
+[data-world="contact"] {
+  --bg: #07070a;
+  --bg-2: #101018;
+  --fg: #f4f1ea;
+  --muted: #8a8a99;
+  --accent: #e8b15a;
+  --accent-2: #d9603f;
+  --line: rgba(244, 241, 234, 0.12);
+  --selection: rgba(232, 177, 90, 0.28);
+}
+
+/* ── BASE ─────────────────────────────────────────────────────── */
+
+* {
+  border-color: var(--line);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-grotesk), system-ui, sans-serif;
+  overflow-x: hidden;
+  transition: background-color 0.6s var(--ease-cine), color 0.6s var(--ease-cine);
+}
+
+::selection {
+  background: var(--selection);
+  color: var(--fg);
+}
+
+/* Hide the native cursor only where the custom cursor runs (pointer devices). */
+@media (hover: hover) and (pointer: fine) {
+  body[data-cursor="on"] { cursor: none; }
+  body[data-cursor="on"] a,
+  body[data-cursor="on"] button { cursor: none; }
+}
+
+/* ── TYPE HELPERS ─────────────────────────────────────────────── */
+
+.font-display { font-family: var(--font-display), Georgia, serif; }
+.font-grotesk { font-family: var(--font-grotesk), system-ui, sans-serif; }
+.font-mono { font-family: var(--font-mono), ui-monospace, monospace; }
+.font-serif-i { font-family: var(--font-serif), Georgia, serif; }
+.font-anton { font-family: var(--font-anton), Impact, sans-serif; }
+
+.display-xl {
+  font-size: clamp(3rem, 13vw, 12rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+}
+.display-lg {
+  font-size: clamp(2.4rem, 8vw, 6.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+}
+.eyebrow {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── ATMOSPHERE ───────────────────────────────────────────────── */
+
+/* Film grain overlay — fixed, non-interactive, sits above the page. */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+.line-mask { overflow: hidden; display: block; }
+
+/* Reusable marquee track */
+.marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  will-change: transform;
+  animation: marquee 30s linear infinite;
+}
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* ── REDUCED MOTION ───────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain { display: none; }
+  .marquee-track { animation: none; }
 }
