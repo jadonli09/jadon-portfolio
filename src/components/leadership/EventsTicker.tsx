@@ -1,19 +1,19 @@
 import { Marquee } from "@/components/primitives/Marquee";
 
 const TICKER_ITEMS = [
-  "$35M+ in cars on the lot",
-  "60+ cars · one Pagani $3.5M",
-  "~200 attendees",
-  "50+ volunteers",
-  "32,000 FUSD families emailed",
-  "First car meet in MSJ history",
-  "350 students at Winter Ball",
-  "Built from scratch · no playbook",
   "ASB President 2026–2027",
-  "Class President · 3 years",
+  "Class President · 3 years running",
+  "Lost by ~10 votes · ran back · won",
+  "13 fundraisers · $5,520.40",
+  "Leadership II · 90 → 60 → 30",
+  "350 students at Winter Ball",
+  "500-person ICE Protest · 20k+ views",
+  "262-player Scavenger Hunt",
+  "500 names at CO26 Graduation",
   "Prom @ Cal Academy of Sciences",
-  "@msjmeets",
-  "7AM setup · 5PM cleanup",
+  "Climbing Club VP · Boba $800+",
+  "MSJ Makes VP · 40 senior stoles",
+  "$35M+ in cars · First in MSJ history",
 ];
 
 /**

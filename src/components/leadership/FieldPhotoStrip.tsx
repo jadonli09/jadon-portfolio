@@ -200,7 +200,7 @@ export function FieldPhotoStrip() {
         <div className="mt-5 md:mt-6" id="field-strip-heading">
           <KineticHeadline
             as="h2"
-            text="Beyond the Car Meet."
+            text="In the Field."
             className="font-anton text-[2.2rem] uppercase leading-none tracking-tight text-[var(--fg)] md:text-[4rem]"
             delay={0.05}
           />

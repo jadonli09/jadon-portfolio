@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
-import { RevealGroup, Reveal } from "@/components/primitives/Reveal";
+import { Reveal } from "@/components/primitives/Reveal";
 import { COURT } from "@/lib/data";
 import { cn } from "@/lib/cn";
 
@@ -34,7 +34,34 @@ function ThreePointArc({ className }: { className?: string }) {
   );
 }
 
-/** Individual timeline node card with hover state. */
+/** Per-node icon accent pulled from period. */
+function NodeIcon({ role }: { role: string }) {
+  if (role === "NCS Champion") {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" className="size-4" aria-hidden>
+        <path d="M10 2l2.4 4.9L18 7.6l-4 3.9.94 5.5L10 14.5 5.06 17l.94-5.5L2 7.6l5.6-.7L10 2z"
+          fill="var(--accent)" />
+      </svg>
+    );
+  }
+  if (role.includes("Co-Captain")) {
+    return (
+      <svg viewBox="0 0 20 20" fill="none" className="size-4" aria-hidden>
+        <circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M10 6v4l3 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 20 20" fill="none" className="size-4" aria-hidden>
+      <circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+/** Individual timeline node card with hover state.
+ *  On desktop the layout alternates left/right for visual rhythm.
+ */
 function TimelineNode({
   item,
   index,
@@ -48,65 +75,130 @@ function TimelineNode({
   const ref = useRef<HTMLLIElement>(null);
   const inView = useInView(ref, { once: true, margin: "-8% 0px" });
   const isChampion = item.role === "NCS Champion";
+  const isEven = index % 2 === 0;
 
   return (
     <motion.li
       ref={ref}
-      className={cn(
-        "relative flex flex-col gap-0 md:flex-row",
-        index % 2 === 0 ? "md:flex-row" : "md:flex-row"
-      )}
-      initial={{ opacity: 0, y: 32 }}
+      className="relative grid grid-cols-[2.5rem_1fr] gap-0 md:grid-cols-[1fr_3rem_1fr]"
+      initial={{ opacity: 0, y: 36 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.75, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
     >
-      {/* Vertical connector line */}
-      <div className="absolute left-5 top-0 flex h-full flex-col items-center md:left-1/2 md:-translate-x-1/2">
-        <motion.div
-          className={cn(
-            "h-full w-px",
-            isChampion ? "bg-[var(--accent)]" : "bg-[var(--line)]"
-          )}
-          initial={{ scaleY: 0, originY: 0 }}
-          animate={inView ? { scaleY: 1 } : {}}
-          transition={{ duration: 0.6, delay: index * 0.12 + 0.3, ease: [0.16, 1, 0.3, 1] }}
-        />
-        {isLast && (
-          <div className={cn("mt-1 h-2 w-2 rounded-full", isChampion ? "bg-[var(--accent)]" : "bg-[var(--muted)]")} />
+      {/* ── Desktop: left content column (even) or spacer (odd) ── */}
+      <div className="hidden md:block">
+        {isEven ? (
+          <div className="flex h-full items-start justify-end pr-8 pt-1">
+            {/* Period label */}
+            <div className="text-right">
+              <span
+                className={cn(
+                  "font-mono text-xs uppercase tracking-widest",
+                  isChampion ? "text-[var(--accent)]" : "text-[var(--muted)]"
+                )}
+              >
+                {item.period}
+              </span>
+            </div>
+          </div>
+        ) : (
+          // Odd: the card is on the right; this column holds the period label
+          <div className="pr-8 pb-10 pt-1">
+            <motion.div
+              onHoverStart={() => setHovered(true)}
+              onHoverEnd={() => setHovered(false)}
+              data-cursor-hover
+              className={cn(
+                "group relative overflow-hidden border transition-colors duration-300",
+                isChampion
+                  ? "border-[var(--accent)] bg-[var(--bg-2)]"
+                  : "border-[var(--line)] bg-[var(--bg-2)]",
+                "hover:border-[var(--accent)]"
+              )}
+              whileHover={{ y: -3, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } }}
+            >
+              <NodeCard item={item} hovered={hovered} isChampion={isChampion} />
+            </motion.div>
+          </div>
         )}
       </div>
 
-      {/* Period label — left or right based on index */}
-      <div className="w-10 shrink-0 md:w-1/2 md:pr-10 md:text-right">
-        <div className="pl-14 md:pl-0">
-          <span
-            className={cn(
-              "font-mono text-xs uppercase tracking-widest",
-              isChampion ? "text-[var(--accent)]" : "text-[var(--muted)]"
-            )}
-          >
-            {item.period}
-          </span>
-        </div>
-      </div>
-
-      {/* Node dot */}
-      <div className="absolute left-3.5 top-1 z-10 md:relative md:left-auto md:top-auto md:flex md:w-0 md:items-start md:justify-center">
+      {/* ── Centre spine column ── */}
+      <div className="relative flex flex-col items-center">
+        {/* Dot */}
         <motion.div
           className={cn(
-            "h-3 w-3 rounded-full border-2 transition-colors duration-300",
+            "relative z-10 mt-1 flex h-5 w-5 items-center justify-center rounded-full border-2 transition-colors duration-300",
             isChampion
               ? "border-[var(--accent)] bg-[var(--accent)]"
               : hovered
               ? "border-[var(--accent)] bg-[var(--accent)]"
               : "border-[var(--muted)] bg-[var(--bg)]"
           )}
-          whileHover={{ scale: 1.5 }}
-        />
+          whileHover={{ scale: 1.4 }}
+        >
+          <NodeIcon role={item.role} />
+        </motion.div>
+
+        {/* Connector line */}
+        {!isLast && (
+          <motion.div
+            className={cn(
+              "mt-1 flex-1 w-px",
+              isChampion ? "bg-[var(--accent)]" : "bg-[var(--line)]"
+            )}
+            initial={{ scaleY: 0, originY: 0 }}
+            animate={inView ? { scaleY: 1 } : {}}
+            transition={{ duration: 0.6, delay: index * 0.1 + 0.35, ease: [0.16, 1, 0.3, 1] }}
+          />
+        )}
       </div>
 
-      {/* Card content */}
-      <div className="w-full pl-14 pb-10 md:w-1/2 md:pl-10 md:pb-12">
+      {/* ── Desktop: right content column (odd) or period (even) ── */}
+      <div className="hidden md:block">
+        {!isEven ? (
+          <div className="flex h-full items-start pl-8 pt-1">
+            <span
+              className={cn(
+                "font-mono text-xs uppercase tracking-widest",
+                isChampion ? "text-[var(--accent)]" : "text-[var(--muted)]"
+              )}
+            >
+              {item.period}
+            </span>
+          </div>
+        ) : (
+          <div className="pl-8 pb-10 pt-1">
+            <motion.div
+              onHoverStart={() => setHovered(true)}
+              onHoverEnd={() => setHovered(false)}
+              data-cursor-hover
+              className={cn(
+                "group relative overflow-hidden border transition-colors duration-300",
+                isChampion
+                  ? "border-[var(--accent)] bg-[var(--bg-2)]"
+                  : "border-[var(--line)] bg-[var(--bg-2)]",
+                "hover:border-[var(--accent)]"
+              )}
+              whileHover={{ y: -3, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } }}
+            >
+              <NodeCard item={item} hovered={hovered} isChampion={isChampion} />
+            </motion.div>
+          </div>
+        )}
+      </div>
+
+      {/* ── Mobile: full-width card (always on the right of the spine) ── */}
+      <div className="pb-10 pl-5 pt-1 md:hidden">
+        {/* Period label */}
+        <span
+          className={cn(
+            "mb-2 block font-mono text-xs uppercase tracking-widest",
+            isChampion ? "text-[var(--accent)]" : "text-[var(--muted)]"
+          )}
+        >
+          {item.period}
+        </span>
         <motion.div
           onHoverStart={() => setHovered(true)}
           onHoverEnd={() => setHovered(false)}
@@ -118,46 +210,104 @@ function TimelineNode({
               : "border-[var(--line)] bg-[var(--bg-2)]",
             "hover:border-[var(--accent)]"
           )}
-          whileHover={{ y: -4, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } }}
+          whileHover={{ y: -3 }}
         >
-          {/* Accent top bar on hover */}
-          <motion.div
-            className="absolute left-0 top-0 h-0.5 w-full bg-[var(--accent)]"
-            initial={{ scaleX: isChampion ? 1 : 0, originX: 0 }}
-            animate={{ scaleX: hovered || isChampion ? 1 : 0 }}
-            transition={{ duration: 0.3 }}
-            aria-hidden
-          />
-
-          <div className="px-6 py-6 md:px-8 md:py-8">
-            {/* Role */}
-            <p
-              className={cn(
-                "font-anton text-xl uppercase leading-tight tracking-wide md:text-2xl",
-                isChampion ? "text-[var(--accent)]" : "text-[var(--fg)]"
-              )}
-            >
-              {item.role}
-            </p>
-
-            {/* Note */}
-            <p className="mt-2 font-grotesk text-sm leading-relaxed text-[var(--muted)] md:text-base">
-              {item.note}
-            </p>
-
-            {/* Champion badge */}
-            {isChampion && (
-              <div className="mt-4 inline-flex items-center gap-2 rounded-none border border-[var(--accent)] px-3 py-1">
-                <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" aria-hidden />
-                <span className="font-mono text-[0.6rem] uppercase tracking-[0.25em] text-[var(--accent)]">
-                  NCS Title · School &amp; District First
-                </span>
-              </div>
-            )}
-          </div>
+          <NodeCard item={item} hovered={hovered} isChampion={isChampion} />
         </motion.div>
       </div>
     </motion.li>
+  );
+}
+
+/** Inner card content — role headline + note + optional badge. */
+function NodeCard({
+  item,
+  hovered,
+  isChampion,
+}: {
+  item: (typeof COURT.timeline)[number];
+  hovered: boolean;
+  isChampion: boolean;
+}) {
+  return (
+    <>
+      {/* Accent top bar */}
+      <motion.div
+        className="absolute left-0 top-0 h-0.5 w-full bg-[var(--accent)]"
+        initial={{ scaleX: isChampion ? 1 : 0, originX: 0 }}
+        animate={{ scaleX: hovered || isChampion ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+        aria-hidden
+      />
+
+      {/* Diagonal energy line on champion card */}
+      {isChampion && (
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: "repeating-linear-gradient(118deg, var(--accent) 0px, var(--accent) 1px, transparent 1px, transparent 28px)",
+          }}
+          aria-hidden
+        />
+      )}
+
+      <div className="px-6 py-6 md:px-7 md:py-7">
+        {/* Role */}
+        <p
+          className={cn(
+            "font-anton text-xl uppercase leading-tight tracking-wide md:text-2xl",
+            isChampion ? "text-[var(--accent)]" : "text-[var(--fg)]"
+          )}
+        >
+          {item.role}
+        </p>
+
+        {/* Note — full text, given room to breathe */}
+        <p className="mt-3 font-grotesk text-sm leading-relaxed text-[var(--muted)] md:text-[0.95rem]">
+          {item.note}
+        </p>
+
+        {/* Tags row */}
+        <div className="mt-4 flex flex-wrap gap-2">
+          {isChampion && (
+            <div className="inline-flex items-center gap-1.5 border border-[var(--accent)] px-3 py-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" aria-hidden />
+              <span className="font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[var(--accent)]">
+                NCS Title · School &amp; District First
+              </span>
+            </div>
+          )}
+          {item.role === "JV Co-Captain" && (
+            <div className="inline-flex items-center gap-1.5 border border-[var(--muted)] px-3 py-1">
+              <span className="font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[var(--muted)]">
+                .500 League Record
+              </span>
+            </div>
+          )}
+          {item.role === "AAU Basketball" && (
+            <div className="inline-flex items-center gap-1.5 border border-[var(--muted)] px-3 py-1">
+              <span className="font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[var(--muted)]">
+                Hopkins A-Team · 8th Grade
+              </span>
+            </div>
+          )}
+          {item.role === "Varsity Summer League" && (
+            <div className="inline-flex items-center gap-1.5 border border-orange-400/50 px-3 py-1">
+              <span className="font-mono text-[0.58rem] uppercase tracking-[0.22em] text-orange-400">
+                3 Tournaments · Bay Club
+              </span>
+            </div>
+          )}
+          {item.role.includes("Varsity · started") && (
+            <div className="inline-flex items-center gap-1.5 border border-orange-400/50 px-3 py-1">
+              <span className="font-mono text-[0.58rem] uppercase tracking-[0.22em] text-orange-400">
+                Bench Energy = Team Synergy
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -179,7 +329,9 @@ export function CourtTimeline() {
           <div className="flex flex-col justify-end md:pb-2">
             <p className="font-grotesk text-base leading-relaxed text-[var(--muted)] md:text-lg">
               From grade-school AAU hardwood to an NCS Championship stage — a decade of grind
-              on the court, condensed.
+              on the court, condensed. A broken arm in 7th grade. A Hopkins A-team spot in 8th.
+              JV dinners that turned teammates into a unit. A bench seat that taught him more
+              than the starting lineup.
             </p>
             {/* Three-point arc motif */}
             <ThreePointArc className="mt-6 w-48 text-[var(--accent)] opacity-50" />
@@ -187,7 +339,7 @@ export function CourtTimeline() {
         </Reveal>
       </div>
 
-      {/* Timeline list */}
+      {/* ── Timeline list ── */}
       <ul className="relative">
         {COURT.timeline.map((item, i) => (
           <TimelineNode
@@ -198,6 +350,16 @@ export function CourtTimeline() {
           />
         ))}
       </ul>
+
+      {/* Bottom rule */}
+      <motion.div
+        className="mt-8 h-px bg-gradient-to-r from-[var(--accent)] via-[var(--accent)] to-transparent opacity-30"
+        initial={{ scaleX: 0, originX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        aria-hidden
+      />
     </section>
   );
 }

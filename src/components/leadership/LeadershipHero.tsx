@@ -25,7 +25,7 @@ export function LeadershipHero() {
       <Reveal>
         <div className="flex items-center justify-between gap-4">
           <span className="eyebrow text-[var(--accent)]">04 — Leadership &amp; Events</span>
-          <span className="eyebrow hidden text-[var(--muted)] sm:block">ASB President · MSJ</span>
+          <span className="eyebrow hidden text-[var(--muted)] sm:block">ASB President · Class of 2027 · MSJ</span>
         </div>
       </Reveal>
 
@@ -36,7 +36,7 @@ export function LeadershipHero() {
       <div className="mt-6 md:mt-8">
         <KineticHeadline
           as="h1"
-          text="Running events at the scale of a city."
+          text="Elected to lead, every year."
           className="font-anton display-xl w-full uppercase tracking-tight text-[var(--fg)]"
           delay={0.2}
         />
@@ -65,14 +65,14 @@ export function LeadershipHero() {
         </Reveal>
       </div>
 
-      {/* Bottom ornament row */}
+      {/* Bottom ornament row — elected-office stats, not car meet */}
       <Reveal delay={0.5}>
         <div className="mt-6 flex items-center justify-between border-t border-[var(--line)] pt-4 md:mt-8">
           <span className="eyebrow text-[var(--muted)]">
             Class of 2027&nbsp;·&nbsp;Mission San Jose H.S.&nbsp;·&nbsp;Fremont, CA
           </span>
           <span className="eyebrow hidden text-[var(--accent)] sm:block">
-            $35M+ in cars&nbsp;·&nbsp;350 students&nbsp;·&nbsp;1 Pagani
+            3× Class President&nbsp;·&nbsp;ASB President&nbsp;·&nbsp;2 Club VPs
           </span>
         </div>
       </Reveal>

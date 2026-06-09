@@ -251,7 +251,7 @@ export const RESEARCH = {
       role: "Co-President — competition pipeline",
       site: "science fairs · olympiads",
       detail:
-        "Built STEM-PAC (from the HOSA chapter Jadon founded in 10th) into a club that guides students toward real competitions — coaching them into the Alameda County Science Fair (ACSEF), biology and broader STEM olympiads, and other external contests, not just in-house events. Iron Chef (21 participants) and the egg drop are the community glue; the science-fair and olympiad pipeline is the point.",
+        "Built STEM-PAC (from the HOSA chapter Jadon founded in 10th) into a club that guides students toward real competitions — coaching them into the Alameda County Science Fair (ACSEF), biology and broader STEM olympiads, and other external contests, not just in-house events. Iron Chef (23 contestants) and the egg drop (12 teams) are the community glue; the science-fair and olympiad pipeline is the point.",
     },
     {
       title: "UMass Research Intensive",
@@ -293,7 +293,7 @@ export const PROJECTS: Project[] = [
       { value: "#1", label: "Google result" },
     ],
     body:
-      "An AI-powered AP study platform — unlimited MCQ practice, graded FRQ practice, and AI tutor guidance. Released to Mission San Jose on 04/11/2026; 100 users in the first 24 hours. Endorsed by 4 AP teachers. Rebuilt from scratch with Claude Code after an earlier draft, with a real dev pipeline. Partner: Pradyun Kanuparthi.",
+      "Built by a 6-AP veteran for a high-stress school with no centralized study materials. AcornPrep packages AP prep into modes that fit how people actually study — unlimited MCQ practice, graded FRQ practice, flashcards, podcasts, mind maps, and study guides, with AI tutor guidance. Released to Mission San Jose on 04/11/2026; 100 users in the first 24 hours, 500+ across the season, 13,000 MCQs practiced. Endorsed by 4 AP teachers, #1 Google result, and rebuilt from scratch with Claude Code on a real dev pipeline. Next: SAT prep. Partner: Pradyun Kanuparthi.",
     stack: ["React", "TypeScript", "AI grading"],
   },
   {
@@ -356,35 +356,71 @@ export const PROJECTS: Project[] = [
 /* ─────────────────────── LEADERSHIP & EVENTS ────────────────────── */
 export const LEADERSHIP = {
   intro:
-    "Class President three years running, now ASB President — running events at the scale of a small city.",
+    "Elected to lead, every year. Three-time Class President, now ASB President — plus VP of two clubs. The office is the point; the events are the proof.",
+  /** THE HEADLINE — the elected offices, front and centre. */
+  roles: [
+    {
+      title: "ASB President",
+      window: "2026–2027",
+      tag: "Student body",
+      note:
+        "Beat Jane Huang (who'd run against him — and lost — every year). Lost the race as a sophomore by ~10 votes, ran back, and won. Led the Leadership II selection: 90+ applicants → 60 (written) → 30 (interviews).",
+      highlight: true,
+    },
+    {
+      title: "Class President ×3",
+      window: "9th · 10th · 11th",
+      tag: "Class of 2027",
+      note:
+        "Won the freshman race (vs. Oscar Zhang), the sophomore race (vs. Kaylin Teo), and re-election as a junior. Ran Homecoming three years straight and 13 fundraisers worth $5,520.40.",
+      highlight: true,
+    },
+    {
+      title: "Climbing Club VP",
+      window: "Treasurer → VP",
+      tag: "Clubs",
+      note:
+        "Ran the (notoriously fiddly) fundraising and reimbursement forms, led boba fundraisers past $800, and built a permanent climbing wall in the weight room — a first for the school.",
+    },
+    {
+      title: "MSJ Makes VP",
+      window: "Merch design",
+      tag: "Clubs",
+      note:
+        "Led merch design for clubs and teams — hoodies, tees, glass awards, stickers, and 40 senior stoles. ~$700 revenue, ~$400 profit, 8 clients.",
+    },
+  ],
+  winterBall: {
+    title: "Winter Ball — Built From Scratch",
+    date: "February 2026",
+    body:
+      "The first winter ball since before COVID — no precedent, no playbook. To set the bar, he proposed two new initiatives: a live drink bar (his freshman/JV coach, Coach Ed, bartended mocktails on the spot — people were gutted when it ran out) and game tables (he got MPPFA's fundraising lead to lend poker/roulette tables instead of buying new). 350 students came.",
+    stat: { value: "350", label: "Students" },
+  },
+  /** Car Meet — a notable event, no longer the headline. */
   carMeet: {
     title: "MSJ Car Meet",
     date: "November 8, 2025",
-    pitch: "The first car meet in Mission San Jose history — a city-wide event in the school lot.",
+    pitch: "Co-led the first car meet in Mission San Jose history — a city-wide event, not just a school one.",
     stats: [
       { value: "$35M+", label: "In cars on the lot" },
       { value: "60+", label: "Cars" },
       { value: "$3.5M", label: "One Pagani" },
       { value: "~200", label: "Attendees" },
-      { value: "50+", label: "Volunteers" },
-      { value: "32,000", label: "FUSD families emailed" },
     ],
     body:
-      "Co-led a city-wide event from 7AM setup to 5PM cleanup after two months of preparation — contacting car enthusiasts, lining up small-business booths and food vendors, and running videography and photography (@msjmeets). Backed by 6 students, 2 faculty, and the parent foundation, which bought car ramps to protect low cars over speed bumps.",
+      "One of five seniors leading it; Jadon ran the media side — promotion and coverage (@msjmeets) — and brought in City Council and the Mayor to speak. The team door-knocked the neighborhood so all of Fremont, not just MSJ, was invited.",
   },
-  winterBall: {
-    title: "Winter Ball — Built From Scratch",
-    date: "February 2026",
-    body:
-      "The first winter ball since before COVID — no precedent, no playbook. Convinced wary admin with a plan and student-interest poll, then engineered the night: a non-alcoholic drink bar, borrowed PTA game tables (poker, roulette) instead of buying new, and a gym-floor mat lent by Newark Memorial. 350 students came.",
-    stat: { value: "350", label: "Students" },
-  },
+  /** The operator's event log — expanded. */
   events: [
-    { title: "ASB President", window: "2026–2027", note: "Selected a 30-student leadership class; helped lead a ~250-student, 7-school interdistrict conference." },
-    { title: "Class President", window: "9th · 10th · 11th", note: "Three years running. Led an hour-long Homecoming performance (theme: Tangled)." },
-    { title: "Prom @ Cal Academy of Sciences", window: "2026", note: "Helped plan prom at the California Academy of Sciences." },
-    { title: "JP Basketball", window: "Founder · Nov 2025", note: "Founded a coaching program for grades 4–8 — Sundays, ~$60/hr, 6 students, 2 coaches." },
-    { title: "City of Fremont", window: "Summer 2024", note: "Recreation Director." },
+    { title: "ICE Protest", window: "2026", metric: "20k+ views", note: "Organized a 500+-person protest at Mission, then made a news-anchor-style video about it that reached 20k+ views across the district." },
+    { title: "Valentine's Scavenger Hunt", window: "2026", metric: "262 players", note: "Hosted under li_locked.in ($300 in prizes, self-funded). School-trivia clues you couldn't Google — you had to talk to people. 262 participants." },
+    { title: "Homecoming ×3", window: "9th–11th", metric: "2nd place", note: "Tangled (hour-long), Spirited Away (45 min — 2nd place), Legend of Korra. Delegated deco / airband / skit, set deadlines, supervised practices." },
+    { title: "Senior Breakfast", window: "2026", metric: "$4.8k · 500", note: "Sourced 4 caterers, deliberated with the incoming ASB team, ordered $4.8k for 500 servings — and saved the day when the mailed check vanished in transit." },
+    { title: "CO26 Graduation", window: "2026", metric: "500 names", note: "Led the planning, built the name-card system end to end, and personally announced all 500 names at TAK Stadium (one missed syllable, out of 500)." },
+    { title: "Prom @ Cal Academy of Sciences", window: "2026", metric: "—", note: "Helped plan prom at the California Academy of Sciences." },
+    { title: "JP Basketball", window: "Founder · 2025", metric: "$60/hr", note: "Founded a coaching program for grades 4–8 — Sundays, ~$60/hr, 6 students, 2 coaches." },
+    { title: "City of Fremont", window: "Summer 2024", metric: "Rec Director", note: "Coached 5–12-year-olds across many sports at the Irvington Sports Jam — learning to keep kids engaged and comfortable." },
   ],
 } as const;
 
@@ -397,24 +433,26 @@ export const COURT = {
     sub: "MSJ Varsity Basketball — first NCS title in school and Fremont district history.",
   },
   timeline: [
-    { period: "Grades 3–9", role: "AAU Basketball", note: "Hoopsphere · Trust · Mambas — local and national tournaments." },
-    { period: "9th · 10th", role: "Frosh / JV Co-Captain", note: "Kept team morale, organized team dinners and bonding." },
-    { period: "11th", role: "Varsity", note: "Started in the first five early in the season." },
-    { period: "2026", role: "NCS Champion", note: "First title in school and district history." },
+    { period: "Grades 3–9", role: "AAU Basketball", note: "Hoopsphere · Trust · Mambas — local and national tournaments. (Made the Hopkins A-team in 8th after a broken arm sidelined 7th grade.)" },
+    { period: "9th", role: "Freshman Co-Captain", note: "Kept team responsibility and motivation as a freshman co-captain." },
+    { period: "10th", role: "JV Co-Captain", note: "Led JV to a .500 league record — and learned the team played better on the court when they were close off it (team dinners, bonding)." },
+    { period: "Summer '25", role: "Varsity Summer League", note: "Graduated to Varsity. 3-day-a-week summer trainings, 3 tournaments. Shooting + lifting at Bay Club with Coach Ed." },
+    { period: "11th", role: "Varsity · started first 5", note: "Started in the opening five while better players were injured early; took fewer minutes as they returned, and learned how much bench energy drives team synergy." },
+    { period: "2026", role: "NCS Champion", note: "Won the NCS title — the first in both school and Fremont district history. Recognized by the Mayor and the City." },
   ],
-  douyin: { value: "500k+", label: "Likes on DouYin", note: "a gym moment in China" },
+  douyin: { value: "569k", label: "Likes on DouYin", note: "At a gym in China, he played with and against a 网红 (influencer); his game drew media attention and the clip hit 569k+ likes." },
 } as const;
 
 /* ───────────────────────────── ABOUT ───────────────────────────── */
 export type Climb = { year: string; time: string; seconds: number; pr?: boolean; note?: string };
 
-/** Year-by-year birthday-climb times, as journaled. 2024 sunrise climb was filmed. PR = 47:33. */
+/** Birthday-climb times by age, as journaled since age 12. PR = 47:33 at 15. */
 const CLIMBS: Climb[] = [
-  { year: "Yr 1", time: "59:58", seconds: 3598 },
-  { year: "Yr 2", time: "49:46", seconds: 2986 },
-  { year: "Yr 3", time: "59:18", seconds: 3558 },
-  { year: "Yr 4", time: "47:33", seconds: 2853, pr: true },
-  { year: "Yr 5", time: "54:00", seconds: 3240, note: "sunrise climb, filmed" },
+  { year: "12", time: "59:58", seconds: 3598, note: "the first climb — reached the top with 2 seconds to spare" },
+  { year: "13", time: "49:46", seconds: 2986, note: "ten minutes faster — decided to make it a tradition" },
+  { year: "14", time: "59:18", seconds: 3558, note: "mispaced the start, burnt out before halfway" },
+  { year: "15", time: "47:33", seconds: 2853, pr: true, note: "PR — bottom to peak, Stanford Trailhead" },
+  { year: "16", time: "54:00", seconds: 3240, note: "a 7AM sunrise climb, filmed for li_locked.in — stopped chasing the PR, started noticing the view" },
 ];
 
 export const ABOUT = {
@@ -428,20 +466,34 @@ export const ABOUT = {
   threads: [
     {
       title: "The Kitchen",
-      body: "Cooking and baking with Samay — perfected macarons and a Beef Ragu; currently chasing a Hojicha Basque cheesecake.",
+      body: "Biweekly cooking with Samay — a shared outlet from rigorous courses, 'immersed in sound, taste, and smell.' Perfected macarons, Beef Ragu, and grilled chicken; chasing a Hojicha Basque cheesecake. Feasts for friends at Thanksgiving, New Year's, and Lunar New Year.",
     },
     {
       title: "The Camera",
-      body: "FAA-approved drone pilot — DJI Mini 2 SE, DJI Avata 2 FPV, Osmo Pocket 3. The craft behind every clip.",
+      body: "Filming since a kid on his mom's iPhone 6. Now an FAA-approved pilot flying 'the areas I could only see when I dreamed to fly' — DJI Mini 2 SE → DJI Avata 2 (FPV) → Osmo Pocket 3.",
     },
     {
-      title: "The Map",
-      body: "A Vancouver travel vlog, and trips through Japan, China, and Taiwan.",
+      title: "The Journal",
+      body: "Kept since the start of 8th grade — at first just summarizing events, then releasing the truth and going deeper. At least once a month: trivial events, motivations, purpose, feelings.",
     },
     {
       title: "The Shelf",
       body: "The Three-Body Problem (Liu Cixin), Sunrise on the Reaping (Collins), The Circle & The Every (Eggers).",
     },
+  ],
+  /** Drone / camera gear progression, for a graphical timeline. */
+  gear: [
+    { name: "iPhone 6", note: "where it started — his mom's phone" },
+    { name: "DJI Mini 2 SE", note: "first drone — exploring the skies" },
+    { name: "DJI Avata 2", note: "FPV — bought with saved + earned money" },
+    { name: "Osmo Pocket 3", note: "the everyday cinema rig" },
+  ],
+  /** Travel map, for graphical rendering. */
+  travel: [
+    { place: "Xi'an, China", note: "6 weeks with grandparents — Tianjin, Chengdu, Chongqing too" },
+    { place: "Japan", note: "Kyoto · Tokyo · Osaka" },
+    { place: "Taiwan", note: "Taipei" },
+    { place: "Vancouver", note: "Spring-break travel vlog — chose the trip over grinding APs, and came back energized" },
   ],
   close: "It all points one direction — the pursuit of happiness.",
 } as const;
@@ -465,21 +517,36 @@ export const AP_FIVES = [
 export type Trophy = { year: string; title: string; cat: WorldId | "academic"; detail: string };
 
 export const TROPHIES: Trophy[] = [
-  { year: "2019", title: "Continental Math League — 30/30", cat: "academic", detail: "Perfect score across 6 tests." },
-  { year: "2019", title: "6× Academic Excellence (Hopkins)", cat: "academic", detail: "≤2 students per class of 30." },
-  { year: "2025", title: "USABO — Honorable Mention", cat: "research", detail: "Score 26 · cutoff 28." },
-  { year: "2025", title: "UK Biology Olympiad — Silver", cat: "research", detail: "Top 10%." },
-  { year: "2025", title: "ACSEF — 3rd, Computational Biology", cat: "research", detail: "Gout RNA-seq, BCOM category." },
-  { year: "2025", title: "ACWD Water Clips — 1st & 3rd", cat: "civic", detail: "100+ contestants · $600." },
-  { year: "2025", title: "MSJ Car Meet", cat: "leadership", detail: "$35M+ in cars · first in MSJ history." },
-  { year: "2026", title: "Winter Ball", cat: "leadership", detail: "350 students · built from scratch." },
-  { year: "2026", title: "ACWD Water Clips — 3rd", cat: "civic", detail: "$100." },
-  { year: "2026", title: "NCS Basketball Champions", cat: "court", detail: "First in school & district history." },
+  { year: "8th", title: "Continental Math League — 30/30", cat: "academic", detail: "A perfect score across all 6 contest tests." },
+  { year: "7–8th", title: "6× Academic Excellence (Hopkins)", cat: "academic", detail: "Character-based award given to ≤2 students per class of 30." },
+  { year: "8th", title: "DECA Headstart — 2nd of 12", cat: "academic", detail: "Placed 2nd at the pre-DECA mini-conference." },
+  { year: "8th", title: "AP Chinese · 5 + ACT 29", cat: "academic", detail: "A 5 on AP Chinese and a 29 on the ACT — in eighth grade." },
+  { year: "9th", title: "FCO Election — won", cat: "leadership", detail: "Freshman Class Officer, vs. Oscar Zhang." },
+  { year: "9th", title: "AP Biology · 5 (UC Scout)", cat: "academic", detail: "Self-paced and rigorous — where the love of biology started." },
+  { year: "9–10th", title: "DECA Spark — top points", cat: "academic", detail: "Most points both semesters; built an 'ICDC-level' report." },
+  { year: "10th", title: "SOCO Election — won", cat: "leadership", detail: "Sophomore Class Officer, vs. Kaylin Teo." },
+  { year: "10th", title: "AP World · 5  ·  AP Stats · 5  ·  AP CSA · 5", cat: "academic", detail: "Three more 5s — CSA self-taught over spring break." },
+  { year: "2025", title: "ACWD Water Clips — 1st", cat: "civic", detail: "1st of 100+ entries · $500 + movie tickets (with Pradyun)." },
+  { year: "2025", title: "ACWD Water Clips — 3rd", cat: "civic", detail: "A second entry placed 3rd · $100." },
+  { year: "2025", title: "UK Biology Olympiad — Silver", cat: "research", detail: "Top 10% — taken with no explicit prep." },
+  { year: "2025", title: "USABO — Honorable Mention", cat: "research", detail: "26/50, top ~15% (semifinalist cutoff 28)." },
+  { year: "2025", title: "ACSEF — 3rd, Computational Biology", cat: "research", detail: "Gout RNA-seq; mediators also found in the spinal cord → new therapeutic targets." },
+  { year: "2025", title: "MSJ Car Meet", cat: "leadership", detail: "First in MSJ history · $35M+ in cars · a $3.5M Pagani." },
+  { year: "2025", title: "li_locked.in — 500k+ views", cat: "civic", detail: "0 → 1,000 followers in a summer; 500k+ views." },
+  { year: "2026", title: "Homecoming — 2nd place", cat: "leadership", detail: "Spirited Away, a 45-minute class performance." },
+  { year: "2026", title: "Winter Ball", cat: "leadership", detail: "350 students · built from scratch post-COVID." },
+  { year: "2026", title: "Valentine's Scavenger Hunt", cat: "leadership", detail: "262 participants · $300 in prizes." },
+  { year: "2026", title: "ICE Protest video — 20k+ views", cat: "civic", detail: "Organized a 500+-person protest; the recap hit 20k+ views." },
+  { year: "2026", title: "ASB President — elected", cat: "leadership", detail: "Won the student-body presidency after a sophomore loss by ~10 votes." },
+  { year: "2026", title: "NCS Basketball Champions", cat: "court", detail: "First title in school and district history." },
+  { year: "2026", title: "Six AP 5s + SAT 1530", cat: "academic", detail: "AP Chinese, Bio, Macro, World, Stats, CSA — all 5s. SAT 1530." },
 ];
 
 /** Early-life texture for the timeline (from the achievements ledger). */
 export const ORIGINS = [
-  { year: "8th grade", note: "Began journaling — and never stopped." },
-  { year: "8th grade", note: "AP Chinese · 5  |  ACT · 29." },
-  { year: "8th grade", note: "Hopkins Basketball A-team (after a broken arm the year before)." },
+  { year: "Age 12", note: "First solo Mission Peak birthday climb — sub-hour by 2 seconds." },
+  { year: "8th grade", note: "Began journaling — at first events, then 'the truth.' Never stopped." },
+  { year: "8th grade", note: "AP Chinese · 5  |  ACT · 29  |  Continental Math 30/30." },
+  { year: "8th grade", note: "Hopkins Basketball A-team — after a broken arm cost him 7th grade." },
+  { year: "Pre-HS", note: "ATDP entrepreneurship at UC Berkeley; a to-scale lit-up Colosseum model." },
 ];

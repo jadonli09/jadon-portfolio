@@ -5,7 +5,9 @@ import { CivicMasthead } from "@/components/civic/CivicMasthead";
 import { CivicMetricsBand } from "@/components/civic/CivicMetricsBand";
 import { CivicAwardsTicker } from "@/components/civic/CivicAwardsTicker";
 import { CivicFeaturedPress } from "@/components/civic/CivicFeaturedPress";
+import { CivicFreemontStories } from "@/components/civic/CivicFreemontStories";
 import { CivicStories } from "@/components/civic/CivicStories";
+import { CivicSBAIFlow } from "@/components/civic/CivicSBAIFlow";
 import { CivicCommission } from "@/components/civic/CivicCommission";
 import { CivicInstagramCTA } from "@/components/civic/CivicInstagramCTA";
 
@@ -23,28 +25,34 @@ export const metadata: Metadata = {
 export default function CivicPage() {
   return (
     <World id="civic">
-      {/* 1. Broadsheet hero masthead */}
+      {/* 1. Broadsheet hero masthead — with section-index beats strip */}
       <CivicMasthead />
 
       {/* 2. Animated metrics band */}
       <CivicMetricsBand />
 
-      {/* 3. Awards ticker (first instance — above stories, pace-sets the red accent) */}
+      {/* 3. Awards ticker — red band, pace-setting accent */}
       <CivicAwardsTicker />
 
-      {/* 3b. Jennifer Siebel Newsom press feature — standout civic reach moment */}
+      {/* 3b. Jennifer Siebel Newsom press feature + podcast origin deep-dive */}
       <CivicFeaturedPress />
 
-      {/* 4. Editorial stories section */}
+      {/* 4. Voices of Fremont + Fremont Stories dual-series section */}
+      <CivicFreemontStories />
+
+      {/* 5. Editorial stories section — all six stories with deep bylines/detail */}
       <CivicStories />
 
-      {/* 5. Commission pull-quote callout */}
+      {/* 6. Small Business Accessibility Initiative — process flow deep dive */}
+      <CivicSBAIFlow />
+
+      {/* 7. Commission pull-quote callout */}
       <CivicCommission />
 
-      {/* 6. Instagram CTA — magnetic interaction */}
+      {/* 8. Instagram CTA — magnetic interaction */}
       <CivicInstagramCTA />
 
-      {/* 7. Footer with next-world handoff */}
+      {/* 9. Footer with next-world handoff */}
       <Footer current="civic" />
     </World>
   );

@@ -5,6 +5,16 @@ import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { Reveal } from "@/components/primitives/Reveal";
 import { CIVIC, PROFILE } from "@/lib/data";
 
+/** Local masthead detail constants — all real. */
+const MASTHEAD_BEATS = [
+  { label: "Podcast", note: "Voices of Fremont · Director" },
+  { label: "Video", note: "Mayor's official videographer · paid" },
+  { label: "Op-Ed", note: "San Mateo Daily Journal · SBAI" },
+  { label: "Campaign", note: "HG Nguyen D7 · Social Media" },
+  { label: "Commission", note: "Fremont Youth Advisory Commission" },
+  { label: "Video Series", note: "Fremont Stories · co-creator" },
+] as const;
+
 /** Broadsheet-style hero masthead for the Civic & Storytelling world. */
 export function CivicMasthead() {
   return (
@@ -13,7 +23,7 @@ export function CivicMasthead() {
       <Reveal>
         <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <span className="eyebrow">
-            Ampersand Media&nbsp;·&nbsp;Fremont,&nbsp;CA&nbsp;·&nbsp;Est.&nbsp;2025
+            Ampersand&nbsp;Media&nbsp;·&nbsp;Fremont,&nbsp;CA&nbsp;·&nbsp;Est.&nbsp;2025
           </span>
           <span className="eyebrow hidden sm:block">Vol.&nbsp;I &nbsp;&nbsp;No.&nbsp;01</span>
         </div>
@@ -71,6 +81,25 @@ export function CivicMasthead() {
             By&nbsp;{PROFILE.name}&nbsp;·&nbsp;{PROFILE.links.instagramHandle}&nbsp;·&nbsp;Mission&nbsp;San&nbsp;Jose&nbsp;H.S.
           </span>
           <span className="eyebrow">Civic&nbsp;Video&nbsp;·&nbsp;Podcast&nbsp;·&nbsp;Op-Ed&nbsp;·&nbsp;Campaign</span>
+        </div>
+      </Reveal>
+
+      {/* Section index — broadsheet-style beats strip */}
+      <Reveal delay={0.6}>
+        <div className="mt-6 grid grid-cols-2 gap-0 border border-[var(--line)] sm:grid-cols-3 md:grid-cols-6 md:mt-8">
+          {MASTHEAD_BEATS.map((beat, i) => (
+            <div
+              key={beat.label}
+              className={`px-4 py-4 ${i < MASTHEAD_BEATS.length - 1 ? "border-b border-[var(--line)] sm:border-b-0 sm:border-r" : ""} ${i === 1 || i === 3 ? "sm:border-r-0 md:border-r" : ""}`}
+            >
+              <p className="font-mono text-[0.56rem] uppercase tracking-widest text-[var(--accent)]">
+                {beat.label}
+              </p>
+              <p className="mt-1 font-mono text-[0.6rem] leading-snug text-[var(--muted)]">
+                {beat.note}
+              </p>
+            </div>
+          ))}
         </div>
       </Reveal>
     </section>

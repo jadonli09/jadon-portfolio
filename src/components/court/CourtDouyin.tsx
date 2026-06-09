@@ -8,7 +8,7 @@ import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { COURT } from "@/lib/data";
 import { Play, Globe } from "lucide-react";
 
-/** Designed video-placeholder frame — never a real photo. */
+/** Designed video-placeholder frame with Chinese-gym broadcast aesthetic. */
 function VideoPlaceholderFrame() {
   return (
     <div className="relative aspect-[9/16] w-full max-w-[280px] overflow-hidden border border-[var(--accent)] bg-[var(--bg-2)] md:max-w-[320px]">
@@ -35,6 +35,15 @@ function VideoPlaceholderFrame() {
         />
       ))}
 
+      {/* Background diagonal energy line */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.06]"
+        style={{
+          backgroundImage: "repeating-linear-gradient(118deg, var(--accent) 0px, var(--accent) 1px, transparent 1px, transparent 32px)",
+        }}
+        aria-hidden
+      />
+
       {/* Central play button */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
         <motion.div
@@ -45,17 +54,26 @@ function VideoPlaceholderFrame() {
           <Play className="size-7 fill-[var(--accent)] text-[var(--accent)]" />
         </motion.div>
 
-        <span className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--muted)]">
-          DouYin Clip
-        </span>
+        {/* Chinese text label */}
+        <div className="flex flex-col items-center gap-1">
+          <span className="font-grotesk text-lg font-bold leading-none text-[var(--accent)]">
+            网红
+          </span>
+          <span className="font-mono text-[0.55rem] uppercase tracking-[0.3em] text-[var(--muted)]">
+            Influencer · DouYin
+          </span>
+        </div>
       </div>
 
-      {/* Bottom label */}
+      {/* Bottom stats bar */}
       <div className="absolute bottom-0 left-0 right-0 border-t border-[var(--accent)] bg-[var(--bg)] px-3 py-2">
         <div className="flex items-center justify-between">
-          <span className="font-mono text-[0.55rem] uppercase tracking-widest text-[var(--muted)]">
-            Viral · China
-          </span>
+          <div>
+            <span className="font-mono text-[0.5rem] uppercase tracking-widest text-[var(--muted)]">
+              Likes
+            </span>
+            <p className="font-anton text-sm leading-none text-[var(--accent)]">569K</p>
+          </div>
           <Globe className="size-3 text-[var(--accent)]" />
         </div>
       </div>
@@ -76,7 +94,7 @@ function VideoPlaceholderFrame() {
   );
 }
 
-/** Animated stat number block. */
+/** Animated 569k stat block. */
 function StatBlock() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10% 0px" });
@@ -91,7 +109,7 @@ function StatBlock() {
       >
         <p className="font-anton leading-none text-[var(--accent)]"
           style={{ fontSize: "clamp(4rem, 14vw, 9rem)", lineHeight: 0.9 }}>
-          <Counter to={500} suffix="k+" duration={2.2} />
+          <Counter to={569} suffix="k" duration={2.2} />
         </p>
       </motion.div>
 
@@ -121,12 +139,22 @@ export function CourtDouyin() {
         aria-hidden
       />
 
+      {/* Diagonal energy stripe — background kinetic texture */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.025]"
+        style={{
+          backgroundImage: "repeating-linear-gradient(118deg, var(--accent) 0px, var(--accent) 2px, transparent 2px, transparent 60px)",
+        }}
+        aria-hidden
+      />
+
       <div className="relative mx-auto max-w-7xl px-5 md:px-9">
         {/* Section eyebrow */}
         <Reveal>
           <div className="mb-10 flex items-center gap-4 md:mb-14">
             <span className="eyebrow text-[var(--accent)]">Going Global</span>
             <span className="h-px flex-1 bg-[var(--line)]" aria-hidden />
+            <span className="eyebrow text-[var(--muted)] hidden sm:block">China · DouYin · 网红</span>
           </div>
         </Reveal>
 
@@ -145,20 +173,25 @@ export function CourtDouyin() {
           <div className="flex flex-col gap-8">
             <StatBlock />
 
+            {/* The story — richer version */}
             <Reveal delay={0.35}>
               <div className="border-l-4 border-[var(--accent)] pl-6">
                 <p className="font-display text-xl italic leading-snug text-[var(--fg)] opacity-90 md:text-2xl lg:text-3xl">
-                  "{COURT.douyin.note}"
+                  "At a gym in China, he played with — and against — a{" "}
+                  <span className="not-italic text-[var(--accent)]">网红 (influencer)</span>.
+                  His game drew the camera."
                 </p>
               </div>
             </Reveal>
 
-            {/* Supporting detail */}
+            {/* Narrative copy */}
             <Reveal delay={0.5}>
               <p className="font-grotesk text-sm leading-relaxed text-[var(--muted)] md:text-base">
-                A spontaneous gym moment captured and uploaded to DouYin — China's leading
-                short-video platform — garnered half a million likes, putting Jadon on a
-                global stage far beyond the hardwood.
+                No setup. No broadcast deal. Just Jadon in a Chinese gym, going against a local
+                sports influencer. The clip got picked up, reposted by a 3.7M-follower hoops
+                account on DouYin — China's leading short-video platform — and hit{" "}
+                <span className="text-[var(--fg)] font-semibold">569,000+ likes</span>. A gym
+                moment that crossed a continent.
               </p>
             </Reveal>
 
@@ -166,8 +199,9 @@ export function CourtDouyin() {
             <RevealGroup className="flex flex-wrap gap-3" stagger={0.08} delayChildren={0.6}>
               {[
                 { label: "Platform", value: "DouYin" },
+                { label: "Likes", value: "569k+" },
+                { label: "Reposted By", value: "3.7M acct" },
                 { label: "Reach", value: "Global" },
-                { label: "Likes", value: "500k+" },
               ].map((pill) => (
                 <motion.div
                   key={pill.label}
@@ -184,6 +218,21 @@ export function CourtDouyin() {
                 </motion.div>
               ))}
             </RevealGroup>
+
+            {/* Chinese character decorative block */}
+            <Reveal delay={0.75}>
+              <div className="flex items-center gap-4">
+                <span
+                  className="font-grotesk text-5xl font-black leading-none text-[var(--accent)] opacity-20 select-none"
+                  aria-hidden
+                >
+                  网红
+                </span>
+                <p className="font-mono text-[0.62rem] uppercase tracking-widest text-[var(--muted)]">
+                  Internet celebrity / influencer — the person he balled against
+                </p>
+              </div>
+            </Reveal>
           </div>
         </div>
       </div>

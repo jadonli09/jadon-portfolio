@@ -3,6 +3,7 @@ import { World } from "@/components/chrome/World";
 import { Footer } from "@/components/chrome/Footer";
 import { CourtHero } from "@/components/court/CourtHero";
 import { CourtTicker } from "@/components/court/CourtTicker";
+import { CourtStatLine } from "@/components/court/CourtStatLine";
 import { CourtTimeline } from "@/components/court/CourtTimeline";
 import { ChampionshipMoments } from "@/components/court/ChampionshipMoments";
 import { CourtDouyin } from "@/components/court/CourtDouyin";
@@ -28,6 +29,9 @@ export default function CourtPage() {
 
       {/* 2. Relentless stat ticker (orange band) */}
       <CourtTicker />
+
+      {/* 2b. Broadcast lower-third stat line — FIRST 5 · NCS · 569k · .500 JV */}
+      <CourtStatLine />
 
       {/* 3. Career timeline — AAU → NCS Champion */}
       <CourtTimeline />

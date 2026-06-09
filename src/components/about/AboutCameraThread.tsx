@@ -6,6 +6,7 @@ import { Photo } from "@/components/primitives/Photo";
 import { Reveal } from "@/components/primitives/Reveal";
 import { cn } from "@/lib/cn";
 import { EASE } from "@/lib/motion";
+import { ABOUT } from "@/lib/data";
 
 type Thread = { title: string; body: string };
 
@@ -125,24 +126,81 @@ export function AboutCameraThread({
         </div>
       </div>
 
-      {/* Scroll nudge buttons + FAA label */}
-      <div className="flex items-center justify-between px-8 pb-8 pt-3 md:px-12 md:pb-12">
-        <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-          FAA Part 107 · DJI Mini 2 SE · Avata 2 FPV · Osmo Pocket 3
+      {/* Scroll nudge buttons */}
+      <div className="flex items-center justify-end gap-2 px-8 pt-3 md:px-12">
+        {([-1, 1] as const).map((dir) => (
+          <button
+            key={dir}
+            onClick={() => scroll(dir)}
+            aria-label={dir === -1 ? "Scroll left" : "Scroll right"}
+            className="flex h-6 w-6 items-center justify-center border border-[var(--line)] font-mono text-[0.7rem] text-[var(--muted)] transition-colors hover:border-[var(--fg)] hover:text-[var(--fg)]"
+          >
+            {dir === -1 ? "‹" : "›"}
+          </button>
+        ))}
+      </div>
+
+      {/* Gear progression timeline */}
+      <div className="px-8 pb-8 pt-6 md:px-12 md:pb-12">
+        <p className="mb-4 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
+          Gear progression · FAA Part 107
         </p>
-        <div className="flex gap-2">
-          {([-1, 1] as const).map((dir) => (
-            <button
-              key={dir}
-              onClick={() => scroll(dir)}
-              aria-label={dir === -1 ? "Scroll left" : "Scroll right"}
-              className="flex h-6 w-6 items-center justify-center border border-[var(--line)] font-mono text-[0.7rem] text-[var(--muted)] transition-colors hover:border-[var(--fg)] hover:text-[var(--fg)]"
-            >
-              {dir === -1 ? "‹" : "›"}
-            </button>
+        <div className="relative flex items-start gap-0">
+          {/* connecting rule */}
+          <div
+            aria-hidden
+            className="absolute left-[9px] top-[9px] h-px w-[calc(100%-18px)] bg-[var(--line)]"
+          />
+          {ABOUT.gear.map((item, i) => (
+            <GearStop key={item.name} item={item} index={i} total={ABOUT.gear.length} />
           ))}
         </div>
       </div>
     </Reveal>
+  );
+}
+
+function GearStop({
+  item,
+  index,
+  total,
+}: {
+  item: { name: string; note: string };
+  index: number;
+  total: number;
+}) {
+  const [hovered, setHovered] = useState(false);
+  const isLast = index === total - 1;
+
+  return (
+    <div
+      className="relative flex flex-1 flex-col items-center"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      data-cursor-hover
+    >
+      {/* dot */}
+      <motion.div
+        animate={{ scale: hovered ? 1.5 : 1, background: hovered ? "var(--accent-2)" : isLast ? "var(--fg)" : "color-mix(in srgb, var(--fg) 40%, transparent)" }}
+        transition={{ duration: 0.25, ease: EASE }}
+        className="relative z-10 h-[18px] w-[18px] rounded-full border border-[var(--line)] bg-[color-mix(in_srgb,var(--fg)_40%,transparent)]"
+      />
+      {/* name */}
+      <p
+        className="mt-2 text-center font-mono text-[0.58rem] uppercase tracking-widest leading-snug transition-colors duration-200"
+        style={{ color: hovered ? "var(--fg)" : "var(--muted)" }}
+      >
+        {item.name}
+      </p>
+      {/* note — shows on hover */}
+      <motion.p
+        initial={false}
+        animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 4 }}
+        transition={{ duration: 0.2 }}
+        className="mt-1 max-w-[5rem] text-center font-serif-i text-[0.62rem] italic leading-tight text-[var(--muted)]"
+      >
+        {item.note}
+      </motion.p>
+    </div>
   );
 }
