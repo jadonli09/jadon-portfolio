@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useLenis } from "lenis/react";
 import { ArrowDown } from "lucide-react";
-import { HeroStage } from "@/components/hero/HeroStage";
 import { Preloader } from "@/components/hero/Preloader";
+import { asset } from "@/lib/base";
 import { StorySpine } from "@/components/story/StorySpine";
 import { StoryClose } from "@/components/story/StoryClose";
 import { Footer } from "@/components/chrome/Footer";
@@ -65,60 +65,100 @@ export function Landing() {
     <main className="relative w-full overflow-clip bg-[#07070a] text-[#f4f1ea]">
       <Preloader />
 
-      {/* COLD OPEN */}
-      <section className="relative flex h-[100svh] min-h-[640px] w-full flex-col justify-end overflow-hidden">
-        <HeroStage />
+      {/* COLD OPEN — the Golden Gate lookout. Name slides in BEHIND the subject:
+          photo (back) → ghost watermark → giant name → pixel-aligned cutout (front). */}
+      <section className="relative h-[100svh] min-h-[640px] w-full overflow-hidden">
+        {/* L0 — the scene */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={asset("/img/hero-bridge.jpg")}
+          alt="Jadon at the Golden Gate Bridge lookout"
+          className="absolute inset-0 z-0 h-full w-full object-cover"
+          style={{ objectPosition: "40% 32%" }}
+        />
 
-        <motion.div style={{ y: heroY, opacity: heroOpacity }} className="relative z-10 px-5 pb-[14vh] md:px-9">
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.9, ease: EASE }}
-            className="eyebrow mb-5"
-          >
-            {PROFILE.school} · {PROFILE.city} · {PROFILE.gradeNote}
-          </motion.p>
+        {/* L1 — ghost watermark in the sky, like a whisper of the name */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 1.4 }}
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-[6%] z-[1] hidden text-center font-anton leading-none tracking-tight text-white/25 md:block md:text-[17vw]"
+        >
+          JADON
+        </motion.div>
 
-          <h1 className="font-anton leading-[0.85] tracking-tight">
-            <span className="flex items-baseline overflow-hidden whitespace-nowrap pb-[0.04em]">
+        {/* L1.5 — soft scrim band so the name pops (sits under the name + subject) */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-[9%] z-[1] h-[24%] md:top-auto md:bottom-0 md:h-[38%]"
+          style={{ background: "linear-gradient(to bottom, transparent, rgba(13,36,49,0.34) 55%, rgba(13,36,49,0.42))" }}
+        />
+
+        {/* L2 — the giant name, lower third (behind the subject) */}
+        <motion.div
+          style={{ y: heroY, opacity: heroOpacity }}
+          className="pointer-events-none absolute inset-x-0 top-[13%] z-[2] text-center md:inset-x-auto md:left-[47%] md:right-[2%] md:top-auto md:bottom-[6%] md:text-left"
+        >
+          <h1 className="font-anton leading-[0.85] tracking-tight text-white [text-shadow:0_2px_6px_rgba(13,36,49,0.45),0_10px_44px_rgba(13,36,49,0.55)]">
+            <span className="block overflow-hidden whitespace-nowrap pb-[0.05em]">
               <motion.span
-                className="inline-block text-[19vw] md:text-[16.5vw]"
-                initial={{ y: "110%" }}
+                className="inline-block text-[18vw] md:text-[13.5vw]"
+                initial={{ y: "112%" }}
                 animate={{ y: 0 }}
-                transition={{ delay: 0.3, duration: 1, ease: EASE }}
+                transition={{ delay: 0.35, duration: 1.1, ease: EASE }}
               >
-                JADON
-              </motion.span>
-              <motion.span
-                className="ml-[0.16em] inline-block bg-gradient-to-r from-[#e8b15a] via-[#f4f1ea] to-[#d9603f] bg-clip-text text-[19vw] text-transparent md:text-[16.5vw]"
-                initial={{ y: "110%" }}
-                animate={{ y: 0 }}
-                transition={{ delay: 0.4, duration: 1, ease: EASE }}
-              >
-                LI
+                JADON&nbsp;LI
               </motion.span>
             </span>
           </h1>
+        </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9, duration: 1 }}
-            className="mt-6 max-w-xl font-display text-lg text-[#cfc9bd] md:text-2xl"
-          >
+        {/* L3 — the subject, pixel-aligned over the photo (same cover + position) */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={asset("/img/hero-cutout.png")}
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-[3] h-full w-full object-cover"
+          style={{ objectPosition: "40% 32%" }}
+        />
+
+        {/* L4 — UI: descriptors at left (inspo-style), scroll cue, soft melt into the story paper */}
+        <motion.div
+          initial={{ opacity: 0, x: -14 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.9, duration: 0.9, ease: EASE }}
+          className="absolute bottom-[9%] left-5 z-[4] max-w-[270px] md:bottom-auto md:left-9 md:top-[38%]"
+        >
+          <p className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-white/85 [text-shadow:0_2px_12px_rgba(13,36,49,0.5)]">
+            {PROFILE.school}
+            <br />
+            {PROFILE.city} · {PROFILE.gradeNote}
+          </p>
+          <p className="mt-4 font-display text-lg text-white [text-shadow:0_2px_14px_rgba(13,36,49,0.55)] md:text-xl">
             I am a <RoleRotator />
-            <span className="mt-1 block text-[#8a8a99]">One story, in seven chapters. Scroll to begin — dig into any of them.</span>
-          </motion.p>
+          </p>
+          <p className="mt-2 font-mono text-[0.6rem] uppercase tracking-[0.22em] text-white/75 [text-shadow:0_2px_12px_rgba(13,36,49,0.5)]">
+            One story · seven chapters
+          </p>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.3 }}
-          className="absolute bottom-6 right-5 z-10 flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-widest text-[#8a8a99] md:right-9"
+          className="absolute bottom-5 right-5 z-[4] flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-widest text-white/90 [text-shadow:0_2px_10px_rgba(13,36,49,0.5)] md:right-9"
         >
           Begin <ArrowDown className="size-3.5 animate-bounce" />
         </motion.div>
+
+        {/* melt into the cream story paper below */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[4] h-16"
+          style={{ background: "linear-gradient(to bottom, transparent, #faf5ec)" }}
+        />
       </section>
 
       {/* THE STORY */}
