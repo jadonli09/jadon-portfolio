@@ -108,6 +108,7 @@ export function Nav() {
             >
               <Link href="/built" className="hover:text-[#f4f1ea]" data-cursor-hover>Built</Link>
               <Link href="/achievements" className="hover:text-[#f4f1ea]" data-cursor-hover>Trophy Case</Link>
+              <Link href="/albums" className="hover:text-[#f4f1ea]" data-cursor-hover>Albums</Link>
               <Link href="/contact" className="hover:text-[#f4f1ea]" data-cursor-hover>Contact</Link>
               <a href={PROFILE.links.instagram} target="_blank" rel="noreferrer" className="ml-auto hover:text-[#f4f1ea]" data-cursor-hover>
                 {PROFILE.links.instagramHandle}

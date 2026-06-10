@@ -13,6 +13,7 @@ export type WorldId =
   | "about"
   | "lockedin"
   | "achievements"
+  | "albums"
   | "contact";
 
 export const PROFILE = {
@@ -242,6 +243,7 @@ export const WORLD_TO_CHAPTER: Record<WorldId, string> = {
   court: "competitor",
   lockedin: "pursuit",
   achievements: "pursuit",
+  albums: "person",
   contact: "pursuit",
 };
 
@@ -744,4 +746,135 @@ export const ORIGINS = [
   { year: "2023", note: "AP Chinese · 5  |  ACT · 29  |  Continental Math 30/30 — all in eighth grade." },
   { year: "2023", note: "Hopkins Basketball A-team — after a broken arm cost him 7th grade." },
   { year: "2022", note: "ATDP entrepreneurship at UC Berkeley; a to-scale lit-up Colosseum model." },
+];
+
+/* ───────────────────────────── ALBUMS ───────────────────────────── */
+/** A photo in /public/img, with a short factual caption. */
+export type AlbumPhoto = {
+  src: string;
+  caption: string;
+  /** "contain"-style group shots get framed; default crops to cover. */
+  fit?: "cover" | "contain";
+};
+
+export type Album = {
+  id: string;
+  index: string;
+  title: string;
+  kicker: string;
+  blurb: string;
+  photos: AlbumPhoto[];
+};
+
+/** Every original photo, grouped into albums. Captions describe the frame only. */
+export const ALBUMS: Album[] = [
+  {
+    id: "court",
+    index: "01",
+    title: "The Court",
+    kicker: "Hoops, frosh to champions",
+    blurb: "Four seasons of MSJ basketball — ending in the first NCS title in school and district history.",
+    photos: [
+      { src: "/img/ncs-champions.jpg", caption: "NCS Champions, 2026" },
+      { src: "/img/var-bbal1.jpg", caption: "Varsity, in the paint" },
+      { src: "/img/var-bbal2.jpg", caption: "Varsity, game night" },
+      { src: "/img/ncs-champs-with-mayor.jpg", caption: "Champions, with the Mayor" },
+      { src: "/img/ncs-champs-recognized-by-city.jpg", caption: "Recognized by the City of Fremont" },
+      { src: "/img/jv-bbal.jpg", caption: "JV season" },
+      { src: "/img/frosh-bbal.jpg", caption: "Where it started — frosh ball" },
+    ],
+  },
+  {
+    id: "podium",
+    index: "02",
+    title: "The Podium",
+    kicker: "ASB & class leadership",
+    blurb: "Rallies, fundraisers, and the officer teams behind events run at the scale of a school.",
+    photos: [
+      { src: "/img/speaking-at-rally.jpg", caption: "Speaking at the rally" },
+      { src: "/img/asb-officers.jpg", caption: "ASB officers", fit: "contain" },
+      { src: "/img/asb-with-other-schools.jpg", caption: "With ASB teams from other schools" },
+      { src: "/img/school-fundraising1.jpg", caption: "School fundraiser" },
+      { src: "/img/school-fundraising2.jpg", caption: "Fundraiser, mid-rush" },
+      { src: "/img/school-fundraising3.jpg", caption: "Fundraiser crew" },
+      { src: "/img/highschoolpanel-wide.jpg", caption: "High-school panel, wide" },
+      { src: "/img/highschoolpanel-close.jpg", caption: "On the panel" },
+    ],
+  },
+  {
+    id: "lens",
+    index: "03",
+    title: "Behind the Lens",
+    kicker: "Ampersand Media shoots",
+    blurb: "Podcast sets, mayoral edits, car meets, and the drone — the city as seen through the work.",
+    photos: [
+      { src: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg", caption: "Voices of Fremont — with Jennifer Siebel Newsom" },
+      { src: "/img/editing-for-mayor-timeline.jpg", caption: "On the timeline — editing for the Mayor" },
+      { src: "/img/droneshot1.jpg", caption: "Drone — over Fremont" },
+      { src: "/img/carmeet1.jpg", caption: "Car meet shoot" },
+      { src: "/img/droneshot2.jpg", caption: "Drone — golden hour" },
+      { src: "/img/carmeet2.jpg", caption: "Car meet, detail" },
+      { src: "/img/droneshot3.jpg", caption: "Drone — the grid" },
+      { src: "/img/carmeet3.jpg", caption: "Car meet, lineup" },
+      { src: "/img/droneshot4.jpg", caption: "Drone — hills" },
+      { src: "/img/carmeet4.jpg", caption: "Car meet, night" },
+      { src: "/img/droneshot5.jpg", caption: "Drone — horizon" },
+    ],
+  },
+  {
+    id: "lab",
+    index: "04",
+    title: "The Lab & The Launch",
+    kicker: "Research, fairs, AcornPrep",
+    blurb: "Science-fair boards, contest wins, and shipping AcornPrep with a co-founder.",
+    photos: [
+      { src: "/img/acsef-science-fair.jpg", caption: "ACSEF science fair", fit: "contain" },
+      { src: "/img/presenting-acornprep-at-gemini-meetup.jpg", caption: "Presenting AcornPrep at a Gemini meetup", fit: "contain" },
+      { src: "/img/acornprep-cofounders.jpg", caption: "AcornPrep co-founders" },
+      { src: "/img/acwd-water-contest-1stplace.jpg", caption: "ACWD water contest — 1st place" },
+      { src: "/img/ysjc-2025-summer-showcase.jpg", caption: "YSJC 2025 summer showcase" },
+    ],
+  },
+  {
+    id: "climb",
+    index: "05",
+    title: "The Climb",
+    kicker: "Mission Peak & the wall",
+    blurb: "Birthday sunrises on Mission Peak and the climbing club that built a campus wall.",
+    photos: [
+      { src: "/img/missionpeak2026-1.jpg", caption: "Mission Peak, 2026 — sunrise" },
+      { src: "/img/missionpeak2026-2.jpg", caption: "Mission Peak, 2026" },
+      { src: "/img/missionpeak2025.jpg", caption: "Mission Peak, 2025" },
+      { src: "/img/climbingclub-all2.jpg", caption: "Climbing club, all hands" },
+      { src: "/img/climbingclub-officers.jpg", caption: "Climbing club officers" },
+      { src: "/img/climbingclub-all1.jpg", caption: "Climbing club" },
+    ],
+  },
+  {
+    id: "portraits",
+    index: "06",
+    title: "Portraits",
+    kicker: "The person in question",
+    blurb: "Two headshots. The journal and the stopwatch are off-frame.",
+    photos: [
+      { src: "/img/headshot1.jpg", caption: "Headshot" },
+      { src: "/img/headshot2.jpg", caption: "Headshot, alternate" },
+    ],
+  },
+];
+
+/** The hero trail cycles one frame per album beat — variety over completeness. */
+export const ALBUM_TRAIL: string[] = [
+  "/img/ncs-champions.jpg",
+  "/img/speaking-at-rally.jpg",
+  "/img/droneshot1.jpg",
+  "/img/missionpeak2026-1.jpg",
+  "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg",
+  "/img/carmeet2.jpg",
+  "/img/acornprep-cofounders.jpg",
+  "/img/var-bbal1.jpg",
+  "/img/climbingclub-all2.jpg",
+  "/img/school-fundraising2.jpg",
+  "/img/headshot1.jpg",
+  "/img/droneshot4.jpg",
 ];

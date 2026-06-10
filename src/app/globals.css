@@ -129,6 +129,17 @@
   --selection: rgba(176, 124, 30, 0.25);
 }
 
+[data-world="albums"] {
+  --bg: #0a0908; /* darkroom */
+  --bg-2: #14110e;
+  --fg: #f3efe6;
+  --muted: #8f897c;
+  --accent: #f5c518; /* film-stock yellow */
+  --accent-2: #d22730; /* slide-frame red */
+  --line: rgba(243, 239, 230, 0.12);
+  --selection: rgba(245, 197, 24, 0.28);
+}
+
 [data-world="contact"] {
   --bg: #07070a;
   --bg-2: #101018;

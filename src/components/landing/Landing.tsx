@@ -71,7 +71,7 @@ export function Landing() {
         {/* L0 — the scene */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={asset("/img/hero-bridge.jpg")}
+          src={asset("/img/hero-bridge-v2.jpg")}
           alt="Jadon at the Golden Gate Bridge lookout"
           className="absolute inset-0 z-0 h-full w-full object-cover"
           style={{ objectPosition: "40% 32%" }}
@@ -83,9 +83,9 @@ export function Landing() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 1.4 }}
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-[6%] z-[1] hidden text-center font-anton leading-none tracking-tight text-white/25 md:block md:text-[17vw]"
+          className="pointer-events-none absolute inset-x-0 top-[15%] z-[1] hidden text-center font-anton leading-none tracking-tight text-white/40 [text-shadow:0_2px_18px_rgba(13,36,49,0.25)] md:block md:text-[11.5vw]"
         >
-          JADON
+          LI_LOCKED.IN
         </motion.div>
 
         {/* L1.5 — soft scrim band so the name pops (sits under the name + subject) */}
@@ -117,7 +117,7 @@ export function Landing() {
         {/* L3 — the subject, pixel-aligned over the photo (same cover + position) */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={asset("/img/hero-cutout.png")}
+          src={asset("/img/hero-cutout-v2.png")}
           alt=""
           aria-hidden
           className="pointer-events-none absolute inset-0 z-[3] h-full w-full object-cover"
@@ -129,17 +129,17 @@ export function Landing() {
           initial={{ opacity: 0, x: -14 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.9, duration: 0.9, ease: EASE }}
-          className="absolute bottom-[9%] left-5 z-[4] max-w-[270px] md:bottom-auto md:left-9 md:top-[38%]"
+          className="absolute bottom-[9%] left-5 z-[4] max-w-[280px] rounded-xl border border-white/15 bg-[rgba(13,36,49,0.48)] px-4 py-3.5 backdrop-blur-md md:bottom-auto md:left-9 md:top-[38%]"
         >
-          <p className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-white/85 [text-shadow:0_2px_12px_rgba(13,36,49,0.5)]">
+          <p className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-white/90">
             {PROFILE.school}
             <br />
             {PROFILE.city} · {PROFILE.gradeNote}
           </p>
-          <p className="mt-4 font-display text-lg text-white [text-shadow:0_2px_14px_rgba(13,36,49,0.55)] md:text-xl">
+          <p className="mt-3 font-display text-lg text-white md:text-xl">
             I am a <RoleRotator />
           </p>
-          <p className="mt-2 font-mono text-[0.6rem] uppercase tracking-[0.22em] text-white/75 [text-shadow:0_2px_12px_rgba(13,36,49,0.5)]">
+          <p className="mt-2 font-mono text-[0.6rem] uppercase tracking-[0.22em] text-white/80">
             One story · seven chapters
           </p>
         </motion.div>
