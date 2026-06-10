@@ -739,9 +739,9 @@ export const TROPHIES: Trophy[] = [
 
 /** Early-life texture for the timeline (from the achievements ledger). */
 export const ORIGINS = [
-  { year: "Age 12", note: "First solo Mission Peak birthday climb — sub-hour by 2 seconds." },
-  { year: "8th grade", note: "Began journaling — at first events, then 'the truth.' Never stopped." },
-  { year: "8th grade", note: "AP Chinese · 5  |  ACT · 29  |  Continental Math 30/30." },
-  { year: "8th grade", note: "Hopkins Basketball A-team — after a broken arm cost him 7th grade." },
-  { year: "Pre-HS", note: "ATDP entrepreneurship at UC Berkeley; a to-scale lit-up Colosseum model." },
+  { year: "2021", note: "First solo Mission Peak birthday climb, at twelve — sub-hour by 2 seconds." },
+  { year: "2022", note: "Began journaling — at first events, then 'the truth.' Never stopped." },
+  { year: "2023", note: "AP Chinese · 5  |  ACT · 29  |  Continental Math 30/30 — all in eighth grade." },
+  { year: "2023", note: "Hopkins Basketball A-team — after a broken arm cost him 7th grade." },
+  { year: "2022", note: "ATDP entrepreneurship at UC Berkeley; a to-scale lit-up Colosseum model." },
 ];
