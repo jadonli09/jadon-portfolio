@@ -130,33 +130,33 @@ export function VolcanoPlot({ className }: { className?: string }) {
         onMouseLeave={() => setTip(null)}
       >
         {/* Grid */}
-        <g opacity="0.25">
+        <g opacity="0.35">
           {X_TICKS.map((v) => (
             <line key={`xg${v}`} x1={sx(v)} y1={pTop} x2={sx(v)} y2={pBottom}
-              stroke="#34e0c4" strokeWidth="0.6" strokeDasharray="3,4" />
+              stroke="#b8cdd6" strokeWidth="0.6" strokeDasharray="3,4" />
           ))}
           {Y_TICKS.map((v) => (
             <line key={`yg${v}`} x1={PAD.left} y1={sy(v)} x2={PAD.left + PW} y2={sy(v)}
-              stroke="#34e0c4" strokeWidth="0.6" strokeDasharray="3,4" />
+              stroke="#b8cdd6" strokeWidth="0.6" strokeDasharray="3,4" />
           ))}
         </g>
 
         {/* Significance threshold lines */}
         <line x1={sx(-1.5)} y1={pTop} x2={sx(-1.5)} y2={pBottom}
-          stroke="#34e0c4" strokeWidth="0.8" strokeDasharray="5,3" opacity="0.6" />
+          stroke="#0c9c86" strokeWidth="0.8" strokeDasharray="5,3" opacity="0.55" />
         <line x1={sx(1.5)} y1={pTop} x2={sx(1.5)} y2={pBottom}
-          stroke="#ff5da2" strokeWidth="0.8" strokeDasharray="5,3" opacity="0.6" />
+          stroke="#d92e74" strokeWidth="0.8" strokeDasharray="5,3" opacity="0.55" />
         <line x1={PAD.left} y1={sy(2)} x2={PAD.left + PW} y2={sy(2)}
-          stroke="#6f88a0" strokeWidth="0.8" strokeDasharray="4,4" opacity="0.5" />
+          stroke="#51707f" strokeWidth="0.8" strokeDasharray="4,4" opacity="0.4" />
 
         {/* Zero vertical */}
         <line x1={sx(0)} y1={pTop} x2={sx(0)} y2={pBottom}
-          stroke="#e8f1f7" strokeWidth="0.5" opacity="0.2" />
+          stroke="#0d2431" strokeWidth="0.5" opacity="0.1" />
 
         {/* X tick labels */}
         {X_TICKS.map((v) => (
           <text key={`xl${v}`} x={sx(v)} y={VH - 10}
-            fill="#6f88a0" fontSize="8" textAnchor="middle" fontFamily="monospace">
+            fill="#51707f" fontSize="8" textAnchor="middle" fontFamily="monospace">
             {v > 0 ? `+${v}` : v}
           </text>
         ))}
@@ -164,17 +164,17 @@ export function VolcanoPlot({ className }: { className?: string }) {
         {/* Y tick labels */}
         {Y_TICKS.slice(1).map((v) => (
           <text key={`yl${v}`} x={PAD.left - 6} y={sy(v) + 3}
-            fill="#6f88a0" fontSize="8" textAnchor="end" fontFamily="monospace">
+            fill="#51707f" fontSize="8" textAnchor="end" fontFamily="monospace">
             {v}
           </text>
         ))}
 
         {/* Axis titles */}
-        <text x={VW / 2} y={VH - 1} fill="#6f88a0" fontSize="7.5"
+        <text x={VW / 2} y={VH - 1} fill="#51707f" fontSize="7.5"
           textAnchor="middle" fontFamily="monospace" letterSpacing="0.08em">
           {"log₂(fold change)"}
         </text>
-        <text x={9} y={PAD.top + PH / 2} fill="#6f88a0" fontSize="7.5"
+        <text x={9} y={PAD.top + PH / 2} fill="#51707f" fontSize="7.5"
           textAnchor="middle" fontFamily="monospace" letterSpacing="0.08em"
           transform={`rotate(-90, 9, ${PAD.top + PH / 2})`}>
           {"−log₁₀(p)"}
@@ -182,11 +182,11 @@ export function VolcanoPlot({ className }: { className?: string }) {
 
         {/* Region labels */}
         <text x={PAD.left + 8} y={pTop + 14}
-          fill="#34e0c4" fontSize="7" fontFamily="monospace" opacity="0.7" letterSpacing="0.12em">
+          fill="#0c9c86" fontSize="7" fontFamily="monospace" opacity="0.75" letterSpacing="0.12em">
           DOWN
         </text>
         <text x={PAD.left + PW - 36} y={pTop + 14}
-          fill="#ff5da2" fontSize="7" fontFamily="monospace" opacity="0.7" letterSpacing="0.12em">
+          fill="#d92e74" fontSize="7" fontFamily="monospace" opacity="0.75" letterSpacing="0.12em">
           UP
         </text>
 
@@ -194,7 +194,7 @@ export function VolcanoPlot({ className }: { className?: string }) {
         {POINTS.map((p, i) => {
           const cx = sx(p.x);
           const cy = sy(p.y);
-          const fill = p.dir === "up" ? "#ff5da2" : p.dir === "down" ? "#34e0c4" : "#3a5068";
+          const fill = p.dir === "up" ? "#d92e74" : p.dir === "down" ? "#0c9c86" : "#a8bfcb";
           const baseR = p.sig ? 3 : 2;
 
           return (
@@ -227,7 +227,7 @@ export function VolcanoPlot({ className }: { className?: string }) {
               cy={sy(match.y)}
               r={7}
               fill="none"
-              stroke={tip.dir === "up" ? "#ff5da2" : "#34e0c4"}
+              stroke={tip.dir === "up" ? "#d92e74" : "#0c9c86"}
               strokeWidth="1.2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.75 }}
@@ -243,10 +243,11 @@ export function VolcanoPlot({ className }: { className?: string }) {
         {tip && (
           <motion.div
             key="vt"
-            className="pointer-events-none absolute z-20 rounded border border-[var(--line)] bg-[var(--bg)] px-3 py-2 shadow-xl"
+            className="pointer-events-none absolute z-20 rounded border border-[var(--line)] bg-white px-3 py-2"
             style={{
               left: tip.left + 12,
               top: tip.top - 40,
+              boxShadow: "0 4px 16px rgba(13,36,49,0.12)",
             }}
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
@@ -258,7 +259,7 @@ export function VolcanoPlot({ className }: { className?: string }) {
             </p>
             <p
               className="font-mono text-sm font-bold leading-tight"
-              style={{ color: tip.dir === "up" ? "#ff5da2" : "#34e0c4" }}
+              style={{ color: tip.dir === "up" ? "#d92e74" : "#0c9c86" }}
             >
               {tip.label}
             </p>

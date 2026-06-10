@@ -8,6 +8,8 @@ import { MissionPeak } from "@/components/about/MissionPeak";
 import { AboutPortrait } from "@/components/about/AboutPortrait";
 import { AboutCameraThread } from "@/components/about/AboutCameraThread";
 import { AboutTravel } from "@/components/about/AboutTravel";
+import { KitchenFeasts } from "@/components/about/KitchenFeasts";
+import { HobbiesStrip } from "@/components/about/HobbiesStrip";
 import { ABOUT, PROFILE } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -21,19 +23,9 @@ export const metadata: Metadata = {
  */
 const THREAD_EXTRAS: Record<string, ReactNode> = {
   "The Kitchen": (
-    <ul className="mt-5 space-y-1 border-l border-[var(--line)] pl-4">
-      {[
-        "Macarons — mastered after many failed attempts",
-        "Beef Ragu — biweekly staple with Samay",
-        "Grilled chicken — the crowd favourite",
-        "Hojicha Basque cheesecake — still chasing it",
-        "Feasts: Thanksgiving · New Year's · Lunar New Year",
-      ].map((item) => (
-        <li key={item} className="font-mono text-[0.62rem] uppercase tracking-widest text-[var(--muted)]">
-          {item}
-        </li>
-      ))}
-    </ul>
+    <p className="mt-5 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
+      Videos below ↓ · JL Kitchens
+    </p>
   ),
   "The Journal": (
     <blockquote className="mt-5 border-l border-[var(--line)] pl-4">
@@ -130,6 +122,12 @@ export default function AboutPage() {
           )}
         </RevealGroup>
       </section>
+
+      {/* KITCHEN — real cooking videos */}
+      <KitchenFeasts />
+
+      {/* HOBBIES STRIP */}
+      <HobbiesStrip />
 
       {/* TRAVEL */}
       <AboutTravel />

@@ -60,7 +60,7 @@ export default function ResearchPage() {
     <World id="research">
 
       {/* ── HERO ──────────────────────────────────────────────── */}
-      <section className="relative min-h-[90vh] pt-36 md:pt-48">
+      <section className="relative pt-36 pb-24 md:pt-48 md:pb-32">
         {/* Full bleed decorative grid */}
         <div
           className="pointer-events-none absolute inset-0 z-0 opacity-30 md:opacity-40"
@@ -73,11 +73,11 @@ export default function ResearchPage() {
           >
             <defs>
               <pattern id="research-grid" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
-                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#34e0c4" strokeWidth="0.4" opacity="0.4" />
+                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#0c9c86" strokeWidth="0.4" opacity="0.3" />
               </pattern>
               <radialGradient id="rg" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#34e0c4" stopOpacity="0.08" />
-                <stop offset="100%" stopColor="#34e0c4" stopOpacity="0" />
+                <stop offset="0%" stopColor="#0c9c86" stopOpacity="0.05" />
+                <stop offset="100%" stopColor="#0c9c86" stopOpacity="0" />
               </radialGradient>
             </defs>
             <rect width="100%" height="100%" fill="url(#research-grid)" />
@@ -85,7 +85,7 @@ export default function ResearchPage() {
           </svg>
         </div>
 
-        <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 pb-24 md:grid-cols-2 md:gap-16 md:px-9">
+        <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 md:grid-cols-2 md:gap-16 md:px-9">
           {/* Left: copy */}
           <div className="flex flex-col justify-center">
             <Reveal>
@@ -142,7 +142,7 @@ export default function ResearchPage() {
 
           {/* Right: volcano plot */}
           <Reveal delay={0.15} className="flex flex-col justify-center">
-            <div className="relative rounded-xl border border-[var(--line)] bg-[var(--bg-2)] p-4 md:p-6">
+            <div className="relative rounded-xl border border-[var(--line)] bg-white p-4 shadow-[0_8px_24px_rgba(13,36,49,0.08)] md:p-6">
               <div className="absolute left-4 top-3 font-mono text-[0.55rem] uppercase tracking-widest text-[var(--muted)]">
                 differential expression
               </div>
@@ -155,15 +155,15 @@ export default function ResearchPage() {
               {/* Legend */}
               <div className="mt-4 flex items-center justify-center gap-6 border-t border-[var(--line)] pt-4">
                 <div className="flex items-center gap-2">
-                  <span className="size-2 rounded-full bg-[#ff5da2]" />
+                  <span className="size-2 rounded-full bg-[#d92e74]" />
                   <span className="font-mono text-[0.65rem] text-[var(--muted)]">upregulated</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="size-2 rounded-full bg-[#34e0c4]" />
+                  <span className="size-2 rounded-full bg-[#0c9c86]" />
                   <span className="font-mono text-[0.65rem] text-[var(--muted)]">downregulated</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="size-2 rounded-full bg-[#3a5068]" />
+                  <span className="size-2 rounded-full bg-[#a8bfcb]" />
                   <span className="font-mono text-[0.65rem] text-[var(--muted)]">ns</span>
                 </div>
               </div>
@@ -173,7 +173,7 @@ export default function ResearchPage() {
             <Reveal delay={0.3} className="mt-4">
               <div
                 className="rounded border px-4 py-3"
-                style={{ borderColor: "rgba(52,224,196,0.2)", background: "rgba(52,224,196,0.04)" }}
+                style={{ borderColor: "rgba(12,156,134,0.2)", background: "rgba(12,156,134,0.04)" }}
               >
                 <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)] mb-2">
                   Hover significant points to explore
@@ -213,9 +213,9 @@ export default function ResearchPage() {
                 {/* Professor card */}
                 <div
                   className="rounded-lg border p-6"
-                  style={{ borderColor: "rgba(255,93,162,0.3)", background: "rgba(255,93,162,0.04)" }}
+                  style={{ borderColor: "rgba(217,46,116,0.2)", background: "rgba(217,46,116,0.04)" }}
                 >
-                  <p className="font-mono text-[0.6rem] uppercase tracking-widest mb-3" style={{ color: "#ff5da2" }}>
+                  <p className="font-mono text-[0.6rem] uppercase tracking-widest mb-3" style={{ color: "var(--accent-2)" }}>
                     Instructor
                   </p>
                   <p className="font-display text-2xl md:text-3xl">{TRAINING_CALLOUT.professor}</p>

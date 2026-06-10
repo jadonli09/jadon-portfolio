@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useState, useMemo, useRef, useCallback } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import { TROPHIES, CAT_META, type TrophyCat, type Trophy } from "@/lib/data";
 import { cn } from "@/lib/cn";
 import { EASE } from "@/lib/motion";
@@ -15,29 +15,25 @@ type FilterCat = "all" | TrophyCat;
 type ViewMode = "timeline" | "domain";
 
 /* ─────────────────────────────────────────────────────────────
-   Year ordering — canonical chronological sort key
+   Year ordering — parse the first 4-digit year; ranges sort
+   by their start year so "2021–23" sorts with 2021.
 ───────────────────────────────────────────────────────────── */
 
-const YEAR_ORDER: Record<string, number> = {
-  "Pre-HS": 0,
-  "Age 12": 1,
-  "7–8th": 2,
-  "8th": 3,
-  "9th": 4,
-  "Summer '24": 5,
-  "10th": 6,
-  "Summer '25": 7,
-  "2025": 8,
-  "2025–26": 9,
-  "2026": 10,
-  "Ongoing": 11,
-};
-
 function yearKey(year: string): number {
-  if (year in YEAR_ORDER) return YEAR_ORDER[year];
-  // Numeric fallback
-  const n = parseInt(year, 10);
-  return isNaN(n) ? 999 : n;
+  // Match first 4-digit year string (handles "2021", "2021–23", "2023–26", etc.)
+  const match = year.match(/\d{4}/);
+  if (match) return parseInt(match[0], 10);
+  // Legacy grade/label fallbacks (should not appear with new data, but keep safe)
+  const LEGACY: Record<string, number> = {
+    "Pre-HS": 2016,
+    "Age 12": 2021,
+    "7–8th": 2021,
+    "8th": 2022,
+    "9th": 2023,
+    "10th": 2024,
+    "Ongoing": 2099,
+  };
+  return LEGACY[year] ?? 2050;
 }
 
 function sortTrophies(trophies: Trophy[]): Trophy[] {
@@ -83,12 +79,16 @@ function FilterPill({
         "font-mono text-[0.62rem] uppercase tracking-widest",
         "transition-all duration-200",
         active
-          ? "border-transparent text-[#0a0907]"
-          : "border-[var(--line)] bg-[var(--bg-2)] text-[var(--muted)] hover:text-[var(--fg)]",
+          ? "border-transparent text-white"
+          : "border-[var(--line)] bg-[#fffdf7] text-[var(--muted)] hover:text-[var(--fg)]",
       )}
       style={
         active
-          ? { background: color ?? "var(--accent)", borderColor: "transparent" }
+          ? {
+              background: color ?? "var(--accent)",
+              borderColor: "transparent",
+              boxShadow: `0 2px 8px ${color ? `${color}44` : "rgba(176,124,30,0.3)"}`,
+            }
           : { borderColor: color ? `${color}44` : "var(--line)" }
       }
     >
@@ -104,7 +104,7 @@ function FilterPill({
       <span
         className={cn(
           "inline-flex min-w-[1.2rem] items-center justify-center rounded-full px-1 text-[0.5rem] font-bold",
-          active ? "bg-black/20 text-[#0a0907]" : "bg-[var(--line)] text-[var(--muted)]",
+          active ? "bg-black/20 text-white" : "bg-[var(--line)] text-[var(--muted)]",
         )}
       >
         {count}
@@ -200,7 +200,7 @@ function CatIcon({ cat, color, size = 16 }: { cat: TrophyCat; color: string; siz
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Trophy card (colour-coded, left-border accent)
+   Trophy card — cream cards with coloured left border on ivory
 ───────────────────────────────────────────────────────────── */
 
 function TrophyCard({ trophy, index }: { trophy: Trophy; index: number }) {
@@ -215,22 +215,29 @@ function TrophyCard({ trophy, index }: { trophy: Trophy; index: number }) {
       exit={{ opacity: 0, scale: 0.95, y: 8 }}
       transition={{ duration: 0.35, ease: EASE, delay: Math.min(index * 0.03, 0.25) }}
       data-cursor-hover
-      className={cn(
-        "group relative overflow-hidden rounded-xl",
-        "border border-[var(--line)] bg-[var(--bg-2)]",
-        "p-4 md:p-5 transition-shadow duration-300",
-      )}
+      className="group relative overflow-hidden rounded-xl p-4 md:p-5 transition-shadow duration-300"
       style={{
-        borderLeftColor: `${color}66`,
-        borderLeftWidth: "3px",
+        background: "#fffdf7",
+        borderTop: "1px solid rgba(34,28,16,0.08)",
+        borderRight: "1px solid rgba(34,28,16,0.08)",
+        borderBottom: "1px solid rgba(34,28,16,0.08)",
+        borderLeft: `3px solid ${color}`,
+        boxShadow: "0 2px 10px rgba(34,28,16,0.05)",
       }}
     >
-      {/* Hover shine in category colour */}
+      {/* Hover shine in category colour — subtle on light bg */}
       <div
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{
-          background: `linear-gradient(115deg, transparent 30%, ${color}10 50%, transparent 70%)`,
+          background: `linear-gradient(115deg, transparent 30%, ${color}08 50%, transparent 70%)`,
         }}
+        aria-hidden
+      />
+
+      {/* Hover: warm shadow lift */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{ boxShadow: `0 8px 24px rgba(34,28,16,0.10), 0 2px 6px ${color}20` }}
         aria-hidden
       />
 
@@ -240,7 +247,7 @@ function TrophyCard({ trophy, index }: { trophy: Trophy; index: number }) {
           {/* Category icon */}
           <div
             className="flex size-7 shrink-0 items-center justify-center rounded-lg"
-            style={{ background: `${color}18`, border: `1px solid ${color}33` }}
+            style={{ background: `${color}14`, border: `1px solid ${color}28` }}
           >
             <CatIcon cat={trophy.cat} color={color} size={15} />
           </div>
@@ -248,7 +255,7 @@ function TrophyCard({ trophy, index }: { trophy: Trophy; index: number }) {
           {/* Year */}
           <span
             className="font-mono text-[0.58rem] uppercase tracking-[0.22em]"
-            style={{ color: color }}
+            style={{ color }}
           >
             {trophy.year}
           </span>
@@ -257,7 +264,7 @@ function TrophyCard({ trophy, index }: { trophy: Trophy; index: number }) {
         {/* Category chip */}
         <span
           className="shrink-0 rounded-full px-2 py-0.5 font-mono text-[0.52rem] uppercase tracking-widest"
-          style={{ background: `${color}18`, color: color }}
+          style={{ background: `${color}14`, color }}
         >
           {meta.label}
         </span>
@@ -279,10 +286,186 @@ function TrophyCard({ trophy, index }: { trophy: Trophy; index: number }) {
       {/* Bottom shimmer in cat colour */}
       <div
         className="absolute inset-x-0 bottom-0 h-px translate-y-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{ background: `linear-gradient(90deg, transparent, ${color}88, transparent)` }}
+        style={{ background: `linear-gradient(90deg, transparent, ${color}66, transparent)` }}
         aria-hidden
       />
     </motion.div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   "The shape of six years" — Year Skyline
+   Stacked bars per year colored by category, animate on scroll.
+───────────────────────────────────────────────────────────── */
+
+type YearBar = {
+  year: string;
+  total: number;
+  segments: { cat: TrophyCat; count: number; color: string }[];
+};
+
+function buildYearBars(): YearBar[] {
+  // Collect unique years in sorted order
+  const yearSet = new Set<string>();
+  for (const t of TROPHIES) yearSet.add(t.year);
+
+  const years = Array.from(yearSet).sort((a, b) => yearKey(a) - yearKey(b));
+
+  return years.map((year) => {
+    const items = TROPHIES.filter((t) => t.year === year);
+    const catCounts: Partial<Record<TrophyCat, number>> = {};
+    for (const t of items) {
+      catCounts[t.cat] = (catCounts[t.cat] ?? 0) + 1;
+    }
+    const segments = ALL_CATS.filter((c) => (catCounts[c] ?? 0) > 0).map((cat) => ({
+      cat,
+      count: catCounts[cat]!,
+      color: CAT_META[cat].color,
+    }));
+    return { year, total: items.length, segments };
+  });
+}
+
+const YEAR_BARS = buildYearBars();
+const MAX_TOTAL = Math.max(...YEAR_BARS.map((b) => b.total));
+const BAR_MAX_HEIGHT = 160; // px
+
+function YearSkyline({
+  onYearClick,
+}: {
+  onYearClick: (year: string) => void;
+}) {
+  const [hoveredYear, setHoveredYear] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 85%", "start 30%"],
+  });
+  const barOpacity = useTransform(scrollYProgress, [0, 0.4], [0, 1]);
+
+  return (
+    <div ref={containerRef} className="mt-16 mb-14">
+      <Reveal>
+        <p className="eyebrow mb-1">The shape of six years</p>
+        <p className="font-mono text-[0.65rem] text-[var(--muted)] mb-8">
+          Entries per year, stacked by domain — click a year to filter the archive below.
+        </p>
+      </Reveal>
+
+      <motion.div
+        style={{ opacity: barOpacity }}
+        className="flex items-end gap-2 sm:gap-3 md:gap-4 overflow-x-auto pb-2 scrollbar-hide"
+      >
+        {YEAR_BARS.map((bar, bi) => {
+          const totalHeight = (bar.total / MAX_TOTAL) * BAR_MAX_HEIGHT;
+          const isHovered = hoveredYear === bar.year;
+
+          return (
+            <div
+              key={bar.year}
+              className="flex flex-col items-center gap-2 min-w-[40px] sm:min-w-[52px] md:min-w-[64px]"
+            >
+              {/* Hover tooltip */}
+              <AnimatePresence>
+                {isHovered && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 4, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 4, scale: 0.9 }}
+                    transition={{ duration: 0.15 }}
+                    className="pointer-events-none whitespace-nowrap rounded-md px-2.5 py-1.5 text-white"
+                    style={{
+                      background: "var(--fg)",
+                      boxShadow: "0 4px 12px rgba(34,28,16,0.15)",
+                    }}
+                  >
+                    <span className="font-mono text-[0.58rem] font-bold">
+                      {bar.year}: {bar.total} {bar.total === 1 ? "entry" : "entries"}
+                    </span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Stacked bar */}
+              <button
+                data-cursor-hover
+                onClick={() => onYearClick(bar.year)}
+                onMouseEnter={() => setHoveredYear(bar.year)}
+                onMouseLeave={() => setHoveredYear(null)}
+                onFocus={() => setHoveredYear(bar.year)}
+                onBlur={() => setHoveredYear(null)}
+                className="relative flex w-full flex-col-reverse overflow-hidden rounded-t focus:outline-none"
+                style={{
+                  height: `${BAR_MAX_HEIGHT}px`,
+                  cursor: "pointer",
+                }}
+                aria-label={`${bar.year}: ${bar.total} entries — click to filter`}
+              >
+                {/* Segments animate scaleY from bottom */}
+                {bar.segments.map((seg, si) => {
+                  const segHeight = (seg.count / MAX_TOTAL) * BAR_MAX_HEIGHT;
+                  return (
+                    <motion.div
+                      key={seg.cat}
+                      title={`${CAT_META[seg.cat].label}: ${seg.count}`}
+                      style={{
+                        height: `${segHeight}px`,
+                        background: seg.color,
+                        transformOrigin: "bottom center",
+                        flexShrink: 0,
+                        opacity: isHovered ? 1 : 0.85,
+                        filter: isHovered ? "brightness(1.05)" : "none",
+                      }}
+                      initial={{ scaleY: 0 }}
+                      whileInView={{ scaleY: 1 }}
+                      viewport={{ once: true, margin: "-10% 0px" }}
+                      transition={{
+                        duration: 0.7,
+                        ease: [0.16, 1, 0.3, 1],
+                        delay: bi * 0.06 + si * 0.03,
+                      }}
+                    />
+                  );
+                })}
+
+                {/* Hover overlay */}
+                {isHovered && (
+                  <div
+                    className="absolute inset-0 rounded-t"
+                    style={{ background: "rgba(34,28,16,0.07)" }}
+                    aria-hidden
+                  />
+                )}
+              </button>
+
+              {/* Year label */}
+              <span
+                className="font-mono text-[0.52rem] uppercase tracking-wider"
+                style={{ color: isHovered ? "var(--accent)" : "var(--muted)" }}
+              >
+                {bar.year.replace("–", "–")}
+              </span>
+            </div>
+          );
+        })}
+      </motion.div>
+
+      {/* Color key */}
+      <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5">
+        {ALL_CATS.map((cat) => (
+          <div key={cat} className="flex items-center gap-1.5">
+            <span
+              className="inline-block size-2 shrink-0 rounded-sm"
+              style={{ background: CAT_META[cat].color }}
+              aria-hidden
+            />
+            <span className="font-mono text-[0.52rem] uppercase tracking-widest text-[var(--muted)]">
+              {CAT_META[cat].label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -294,14 +477,24 @@ function TimelineDot({ color }: { color: string }) {
   return (
     <div
       className="relative z-10 flex size-8 shrink-0 items-center justify-center rounded-full border-2"
-      style={{ borderColor: color, background: "var(--bg)", boxShadow: `0 0 12px ${color}44` }}
+      style={{
+        borderColor: color,
+        background: "#fffdf7",
+        boxShadow: `0 2px 8px ${color}30`,
+      }}
     >
       <div className="size-2.5 rounded-full" style={{ background: color }} />
     </div>
   );
 }
 
-function TimelineView({ trophies }: { trophies: Trophy[] }) {
+function TimelineView({
+  trophies,
+  focusYear,
+}: {
+  trophies: Trophy[];
+  focusYear: string | null;
+}) {
   // Group by year in canonical order
   const groups = useMemo(() => {
     const map = new Map<string, Trophy[]>();
@@ -313,10 +506,7 @@ function TimelineView({ trophies }: { trophies: Trophy[] }) {
         map.set(t.year, [t]);
       }
     }
-    // Sort years
-    const entries = Array.from(map.entries()).sort(
-      ([ya], [yb]) => yearKey(ya) - yearKey(yb),
-    );
+    const entries = Array.from(map.entries()).sort(([ya], [yb]) => yearKey(ya) - yearKey(yb));
     return entries;
   }, [trophies]);
 
@@ -328,7 +518,7 @@ function TimelineView({ trophies }: { trophies: Trophy[] }) {
     }
     const dominant = (Object.entries(counts) as [TrophyCat, number][]).sort(
       ([, a], [, b]) => b - a,
-    )[0][0];
+    )[0][0] as TrophyCat;
     return CAT_META[dominant].color;
   }
 
@@ -338,9 +528,7 @@ function TimelineView({ trophies }: { trophies: Trophy[] }) {
       <div
         className="pointer-events-none absolute left-[15px] top-0 bottom-0 w-px"
         style={{
-          background:
-            "linear-gradient(to bottom, transparent, var(--accent) 8%, var(--line) 90%, transparent)",
-          opacity: 0.4,
+          background: "linear-gradient(to bottom, transparent, rgba(176,124,30,0.35) 8%, rgba(34,28,16,0.12) 90%, transparent)",
         }}
         aria-hidden
       />
@@ -349,10 +537,12 @@ function TimelineView({ trophies }: { trophies: Trophy[] }) {
         <AnimatePresence mode="popLayout">
           {groups.map(([year, items], gi) => {
             const color = groupColor(items);
+            const isFocused = focusYear === year;
             return (
               <motion.div
                 key={year}
                 layout
+                id={`year-${year}`}
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -8 }}
@@ -367,7 +557,10 @@ function TimelineView({ trophies }: { trophies: Trophy[] }) {
                 {/* Year label */}
                 <div className="mb-5 flex items-baseline gap-4">
                   <h3
-                    className="font-display text-2xl md:text-3xl leading-none tracking-tight"
+                    className={cn(
+                      "font-display text-2xl md:text-3xl leading-none tracking-tight transition-colors duration-300",
+                      isFocused ? "underline underline-offset-4" : "",
+                    )}
                     style={{ color }}
                   >
                     {year}
@@ -424,11 +617,14 @@ function DomainView({ trophies }: { trophies: Trophy[] }) {
             {/* Domain header */}
             <div
               className="mb-5 flex items-center gap-3 rounded-xl px-4 py-3"
-              style={{ background: `${group.meta.color}10`, border: `1px solid ${group.meta.color}28` }}
+              style={{
+                background: `${group.meta.color}0c`,
+                border: `1px solid ${group.meta.color}22`,
+              }}
             >
               <div
                 className="flex size-8 items-center justify-center rounded-lg"
-                style={{ background: `${group.meta.color}22` }}
+                style={{ background: `${group.meta.color}18` }}
               >
                 <CatIcon cat={group.cat} color={group.meta.color} size={17} />
               </div>
@@ -440,7 +636,7 @@ function DomainView({ trophies }: { trophies: Trophy[] }) {
               </h3>
               <span
                 className="ml-auto font-mono text-[0.58rem] uppercase tracking-widest"
-                style={{ color: `${group.meta.color}aa` }}
+                style={{ color: `${group.meta.color}99` }}
               >
                 {group.items.length}
               </span>
@@ -460,7 +656,7 @@ function DomainView({ trophies }: { trophies: Trophy[] }) {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Colour legend strip (always visible)
+   Colour legend strip
 ───────────────────────────────────────────────────────────── */
 
 function ColourLegend() {
@@ -492,6 +688,8 @@ function ColourLegend() {
 export function TrophyCase() {
   const [activeFilter, setActiveFilter] = useState<FilterCat>("all");
   const [view, setView] = useState<ViewMode>("timeline");
+  const [focusYear, setFocusYear] = useState<string | null>(null);
+  const archiveRef = useRef<HTMLDivElement>(null);
 
   // Filtered + sorted trophies
   const filtered = useMemo(() => {
@@ -508,19 +706,45 @@ export function TrophyCase() {
   }
 
   const activeCatColor =
-    activeFilter !== "all" ? CAT_META[activeFilter].color : null;
+    activeFilter !== "all" ? CAT_META[activeFilter as TrophyCat].color : null;
+
+  // Handle year click from skyline
+  const handleYearClick = useCallback((year: string) => {
+    // Switch to timeline view & scroll to that year
+    setView("timeline");
+    setActiveFilter("all");
+    setFocusYear(year);
+
+    // Scroll to archive section
+    if (archiveRef.current) {
+      archiveRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // After scroll, scroll to the year group element
+    setTimeout(() => {
+      const el = document.getElementById(`year-${year}`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      // Clear focus highlight after a moment
+      setTimeout(() => setFocusYear(null), 1800);
+    }, 400);
+  }, []);
 
   return (
     <section className="border-b border-[var(--line)]">
-      <div className="mx-auto max-w-7xl px-5 py-20 md:px-9 md:py-32">
+      <div className="mx-auto max-w-7xl px-5 py-16 md:px-9 md:py-24">
+
+        {/* ── Year Skyline graphic ─────────────────────────────── */}
+        <YearSkyline onYearClick={handleYearClick} />
 
         {/* ── Section header ──────────────────────────────────── */}
-        <Reveal className="mb-10">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <Reveal className="mb-10" >
+          <div ref={archiveRef} className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="eyebrow">Trophy Vault</p>
+              <p className="eyebrow">the archive</p>
               <h2 className="mt-3 font-display text-[2rem] leading-[0.95] tracking-tight md:text-[3.2rem]">
-                The archive.
+                Every experience and achievement.
               </h2>
               <p className="mt-2 font-mono text-xs text-[var(--muted)]">
                 {filtered.length} of {TROPHIES.length} entries · across 7 domains
@@ -529,7 +753,8 @@ export function TrophyCase() {
 
             {/* View toggle */}
             <div
-              className="flex self-start items-center gap-1 rounded-full border border-[var(--line)] bg-[var(--bg-2)] p-1 md:self-auto"
+              className="flex self-start items-center gap-1 rounded-full border border-[var(--line)] p-1 md:self-auto"
+              style={{ background: "#fffdf7" }}
             >
               {(["timeline", "domain"] as const).map((mode) => (
                 <motion.button
@@ -539,9 +764,14 @@ export function TrophyCase() {
                   className={cn(
                     "rounded-full px-4 py-1.5 font-mono text-[0.6rem] uppercase tracking-widest transition-colors duration-200",
                     view === mode
-                      ? "bg-[var(--accent)] text-[#0a0907]"
+                      ? "text-white"
                       : "text-[var(--muted)] hover:text-[var(--fg)]",
                   )}
+                  style={
+                    view === mode
+                      ? { background: "var(--accent)", boxShadow: "0 2px 6px rgba(176,124,30,0.3)" }
+                      : {}
+                  }
                   whileTap={{ scale: 0.95 }}
                 >
                   {mode === "timeline" ? "By Year" : "By Domain"}
@@ -591,7 +821,7 @@ export function TrophyCase() {
               transition={{ duration: 0.25 }}
               className="mb-8 flex items-center gap-3"
             >
-              <div className="h-px flex-1" style={{ background: `${activeCatColor}44` }} />
+              <div className="h-px flex-1" style={{ background: `${activeCatColor}33` }} />
               <span
                 className="font-mono text-[0.6rem] uppercase tracking-widest"
                 style={{ color: activeCatColor }}
@@ -619,7 +849,7 @@ export function TrophyCase() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}
             >
-              <TimelineView trophies={filtered} />
+              <TimelineView trophies={filtered} focusYear={focusYear} />
             </motion.div>
           ) : (
             <motion.div

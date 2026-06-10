@@ -27,7 +27,7 @@ export function StoryChapter({ chapter, index }: { chapter: Chapter; index: numb
       ref={ref}
       id={chapter.id}
       data-chapter={chapter.id}
-      className="relative flex min-h-[88vh] scroll-mt-24 items-center py-20 md:py-28"
+      className="relative scroll-mt-24 py-14 md:py-20"
     >
       <div
         className={cn(
@@ -41,7 +41,7 @@ export function StoryChapter({ chapter, index }: { chapter: Chapter; index: numb
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-15% 0px" }}
           transition={{ duration: 1, ease: EASE }}
-          className="relative aspect-[3/2] overflow-hidden rounded-sm bg-[#0c0c12]"
+          className="relative aspect-[3/2] overflow-hidden rounded-sm border border-[var(--line)] bg-[var(--bg-2)] shadow-[0_18px_50px_rgba(32,26,18,0.12)]"
           data-cursor-hover
         >
           {chapter.fit === "contain" ? (
@@ -93,7 +93,7 @@ export function StoryChapter({ chapter, index }: { chapter: Chapter; index: numb
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-12% 0px" }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
-            className="mt-6 max-w-md text-base leading-relaxed text-[#cfc9bd] md:text-lg"
+            className="mt-6 max-w-md text-base leading-relaxed text-[var(--muted)] md:text-lg"
           >
             {chapter.lede}
           </motion.p>
@@ -103,7 +103,7 @@ export function StoryChapter({ chapter, index }: { chapter: Chapter; index: numb
               <span className="font-anton text-4xl leading-none md:text-5xl" style={{ color: chapter.accent }}>
                 {chapter.stat.value}
               </span>
-              <span className="font-mono text-[0.65rem] uppercase tracking-widest text-[#8a8a99]">
+              <span className="font-mono text-[0.65rem] uppercase tracking-widest text-[var(--muted)]">
                 {chapter.stat.label}
               </span>
             </div>

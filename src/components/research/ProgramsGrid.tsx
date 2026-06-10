@@ -63,7 +63,7 @@ const YSJC_TOPICS = [
     fig: "Fig. B",
     title: "Llama-derived Nanobodies",
     note: "The significance of VHH single-domain antibodies — smaller, more stable, and penetrating than conventional antibodies — and their applications in diagnostics and therapeutics.",
-    accent: "#ff5da2",
+    accent: "var(--accent-2)",
   },
 ];
 
@@ -106,7 +106,7 @@ const FIELD_NOTES = [
     body:
       "Attended TechEx North America to learn how AI is actively reshaping industry workflows — booth demos, guest speakers, and hands-on product showcases from enterprise AI vendors.",
     detail: "AI in industry · workflow automation · enterprise ML · guest speaker sessions",
-    accent: "#ff5da2",
+    accent: "var(--accent-2)",
   },
   {
     id: "umass",
@@ -116,7 +116,7 @@ const FIELD_NOTES = [
     body:
       "Selected for the UMass pre-college research intensive — a 6-week residential program. The pipeline from ACSEF and club-level STEM work feeds directly into this: the next level of formal bench research.",
     detail: "Residential · 6 weeks · UMass Amherst · scientific research methods",
-    accent: "#ff5da2",
+    accent: "var(--accent-2)",
   },
 ];
 
@@ -371,7 +371,7 @@ export function ProgramsGrid() {
                       <div>
                         <div
                           className="relative overflow-hidden rounded"
-                          style={{ border: "1px solid rgba(52,224,196,0.35)" }}
+                          style={{ border: "1px solid var(--line)" }}
                         >
                           <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
                             <div className="absolute inset-0">
@@ -385,10 +385,10 @@ export function ProgramsGrid() {
                           <span
                             className="absolute left-0 top-0 font-mono text-[0.55rem] uppercase tracking-[0.2em] px-2 py-1"
                             style={{
-                              background: "rgba(10,18,30,0.82)",
-                              color: "rgba(52,224,196,0.85)",
-                              borderRight: "1px solid rgba(52,224,196,0.25)",
-                              borderBottom: "1px solid rgba(52,224,196,0.25)",
+                              background: "rgba(244,249,250,0.92)",
+                              color: "var(--accent)",
+                              borderRight: "1px solid var(--line)",
+                              borderBottom: "1px solid var(--line)",
                             }}
                           >
                             Fig. 1
@@ -396,7 +396,7 @@ export function ProgramsGrid() {
                         </div>
                         <p className="mt-2 font-mono text-[0.6rem] leading-snug text-[var(--muted)]">
                           Summer showcase, 2025 — 8 students · Biology dept · capstone presentations to parents.
-                          <span style={{ color: "rgba(52,224,196,0.6)" }}> ↗ youthstemjournal.org</span>
+                          <span style={{ color: "var(--accent)" }}> ↗ youthstemjournal.org</span>
                         </p>
                       </div>
                     </div>
@@ -474,7 +474,7 @@ export function ProgramsGrid() {
           {FIELD_NOTES.map((note) => (
             <Reveal key={note.id} delay={0.05}>
               <div
-                className="group relative overflow-hidden rounded-lg border bg-[var(--bg-2)] p-7 transition-colors hover:bg-[#0d1a2a]"
+                className="group relative overflow-hidden rounded-lg border bg-[var(--bg-2)] p-7 transition-colors hover:bg-white hover:shadow-[0_8px_24px_rgba(13,36,49,0.08)]"
                 style={{ borderColor: "var(--line)" }}
               >
                 {/* Accent left border */}
@@ -505,7 +505,7 @@ export function ProgramsGrid() {
                 {/* Detail tag line */}
                 <div
                   className="rounded px-3 py-1.5"
-                  style={{ background: "rgba(52,224,196,0.05)", border: "1px solid rgba(52,224,196,0.15)" }}
+                  style={{ background: "rgba(12,156,134,0.05)", border: "1px solid rgba(12,156,134,0.18)" }}
                 >
                   <p className="font-mono text-[0.6rem] text-[var(--muted)]">{note.detail}</p>
                 </div>

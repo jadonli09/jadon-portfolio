@@ -52,14 +52,26 @@
 }
 
 [data-world="research"] {
-  --bg: #060a12; /* deep lab navy */
-  --bg-2: #0c1422;
-  --fg: #e8f1f7;
-  --muted: #6f88a0;
-  --accent: #34e0c4; /* signal teal */
-  --accent-2: #ff5da2; /* volcano-plot magenta */
-  --line: rgba(52, 224, 196, 0.16);
-  --selection: rgba(52, 224, 196, 0.25);
+  --bg: #f4f9fa; /* bright lab paper */
+  --bg-2: #e7f0f2;
+  --fg: #0d2431;
+  --muted: #51707f;
+  --accent: #0c9c86; /* deep signal teal */
+  --accent-2: #d92e74; /* volcano magenta, deepened */
+  --line: rgba(13, 36, 49, 0.14);
+  --selection: rgba(12, 156, 134, 0.22);
+}
+
+/* The story spine on the landing — warm, bright, welcoming paper. */
+[data-world="story"] {
+  --bg: #faf5ec;
+  --bg-2: #f1eadc;
+  --fg: #201a12;
+  --muted: #6e6553;
+  --accent: #c47b3a; /* warm amber */
+  --accent-2: #b04a32;
+  --line: rgba(32, 26, 18, 0.14);
+  --selection: rgba(196, 123, 58, 0.25);
 }
 
 [data-world="built"] {
@@ -107,14 +119,14 @@
 }
 
 [data-world="achievements"] {
-  --bg: #0a0907;
-  --bg-2: #14110b;
-  --fg: #f3ead6;
-  --muted: #948a72;
-  --accent: #e7c873; /* trophy gold */
-  --accent-2: #c8a24a;
-  --line: rgba(231, 200, 115, 0.18);
-  --selection: rgba(231, 200, 115, 0.25);
+  --bg: #f8f4ea; /* bright gallery ivory */
+  --bg-2: #efe8d8;
+  --fg: #221c10;
+  --muted: #7c7158;
+  --accent: #b07c1e; /* deep trophy gold */
+  --accent-2: #8a5f10;
+  --line: rgba(34, 28, 16, 0.14);
+  --selection: rgba(176, 124, 30, 0.25);
 }
 
 [data-world="contact"] {

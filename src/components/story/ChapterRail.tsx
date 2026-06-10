@@ -80,7 +80,7 @@ export function ChapterRail() {
       >
         <div className="relative flex flex-col gap-5">
           {/* the continuous thread */}
-          <span className="absolute left-[5px] top-1 bottom-1 w-px bg-white/12" aria-hidden />
+          <span className="absolute left-[5px] top-1 bottom-1 w-px bg-[var(--line)]" aria-hidden />
           {CHAPTERS.map((c) => {
             const isActive = active === c.id;
             return (
@@ -98,7 +98,7 @@ export function ChapterRail() {
                     animate={{
                       width: isActive ? 11 : 6,
                       height: isActive ? 11 : 6,
-                      backgroundColor: isActive ? c.accent : "rgba(244,241,234,0.35)",
+                      backgroundColor: isActive ? c.accent : "rgba(110,101,83,0.45)",
                     }}
                     transition={{ duration: 0.35 }}
                   />
@@ -108,7 +108,7 @@ export function ChapterRail() {
                   animate={{
                     opacity: isActive ? 1 : 0,
                     x: isActive ? 0 : -6,
-                    color: isActive ? c.accent : "#8a8a99",
+                    color: isActive ? c.accent : "#6e6553",
                   }}
                   transition={{ duration: 0.35 }}
                   style={{ pointerEvents: isActive ? "auto" : "none" }}

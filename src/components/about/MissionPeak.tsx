@@ -90,7 +90,7 @@ export function MissionPeak() {
     <div className="grid gap-10 md:grid-cols-[0.9fr_1.1fr] md:items-end">
       {/* readout */}
       <div>
-        <p className="eyebrow">Age {current.year}</p>
+        <p className="eyebrow">Birthday climb · {current.year}</p>
         <div className="mt-3 flex items-end gap-3">
           <motion.span
             key={current.time}
@@ -128,7 +128,7 @@ export function MissionPeak() {
 
       {/* interactive chart */}
       <div>
-        <div className="flex h-64 items-end gap-3 md:h-80 md:gap-5" role="group" aria-label="Mission Peak climb times by age">
+        <div className="flex h-64 items-end gap-3 md:h-80 md:gap-5" role="group" aria-label="Mission Peak climb times by year">
           {climbs.map((c, i) => (
             <button
               key={c.year}
@@ -136,7 +136,7 @@ export function MissionPeak() {
               onMouseEnter={() => setActive(i)}
               onFocus={() => setActive(i)}
               onClick={() => setActive(i)}
-              aria-label={`Age ${c.year}: ${c.time}`}
+              aria-label={`${c.year}: ${c.time}`}
               className="group relative flex h-full flex-1 flex-col justify-end"
             >
               <motion.div
@@ -177,7 +177,7 @@ export function MissionPeak() {
           ))}
         </div>
         <p className="mt-5 font-mono text-[0.62rem] uppercase tracking-widest text-[var(--muted)]">
-          Hover each age — taller bar is a faster ascent. Journaled since 8th grade.
+          Hover each year — taller bar is a faster ascent. Journaled since 8th grade.
         </p>
       </div>
 

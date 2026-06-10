@@ -11,7 +11,7 @@ import { cn } from "@/lib/cn";
 
 const AWARD_ACCENT: Record<string, string> = {
   "Honorable Mention": "var(--fg)",
-  "Silver": "#c0c8d8",
+  "Silver": "var(--muted)",
   "3rd Place": "var(--accent)",
 };
 
@@ -84,7 +84,7 @@ export function AwardsPanel() {
                 onClick={() => setActive(isOpen ? null : award.name)}
                 className={cn(
                   "group w-full py-6 text-left transition-colors",
-                  isOpen ? "bg-[var(--bg-2)]" : "hover:bg-[#0c1422]"
+                  isOpen ? "bg-[var(--bg-2)]" : "hover:bg-[var(--bg-2)]"
                 )}
                 aria-expanded={isOpen}
               >
@@ -169,7 +169,7 @@ export function AwardsPanel() {
                                   className="absolute inset-y-0 w-0.5 rounded-full"
                                   style={{
                                     left: `${(USABO_STAT.cutoff / USABO_STAT.max) * 100}%`,
-                                    background: "#ff5da2",
+                                    background: "var(--accent-2)",
                                   }}
                                 />
                               </div>
@@ -180,7 +180,7 @@ export function AwardsPanel() {
                                 <span className="font-mono text-[0.65rem] text-[var(--muted)]">
                                   50 max
                                 </span>
-                                <span className="font-mono text-[0.65rem]" style={{ color: "#ff5da2" }}>
+                                <span className="font-mono text-[0.65rem]" style={{ color: "var(--accent-2)" }}>
                                   {USABO_STAT.cutoff} cutoff
                                 </span>
                               </div>
@@ -229,7 +229,7 @@ export function AwardsPanel() {
                                 <span className="font-mono text-[0.55rem] uppercase tracking-widest text-[var(--muted)]">
                                   {p.label}
                                 </span>
-                                <span className="font-mono text-sm font-bold" style={{ color: "#c0c8d8" }}>
+                                <span className="font-mono text-sm font-bold text-[var(--fg)]">
                                   {p.value}
                                 </span>
                                 <span className="font-mono text-[0.6rem] text-[var(--muted)]">

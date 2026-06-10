@@ -7,7 +7,7 @@ import { Counter } from "@/components/primitives/Counter";
 import { SCORES, AP_FIVES } from "@/lib/data";
 import { cn } from "@/lib/cn";
 
-/* ── AP 5 medallion ───────────────────────────────────────── */
+/* ── AP 5 medallion — bright metallic-gold on ivory ──────────── */
 
 function ApMedallion({ exam }: { exam: string }) {
   const [hovered, setHovered] = useState(false);
@@ -28,32 +28,32 @@ function ApMedallion({ exam }: { exam: string }) {
         className="group relative flex flex-col items-center gap-2 focus:outline-none"
         aria-label={`${exam} — AP Score 5`}
       >
-        {/* Medallion disc */}
+        {/* Medallion disc — bright metallic gold on light background */}
         <div
-          className="relative flex size-14 items-center justify-center rounded-full border md:size-16"
+          className="relative flex size-14 items-center justify-center rounded-full border-2 md:size-16"
           style={{
             background:
-              "radial-gradient(circle at 35% 35%, #f0d98a, #c8a24a 60%, #8a6520)",
-            borderColor: "rgba(231,200,115,0.5)",
+              "radial-gradient(circle at 35% 30%, #f7e589 0%, #d4a820 45%, #a87d10 80%, #7a5c08 100%)",
+            borderColor: hovered ? "#b07c1e" : "#d4a820",
             boxShadow: hovered
-              ? "0 0 24px rgba(231,200,115,0.35), inset 0 1px 2px rgba(255,255,255,0.3)"
-              : "0 2px 12px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.15)",
+              ? "0 6px 20px rgba(176,124,30,0.45), 0 2px 6px rgba(176,124,30,0.25), inset 0 1px 3px rgba(255,255,255,0.6)"
+              : "0 4px 14px rgba(176,124,30,0.25), inset 0 1px 2px rgba(255,255,255,0.45)",
           }}
         >
-          {/* The "5" */}
+          {/* The "5" — dark text on bright gold */}
           <span
             className="font-display text-2xl font-bold leading-none md:text-3xl"
-            style={{ color: "#0a0907", textShadow: "0 1px 1px rgba(255,255,255,0.3)" }}
+            style={{ color: "#3a2800", textShadow: "0 1px 2px rgba(255,255,255,0.4)" }}
           >
             5
           </span>
 
-          {/* Edge ring */}
+          {/* Specular highlight ring */}
           <div
             className="pointer-events-none absolute inset-0 rounded-full"
             style={{
               background:
-                "linear-gradient(135deg, rgba(255,255,255,0.25) 0%, transparent 50%)",
+                "linear-gradient(140deg, rgba(255,255,255,0.45) 0%, transparent 45%)",
             }}
             aria-hidden
           />
@@ -73,7 +73,8 @@ function ApMedallion({ exam }: { exam: string }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 6, scale: 0.9 }}
             transition={{ duration: 0.18 }}
-            className="pointer-events-none absolute left-1/2 top-[-3rem] z-20 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--line)] bg-[var(--bg)] px-3 py-1.5"
+            className="pointer-events-none absolute left-1/2 top-[-3rem] z-20 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--line)] bg-[#fffdf7] px-3 py-1.5"
+            style={{ boxShadow: "0 4px 16px rgba(34,28,16,0.12)" }}
           >
             <span className="font-mono text-[0.65rem] uppercase tracking-wider text-[var(--fg)]">
               {exam}
@@ -91,7 +92,7 @@ function ApMedallion({ exam }: { exam: string }) {
   );
 }
 
-/* ── SAT sub-score bars ────────────────────────────────────── */
+/* ── SAT sub-score bars ────────────────────────────────────────── */
 
 function SubScoreBar({ label, value, max = 800 }: { label: string; value: number; max?: number }) {
   const pct = (value / max) * 100;
@@ -100,7 +101,10 @@ function SubScoreBar({ label, value, max = 800 }: { label: string; value: number
       <span className="w-24 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
         {label}
       </span>
-      <div className="relative h-px flex-1 bg-[var(--line)]">
+      <div
+        className="relative h-1.5 flex-1 rounded-full"
+        style={{ background: "rgba(34,28,16,0.08)" }}
+      >
         <motion.div
           className="absolute inset-y-0 left-0 rounded-full"
           style={{ background: "linear-gradient(90deg, var(--accent), var(--accent-2))" }}
@@ -117,7 +121,7 @@ function SubScoreBar({ label, value, max = 800 }: { label: string; value: number
   );
 }
 
-/* ── Score card ────────────────────────────────────────────── */
+/* ── Score card ────────────────────────────────────────────────── */
 
 function ScoreCard({
   score,
@@ -131,18 +135,24 @@ function ScoreCard({
   return (
     <div
       className={cn(
-        "relative flex flex-col justify-between gap-4 rounded-xl border border-[var(--line)] p-5 md:p-6",
+        "relative flex flex-col justify-between gap-4 rounded-xl p-5 md:p-6",
         primary
-          ? "bg-[var(--bg-2)]"
-          : "bg-[var(--bg)]",
+          ? "border-2 border-[var(--accent)]"
+          : "border border-[var(--line)]",
       )}
+      style={{
+        background: primary ? "#fffdf7" : "#fffdf7",
+        boxShadow: primary
+          ? "0 10px 30px rgba(34,28,16,0.08), 0 2px 8px rgba(176,124,30,0.12)"
+          : "0 4px 16px rgba(34,28,16,0.05)",
+      }}
     >
       {primary && (
         <div
-          className="pointer-events-none absolute inset-0 rounded-xl opacity-40"
+          className="pointer-events-none absolute inset-0 rounded-xl"
           style={{
             background:
-              "radial-gradient(ellipse at 20% 20%, rgba(231,200,115,0.12) 0%, transparent 60%)",
+              "radial-gradient(ellipse at 15% 15%, rgba(176,124,30,0.06) 0%, transparent 55%)",
           }}
           aria-hidden
         />
@@ -180,14 +190,14 @@ function ScoreCard({
   );
 }
 
-/* ── Main export ─────────────────────────────────────────── */
+/* ── Main export ─────────────────────────────────────────────── */
 
 export function ScoreBoard() {
   return (
-    <section className="border-b border-[var(--line)] bg-[var(--bg-2)]">
-      <div className="mx-auto max-w-7xl px-5 py-20 md:px-9 md:py-32">
+    <section className="border-b border-[var(--line)]" style={{ background: "rgba(239,232,216,0.4)" }}>
+      <div className="mx-auto max-w-7xl px-5 py-16 md:px-9 md:py-24">
         {/* Header */}
-        <RevealGroup className="mb-12">
+        <RevealGroup className="mb-10">
           <Reveal>
             <p className="eyebrow">Standardized Scores</p>
           </Reveal>
@@ -208,7 +218,7 @@ export function ScoreBoard() {
         </div>
 
         {/* AP Fives section */}
-        <div className="mt-16 border-t border-[var(--line)] pt-16">
+        <div className="mt-14 border-t border-[var(--line)] pt-14">
           <RevealGroup className="mb-10">
             <Reveal>
               <p className="eyebrow">AP Exam Scores</p>

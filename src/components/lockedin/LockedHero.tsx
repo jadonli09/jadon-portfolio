@@ -121,7 +121,7 @@ export function LockedHero() {
         <div style={{ fontSize: "clamp(2.5rem, 10vw, 9rem)", lineHeight: 0.95 }}>
           <KineticHeadline
             as="h1"
-            text="in public."
+            text="locked in."
             className="font-anton block uppercase leading-none text-[var(--accent-2)] opacity-70"
             delay={0.35}
           />

@@ -126,21 +126,21 @@ export function PipelineFlow() {
           <RevealGroup className="flex min-w-max items-stretch gap-0">
             {TRAINING_STEPS.map((step, i) => (
               <Reveal key={step.abbr} delay={i * 0.06} className="flex items-stretch">
-                <div className="group relative flex min-w-[160px] max-w-[200px] flex-col border border-[var(--line)] bg-[var(--bg)] p-5 transition-all duration-300 hover:border-[#ff5da2]/50 hover:bg-[#0d1a2a]">
+                <div className="group relative flex min-w-[160px] max-w-[200px] flex-col border border-[var(--line)] bg-[var(--bg)] p-5 transition-all duration-300 hover:border-[var(--accent-2)] hover:bg-[var(--bg-2)]">
                   <span
                     className="font-mono text-[0.55rem] uppercase tracking-[0.3em]"
-                    style={{ color: "rgba(255,93,162,0.6)" }}
+                    style={{ color: "var(--accent-2)" }}
                   >
                     {step.abbr}
                   </span>
-                  <p className="mt-3 font-mono text-sm font-semibold leading-snug text-[var(--fg)] transition-colors group-hover:text-[#ff5da2]">
+                  <p className="mt-3 font-mono text-sm font-semibold leading-snug text-[var(--fg)] transition-colors group-hover:text-[var(--accent-2)]">
                     {step.label}
                   </p>
                   <p className="mt-1 font-mono text-[0.65rem] text-[var(--muted)]">{step.detail}</p>
                   <p className="mt-3 font-mono text-[0.6rem] leading-relaxed text-[var(--muted)] opacity-70">
                     {step.note}
                   </p>
-                  <div className="absolute bottom-0 left-0 h-px w-0 bg-[#ff5da2] transition-all duration-500 group-hover:w-full" />
+                  <div className="absolute bottom-0 left-0 h-px w-0 bg-[var(--accent-2)] transition-all duration-500 group-hover:w-full" />
                 </div>
 
                 {i < TRAINING_STEPS.length - 1 && (
@@ -154,7 +154,7 @@ export function PipelineFlow() {
                     >
                       <svg width="28" height="24" viewBox="0 0 28 24" fill="none">
                         <line x1="0" y1="12" x2="20" y2="12" stroke="var(--line)" strokeWidth="1.2" />
-                        <polyline points="14,6 22,12 14,18" stroke="#ff5da2" strokeWidth="1.2" fill="none" opacity="0.5" />
+                        <polyline points="14,6 22,12 14,18" stroke="var(--accent-2)" strokeWidth="1.2" fill="none" opacity="0.55" />
                       </svg>
                     </motion.div>
                   </div>
@@ -183,9 +183,9 @@ export function PipelineFlow() {
               <div
                 className="rounded border px-3 py-2 font-mono text-[0.6rem] uppercase tracking-widest"
                 style={{
-                  borderColor: "rgba(52,224,196,0.35)",
+                  borderColor: "rgba(12,156,134,0.3)",
                   color: "var(--accent)",
-                  background: "rgba(52,224,196,0.05)",
+                  background: "rgba(12,156,134,0.06)",
                 }}
               >
                 Applied →
@@ -211,7 +211,7 @@ export function PipelineFlow() {
           <RevealGroup className="flex min-w-max items-stretch gap-0">
             {EXPERIMENT_STEPS.map((step, i) => (
               <Reveal key={step.abbr} delay={i * 0.055} className="flex items-stretch">
-                <div className="group relative flex min-w-[140px] max-w-[180px] flex-col border border-[var(--line)] bg-[var(--bg-2)] p-5 transition-all duration-300 hover:border-[var(--accent)] hover:bg-[#0d1a2a]">
+                <div className="group relative flex min-w-[140px] max-w-[180px] flex-col border border-[var(--line)] bg-[var(--bg-2)] p-5 transition-all duration-300 hover:border-[var(--accent)] hover:bg-white hover:shadow-[0_4px_16px_rgba(13,36,49,0.08)]">
                   <span className="font-mono text-[0.55rem] uppercase tracking-[0.3em] text-[var(--muted)]">
                     {step.abbr}
                   </span>
@@ -280,7 +280,7 @@ export function PipelineFlow() {
                   <div>
                     <p
                       className="font-mono text-xs font-semibold"
-                      style={{ color: f.dir === "up" ? "#ff5da2" : "var(--accent)" }}
+                      style={{ color: f.dir === "up" ? "var(--accent-2)" : "var(--accent)" }}
                     >
                       {f.gene}
                     </p>
@@ -288,7 +288,7 @@ export function PipelineFlow() {
                   </div>
                   <span
                     className="font-mono text-[0.65rem] font-bold tabular-nums"
-                    style={{ color: f.dir === "up" ? "#ff5da2" : "var(--accent)" }}
+                    style={{ color: f.dir === "up" ? "var(--accent-2)" : "var(--accent)" }}
                   >
                     {f.log2fc}
                   </span>
@@ -309,13 +309,14 @@ export function PipelineFlow() {
       <Reveal delay={0.15}>
         <div
           className="relative overflow-hidden rounded-lg border p-8 md:p-12"
-          style={{ borderColor: "rgba(52,224,196,0.4)" }}
+          style={{
+            borderColor: "rgba(12,156,134,0.3)",
+            background: "rgba(12,156,134,0.04)",
+            boxShadow: "0 8px 24px rgba(13,36,49,0.06)",
+          }}
         >
-          {/* Background glow */}
-          <div
-            className="pointer-events-none absolute inset-0 opacity-6"
-            style={{ background: "radial-gradient(ellipse at 20% 50%, #34e0c4, transparent 70%)" }}
-          />
+          {/* Subtle tint — no glow on white */}
+          <div className="pointer-events-none absolute inset-0" />
 
           {/* Accent bracket */}
           <div

@@ -2,15 +2,14 @@ import type { Metadata } from "next";
 import { World } from "@/components/chrome/World";
 import { Footer } from "@/components/chrome/Footer";
 import { LockedHero } from "@/components/lockedin/LockedHero";
-import { LockedDouyinFeature } from "@/components/lockedin/LockedDouyinFeature";
-import { LockedNativeFeed, LockedInstagramGrid } from "@/components/lockedin/LockedFeedWall";
+import { LockedInstagramGrid } from "@/components/lockedin/LockedFeedWall";
 import { LockedMarquee } from "@/components/lockedin/LockedMarquee";
 import { LockedFollowCTA } from "@/components/lockedin/LockedFollowCTA";
 
 export const metadata: Metadata = {
   title: "Locked In — Jadon Li",
   description:
-    "@li_locked.in — documenting the grind in public. Basketball, cooking, study tips, and a gym moment that hit 569k likes in China. 1,400+ followers, 500k+ views in under a month.",
+    "@li_locked.in — documenting the grind, locked in. Basketball, study tips, and a 262-player scavenger hunt. 1,400+ followers, 500k+ views in under a month.",
 };
 
 /**
@@ -19,14 +18,13 @@ export const metadata: Metadata = {
  * screen-glow pink (#ff3d81) + cyan (#3df0ff) accents on near-black, grain, kinetic.
  *
  * Section order:
- *   1. Hero — eyebrow, kinetic headline, metrics, handle CTA
- *   2. DouYin viral feature — 569k showpiece card
- *   3. Marquee — pink ticker band
- *   4. Native cooking-video feed — plays inline, 9:16 grid
- *   5. Instagram embeds — 10 live reel iframes, responsive grid
- *   6. Marquee — reversed, between embeds and CTA
- *   7. Follow CTA
- *   8. Footer
+ *   1. Hero — eyebrow, kinetic headline ("Documenting / the grind, / locked in."), metrics
+ *   2. Marquee — pink ticker band
+ *   3. Featured reels — 2-up large phone-framed Instagram embeds
+ *   4. Reel mosaic — 8-reel varied-offset editorial grid
+ *   5. Marquee — reversed, between embeds and CTA
+ *   6. Follow CTA
+ *   7. Footer
  *
  * Server component. All interactive sections carry their own "use client" directive.
  */
@@ -36,25 +34,19 @@ export default function LockedInPage() {
       {/* 1. Cinematic hero */}
       <LockedHero />
 
-      {/* 2. DouYin viral feature — 569k showpiece card */}
-      <LockedDouyinFeature />
-
-      {/* 3. Content theme marquee — pink ticker band */}
+      {/* 2. Content theme marquee — pink ticker band */}
       <LockedMarquee />
 
-      {/* 4. Native cooking-video players — inline playback, 9:16 strip */}
-      <LockedNativeFeed />
-
-      {/* 5. Instagram embeds — 10 live reels, intentionally framed */}
+      {/* 3 + 4. Instagram reel wall — featured 2-up + 8-reel editorial mosaic */}
       <LockedInstagramGrid />
 
-      {/* 6. Second marquee — reversed, between embeds and CTA */}
+      {/* 5. Second marquee — reversed, between embeds and CTA */}
       <LockedMarquee />
 
-      {/* 7. Follow CTA section */}
+      {/* 6. Follow CTA section */}
       <LockedFollowCTA />
 
-      {/* 8. Footer with next-world handoff */}
+      {/* 7. Footer with next-world handoff */}
       <Footer current="lockedin" />
     </World>
   );
