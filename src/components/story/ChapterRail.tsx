@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useScroll, useSpring } from "motion/react";
+import { motion, useScroll, useSpring, useMotionValueEvent } from "motion/react";
 import { useLenis } from "lenis/react";
 import { CHAPTERS } from "@/lib/data";
 
@@ -13,9 +13,17 @@ import { CHAPTERS } from "@/lib/data";
  */
 export function ChapterRail() {
   const [active, setActive] = useState<string>(CHAPTERS[0].id);
+  const [shown, setShown] = useState(false);
   const lenis = useLenis();
-  const { scrollYProgress } = useScroll();
+  const { scrollYProgress, scrollY } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
+
+  // Keep the rail out of the hero — it only appears once you've started the story,
+  // so it never blocks the JADON LI title up top.
+  useMotionValueEvent(scrollY, "change", (v) => {
+    const past = v > (typeof window !== "undefined" ? window.innerHeight * 0.62 : 600);
+    setShown((s) => (s !== past ? past : s));
+  });
 
   useEffect(() => {
     const sections = CHAPTERS.map((c) => document.getElementById(c.id)).filter(Boolean) as HTMLElement[];
@@ -61,10 +69,14 @@ export function ChapterRail() {
         aria-hidden
       />
 
-      {/* desktop thread rail */}
-      <nav
+      {/* desktop thread rail — fades in once you leave the hero */}
+      <motion.nav
         aria-label="Story chapters"
         className="fixed left-6 top-1/2 z-40 hidden -translate-y-1/2 lg:block"
+        initial={false}
+        animate={{ opacity: shown ? 1 : 0, x: shown ? 0 : -12 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        style={{ pointerEvents: shown ? "auto" : "none" }}
       >
         <div className="relative flex flex-col gap-5">
           {/* the continuous thread */}
@@ -107,7 +119,7 @@ export function ChapterRail() {
             );
           })}
         </div>
-      </nav>
+      </motion.nav>
     </>
   );
 }

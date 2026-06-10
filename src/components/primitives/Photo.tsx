@@ -10,12 +10,14 @@ export function Photo({
   src,
   alt,
   className,
+  style,
   priority = false,
   sizes,
 }: {
   src: string;
   alt: string;
   className?: string;
+  style?: React.CSSProperties;
   priority?: boolean;
   sizes?: string;
 }) {
@@ -25,6 +27,7 @@ export function Photo({
       src={asset(src)}
       alt={alt}
       sizes={sizes}
+      style={style}
       loading={priority ? "eager" : "lazy"}
       decoding="async"
       className={cn("h-full w-full object-cover", className)}

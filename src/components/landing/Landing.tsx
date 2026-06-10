@@ -79,18 +79,21 @@ export function Landing() {
             {PROFILE.school} · {PROFILE.city} · {PROFILE.gradeNote}
           </motion.p>
 
-          <h1 className="font-anton leading-[0.82] tracking-tight">
-            <span className="block overflow-hidden">
-              <motion.span className="block text-[22vw] md:text-[16vw]" initial={{ y: "110%" }} animate={{ y: 0 }} transition={{ delay: 0.3, duration: 1, ease: EASE }}>
-                JADON
-              </motion.span>
-            </span>
-            <span className="block overflow-hidden">
+          <h1 className="font-anton leading-[0.85] tracking-tight">
+            <span className="flex items-baseline overflow-hidden whitespace-nowrap pb-[0.04em]">
               <motion.span
-                className="block bg-gradient-to-r from-[#e8b15a] via-[#f4f1ea] to-[#d9603f] bg-clip-text text-[22vw] text-transparent md:text-[16vw]"
+                className="inline-block text-[19vw] md:text-[16.5vw]"
                 initial={{ y: "110%" }}
                 animate={{ y: 0 }}
-                transition={{ delay: 0.42, duration: 1, ease: EASE }}
+                transition={{ delay: 0.3, duration: 1, ease: EASE }}
+              >
+                JADON
+              </motion.span>
+              <motion.span
+                className="ml-[0.16em] inline-block bg-gradient-to-r from-[#e8b15a] via-[#f4f1ea] to-[#d9603f] bg-clip-text text-[19vw] text-transparent md:text-[16.5vw]"
+                initial={{ y: "110%" }}
+                animate={{ y: 0 }}
+                transition={{ delay: 0.4, duration: 1, ease: EASE }}
               >
                 LI
               </motion.span>

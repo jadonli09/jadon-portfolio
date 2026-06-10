@@ -41,16 +41,27 @@ export function StoryChapter({ chapter, index }: { chapter: Chapter; index: numb
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-15% 0px" }}
           transition={{ duration: 1, ease: EASE }}
-          className="relative aspect-[4/5] overflow-hidden rounded-sm md:aspect-[5/6]"
+          className="relative aspect-[3/2] overflow-hidden rounded-sm bg-[#0c0c12]"
           data-cursor-hover
         >
-          <motion.div style={{ y: imgY }} className="absolute inset-[-8%]">
-            <Photo src={chapter.image} alt={chapter.kicker} className="h-full w-full object-cover" />
-          </motion.div>
-          {/* accent scrim */}
+          {chapter.fit === "contain" ? (
+            <div className="absolute inset-0 p-1">
+              <Photo src={chapter.image} alt={chapter.kicker} className="h-full w-full object-contain" />
+            </div>
+          ) : (
+            <motion.div style={{ y: imgY }} className="absolute inset-[-6%]">
+              <Photo
+                src={chapter.image}
+                alt={chapter.kicker}
+                className="h-full w-full object-cover"
+                style={{ objectPosition: chapter.position ?? "center" }}
+              />
+            </motion.div>
+          )}
+          {/* accent scrim — lighter on contain shots so the full photo reads */}
           <div
             className="pointer-events-none absolute inset-0 mix-blend-multiply"
-            style={{ background: `linear-gradient(160deg, transparent 40%, ${chapter.accent}40)` }}
+            style={{ background: `linear-gradient(160deg, transparent 45%, ${chapter.accent}${chapter.fit === "contain" ? "22" : "40"})` }}
           />
           <div className="pointer-events-none absolute inset-0" style={{ boxShadow: `inset 0 0 0 1px ${chapter.accent}33` }} />
           {/* chapter index, big, riding the image corner */}

@@ -124,6 +124,10 @@ export type Chapter = {
   lede: string;
   stat?: { value: string; label: string };
   image: string;
+  /** "contain" shows the whole photo (group/poster shots); "cover" fills + parallax. */
+  fit?: "cover" | "contain";
+  /** object-position for cover shots, e.g. "85% 40%" to feature an off-centre subject. */
+  position?: string;
   world: WorldId;
   href: string;
   cta: string;
@@ -152,6 +156,7 @@ export const CHAPTERS: Chapter[] = [
     lede: "That discipline found a stage. Three-time Class President, now ASB President — he lost his way into winning, and runs events at the scale of a city.",
     stat: { value: "3×", label: "Class President" },
     image: "/img/asb-officers.jpg",
+    fit: "contain",
     world: "leadership",
     href: "/leadership",
     cta: "Into leadership & events",
@@ -162,8 +167,8 @@ export const CHAPTERS: Chapter[] = [
     num: "03",
     kicker: "The Storyteller",
     headline: "Documenting a city, and himself.",
-    lede: "Then he picked up a camera. Under Ampersand Media and @li_locked.in he tells a city's stories and his own — a viral push to revive a restaurant, the Mayor's videographer, a gym clip that hit 569k likes in China.",
-    stat: { value: "569k", label: "Likes · one DouYin clip" },
+    lede: "Then he picked up a camera. Under Ampersand Media he tells a city's stories — directing the Voices of Fremont podcast with the Mayor, a viral push to revive a beloved restaurant, and a paid role as the Mayor's videographer.",
+    stat: { value: "10k", label: "Views per Mayor video" },
     image: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg",
     world: "civic",
     href: "/civic",
@@ -177,7 +182,8 @@ export const CHAPTERS: Chapter[] = [
     headline: "Reading the genome of pain.",
     lede: "Curiosity pulled him into the lab. Trained in R by a Stanford professor, he hunted the mediators of gout pain in a mouse model — and traced them to the spinal cord.",
     stat: { value: "3rd", label: "ACSEF · Computational Bio" },
-    image: "/img/ysjc-2025-summer-showcase.jpg",
+    image: "/img/acsef-science-fair.jpg",
+    fit: "contain",
     world: "research",
     href: "/research",
     cta: "Into research & STEM",
@@ -190,7 +196,8 @@ export const CHAPTERS: Chapter[] = [
     headline: "Ship it. Then ship the next.",
     lede: "What he learned, he shipped. AcornPrep turned six AP exams into a study tool 500+ students actually use — the #1 Google result, built on a real pipeline.",
     stat: { value: "500+", label: "AcornPrep users" },
-    image: "/img/presenting-acornprep-at-gemini-meetup.jpg",
+    image: "/img/acornprep-presenting.jpg",
+    position: "50% 38%",
     world: "built",
     href: "/built",
     cta: "Into the things he's built",
@@ -217,6 +224,7 @@ export const CHAPTERS: Chapter[] = [
     lede: "Cooking with a friend, flying drones, a sunrise climb he finally stopped timing. Five pursuits, one person — all pointing the same way, and all documented under @li_locked.in.",
     stat: { value: "500k+", label: "Views in a month" },
     image: "/img/headshot1.jpg",
+    position: "center 32%",
     world: "lockedin",
     href: "/locked-in",
     cta: "Into Locked In",
@@ -641,32 +649,88 @@ export const AP_FIVES = [
   "AP Computer Science A",
 ];
 
-export type Trophy = { year: string; title: string; cat: WorldId | "academic"; detail: string };
+export type TrophyCat = "academic" | "research" | "civic" | "built" | "leadership" | "court" | "personal";
+export type Trophy = { year: string; title: string; cat: TrophyCat; detail: string };
 
+/** Category labels + colours — the trophy case is colour-coded by domain. */
+export const CAT_META: Record<TrophyCat, { label: string; color: string }> = {
+  academic: { label: "Academics", color: "#8f9bff" },
+  research: { label: "Research & STEM", color: "#34e0c4" },
+  civic: { label: "Civic & Media", color: "#e0563f" },
+  built: { label: "Built", color: "#b9ff66" },
+  leadership: { label: "Leadership", color: "#d4af6a" },
+  court: { label: "The Court", color: "#ff5b1f" },
+  personal: { label: "The Person", color: "#ff5da2" },
+};
+
+/**
+ * The full ledger of meaningful achievements & experiences, by year. (AP exam
+ * scores live in the Score Board above; one-off/irrelevant entries are omitted.)
+ */
 export const TROPHIES: Trophy[] = [
-  { year: "8th", title: "Continental Math League — 30/30", cat: "academic", detail: "A perfect score across all 6 contest tests." },
-  { year: "7–8th", title: "6× Academic Excellence (Hopkins)", cat: "academic", detail: "Character-based award given to ≤2 students per class of 30." },
-  { year: "8th", title: "DECA Headstart — 2nd of 12", cat: "academic", detail: "Placed 2nd at the pre-DECA mini-conference." },
-  { year: "8th", title: "AP Chinese · 5 + ACT 29", cat: "academic", detail: "A 5 on AP Chinese and a 29 on the ACT — in eighth grade." },
-  { year: "9th", title: "FCO Election — won", cat: "leadership", detail: "Freshman Class Officer, vs. Oscar Zhang." },
-  { year: "9th", title: "AP Biology · 5 (UC Scout)", cat: "academic", detail: "Self-paced and rigorous — where the love of biology started." },
-  { year: "9–10th", title: "DECA Spark — top points", cat: "academic", detail: "Most points both semesters; built an 'ICDC-level' report." },
-  { year: "10th", title: "SOCO Election — won", cat: "leadership", detail: "Sophomore Class Officer, vs. Kaylin Teo." },
-  { year: "10th", title: "AP World · 5  ·  AP Stats · 5  ·  AP CSA · 5", cat: "academic", detail: "Three more 5s — CSA self-taught over spring break." },
-  { year: "2025", title: "ACWD Water Clips — 1st", cat: "civic", detail: "1st of 100+ entries · $500 + movie tickets (with Pradyun)." },
-  { year: "2025", title: "ACWD Water Clips — 3rd", cat: "civic", detail: "A second entry placed 3rd · $100." },
-  { year: "2025", title: "UK Biology Olympiad — Silver", cat: "research", detail: "Top 10% — taken with no explicit prep." },
+  // ── Pre-high school / 8th grade ──
+  { year: "Pre-HS", title: "ATDP Entrepreneurship — UC Berkeley", cat: "academic", detail: "A pre-8th summer course that sharpened presentation and critical thinking." },
+  { year: "8th", title: "Continental Math League — 30/30", cat: "academic", detail: "A perfect score across all six contest tests." },
+  { year: "7–8th", title: "6× Academic Excellence — Hopkins", cat: "academic", detail: "Character award given to ≤2 students per class of 30." },
+  { year: "8th", title: "DECA Headstart — 2nd of 12", cat: "academic", detail: "Placed 2nd at the pre-DECA middle-school conference." },
+  { year: "8th", title: "Began journaling", cat: "personal", detail: "At first just events, then 'releasing the truth.' Never stopped." },
+  { year: "8th", title: "The Milk Issue", cat: "civic", detail: "Noticed spoiled school milk, pressured the principal — the school bought refrigerators." },
+  { year: "8th", title: "Hopkins Basketball A-Team", cat: "court", detail: "Made the A-team after a broken arm cost him 7th grade." },
+  { year: "Age 12", title: "Mission Peak tradition begins", cat: "personal", detail: "First solo birthday climb — sub-hour by two seconds." },
+  // ── Freshman ──
+  { year: "9th", title: "Class President — elected (FCO)", cat: "leadership", detail: "Won the freshman race vs. Oscar Zhang." },
+  { year: "9th", title: "Freshman Basketball Co-Captain", cat: "court", detail: "Kept team responsibility and motivation." },
+  { year: "9th", title: "JP Basketball — founded", cat: "leadership", detail: "A summer training program to make skill-learning fun." },
+  // ── Sophomore ──
+  { year: "Summer '24", title: "City of Fremont Rec Director", cat: "leadership", detail: "Coached 5–12-year-olds across many sports; ~$600 earned." },
+  { year: "10th", title: "Class President — re-elected (SOCO)", cat: "leadership", detail: "Won the sophomore race vs. Kaylin Teo." },
+  { year: "10th", title: "JV Basketball Co-Captain", cat: "court", detail: "Led JV to a .500 league record; team dinners after losses." },
+  { year: "10th", title: "MSJ HOSA — founding officer", cat: "research", detail: "Health-science club; launched MSJ Iron Chef." },
+  { year: "10th", title: "Lost ASB President by ~10 votes", cat: "leadership", detail: "The underdog sophomore run — heartbreak that became the comeback." },
+  // ── Summer '25 / Junior — research ──
+  { year: "Summer '25", title: "R + Bioinformatics training", cat: "research", detail: "Learned R (ggplot2) and the RNA-seq pipeline under Dr. Shady Younice, Stanford." },
+  { year: "2025", title: "ACSEF — 3rd, Computational Biology", cat: "research", detail: "Gout RNA-seq; pain mediators traced to the spinal cord → new therapeutic targets." },
   { year: "2025", title: "USABO — Honorable Mention", cat: "research", detail: "26/50, top ~15% (semifinalist cutoff 28)." },
-  { year: "2025", title: "ACSEF — 3rd, Computational Biology", cat: "research", detail: "Gout RNA-seq; mediators also found in the spinal cord → new therapeutic targets." },
+  { year: "2025", title: "UK Biology Olympiad — Silver", cat: "research", detail: "Top 10%, taken with no explicit prep." },
+  { year: "2025", title: "Youth STEM Journal Club — founder", cat: "research", detail: "Taught 8 middle-schoolers to dissect research papers at the Fremont Library." },
+  { year: "2025", title: "PRISM — co-founder", cat: "research", detail: "Promoting representation in clinical trials, with partner Arav." },
+  { year: "2025", title: "Varian tour", cat: "research", detail: "Studied TrueBeam & Halcyon radiation-therapy machines." },
+  { year: "2025", title: "ACWD Water-Plant tour — led 10", cat: "research", detail: "Organized a private treatment-plant tour with outreach director Renee Gonzales." },
+  // ── Junior — civic / media ──
+  { year: "2025", title: "li_locked.in launched", cat: "civic", detail: "0 → 1,000 followers in a summer; 500k+ views." },
+  { year: "2025", title: "Mayor's Intern Program", cat: "civic", detail: "Surveyed residents and worked city events." },
+  { year: "2025", title: "Mayor's Videographer (paid)", cat: "civic", detail: "Grew the Mayor's per-video reach ~1k → 10k; $50/video." },
+  { year: "2025", title: "Voices of Fremont — director", cat: "civic", detail: "Directs & edits the Mayor's ~7-minute podcast; thousands of views monthly." },
+  { year: "2025", title: "Sweet Tomatoes revival", cat: "civic", detail: "The viral origin — pitched reviving the restaurant; emailed Tucson with the Mayor." },
+  { year: "2025", title: "Fremont Stories", cat: "civic", detail: "A video series on unconventional career paths (with Akash Sethi & Brittany Lu)." },
+  { year: "2025", title: "Small Business Accessibility Initiative", cat: "civic", detail: "Op-ed in the San Mateo Daily Journal; backed SB 84 with Prof. Durazo; presented at City Council." },
+  { year: "2025", title: "HG Nguyen for D7 — social media", cat: "civic", detail: "Lead videographer/editor for a San Jose council campaign." },
+  { year: "2025", title: "Fremont Youth Advisory Commission", cat: "civic", detail: "1 of 13 commissioners from ~100 applicants." },
+  { year: "2025", title: "ACWD Water Clips — 1st", cat: "civic", detail: "1st of 100+ entries · $500 (with Pradyun)." },
+  { year: "2025", title: "ACWD Water Clips — 3rd", cat: "civic", detail: "A second entry placed 3rd · $100." },
+  { year: "2025", title: "Met the Governor & First Partner", cat: "civic", detail: "At a California Love, California Strong event." },
+  // ── Junior — built ──
+  { year: "2025", title: "AcornPrep — launched", cat: "built", detail: "AI AP study tool: 500+ users, 13,000 MCQs, #1 Google result, 4 AP-teacher endorsements." },
+  { year: "2025", title: "CueSheet — shipped", cat: "built", detail: "A music-supervision tool, live at cuesheet.xyz." },
+  { year: "2025", title: "MSJ Makes VP", cat: "built", detail: "Led merch design; 40 senior stoles; ~$700 revenue, ~$400 profit." },
+  { year: "2026", title: "Hermes — in build", cat: "built", detail: "An Instagram club-info scraper; ~90% complete." },
+  // ── Junior — leadership / events ──
   { year: "2025", title: "MSJ Car Meet", cat: "leadership", detail: "First in MSJ history · $35M+ in cars · a $3.5M Pagani." },
-  { year: "2025", title: "li_locked.in — 500k+ views", cat: "civic", detail: "0 → 1,000 followers in a summer; 500k+ views." },
+  { year: "2025–26", title: "Class President ×3", cat: "leadership", detail: "Three years running; ran Homecoming and 13 fundraisers worth $5,520.40." },
+  { year: "2026", title: "ASB President — elected", cat: "leadership", detail: "Beat Jane Huang; led the Leadership-II selection (90 → 60 → 30)." },
+  { year: "2026", title: "Winter Ball — built from scratch", cat: "leadership", detail: "First since COVID · 350 students · drink bar + borrowed game tables." },
+  { year: "2026", title: "Valentine's Scavenger Hunt", cat: "leadership", detail: "262 participants · $300 in self-funded prizes." },
   { year: "2026", title: "Homecoming — 2nd place", cat: "leadership", detail: "Spirited Away, a 45-minute class performance." },
-  { year: "2026", title: "Winter Ball", cat: "leadership", detail: "350 students · built from scratch post-COVID." },
-  { year: "2026", title: "Valentine's Scavenger Hunt", cat: "leadership", detail: "262 participants · $300 in prizes." },
-  { year: "2026", title: "ICE Protest video — 20k+ views", cat: "civic", detail: "Organized a 500+-person protest; the recap hit 20k+ views." },
-  { year: "2026", title: "ASB President — elected", cat: "leadership", detail: "Won the student-body presidency after a sophomore loss by ~10 votes." },
-  { year: "2026", title: "NCS Basketball Champions", cat: "court", detail: "First title in school and district history." },
-  { year: "2026", title: "Six AP 5s + SAT 1530", cat: "academic", detail: "AP Chinese, Bio, Macro, World, Stats, CSA — all 5s. SAT 1530." },
+  { year: "2026", title: "Campus climbing wall — built", cat: "leadership", detail: "A first for the school; led as Climbing Club VP." },
+  { year: "2026", title: "Senior Breakfast", cat: "leadership", detail: "$4.8k for 500 servings — and saved the day when the check vanished in the mail." },
+  { year: "2026", title: "CO26 Graduation — led planning", cat: "leadership", detail: "Built the name-card system; announced all 500 names at TAK Stadium." },
+  // ── Junior — civic (protest) & court ──
+  { year: "2026", title: "ICE Protest — organized", cat: "civic", detail: "500+ participants; the recap video hit 20k+ views." },
+  { year: "2025", title: "China gym moment — 569k likes", cat: "court", detail: "Outplayed a 网红 (influencer); the clip went viral on DouYin." },
+  { year: "2026", title: "NCS Basketball Champions", cat: "court", detail: "First title in school AND district history; started in the first five." },
+  // ── Ongoing / personal ──
+  { year: "Ongoing", title: "FAA-approved drone pilot", cat: "personal", detail: "DJI Mini 2 SE → Avata 2 (FPV) → Osmo Pocket 3." },
+  { year: "Ongoing", title: "Mission Peak PR — 47:33", cat: "personal", detail: "The fastest birthday ascent, at age 15." },
 ];
 
 /** Early-life texture for the timeline (from the achievements ledger). */
