@@ -110,6 +110,133 @@ export const WORLDS: WorldMeta[] = [
   },
 ];
 
+/* ───────────────────────── THE STORY SPINE ──────────────────────── */
+/**
+ * One cohesive narrative. Each chapter is a beat in the same story and a doorway
+ * to a deeper "world" you can explore and return from. Read top to bottom, it's
+ * one arc; each `href` is a place to dig deeper.
+ */
+export type Chapter = {
+  id: string; // hash anchor on the root, e.g. "operator"
+  num: string;
+  kicker: string;
+  headline: string;
+  lede: string;
+  stat?: { value: string; label: string };
+  image: string;
+  world: WorldId;
+  href: string;
+  cta: string;
+  accent: string; // hint of the destination world's colour, on the dark root
+};
+
+export const CHAPTERS: Chapter[] = [
+  {
+    id: "ritual",
+    num: "01",
+    kicker: "The Ritual",
+    headline: "A stopwatch and a journal.",
+    lede: "Before any of it: every birthday since he was twelve, Jadon runs Mission Peak alone — and he's journaled since the eighth grade. The grind began as a private ritual.",
+    stat: { value: "47:33", label: "Mission Peak PR · age 15" },
+    image: "/img/missionpeak2026-1.jpg",
+    world: "about",
+    href: "/about",
+    cta: "Into the person",
+    accent: "#c2855f",
+  },
+  {
+    id: "operator",
+    num: "02",
+    kicker: "The Operator",
+    headline: "Elected to lead, every year.",
+    lede: "That discipline found a stage. Three-time Class President, now ASB President — he lost his way into winning, and runs events at the scale of a city.",
+    stat: { value: "3×", label: "Class President" },
+    image: "/img/asb-officers.jpg",
+    world: "leadership",
+    href: "/leadership",
+    cta: "Into leadership & events",
+    accent: "#d4af6a",
+  },
+  {
+    id: "storyteller",
+    num: "03",
+    kicker: "The Storyteller",
+    headline: "Documenting a city, and himself.",
+    lede: "Then he picked up a camera. Under Ampersand Media and @li_locked.in he tells a city's stories and his own — a viral push to revive a restaurant, the Mayor's videographer, a gym clip that hit 569k likes in China.",
+    stat: { value: "569k", label: "Likes · one DouYin clip" },
+    image: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg",
+    world: "civic",
+    href: "/civic",
+    cta: "Into civic & storytelling",
+    accent: "#d9533c",
+  },
+  {
+    id: "scientist",
+    num: "04",
+    kicker: "The Scientist",
+    headline: "Reading the genome of pain.",
+    lede: "Curiosity pulled him into the lab. Trained in R by a Stanford professor, he hunted the mediators of gout pain in a mouse model — and traced them to the spinal cord.",
+    stat: { value: "3rd", label: "ACSEF · Computational Bio" },
+    image: "/img/ysjc-2025-summer-showcase.jpg",
+    world: "research",
+    href: "/research",
+    cta: "Into research & STEM",
+    accent: "#34e0c4",
+  },
+  {
+    id: "builder",
+    num: "05",
+    kicker: "The Builder",
+    headline: "Ship it. Then ship the next.",
+    lede: "What he learned, he shipped. AcornPrep turned six AP exams into a study tool 500+ students actually use — the #1 Google result, built on a real pipeline.",
+    stat: { value: "500+", label: "AcornPrep users" },
+    image: "/img/presenting-acornprep-at-gemini-meetup.jpg",
+    world: "built",
+    href: "/built",
+    cta: "Into the things he's built",
+    accent: "#7c9cff",
+  },
+  {
+    id: "competitor",
+    num: "06",
+    kicker: "The Competitor",
+    headline: "First in school history.",
+    lede: "And through all of it, the court. He started in the first five the year Mission San Jose won its first NCS title in school and district history.",
+    stat: { value: "2026", label: "NCS Champions" },
+    image: "/img/ncs-champions.jpg",
+    world: "court",
+    href: "/court",
+    cta: "Into the court",
+    accent: "#ff5b1f",
+  },
+  {
+    id: "pursuit",
+    num: "07",
+    kicker: "The Pursuit",
+    headline: "The pursuit of happiness.",
+    lede: "Cooking with a friend, flying drones, a sunrise climb he finally stopped timing. Five pursuits, one person — all pointing the same way, and all documented under @li_locked.in.",
+    stat: { value: "500k+", label: "Views in a month" },
+    image: "/img/headshot1.jpg",
+    world: "lockedin",
+    href: "/locked-in",
+    cta: "Into Locked In",
+    accent: "#ff3d81",
+  },
+];
+
+/** Map a world to the story chapter it belongs to (for "back to the story"). */
+export const WORLD_TO_CHAPTER: Record<WorldId, string> = {
+  about: "ritual",
+  leadership: "operator",
+  civic: "storyteller",
+  research: "scientist",
+  built: "builder",
+  court: "competitor",
+  lockedin: "pursuit",
+  achievements: "pursuit",
+  contact: "pursuit",
+};
+
 /* ─────────────────────────── LOCKED IN ──────────────────────────── */
 export const LOCKED = {
   intro:

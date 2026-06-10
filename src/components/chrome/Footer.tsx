@@ -15,17 +15,19 @@ export function Footer({ current }: { current?: WorldId }) {
   return (
     <footer className="relative border-t border-[var(--line)] bg-[var(--bg-2)] px-5 py-16 md:px-9 md:py-24">
       <div className="mx-auto max-w-6xl">
-        <Link href={next.href} data-cursor-hover className="group block">
-          <span className="eyebrow">Next world — {next.index}</span>
-          <div className="mt-3 flex items-center gap-4">
-            <span className="font-display text-[2.6rem] leading-none transition-transform duration-500 group-hover:translate-x-3 md:text-[5.5rem]">
-              {next.title}
-            </span>
-            <ArrowRight className="size-8 shrink-0 transition-transform duration-500 group-hover:translate-x-3 md:size-14" />
-          </div>
-        </Link>
+        {current && (
+          <Link href={next.href} data-cursor-hover className="group block">
+            <span className="eyebrow">Next chapter — {next.index}</span>
+            <div className="mt-3 flex items-center gap-4">
+              <span className="font-display text-[2.6rem] leading-none transition-transform duration-500 group-hover:translate-x-3 md:text-[5.5rem]">
+                {next.title}
+              </span>
+              <ArrowRight className="size-8 shrink-0 transition-transform duration-500 group-hover:translate-x-3 md:size-14" />
+            </div>
+          </Link>
+        )}
 
-        <div className="mt-16 flex flex-col justify-between gap-8 border-t border-[var(--line)] pt-8 md:flex-row md:items-end">
+        <div className="flex flex-col justify-between gap-8 border-t border-[var(--line)] pt-8 md:flex-row md:items-end" style={{ marginTop: current ? "4rem" : 0, borderTopWidth: current ? undefined : 0 }}>
           <div>
             <p className="font-display text-2xl">{PROFILE.name}</p>
             <p className="mt-1 font-mono text-xs uppercase tracking-widest text-[var(--muted)]">
@@ -49,7 +51,7 @@ export function Footer({ current }: { current?: WorldId }) {
           </div>
         </div>
         <p className="mt-10 font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--muted)]">
-          © {new Date().getFullYear()} Jadon Li — built across five worlds
+          © {new Date().getFullYear()} Jadon Li — one story, seven chapters
         </p>
       </div>
     </footer>

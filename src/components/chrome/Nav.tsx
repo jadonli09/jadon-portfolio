@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { WORLDS, PROFILE } from "@/lib/data";
+import { CHAPTERS, PROFILE } from "@/lib/data";
 import { EASE } from "@/lib/motion";
 import { Magnetic } from "@/components/primitives/Magnetic";
 
@@ -45,7 +45,7 @@ export function Nav() {
               aria-label={open ? "Close menu" : "Open menu"}
               className="group flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em]"
             >
-              <span className="hidden sm:inline">{open ? "Close" : "Worlds"}</span>
+              <span className="hidden sm:inline">{open ? "Close" : "Menu"}</span>
               <span className="relative flex h-4 w-6 flex-col justify-between">
                 <span className={`h-[1.5px] w-full bg-white transition-transform duration-300 ${open ? "translate-y-[7px] rotate-45" : ""}`} />
                 <span className={`h-[1.5px] w-full bg-white transition-opacity duration-200 ${open ? "opacity-0" : ""}`} />
@@ -67,28 +67,33 @@ export function Nav() {
           >
             <div className="grain" />
             <div className="flex flex-1 flex-col justify-center px-5 pt-24 md:px-9">
+              <div className="mb-4 flex items-center gap-3">
+                <Link href="/" data-cursor-hover className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-[#8a8a99] transition-colors hover:text-[#f4f1ea]">
+                  ↑ The story, from the top
+                </Link>
+              </div>
               <ul className="flex flex-col">
-                {WORLDS.map((w, i) => (
+                {CHAPTERS.map((c, i) => (
                   <motion.li
-                    key={w.id}
+                    key={c.id}
                     initial={{ y: 40, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.18 + i * 0.06, duration: 0.7, ease: EASE }}
+                    transition={{ delay: 0.18 + i * 0.05, duration: 0.7, ease: EASE }}
                     className="border-b border-white/10"
                   >
                     <Link
-                      href={w.href}
-                      className="group flex items-baseline justify-between gap-4 py-3 md:py-4"
+                      href={c.href}
+                      className="group flex items-baseline justify-between gap-4 py-2.5 md:py-3.5"
                       data-cursor-hover
                     >
                       <span className="flex items-baseline gap-4 md:gap-7">
-                        <span className="font-mono text-xs text-[var(--accent,#e8b15a)]">{w.index}</span>
-                        <span className="font-display text-[2rem] leading-none transition-transform duration-500 ease-out group-hover:translate-x-3 md:text-[4.2rem]">
-                          {w.title}
+                        <span className="font-mono text-xs" style={{ color: c.accent }}>{c.num}</span>
+                        <span className="font-display text-[1.7rem] leading-none text-[#f4f1ea] transition-transform duration-500 ease-out group-hover:translate-x-3 md:text-[3.4rem]">
+                          {c.kicker}
                         </span>
                       </span>
-                      <span className="hidden max-w-[34%] text-right font-mono text-[0.62rem] uppercase tracking-widest text-[#8a8a99] md:block">
-                        {w.kicker}
+                      <span className="hidden max-w-[40%] text-right font-mono text-[0.62rem] uppercase tracking-widest text-[#8a8a99] md:block">
+                        {c.headline}
                       </span>
                     </Link>
                   </motion.li>

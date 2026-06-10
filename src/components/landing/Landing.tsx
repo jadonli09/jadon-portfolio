@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
+import { useLenis } from "lenis/react";
 import { ArrowDown } from "lucide-react";
 import { HeroStage } from "@/components/hero/HeroStage";
 import { Preloader } from "@/components/hero/Preloader";
-import { WorldIndex } from "./WorldIndex";
-import { Marquee } from "@/components/primitives/Marquee";
+import { StorySpine } from "@/components/story/StorySpine";
+import { StoryClose } from "@/components/story/StoryClose";
 import { Footer } from "@/components/chrome/Footer";
 import { PROFILE } from "@/lib/data";
 import { EASE } from "@/lib/motion";
@@ -40,23 +41,31 @@ export function Landing() {
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 600], [0, 160]);
   const heroOpacity = useTransform(scrollY, [0, 500], [1, 0]);
+  const lenis = useLenis();
 
-  const stats = [
-    "NCS Champions 2026",
-    "500+ AcornPrep users",
-    "USABO Honorable Mention",
-    "$35M+ Car Meet",
-    "13,000 MCQs practiced",
-    "SAT 1530",
-    "Mayor's videographer",
-    "ASB President",
-  ];
+  // Returning from a deep dive (/#chapter) → scroll the reader back to that chapter.
+  useEffect(() => {
+    const hash = typeof window !== "undefined" ? window.location.hash.replace("#", "") : "";
+    if (!hash) return;
+    const tryScroll = (attempt = 0) => {
+      const el = document.getElementById(hash);
+      if (el) {
+        if (lenis) lenis.scrollTo(el, { offset: 0, immediate: attempt === 0, duration: 0.9 });
+        else el.scrollIntoView();
+      } else if (attempt < 20) {
+        setTimeout(() => tryScroll(attempt + 1), 60);
+      }
+    };
+    // wait a frame so the spine is laid out
+    const t = setTimeout(() => tryScroll(), 80);
+    return () => clearTimeout(t);
+  }, [lenis]);
 
   return (
     <main className="relative w-full overflow-clip bg-[#07070a] text-[#f4f1ea]">
       <Preloader />
 
-      {/* HERO */}
+      {/* COLD OPEN */}
       <section className="relative flex h-[100svh] min-h-[640px] w-full flex-col justify-end overflow-hidden">
         <HeroStage />
 
@@ -95,7 +104,7 @@ export function Landing() {
             className="mt-6 max-w-xl font-display text-lg text-[#cfc9bd] md:text-2xl"
           >
             I am a <RoleRotator />
-            <span className="mt-1 block text-[#8a8a99]">{PROFILE.tagline}</span>
+            <span className="mt-1 block text-[#8a8a99]">One story, in seven chapters. Scroll to begin — dig into any of them.</span>
           </motion.p>
         </motion.div>
 
@@ -105,16 +114,15 @@ export function Landing() {
           transition={{ delay: 1.3 }}
           className="absolute bottom-6 right-5 z-10 flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-widest text-[#8a8a99] md:right-9"
         >
-          Scroll <ArrowDown className="size-3.5 animate-bounce" />
+          Begin <ArrowDown className="size-3.5 animate-bounce" />
         </motion.div>
       </section>
 
-      {/* STAT MARQUEE */}
-      <div className="relative z-10 border-y border-white/10 bg-[#0a0a0f] py-4 font-display text-xl text-[#cfc9bd] md:py-6 md:text-3xl">
-        <Marquee items={stats} durationSec={34} sep="✦" />
-      </div>
+      {/* THE STORY */}
+      <StorySpine />
 
-      <WorldIndex />
+      {/* THE CLOSE */}
+      <StoryClose />
 
       <Footer />
     </main>
