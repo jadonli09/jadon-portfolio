@@ -83,7 +83,7 @@ export function Landing() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 1.4 }}
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-[15%] z-[1] hidden text-center font-anton leading-none tracking-tight text-white/40 [text-shadow:0_2px_18px_rgba(13,36,49,0.25)] md:block md:text-[11.5vw]"
+          className="pointer-events-none absolute inset-x-0 top-[8%] z-[1] hidden text-center font-anton leading-none tracking-tight text-white/25 md:block md:text-[20vw]"
         >
           LI_LOCKED.IN
         </motion.div>
@@ -129,17 +129,17 @@ export function Landing() {
           initial={{ opacity: 0, x: -14 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.9, duration: 0.9, ease: EASE }}
-          className="absolute bottom-[9%] left-5 z-[4] max-w-[280px] rounded-xl border border-white/15 bg-[rgba(13,36,49,0.48)] px-4 py-3.5 backdrop-blur-md md:bottom-auto md:left-9 md:top-[38%]"
+          className="absolute bottom-[9%] left-5 z-[4] max-w-[340px] md:bottom-[8%] md:left-9"
         >
-          <p className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-white/90">
+          <p className="font-mono text-[0.62rem] uppercase tracking-[0.28em] text-white/90 md:text-[0.72rem]">
             {PROFILE.school}
             <br />
             {PROFILE.city} · {PROFILE.gradeNote}
           </p>
-          <p className="mt-3 font-display text-lg text-white md:text-xl">
+          <p className="mt-3 font-display text-xl text-white md:text-3xl">
             I am a <RoleRotator />
           </p>
-          <p className="mt-2 font-mono text-[0.6rem] uppercase tracking-[0.22em] text-white/80">
+          <p className="mt-2 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-white/80 md:text-[0.7rem]">
             One story · seven chapters
           </p>
         </motion.div>

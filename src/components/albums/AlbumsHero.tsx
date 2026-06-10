@@ -68,7 +68,7 @@ export function AlbumsHero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="pointer-events-none absolute bottom-8 left-1/2 z-10 -translate-x-1/2 font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--muted)]"
+        className="pointer-events-none absolute bottom-24 left-1/2 z-10 -translate-x-1/2 font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--muted)] md:bottom-8"
       >
         Scroll for the albums ↓
       </motion.span>

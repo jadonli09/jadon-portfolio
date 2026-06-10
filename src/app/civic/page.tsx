@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { World } from "@/components/chrome/World";
 import { Footer } from "@/components/chrome/Footer";
-import { CivicMasthead } from "@/components/civic/CivicMasthead";
+import { HeroSection04 } from "@/components/ui/hero-04";
 import { CivicMetricsBand } from "@/components/civic/CivicMetricsBand";
 import { CivicAwardsTicker } from "@/components/civic/CivicAwardsTicker";
 import { CivicFeaturedPress } from "@/components/civic/CivicFeaturedPress";
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
 export default function CivicPage() {
   return (
     <World id="civic">
-      {/* 1. Broadsheet hero masthead — with section-index beats strip */}
-      <CivicMasthead />
+      {/* 1. Poster hero — oversized headline, dashed-grid backdrop (hero-04 theme) */}
+      <HeroSection04 />
 
       {/* 2. Animated metrics band */}
       <CivicMetricsBand />

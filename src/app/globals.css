@@ -13,6 +13,24 @@
   --font-serif: var(--font-instrument);
   --font-anton: var(--font-anton);
   --ease-cine: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* shadcn-style tokens, aliased to the active [data-world] palette so
+     components/ui primitives (Button, hero-04, …) follow each world's theme. */
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --color-primary: var(--fg);
+  --color-primary-foreground: var(--bg);
+  --color-secondary: var(--bg-2);
+  --color-secondary-foreground: var(--fg);
+  --color-muted: var(--bg-2);
+  --color-muted-foreground: var(--muted);
+  --color-accent: var(--bg-2);
+  --color-accent-foreground: var(--fg);
+  --color-destructive: var(--accent-2);
+  --color-destructive-foreground: var(--bg);
+  --color-border: var(--line);
+  --color-input: var(--line);
+  --color-ring: var(--accent);
 }
 
 :root {
