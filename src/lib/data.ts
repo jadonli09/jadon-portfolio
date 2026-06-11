@@ -19,7 +19,7 @@ export type WorldId =
 export const PROFILE = {
   name: "Jadon Li",
   roles: ["Civic Storyteller", "Bio Researcher", "Builder", "Student Leader", "Athlete"],
-  tagline: "Documenting the grind across five worlds.",
+  tagline: "One person, locked in — documented in public.",
   school: "Mission San Jose High School",
   city: "Fremont, California",
   gradeNote: "Class of 2027",
@@ -111,141 +111,90 @@ export const WORLDS: WorldMeta[] = [
   },
 ];
 
-/* ───────────────────────── THE STORY SPINE ──────────────────────── */
-/**
- * One cohesive narrative. Each chapter is a beat in the same story and a doorway
- * to a deeper "world" you can explore and return from. Read top to bottom, it's
- * one arc; each `href` is a place to dig deeper.
- */
-export type Chapter = {
-  id: string; // hash anchor on the root, e.g. "operator"
+/* ─────────────────── THE SENTENCE (landing doors) ─────────────────── */
+/** One door per world: a bold word in the landing's one-sentence overview. */
+export type SentenceDoor = {
+  id: WorldId;
+  /** nav index, in sentence order */
   num: string;
+  /** nav display name */
   kicker: string;
-  headline: string;
-  lede: string;
-  stat?: { value: string; label: string };
-  image: string;
-  /** "contain" shows the whole photo (group/poster shots); "cover" fills + parallax. */
-  fit?: "cover" | "contain";
-  /** object-position for cover shots, e.g. "85% 40%" to feature an off-centre subject. */
-  position?: string;
-  world: WorldId;
+  word: string;
   href: string;
-  cta: string;
-  accent: string; // hint of the destination world's colour, on the dark root
+  /** bright text colour on the dark landing */
+  color: string;
+  /** destination world accent (underline) */
+  accent: string;
+  /** background flood + peek-card photo */
+  photo: string;
+  /** one-line stat in the peek card */
+  peek: string;
 };
 
-export const CHAPTERS: Chapter[] = [
-  {
-    id: "person",
-    num: "01",
-    kicker: "The Person",
-    headline: "A stopwatch, a journal, a kitchen.",
-    lede: "Start with the person. Every birthday since he was twelve, Jadon runs Mission Peak alone. He's journaled since eighth grade, cooks feasts with designed menus for his friends, flies drones, skis, swims — and recommends a good nap.",
-    stat: { value: "46:46", label: "Mission Peak PR · sunrise" },
-    image: "/img/missionpeak2026-1.jpg",
-    world: "about",
-    href: "/about",
-    cta: "Into the person",
-    accent: "#a9683f",
-  },
-  {
-    id: "operator",
-    num: "02",
-    kicker: "The Operator",
-    headline: "Elected to lead, every year.",
-    lede: "That discipline found a stage. Three-time Class President, now ASB President — he lost his way into winning, and runs events at the scale of a city.",
-    stat: { value: "3×", label: "Class President" },
-    image: "/img/asb-officers.jpg",
-    fit: "contain",
-    world: "leadership",
-    href: "/leadership",
-    cta: "Into leadership & events",
-    accent: "#b07c1e",
-  },
-  {
-    id: "storyteller",
-    num: "03",
-    kicker: "The Storyteller",
-    headline: "Documenting a city, and himself.",
-    lede: "Then he picked up a camera. He tells a city's stories — directing the Voices of Fremont podcast with the Mayor, a viral push to revive a beloved restaurant, and a paid role as the Mayor's videographer.",
-    stat: { value: "10k", label: "Views per Mayor video" },
-    image: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg",
-    world: "civic",
-    href: "/civic",
-    cta: "Into civic & storytelling",
-    accent: "#c2402c",
-  },
-  {
-    id: "scientist",
-    num: "04",
-    kicker: "The Scientist",
-    headline: "Reading the genome of pain.",
-    lede: "Curiosity pulled him into the lab. Trained in R by a Stanford professor, he hunted the mediators of gout pain in a mouse model — and traced them to the spinal cord.",
-    stat: { value: "3rd", label: "ACSEF · Computational Bio" },
-    image: "/img/acsef-science-fair.jpg",
-    fit: "contain",
-    world: "research",
-    href: "/research",
-    cta: "Into research & STEM",
-    accent: "#0c9c86",
-  },
-  {
-    id: "builder",
-    num: "05",
-    kicker: "The Builder",
-    headline: "Ship it. Then ship the next.",
-    lede: "What he learned, he shipped. AcornPrep turned six AP exams into a study tool 500+ students actually use — the #1 Google result, built on a real pipeline.",
-    stat: { value: "500+", label: "AcornPrep users" },
-    image: "/img/presenting-acornprep-at-gemini-meetup.jpg",
-    fit: "contain",
-    world: "built",
-    href: "/built",
-    cta: "Into the things he's built",
-    accent: "#4f5fd6",
-  },
-  {
-    id: "competitor",
-    num: "06",
-    kicker: "The Competitor",
-    headline: "First in school history.",
-    lede: "And through all of it, the court. He started in the first five the year Mission San Jose won its first NCS title in school and district history.",
-    stat: { value: "2026", label: "NCS Champions" },
-    image: "/img/ncs-champions.jpg",
-    world: "court",
-    href: "/court",
-    cta: "Into the court",
-    accent: "#e04e12",
-  },
-  {
-    id: "pursuit",
-    num: "07",
-    kicker: "The Pursuit",
-    headline: "The pursuit of happiness.",
-    lede: "And the whole thing is documented. @li_locked.in is the public journal — one year, 83 reels, 1.39 million plays — study tips, vlogs, campaigns, the discomfort of trying new things — all pointing one direction: the pursuit of happiness.",
-    stat: { value: "1.39M+", label: "Plays in year one" },
-    image: "/img/headshot1.jpg",
-    position: "center 32%",
-    world: "lockedin",
-    href: "/locked-in",
-    cta: "Into Locked In",
-    accent: "#d23f7c",
-  },
+export const SENTENCE_DOORS = {
+  leads: { id: "leadership", num: "01", kicker: "The Operator", word: "leads", href: "/leadership", color: "#d9a83f", accent: "#b07c1e", photo: "/img/asb-officers.jpg", peek: "3× Class President → ASB President" },
+  films: { id: "civic", num: "02", kicker: "The Storyteller", word: "films", href: "/civic", color: "#e0644e", accent: "#c2402c", photo: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg", peek: "The Mayor's videographer · Voices of Fremont" },
+  researches: { id: "research", num: "03", kicker: "The Scientist", word: "researches", href: "/research", color: "#2fc4ad", accent: "#0c9c86", photo: "/img/acsef-science-fair.jpg", peek: "Gout pain in the genome · 3rd at ACSEF" },
+  builds: { id: "built", num: "04", kicker: "The Builder", word: "builds", href: "/built", color: "#7c89e8", accent: "#4f5fd6", photo: "/img/presenting-acornprep-at-gemini-meetup.jpg", peek: "AcornPrep · 500+ students · #1 on Google" },
+  competes: { id: "court", num: "05", kicker: "The Competitor", word: "competes", href: "/court", color: "#f0703a", accent: "#e04e12", photo: "/img/ncs-champions.jpg", peek: "First NCS title in school history" },
+  documents: { id: "lockedin", num: "06", kicker: "The Pursuit", word: "documents all of it", href: "/locked-in", color: "#e8689c", accent: "#d23f7c", photo: "/img/headshot1.jpg", peek: "@li_locked.in · 1.39M plays in year one" },
+  person: { id: "about", num: "07", kicker: "The Person", word: "person", href: "/about", color: "#c98a5d", accent: "#a9683f", photo: "/img/missionpeak2026-1.jpg", peek: "Mission Peak every birthday · journaling since 8th grade" },
+} satisfies Record<string, SentenceDoor>;
+
+export const SENTENCE_TICKER = ["3× president", "10k views / video", "ACSEF 3rd", "500+ users", "NCS champions", "1.39M plays"] as const;
+
+/* ─────────────────── THE PINBOARD (landing record) ─────────────────── */
+export type PinKind = "letter" | "polaroid" | "plaque" | "seal" | "ticket" | "note" | "news" | "receipt" | "ribbon" | "index";
+export type PinItem = {
+  kind: PinKind;
+  /** destination; omit for the letter */
+  href?: string;
+  /** hover tag, e.g. "→ the court · rafters" */
+  go?: string;
+  img?: string;
+  caption?: string;
+  value?: string;
+  label?: string;
+  text?: string;
+  hed?: string;
+  src?: string;
+  lines?: string[];
+  accent?: string;
+  /** desktop board placement */
+  left: string;
+  top: number;
+  rot: number;
+  z: number;
+  w?: number;
+};
+
+/** Sixty-word intro, pinned on the board as a letter. */
+export const PIN_LETTER_TEXT =
+  "Jadon Li is a junior at Mission San Jose. Elected president every year since freshman year, films for the Mayor of Fremont, traced gout pain through the genome, built a study app 500+ students use, started on the first championship team in school history — and posted the whole journey.";
+
+export const PINBOARD: PinItem[] = [
+  { kind: "letter", left: "1%", top: 26, rot: -2, z: 2, w: 270 },
+  { kind: "polaroid", href: "/court", go: "→ the court", img: "/img/ncs-champions.jpg", caption: "first NCS title in school history!", left: "21%", top: 12, rot: 4, z: 4, w: 180 },
+  { kind: "news", href: "/court", go: "→ the court · rafters", hed: "“Believe it: Mission San Jose wins first NCS title in boys basketball”", src: "The Mercury News · Feb 2026 · MSJ 46–40", left: "34%", top: 114, rot: -3.5, z: 6, w: 212 },
+  { kind: "seal", href: "/leadership#elected-offices-heading", go: "→ leadership · offices", text: "3× CLASS PRESIDENT · NOW ASB", left: "53%", top: 10, rot: 8, z: 5, w: 98 },
+  { kind: "polaroid", href: "/leadership", go: "→ leadership", img: "/img/speaking-at-rally.jpg", caption: "rally szn", left: "61%", top: 50, rot: -5, z: 3, w: 158 },
+  { kind: "plaque", href: "/locked-in#timeline", go: "→ the pursuit", value: "1.39M", label: "plays · yr one · @li_locked.in", accent: "#e8689c", left: "75%", top: 20, rot: 3, z: 6 },
+  { kind: "note", href: "/about", go: "→ the person", text: "journaling since 8th grade ✎ — naps highly recommended", accent: "#ffe27a", left: "87%", top: 90, rot: -6, z: 4, w: 132 },
+  { kind: "polaroid", href: "/about", go: "→ the person", img: "/img/ironchef-win.jpg", caption: "Iron Chef — W", left: "85%", top: 192, rot: 5, z: 3, w: 146 },
+  { kind: "polaroid", href: "/leadership#elected-offices-heading", go: "→ leadership · offices", img: "/img/asb-officers.jpg", caption: "ASB officer team", left: "2%", top: 246, rot: 3, z: 4, w: 168 },
+  { kind: "receipt", href: "/leadership#elected-offices-heading", go: "→ leadership · offices", lines: ["CLASS OF 2027", "──────────", "FUNDRAISED  $15,000", "STOLES JOB     $700", "──────────", "TOTAL        A LOT"], left: "16%", top: 208, rot: -4, z: 5, w: 132 },
+  { kind: "ribbon", href: "/research", go: "→ research", value: "3rd", label: "ACSEF · comp bio", left: "27%", top: 190, rot: 6, z: 7, w: 96 },
+  { kind: "polaroid", href: "/research", go: "→ research", img: "/img/acsef-science-fair.jpg", caption: "the genomics of gout pain", left: "33%", top: 236, rot: -2, z: 4, w: 162 },
+  { kind: "ticket", href: "/built", go: "→ built", text: "ACORNPREP · ADMIT 500+", label: "six AP exams · #1 on Google", accent: "#7c89e8", left: "48%", top: 204, rot: -5, z: 6, w: 154 },
+  { kind: "polaroid", href: "/built", go: "→ built", img: "/img/presenting-acornprep-at-gemini-meetup.jpg", caption: "pitching at the Gemini meetup", left: "57%", top: 242, rot: 5, z: 4, w: 168 },
+  { kind: "polaroid", href: "/civic", go: "→ civic", img: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg", caption: "Voices of Fremont, w/ the First Partner", left: "72%", top: 232, rot: -4, z: 5, w: 178 },
+  { kind: "polaroid", href: "/about", go: "→ the person", img: "/img/missionpeak2026-1.jpg", caption: "every birthday, same mountain", left: "4%", top: 352, rot: -5, z: 3, w: 158 },
+  { kind: "seal", href: "/about", go: "→ the person", value: "46:46", text: "MISSION PEAK", accent: "silver", left: "18%", top: 336, rot: 7, z: 6, w: 82 },
+  { kind: "index", href: "/leadership#club-crews-heading", go: "→ leadership · clubs", text: "Also currently: MSJ Makes President · STEM-PAC Co-President · ~$4k profit shipping merch jobs", left: "26%", top: 382, rot: -3, z: 5, w: 178 },
+  { kind: "ticket", href: "/civic", go: "→ civic", text: "★ 10K VIEWS", label: "per Mayor video", accent: "#e0644e", left: "41%", top: 350, rot: 4, z: 5, w: 126 },
+  { kind: "note", href: "/civic", go: "→ civic", text: "saved a beloved restaurant w/ one viral push", accent: "#ffd0e2", left: "50%", top: 388, rot: -6, z: 4, w: 118 },
+  { kind: "polaroid", href: "/leadership#winter-ball-title", go: "→ leadership · events", img: "/img/winterball-1.jpg", caption: "Winter Ball — sold out", left: "61%", top: 358, rot: 6, z: 4, w: 152 },
 ];
-
-/** Map a world to the story chapter it belongs to (for "back to the story"). */
-export const WORLD_TO_CHAPTER: Record<WorldId, string> = {
-  about: "person",
-  leadership: "operator",
-  civic: "storyteller",
-  research: "scientist",
-  built: "builder",
-  court: "competitor",
-  lockedin: "pursuit",
-  achievements: "pursuit",
-  albums: "person",
-  contact: "pursuit",
-};
 
 /* ─────────────────────────── LOCKED IN ──────────────────────────── */
 export const LOCKED = {

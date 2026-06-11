@@ -393,7 +393,7 @@ body {
 
 /* ── TYPE HELPERS ─────────────────────────────────────────────── */
 
-.font-display { font-family: var(--font-display), Georgia, serif; }
+.font-display { font-family: var(--font-fraunces), Georgia, serif; }
 .font-grotesk { font-family: var(--font-grotesk), system-ui, sans-serif; }
 .font-mono { font-family: var(--font-mono), ui-monospace, monospace; }
 .font-serif-i { font-family: var(--font-serif), Georgia, serif; }

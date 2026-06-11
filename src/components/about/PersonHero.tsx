@@ -52,7 +52,7 @@ export function PersonHero() {
             transition={{ duration: 0.8, ease: EASE, delay: 0.25 }}
             className="mt-9 max-w-xl text-lg leading-relaxed text-[var(--fg)] md:text-xl"
           >
-            The other five worlds are the résumé. This page is the person —
+            The rest of the site is the résumé. This page is the person —
             the one who plays ball, cooks feasts for friends, flies cameras,{" "}
             writes it all down, and{" "}
             <span className="marker font-semibold">runs up a mountain every birthday.</span>

@@ -19,14 +19,14 @@ const ogImage = `${BASE}/og.png`;
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_ORIGIN || "https://jadonli09.github.io"),
   title: {
-    default: "Jadon Li — Five Worlds",
+    default: "Jadon Li — Locked In",
     template: "%s · Jadon Li",
   },
   description:
-    "Jadon Li — civic storyteller, bio researcher, builder, student leader, and athlete. A personal portfolio in five distinct worlds.",
+    "Jadon Li — student leader, civic storyteller, researcher, builder, and athlete. One person, locked in — a portfolio in seven worlds.",
   openGraph: {
-    title: "Jadon Li — Five Worlds",
-    description: "Civic storyteller · bio researcher · builder · student leader · athlete.",
+    title: "Jadon Li — Locked In",
+    description: "One person, locked in — student leader · storyteller · researcher · builder · athlete.",
     type: "website",
     images: [{ url: ogImage, width: 1200, height: 630 }],
   },

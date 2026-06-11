@@ -6,8 +6,9 @@ import { useLenis } from "lenis/react";
 import { ArrowDown } from "lucide-react";
 import { Preloader } from "@/components/hero/Preloader";
 import { asset } from "@/lib/base";
-import { StorySpine } from "@/components/story/StorySpine";
-import { StoryClose } from "@/components/story/StoryClose";
+import { SentenceDoors } from "@/components/landing/SentenceDoors";
+import { Pinboard } from "@/components/landing/Pinboard";
+import { LandingClose } from "@/components/landing/LandingClose";
 import { Footer } from "@/components/chrome/Footer";
 import { PROFILE } from "@/lib/data";
 import { EASE } from "@/lib/motion";
@@ -140,7 +141,7 @@ export function Landing() {
             I am a <RoleRotator />
           </p>
           <p className="mt-2.5 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-white/80 md:text-[0.8rem]">
-            One story · seven chapters
+            One person · seven doors
           </p>
         </motion.div>
 
@@ -153,19 +154,22 @@ export function Landing() {
           Begin <ArrowDown className="size-3.5 animate-bounce" />
         </motion.div>
 
-        {/* melt into the cream story paper below */}
+        {/* melt into the dark below */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 bottom-0 z-[4] h-16"
-          style={{ background: "linear-gradient(to bottom, transparent, #faf5ec)" }}
+          style={{ background: "linear-gradient(to bottom, transparent, #07070a)" }}
         />
       </section>
 
-      {/* THE STORY */}
-      <StorySpine />
+      {/* THE SENTENCE — the 20-second overview, seven doors */}
+      <SentenceDoors />
+
+      {/* THE RECORD — achievements, pinned */}
+      <Pinboard />
 
       {/* THE CLOSE */}
-      <StoryClose />
+      <LandingClose />
 
       <Footer />
     </main>

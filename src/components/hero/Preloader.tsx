@@ -52,7 +52,7 @@ export function Preloader() {
             transition={{ duration: 0.8, ease: EASE }}
             className="flex flex-col items-center gap-6"
           >
-            <span className="eyebrow">Five worlds · one person</span>
+            <span className="eyebrow">One person · locked in</span>
             <span className="font-anton text-5xl tracking-tight md:text-7xl">JADON LI</span>
           </motion.div>
           <div className="absolute bottom-8 right-6 font-mono text-6xl tabular-nums text-[#e8b15a] md:bottom-12 md:right-12 md:text-8xl">

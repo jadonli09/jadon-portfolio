@@ -51,7 +51,7 @@ export function Footer({ current }: { current?: WorldId }) {
           </div>
         </div>
         <p className="mt-10 font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--muted)]">
-          © {new Date().getFullYear()} Jadon Li — one story, seven chapters
+          © {new Date().getFullYear()} Jadon Li — one person, locked in
         </p>
       </div>
     </footer>

@@ -13,7 +13,7 @@ export default function NotFound() {
       <p className="eyebrow mb-6">Off the map</p>
       <h1 className="font-anton text-[26vw] leading-none tracking-tight md:text-[18rem]">404</h1>
       <p className="mt-4 max-w-md text-center text-[#8a8a99]">
-        This corner of the site doesn&apos;t exist — but there are five worlds that do.
+        This corner of the site doesn&apos;t exist — but there are seven doors that do.
       </p>
       <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
         <Magnetic strength={0.4}>

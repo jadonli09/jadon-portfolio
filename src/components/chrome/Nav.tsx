@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { CHAPTERS, PROFILE } from "@/lib/data";
+import { PROFILE, SENTENCE_DOORS } from "@/lib/data";
+
+const DOORS = Object.values(SENTENCE_DOORS);
 import { EASE } from "@/lib/motion";
 import { Magnetic } from "@/components/primitives/Magnetic";
 
@@ -69,11 +71,11 @@ export function Nav() {
             <div className="flex flex-1 flex-col justify-center px-5 pt-24 md:px-9">
               <div className="mb-4 flex items-center gap-3">
                 <Link href="/" data-cursor-hover className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-[#8a8a99] transition-colors hover:text-[#f4f1ea]">
-                  ↑ The story, from the top
+                  ↑ One person, from the top
                 </Link>
               </div>
               <ul className="flex flex-col">
-                {CHAPTERS.map((c, i) => (
+                {DOORS.map((c, i) => (
                   <motion.li
                     key={c.id}
                     initial={{ y: 40, opacity: 0 }}
@@ -93,7 +95,7 @@ export function Nav() {
                         </span>
                       </span>
                       <span className="hidden max-w-[40%] text-right font-mono text-[0.62rem] uppercase tracking-widest text-[#8a8a99] md:block">
-                        {c.headline}
+                        {c.peek}
                       </span>
                     </Link>
                   </motion.li>
