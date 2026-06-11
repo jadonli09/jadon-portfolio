@@ -4,62 +4,22 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { ChevronRight, Folder, FileText, Terminal as TermIcon } from "lucide-react";
 import { VolcanoPlot } from "@/components/research/VolcanoPlot";
-import { PipelineFlow } from "@/components/research/PipelineFlow";
-import { AwardsPanel } from "@/components/research/AwardsPanel";
-import { ProgramsGrid } from "@/components/research/ProgramsGrid";
-import { Counter } from "@/components/primitives/Counter";
-import { RESEARCH } from "@/lib/data";
 import { asset } from "@/lib/base";
-import { fireToast, toggleMutate } from "./bus";
 import { cn } from "@/lib/cn";
+import { fireToast, toggleMutate } from "./bus";
+import { AWARDS, AWARD_VIZ, GENES, PIPELINE, PROFILE, PROGRAMS, PROJECT, STATS, STAT_BARS, USABO_MEDAL, USABO_MEDAL_INFO, type Award, type Program } from "./content";
+import { AsciiArt, AsciiMeter, AsciiPanel, CodeBlock, DirListing, ImagePreview, JsonView, KeyVals, MdHeading, Prose, TermTable } from "./term";
 
-// ── command + content model ───────────────────────────────────────────────────
+// ── model ─────────────────────────────────────────────────────────────────────
 
-type ViewId = "help" | "tree" | "readme" | "whoami" | "volcano" | "project" | "awards" | "field" | "stats";
 type Tone = "fg" | "muted" | "accent" | "cyan" | "err";
 
 type Entry =
-  | { id: number; kind: "cmd"; text: string }
+  | { id: number; kind: "cmd"; text: string; path: string }
   | { id: number; kind: "out"; lines: { text: string; tone?: Tone }[] }
-  | { id: number; kind: "view"; view: ViewId };
+  | { id: number; kind: "view"; token: string };
 
-const VIEW_FILE: Record<ViewId, string> = {
-  help: "help",
-  tree: "ls ~/research",
-  readme: "README.md",
-  whoami: "whoami",
-  volcano: "volcano.plot",
-  project: "project/gout-rnaseq.md",
-  awards: "awards/results.json",
-  field: "field/programs.md",
-  stats: "stats.json",
-};
-
-// Explorer tree — every leaf maps to a command.
-const TREE: { label: string; cmd: string; depth: number; folder?: boolean }[] = [
-  { label: "README.md", cmd: "readme", depth: 0 },
-  { label: "whoami", cmd: "whoami", depth: 0 },
-  { label: "volcano.plot", cmd: "volcano", depth: 0 },
-  { label: "project", cmd: "project", depth: 0, folder: true },
-  { label: "gout-rnaseq.md", cmd: "project", depth: 1 },
-  { label: "methodology.sh", cmd: "methodology", depth: 1 },
-  { label: "awards", cmd: "awards", depth: 0, folder: true },
-  { label: "usabo.json", cmd: "awards", depth: 1 },
-  { label: "uk-bbo.json", cmd: "awards", depth: 1 },
-  { label: "acsef.json", cmd: "awards", depth: 1 },
-  { label: "field", cmd: "field", depth: 0, folder: true },
-  { label: "ysjc.md", cmd: "field", depth: 1 },
-  { label: "prism.md", cmd: "field", depth: 1 },
-  { label: "stem-pac.md", cmd: "field", depth: 1 },
-  { label: "umass.md", cmd: "field", depth: 1 },
-  { label: "stats.json", cmd: "stats", depth: 0 },
-];
-
-// canonical command names for autocomplete
-const COMMAND_NAMES = [
-  "help", "ls", "clear", "readme", "whoami", "volcano", "project",
-  "methodology", "awards", "field", "stats", "mutate", "exit",
-];
+type Dir = "root" | "project" | "awards" | "field";
 
 const TONE_CLASS: Record<Tone, string> = {
   fg: "text-[var(--fg)]",
@@ -69,30 +29,134 @@ const TONE_CLASS: Record<Tone, string> = {
   err: "text-[var(--hot)]",
 };
 
-const BOOT: { text: string; tone?: Tone; at: number }[] = [
-  { text: "deg-console v3.0 · research IDE", tone: "accent", at: 100 },
-  { text: "booting kernel ............ ok", tone: "muted", at: 240 },
-  { text: "mounting /achievements .... ok", tone: "muted", at: 380 },
-  { text: "indexed: 1 project · 3 olympiad results · 4 programs", tone: "muted", at: 540 },
-  { text: " ", at: 600 },
-  { text: "This page is a terminal — nothing is shown until you ask for it.", tone: "fg", at: 720 },
-  { text: "It does not scroll on its own; you drive it with commands.", tone: "fg", at: 720 },
-  { text: " ", at: 760 },
-  { text: "→ type  help  to list commands, or  ls  to browse the achievements.", tone: "accent", at: 900 },
-];
+// bare word / filename → render token
+const TOKEN_FOR: Record<string, string> = {
+  readme: "readme", "readme.md": "readme", intro: "readme",
+  whoami: "whoami", about: "whoami", me: "whoami",
+  neofetch: "neofetch", fetch: "neofetch",
+  stats: "stats", "stats.json": "stats", numbers: "stats",
+  project: "project", "gout-rnaseq": "project", "gout-rnaseq.md": "project", rnaseq: "project", "rna-seq": "project", gout: "project",
+  methodology: "methodology", method: "methodology", "methodology.sh": "methodology", pipeline: "methodology",
+  genes: "genes", mediators: "genes", "deg-results": "genes", "deg-results.tsv": "genes", deg: "genes", degs: "genes",
+  abstract: "abstract", "abstract.txt": "abstract",
+  volcano: "volcano", plot: "volcano", "volcano.plot": "volcano",
+  awards: "awards", competitions: "awards", olympiads: "awards",
+  usabo: "award:usabo", "usabo.json": "award:usabo",
+  bbo: "award:bbo", "uk-bbo": "award:bbo", ukbbo: "award:bbo", "uk-bbo.json": "award:bbo",
+  acsef: "award:acsef", "acsef.json": "award:acsef",
+  field: "programs", programs: "programs", outreach: "programs", teaching: "programs",
+  ysjc: "program:ysjc", "ysjc.md": "program:ysjc",
+  prism: "program:prism", "prism.md": "program:prism",
+  stempac: "program:stempac", "stem-pac": "program:stempac", "stem-pac.md": "program:stempac",
+  umass: "program:umass", "umass.md": "program:umass",
+};
+
+const FILE_TOKENS = new Set(["readme", "stats", "project", "methodology", "genes", "abstract", "volcano"]);
+const isFileToken = (t: string) => FILE_TOKENS.has(t) || t.startsWith("award:") || t.startsWith("program:");
+
+function frameLabel(token: string): string {
+  const [base, arg] = token.split(":");
+  if (base === "award") return `awards/${AWARDS.find((a) => a.id === arg)?.file ?? "?.json"}`;
+  if (base === "program") return `field/${PROGRAMS.find((p) => p.id === arg)?.file ?? "?.md"}`;
+  if (base === "ls") return `ls ${arg === "root" ? "~/research" : `${arg}/`}`;
+  return {
+    help: "help", tree: "tree ~/research", neofetch: "neofetch", whoami: "whoami",
+    readme: "README.md", stats: "stats.json", awards: "ls awards/", programs: "ls field/",
+    project: "project/gout-rnaseq.md", methodology: "project/methodology.sh",
+    genes: "project/deg-results.tsv", abstract: "project/abstract.txt", volcano: "project/volcano.plot",
+  }[base] ?? token;
+}
+
+function frameTag(label: string): string {
+  if (label.endsWith(".json")) return "json";
+  if (label.endsWith(".md")) return "markdown";
+  if (label.endsWith(".tsv")) return "tsv";
+  if (label.endsWith(".sh")) return "shell";
+  if (label.endsWith(".plot")) return "figure";
+  if (label.endsWith(".txt")) return "text";
+  if (label.startsWith("ls") || label.startsWith("tree")) return "dir";
+  return "stdout";
+}
 
 const SUGGEST: Record<string, string[]> = {
   default: ["help", "ls", "volcano", "project", "awards", "field"],
-  volcano: ["project", "awards", "field", "stats"],
-  project: ["awards", "field", "methodology", "stats"],
-  awards: ["project", "field", "stats", "volcano"],
-  field: ["project", "awards", "stats", "volcano"],
-  stats: ["project", "awards", "field", "readme"],
-  readme: ["volcano", "project", "awards", "field"],
-  whoami: ["project", "awards", "field", "ls"],
   help: ["ls", "volcano", "project", "awards"],
   tree: ["volcano", "project", "awards", "field"],
+  ls: ["usabo", "project", "awards", "field"],
+  awards: ["usabo", "bbo", "acsef", "project"],
+  award: ["awards", "genes", "project", "volcano"],
+  programs: ["ysjc", "prism", "stem-pac", "umass"],
+  program: ["field", "project", "awards", "stats"],
+  project: ["methodology", "genes", "volcano", "awards"],
+  methodology: ["genes", "volcano", "project", "stats"],
+  genes: ["volcano", "project", "methodology", "awards"],
+  abstract: ["project", "genes", "volcano", "awards"],
+  volcano: ["genes", "project", "awards", "field"],
+  stats: ["awards", "project", "field", "neofetch"],
+  readme: ["volcano", "project", "awards", "field"],
+  whoami: ["neofetch", "project", "awards", "field"],
+  neofetch: ["whoami", "project", "awards", "stats"],
 };
+
+const HINT: Record<string, { text: string; tone?: Tone }> = {
+  volcano: { text: "→ hover the glowing points to inspect genes · `genes` for the DESeq2 table" },
+  awards: { text: "→ open one: `usabo` · `bbo` · `acsef`  (or `cat awards/usabo.json`)" },
+  programs: { text: "→ open one: `ysjc` · `prism` · `stem-pac` · `umass`" },
+  project: { text: "→ dig in: `methodology` · `genes` · `volcano` · `abstract`" },
+  methodology: { text: "→ `genes` for the differential-expression hits" },
+};
+
+// explorer tree
+const EXPLORER: { label: string; cmd: string; depth: number; folder?: boolean }[] = [
+  { label: "README.md", cmd: "readme", depth: 0 },
+  { label: "whoami", cmd: "whoami", depth: 0 },
+  { label: "neofetch", cmd: "neofetch", depth: 0 },
+  { label: "stats.json", cmd: "stats", depth: 0 },
+  { label: "project", cmd: "project", depth: 0, folder: true },
+  { label: "gout-rnaseq.md", cmd: "project", depth: 1 },
+  { label: "methodology.sh", cmd: "methodology", depth: 1 },
+  { label: "deg-results.tsv", cmd: "genes", depth: 1 },
+  { label: "volcano.plot", cmd: "volcano", depth: 1 },
+  { label: "awards", cmd: "awards", depth: 0, folder: true },
+  { label: "usabo.json", cmd: "usabo", depth: 1 },
+  { label: "uk-bbo.json", cmd: "bbo", depth: 1 },
+  { label: "acsef.json", cmd: "acsef", depth: 1 },
+  { label: "field", cmd: "field", depth: 0, folder: true },
+  { label: "ysjc.md", cmd: "ysjc", depth: 1 },
+  { label: "prism.md", cmd: "prism", depth: 1 },
+  { label: "stem-pac.md", cmd: "stempac", depth: 1 },
+  { label: "umass.md", cmd: "umass", depth: 1 },
+];
+
+const FS: Record<Dir, { perms: string; size: string; name: string; kind: "dir" | "exec" | "file" }[]> = {
+  root: [
+    { perms: "drwxr-xr-x", size: "4.0K", name: "project", kind: "dir" },
+    { perms: "drwxr-xr-x", size: "4.0K", name: "awards", kind: "dir" },
+    { perms: "drwxr-xr-x", size: "4.0K", name: "field", kind: "dir" },
+    { perms: "-rw-r--r--", size: "2.1K", name: "README.md", kind: "file" },
+    { perms: "-rw-r--r--", size: "0.6K", name: "stats.json", kind: "file" },
+    { perms: "-rwxr-xr-x", size: "1.2K", name: "whoami", kind: "exec" },
+    { perms: "-rwxr-xr-x", size: "1.8K", name: "neofetch", kind: "exec" },
+  ],
+  project: [
+    { perms: "-rw-r--r--", size: "3.4K", name: "gout-rnaseq.md", kind: "file" },
+    { perms: "-rwxr-xr-x", size: "1.1K", name: "methodology.sh", kind: "exec" },
+    { perms: "-rw-r--r--", size: "0.9K", name: "deg-results.tsv", kind: "file" },
+    { perms: "-rw-r--r--", size: "0.7K", name: "abstract.txt", kind: "file" },
+    { perms: "-rwxr-xr-x", size: "24K", name: "volcano.plot", kind: "exec" },
+  ],
+  awards: AWARDS.map((a) => ({ perms: "-rw-r--r--", size: "0.8K", name: a.file, kind: "file" as const })),
+  field: PROGRAMS.map((p) => ({ perms: "-rw-r--r--", size: "1.0K", name: p.file, kind: "file" as const })),
+};
+
+function resolveDir(a: string): Dir | null {
+  const x = a.replace(/\/$/, "");
+  if (x === "" || x === "~" || x === ".." || x === "/" || x === ".") return x === ".." ? "root" : "root";
+  if (x === "awards" || x === "competitions") return "awards";
+  if (x === "field" || x === "programs") return "field";
+  if (x === "project") return "project";
+  return null;
+}
 
 // ── component ─────────────────────────────────────────────────────────────────
 
@@ -101,9 +165,10 @@ export function ResearchIDE() {
   const [value, setValue] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [histIdx, setHistIdx] = useState<number | null>(null);
-  const [tabs, setTabs] = useState<ViewId[]>([]);
-  const [active, setActive] = useState<ViewId | null>(null);
+  const [tabs, setTabs] = useState<string[]>([]);
+  const [active, setActive] = useState<string | null>(null);
   const [suggest, setSuggest] = useState<string[]>(SUGGEST.default);
+  const [cwd, setCwd] = useState<Dir>("root");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const idRef = useRef(0);
@@ -111,26 +176,34 @@ export function ResearchIDE() {
   const logRef = useRef<HTMLDivElement>(null);
   const nextId = () => ++idRef.current;
 
-  // boot sequence
+  const promptPath = (d: Dir) => (d === "root" ? "~/research" : `~/research/${d}`);
+
   useEffect(() => {
-    const timers = BOOT.map((b) =>
-      window.setTimeout(() => {
-        setLog((l) => [...l, { id: nextId(), kind: "out", lines: [{ text: b.text, tone: b.tone }] }]);
-      }, b.at),
+    const boot: { text: string; tone?: Tone; at: number }[] = [
+      { text: "deg-console v3.1 · research IDE", tone: "accent", at: 100 },
+      { text: "booting kernel ............ ok", tone: "muted", at: 230 },
+      { text: "mounting /achievements .... ok", tone: "muted", at: 360 },
+      { text: "indexed: 1 project · 7 DEGs · 3 awards · 4 programs", tone: "muted", at: 520 },
+      { text: " ", at: 580 },
+      { text: "This page is a terminal. Nothing is shown until you ask for it.", tone: "fg", at: 700 },
+      { text: "Try a command — file outputs render like a real IDE.", tone: "fg", at: 700 },
+      { text: " ", at: 740 },
+      { text: "→ type  help  ·  ls  ·  neofetch  ·  or open a file: `usabo`, `genes`, `volcano`", tone: "accent", at: 880 },
+    ];
+    const timers = boot.map((b) =>
+      window.setTimeout(() => setLog((l) => [...l, { id: nextId(), kind: "out", lines: [{ text: b.text, tone: b.tone }] }]), b.at),
     );
-    const focus = window.setTimeout(() => inputRef.current?.focus(), 950);
+    const focus = window.setTimeout(() => inputRef.current?.focus(), 920);
     return () => {
       timers.forEach(clearTimeout);
       clearTimeout(focus);
     };
   }, []);
 
-  // keep terminal pinned to newest output
   useEffect(() => {
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
   }, [log]);
 
-  // ⌘K / Ctrl-K focuses the prompt
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -142,121 +215,82 @@ export function ResearchIDE() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const pushCmd = (text: string) => setLog((l) => [...l, { id: nextId(), kind: "cmd", text }]);
-  const pushOut = (lines: { text: string; tone?: Tone }[]) =>
-    setLog((l) => [...l, { id: nextId(), kind: "out", lines }]);
-  const pushView = (view: ViewId) => {
-    setLog((l) => [...l, { id: nextId(), kind: "view", view }]);
-    setActive(view);
-    setTabs((t) => (t.includes(view) ? t : [...t, view]));
+  const out = (lines: { text: string; tone?: Tone }[]) => setLog((l) => [...l, { id: nextId(), kind: "out", lines }]);
+  const show = (token: string) => {
+    setLog((l) => [...l, { id: nextId(), kind: "view", token }]);
+    if (isFileToken(token)) {
+      setActive(token);
+      setTabs((t) => (t.includes(token) ? t : [...t, token].slice(-8)));
+    }
+    const base = token.split(":")[0];
+    if (HINT[base]) out([{ text: HINT[base].text, tone: HINT[base].tone ?? "muted" }]);
+    setSuggest(SUGGEST[base] ?? SUGGEST.default);
   };
 
   const exec = (raw: string) => {
     const line = raw.trim();
     if (!line) return;
-    pushCmd(line);
-    setHistory((h) => [...h, line].slice(-50));
+    const path = promptPath(cwd);
+    setLog((l) => [...l, { id: nextId(), kind: "cmd", text: line, path }]);
+    setHistory((h) => [...h, line].slice(-60));
     setHistIdx(null);
 
-    const tokens = line.toLowerCase().split(/\s+/);
-    let head = tokens[0];
-    const arg = tokens.slice(1).join(" ").replace(/^\.?\//, "").replace(/\/$/, "");
-    if (["open", "cat", "cd", "view", "go", "goto", "run", "less", "vim", "nano"].includes(head) && arg) {
-      head = arg.replace(/\//g, "").replace(/\.(md|json|sh|plot|tsx)$/, "");
-    } else {
-      head = head.replace(/\.(md|json|sh|plot|tsx)$/, "");
-    }
+    const t = line.toLowerCase();
+    const parts = t.split(/\s+/);
+    const head = parts[0];
+    const arg = parts.slice(1).join(" ").trim();
+    const basename = (s: string) => s.replace(/.*\//, "").replace(/\/$/, "");
 
-    let key = "default";
     switch (head) {
-      case "help":
-      case "?":
-      case "man":
-      case "commands":
-        pushView("help"); key = "help"; break;
-      case "ls":
-      case "dir":
-      case "tree":
-      case "sections":
-        pushView("tree"); key = "tree"; break;
-      case "clear":
-      case "cls":
+      case "help": case "?": case "man": case "commands": case "--help":
+        show("help"); return;
+      case "clear": case "cls":
         setLog([]); setActive(null); return;
-      case "readme":
-      case "intro":
-      case "start":
-        pushView("readme"); key = "readme"; break;
-      case "whoami":
-      case "about":
-      case "me":
-        pushView("whoami"); key = "whoami"; break;
-      case "volcano":
-      case "plot":
-      case "deg":
-        pushView("volcano"); key = "volcano";
-        pushOut([{ text: "→ hover the glowing points to inspect genes. up = lime, down = cyan.", tone: "muted" }]);
-        break;
-      case "project":
-      case "gout-rnaseq":
-      case "rnaseq":
-      case "rna-seq":
-      case "gout":
-        pushView("project"); key = "project"; break;
-      case "methodology":
-      case "method":
-        pushView("project"); key = "project";
-        window.setTimeout(() => window.dispatchEvent(new CustomEvent("lab:open-methodology")), 80);
-        pushOut([{ text: "→ expanded the full 8-step methodology + key mediators.", tone: "muted" }]);
-        break;
-      case "awards":
-      case "results":
-      case "usabo":
-      case "bbo":
-      case "uk-bbo":
-      case "acsef":
-      case "olympiads":
-      case "competitions":
-        pushView("awards"); key = "awards";
-        pushOut([{ text: "→ click any award row to expand the full breakdown.", tone: "muted" }]);
-        break;
-      case "field":
-      case "programs":
-      case "ysjc":
-      case "prism":
-      case "stem-pac":
-      case "stempac":
-      case "umass":
-      case "teaching":
-      case "outreach":
-        pushView("field"); key = "field"; break;
-      case "stats":
-      case "numbers":
-      case "receipts":
-        pushView("stats"); key = "stats"; break;
-      case "mutate":
-      case "mutation":
-        toggleMutate(); break;
-      case "konami":
-        fireToast("try it on your keyboard ;)", "lime"); break;
-      case "sudo":
-        pushOut([{ text: "nice try. you already have root here.", tone: "accent" }]); break;
-      case "exit":
-      case "quit":
-      case "home":
-      case "..":
-        pushOut([{ text: "returning to portfolio…", tone: "cyan" }]);
+      case "ls": case "dir": case "ll": {
+        const d = arg ? resolveDir(arg) : cwd;
+        if (d === null) { out([{ text: `ls: cannot access '${arg}': No such directory`, tone: "err" }]); return; }
+        show(`ls:${d}`); setSuggest(SUGGEST.ls); return;
+      }
+      case "tree": show("tree"); setSuggest(SUGGEST.tree); return;
+      case "pwd": out([{ text: promptPath(cwd), tone: "fg" }]); return;
+      case "cd": {
+        const d = resolveDir(arg || "~");
+        if (d === null) { out([{ text: `cd: no such directory: ${arg}`, tone: "err" }]); return; }
+        setCwd(d);
+        out([{ text: promptPath(d), tone: "muted" }]);
+        return;
+      }
+      case "cat": case "open": case "less": case "more": case "view": case "vim": case "nano": case "run": case "./": {
+        const tok = TOKEN_FOR[basename(arg)];
+        if (tok) { show(tok); return; }
+        out([{ text: `${head}: ${arg || "?"}: No such file`, tone: "err" }]); return;
+      }
+      case "history":
+        out(history.length ? history.map((h, i) => ({ text: `${String(i + 1).padStart(3, " ")}  ${h}`, tone: "muted" as Tone })) : [{ text: "(no history yet)", tone: "muted" }]);
+        return;
+      case "echo": out([{ text: arg, tone: "fg" }]); return;
+      case "date": out([{ text: new Date().toString(), tone: "muted" }]); return;
+      case "neofetch": case "fetch": show("neofetch"); setSuggest(SUGGEST.neofetch); return;
+      case "whoami": case "about": case "me": show("whoami"); return;
+      case "readme": case "intro": case "start": show("readme"); return;
+      case "mutate": case "mutation": toggleMutate(); return;
+      case "konami": case "cheat": fireToast("try it on your keyboard ;)", "lime"); return;
+      case "sudo": out([{ text: "nice try — you already have root here. (try `mutate`)", tone: "accent" }]); return;
+      case "exit": case "quit": case "logout":
+        out([{ text: "logging out → returning to the portfolio…", tone: "cyan" }]);
         window.setTimeout(() => { window.location.href = asset("/"); }, 350);
         return;
-      default:
-        pushOut([
-          { text: `command not found: ${tokens[0]}`, tone: "err" },
-          { text: "type  help  for the list of commands.", tone: "muted" },
+      default: {
+        const tok = TOKEN_FOR[basename(head)] ?? TOKEN_FOR[head];
+        if (tok) { show(tok); return; }
+        out([
+          { text: `command not found: ${head}`, tone: "err" },
+          { text: "type  help  for the command list, or  ls  to browse.", tone: "muted" },
         ]);
+      }
     }
-    setSuggest(SUGGEST[key] ?? SUGGEST.default);
   };
 
-  // file-tree / chip / tab clicks all route through exec
   const run = (cmd: string) => {
     exec(cmd);
     inputRef.current?.focus();
@@ -270,7 +304,8 @@ export function ResearchIDE() {
       e.preventDefault();
       const tok = value.trim().toLowerCase();
       if (tok) {
-        const hit = COMMAND_NAMES.find((c) => c.startsWith(tok));
+        const pool = ["help", "ls", "tree", "clear", "neofetch", "whoami", "readme", "stats", "volcano", "project", "methodology", "genes", "abstract", "awards", "usabo", "bbo", "acsef", "field", "ysjc", "prism", "stem-pac", "umass", "mutate", "exit"];
+        const hit = pool.find((c) => c.startsWith(tok));
         if (hit) setValue(hit);
       }
     } else if (e.key === "ArrowUp") {
@@ -290,7 +325,7 @@ export function ResearchIDE() {
 
   return (
     <div className="flex h-full flex-col font-mono text-[var(--fg)]">
-      {/* ── title bar ─────────────────────────────────────────── */}
+      {/* title bar */}
       <div className="flex items-center justify-between gap-3 border-b border-[var(--line)] bg-[var(--bg-2)]/70 px-3 py-2 backdrop-blur">
         <div className="flex items-center gap-3">
           <span className="flex gap-1.5" aria-hidden>
@@ -298,11 +333,7 @@ export function ResearchIDE() {
             <span className="size-3 rounded-full bg-[#ffd23c]" />
             <span className="size-3 rounded-full bg-[var(--accent)]" />
           </span>
-          <button
-            onClick={() => setSidebarOpen((s) => !s)}
-            data-cursor-hover
-            className="md:pointer-events-none flex items-center gap-2 text-[0.62rem] uppercase tracking-widest text-[var(--muted)]"
-          >
+          <button onClick={() => setSidebarOpen((s) => !s)} data-cursor-hover className="flex items-center gap-2 text-[0.62rem] uppercase tracking-widest text-[var(--muted)] md:pointer-events-none">
             <TermIcon className="size-3.5 text-[var(--accent)]" />
             jadon.li — research IDE
           </button>
@@ -314,7 +345,6 @@ export function ResearchIDE() {
         </div>
       </div>
 
-      {/* ── body: explorer + terminal ─────────────────────────── */}
       <div className="relative flex min-h-0 flex-1">
         {/* explorer */}
         <aside
@@ -323,68 +353,50 @@ export function ResearchIDE() {
             "max-md:absolute max-md:inset-y-0 max-md:left-0 max-md:z-30 max-md:w-56 max-md:transition-transform",
             sidebarOpen ? "max-md:translate-x-0" : "max-md:-translate-x-full",
           )}
-          style={{ marginTop: 0 }}
         >
-          <p className="border-b border-[var(--line)] px-3 py-2 text-[0.58rem] uppercase tracking-[0.2em] text-[var(--muted)]">
-            Explorer
-          </p>
+          <p className="border-b border-[var(--line)] px-3 py-2 text-[0.58rem] uppercase tracking-[0.2em] text-[var(--muted)]">Explorer</p>
           <div className="flex items-center gap-1.5 px-3 py-2 text-[0.62rem] text-[var(--muted)]">
             <ChevronRight className="size-3" /> ~/research
           </div>
-          <div className="flex-1 overflow-y-auto term-scroll pb-3">
-            {TREE.map((t, i) => (
+          <div className="term-scroll flex-1 overflow-y-auto pb-3" data-lenis-prevent>
+            {EXPLORER.map((it, i) => (
               <button
                 key={i}
                 data-cursor-hover
-                onClick={() => { run(t.cmd); setSidebarOpen(false); }}
+                onClick={() => { run(it.cmd); setSidebarOpen(false); }}
                 className="group flex w-full items-center gap-1.5 py-1 pr-2 text-left text-[0.7rem] text-[var(--muted)] transition-colors hover:bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] hover:text-[var(--fg)]"
-                style={{ paddingLeft: `${0.75 + t.depth * 0.9}rem` }}
+                style={{ paddingLeft: `${0.75 + it.depth * 0.9}rem` }}
               >
-                {t.folder ? (
-                  <Folder className="size-3.5 shrink-0 text-[var(--accent-2)]" />
-                ) : (
-                  <FileText className="size-3.5 shrink-0 text-[var(--muted)] group-hover:text-[var(--accent)]" />
-                )}
-                {t.label}
+                {it.folder ? <Folder className="size-3.5 shrink-0 text-[var(--accent-2)]" /> : <FileText className="size-3.5 shrink-0 text-[var(--muted)] group-hover:text-[var(--accent)]" />}
+                {it.label}
               </button>
             ))}
           </div>
-          <a
-            href={asset("/")}
-            data-cursor-hover
-            className="border-t border-[var(--line)] px-3 py-2 text-[0.6rem] uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--accent)]"
-          >
+          <a href={asset("/")} data-cursor-hover className="border-t border-[var(--line)] px-3 py-2 text-[0.6rem] uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--accent)]">
             ← exit to portfolio
           </a>
         </aside>
 
         {/* terminal column */}
-        <main className="flex min-w-0 flex-1 flex-col">
+        <main className="flex min-h-0 min-w-0 flex-1 flex-col">
           {/* tab bar */}
-          <div className="flex items-stretch gap-px overflow-x-auto border-b border-[var(--line)] bg-[var(--bg)]/40 term-scroll">
-            <button
-              onClick={() => setSidebarOpen((s) => !s)}
-              data-cursor-hover
-              className="flex items-center px-3 text-[var(--muted)] md:hidden"
-              aria-label="toggle explorer"
-            >
-              ☰
-            </button>
+          <div className="term-scroll flex items-stretch gap-px overflow-x-auto border-b border-[var(--line)] bg-[var(--bg)]/40" data-lenis-prevent>
+            <button onClick={() => setSidebarOpen((s) => !s)} data-cursor-hover className="flex items-center px-3 text-[var(--muted)] md:hidden" aria-label="toggle explorer">☰</button>
             {tabs.length === 0 ? (
-              <span className="px-3 py-2 text-[0.62rem] uppercase tracking-widest text-[var(--muted)]">terminal — bash</span>
+              <span className="px-3 py-2 text-[0.62rem] uppercase tracking-widest text-[var(--muted)]">terminal — deg-sh</span>
             ) : (
-              tabs.map((t) => (
+              tabs.map((tk) => (
                 <button
-                  key={t}
+                  key={tk}
                   data-cursor-hover
-                  onClick={() => run(t)}
+                  onClick={() => run(tk.includes(":") ? tk.split(":")[1] : tk)}
                   className={cn(
                     "flex items-center gap-2 whitespace-nowrap border-r border-[var(--line)] px-3 py-2 text-[0.66rem] transition-colors",
-                    active === t ? "bg-[var(--bg-2)]/70 text-[var(--fg)]" : "text-[var(--muted)] hover:text-[var(--fg)]",
+                    active === tk ? "bg-[var(--bg-2)]/70 text-[var(--fg)]" : "text-[var(--muted)] hover:text-[var(--fg)]",
                   )}
                 >
-                  <FileText className="size-3" style={{ color: active === t ? "var(--accent)" : undefined }} />
-                  {VIEW_FILE[t]}
+                  <FileText className="size-3" style={{ color: active === tk ? "var(--accent)" : undefined }} />
+                  {frameLabel(tk).split("/").pop()}
                 </button>
               ))
             )}
@@ -393,39 +405,40 @@ export function ResearchIDE() {
           {/* output stream */}
           <div
             ref={logRef}
+            data-lenis-prevent
             onClick={(e) => { if (e.target === e.currentTarget) inputRef.current?.focus(); }}
-            className="ide-stream term-scroll flex-1 overflow-y-auto px-4 py-4 text-[0.8rem] leading-relaxed md:px-6"
+            className="ide-stream term-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 text-[0.8rem] leading-relaxed md:px-6"
           >
             {log.map((e) => (
               <div key={e.id} className="mb-1">
                 {e.kind === "cmd" && (
-                  <p className="flex gap-2">
-                    <span className="shrink-0 text-[var(--accent)]">visitor@deg-console:~/research$</span>
+                  <p className="flex flex-wrap gap-x-2">
+                    <span className="shrink-0">
+                      <span className="text-[var(--accent)]">visitor@deg-console</span>
+                      <span className="text-[var(--muted)]">:{e.path}$</span>
+                    </span>
                     <span className="text-[var(--fg)]">{e.text}</span>
                   </p>
                 )}
-                {e.kind === "out" &&
-                  e.lines.map((ln, i) => (
-                    <p key={i} className={cn("whitespace-pre-wrap", TONE_CLASS[ln.tone ?? "muted"])}>
-                      {ln.text}
-                    </p>
-                  ))}
+                {e.kind === "out" && e.lines.map((ln, i) => (
+                  <p key={i} className={cn("whitespace-pre-wrap", TONE_CLASS[ln.tone ?? "muted"])}>{ln.text}</p>
+                ))}
                 {e.kind === "view" && (
                   <motion.div
-                    initial={{ opacity: 0, y: 8 }}
+                    initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                     className="my-2 overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--bg-2)]/35"
                   >
                     <div className="flex items-center justify-between border-b border-[var(--line)] bg-[var(--bg-2)]/50 px-3 py-1.5">
                       <span className="flex items-center gap-2 text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
                         <FileText className="size-3 text-[var(--accent)]" />
-                        {VIEW_FILE[e.view]}
+                        {frameLabel(e.token)}
                       </span>
-                      <span className="text-[0.55rem] uppercase tracking-widest text-[var(--muted)]">rendered</span>
+                      <span className="text-[0.55rem] uppercase tracking-widest text-[var(--muted)]">{frameTag(frameLabel(e.token))}</span>
                     </div>
                     <div className="p-4 md:p-5">
-                      <ViewBody view={e.view} run={run} />
+                      <ViewBody token={e.token} />
                     </div>
                   </motion.div>
                 )}
@@ -437,26 +450,17 @@ export function ResearchIDE() {
           <div className="flex flex-wrap items-center gap-2 border-t border-[var(--line)] px-4 py-2 md:px-6">
             <span className="text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">try</span>
             {suggest.map((s) => (
-              <button
-                key={s}
-                data-cursor-hover
-                onClick={() => run(s)}
-                className="rounded-md border border-[var(--line)] px-2 py-0.5 text-[0.66rem] text-[var(--muted)] transition-colors hover:border-[color-mix(in_srgb,var(--accent)_55%,transparent)] hover:text-[var(--accent)]"
-              >
+              <button key={s} data-cursor-hover onClick={() => run(s)} className="rounded-md border border-[var(--line)] px-2 py-0.5 text-[0.66rem] text-[var(--muted)] transition-colors hover:border-[color-mix(in_srgb,var(--accent)_55%,transparent)] hover:text-[var(--accent)]">
                 {s}
               </button>
             ))}
           </div>
 
           {/* prompt */}
-          <label
-            className="flex cursor-text items-center gap-2 border-t border-[var(--line)] bg-[var(--bg-2)]/40 px-4 py-3 md:px-6"
-            onClick={() => inputRef.current?.focus()}
-            data-cursor-hover
-          >
+          <label className="flex cursor-text items-center gap-2 border-t border-[var(--line)] bg-[var(--bg-2)]/40 px-4 py-3 md:px-6" onClick={() => inputRef.current?.focus()} data-cursor-hover>
             <span className="shrink-0 text-[0.8rem]">
               <span className="text-[var(--accent)]">visitor@deg-console</span>
-              <span className="text-[var(--muted)]">:~/research$</span>
+              <span className="text-[var(--muted)]">:{promptPath(cwd)}$</span>
             </span>
             <input
               ref={inputRef}
@@ -466,7 +470,7 @@ export function ResearchIDE() {
               spellCheck={false}
               autoComplete="off"
               aria-label="terminal command input"
-              placeholder="type a command…  (help · ls · volcano · project · awards · field)"
+              placeholder="type a command…  (help · ls · usabo · genes · volcano · neofetch)"
               className="w-full bg-transparent text-[0.8rem] text-[var(--fg)] outline-none placeholder:text-[var(--muted)]/60"
               style={{ caretColor: "var(--accent)" }}
             />
@@ -474,18 +478,16 @@ export function ResearchIDE() {
         </main>
       </div>
 
-      {/* ── status bar ────────────────────────────────────────── */}
+      {/* status bar */}
       <div className="flex items-center justify-between gap-3 border-t border-[var(--line)] bg-[var(--bg-2)]/70 px-3 py-1 text-[0.58rem] uppercase tracking-widest text-[var(--muted)] backdrop-blur">
         <div className="flex items-center gap-3">
           <span className="text-[var(--accent)]">⎇ research/gout-model</span>
-          <span className="hidden sm:inline">bash</span>
+          <span className="hidden sm:inline">deg-sh</span>
           <span className="hidden md:inline">UTF-8</span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="hidden sm:inline">Tab ↹ autocomplete · ↑↓ history</span>
-          <span>
-            type <span className="text-[var(--accent)]">help</span>
-          </span>
+          <span className="hidden sm:inline">Tab ↹ complete · ↑↓ history · cd/ls/cat</span>
+          <span>type <span className="text-[var(--accent)]">help</span></span>
         </div>
       </div>
     </div>
@@ -494,190 +496,333 @@ export function ResearchIDE() {
 
 // ── content views ─────────────────────────────────────────────────────────────
 
-function ViewBody({ view, run }: { view: ViewId; run: (cmd: string) => void }) {
-  switch (view) {
-    case "volcano":
-      return (
-        <div className="mx-auto max-w-2xl">
-          <div className="mb-2 flex items-center justify-between">
-            <span className="text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">differential expression</span>
-            <span className="text-[0.58rem] uppercase tracking-widest text-[var(--accent)]">mouse gout model</span>
-          </div>
-          <VolcanoPlot />
-          <div className="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 border-t border-[var(--line)] pt-3">
-            <Legend color="#bcff46" label="up-regulated" />
-            <Legend color="#4fe6ee" label="down-regulated" />
-            <Legend color="#3a4250" label="ns" />
-          </div>
-        </div>
-      );
-    case "project":
-      return <PipelineFlow />;
-    case "awards":
-      return <AwardsPanel />;
-    case "field":
-      return <ProgramsGrid />;
-    case "stats":
-      return <StatsView />;
-    case "readme":
-      return <ReadmeView run={run} />;
-    case "whoami":
-      return <WhoamiView />;
-    case "tree":
-      return <TreeView run={run} />;
-    case "help":
-    default:
-      return <HelpView run={run} />;
+function ViewBody({ token }: { token: string }) {
+  const [base, arg] = token.split(":");
+  switch (base) {
+    case "help": return <HelpView />;
+    case "tree": return <TreeView />;
+    case "ls": return <DirListing entries={FS[(arg as Dir) ?? "root"]} />;
+    case "neofetch": return <Neofetch />;
+    case "whoami": return <WhoamiView />;
+    case "readme": return <ReadmeView />;
+    case "awards": return <AwardsIndex />;
+    case "award": return <AwardView id={arg} />;
+    case "programs": return <ProgramsIndex />;
+    case "program": return <ProgramView id={arg} />;
+    case "project": return <ProjectView />;
+    case "methodology": return <MethodologyView />;
+    case "genes": return <GenesView />;
+    case "abstract": return <AbstractView />;
+    case "stats": return <StatsView />;
+    case "volcano": return <VolcanoView />;
+    default: return <HelpView />;
   }
 }
 
-function Legend({ color, label }: { color: string; label: string }) {
+function VolcanoView() {
   return (
-    <span className="flex items-center gap-2">
-      <span className="size-2 rounded-full" style={{ background: color, boxShadow: `0 0 6px ${color}` }} />
-      <span className="text-[0.6rem] text-[var(--muted)]">{label}</span>
-    </span>
-  );
-}
-
-function StatsView() {
-  const tiles = [
-    { v: 26, suffix: "/50", prefix: "", label: "USABO Open", sub: "top ~15% nationally" },
-    { v: 10, suffix: "%", prefix: "top ", label: "UK BBO Silver", sub: "international field" },
-    { v: 3, suffix: "rd", prefix: "", label: "ACSEF · BCOM", sub: "Computational Biology" },
-    { v: 8, suffix: "", prefix: "", label: "YSJC students", sub: "Biology dept · founder" },
-    { v: 1, suffix: " wk", prefix: "", label: "R training", sub: "Dr. Younice · Stanford" },
-    { v: 5, suffix: "", prefix: "", label: "AP 5s", sub: "Bio · Stats · more" },
-  ];
-  return (
-    <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-      {tiles.map((t) => (
-        <div key={t.label} className="glass-2 rounded-lg p-4">
-          <span className="text-2xl font-black tabular-nums md:text-3xl" style={{ color: "var(--accent)" }}>
-            <Counter to={t.v} suffix={t.suffix} prefix={t.prefix} duration={1.4} />
-          </span>
-          <p className="mt-1.5 text-[0.7rem] font-semibold text-[var(--fg)]">{t.label}</p>
-          <p className="text-[0.58rem] text-[var(--muted)]">{t.sub}</p>
-        </div>
-      ))}
+    <div className="mx-auto max-w-2xl">
+      <p className="mb-2 text-[0.72rem] text-[var(--muted)]">$ ./volcano.plot --render --threshold &apos;padj&lt;0.05&apos;</p>
+      <VolcanoPlot />
+      <div className="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 border-t border-[var(--line)] pt-3">
+        <Legend color="#bcff46" label="up-regulated" />
+        <Legend color="#4fe6ee" label="down-regulated" />
+        <Legend color="#3a4250" label="ns" />
+      </div>
+      <p className="mt-2 text-center text-[0.62rem] text-[var(--muted)]"># illustrative differential-expression motif · hover significant points</p>
     </div>
   );
 }
 
-function ReadmeView({ run }: { run: (cmd: string) => void }) {
+function GenesView() {
   return (
-    <div className="max-w-2xl space-y-4">
-      <h2 className="flow-display text-[clamp(1.6rem,4vw,2.6rem)] text-[var(--fg)]">
-        Reading the <span className="text-glow" style={{ color: "var(--accent)" }}>genome</span> of pain.
-      </h2>
-      <p className="text-[0.82rem] leading-relaxed text-[var(--muted)]">{RESEARCH.intro}</p>
-      <p className="text-[0.78rem] leading-relaxed text-[var(--muted)]">
-        This console holds Jadon&apos;s STEM work: a self-built RNA-seq pipeline on a mouse gout model,
-        national + international biology olympiad results, and the programs he runs. Summon any of it
-        with a command.
-      </p>
-      <div className="flex flex-wrap gap-2 pt-1">
-        {["volcano", "project", "awards", "field", "stats"].map((c) => (
-          <ChipRun key={c} cmd={c} run={run} />
-        ))}
+    <TermTable
+      caption="# deg-results.tsv — top differential hits (padj < 0.05, |log2FC| > 1.5)"
+      head={["gene", "log2FC", "padj", "reg", "annotation"]}
+      rows={GENES.map((g) => [
+        <span key="g" className="font-semibold" style={{ color: g.dir === "up" ? "var(--accent)" : "var(--accent-2)" }}>{g.gene}</span>,
+        <span key="f" className="tabular-nums" style={{ color: g.dir === "up" ? "var(--accent)" : "var(--accent-2)" }}>{g.log2fc > 0 ? "+" : ""}{g.log2fc.toFixed(1)}</span>,
+        <span key="p" className="tabular-nums text-[var(--muted)]">{g.padj}</span>,
+        <span key="r" className="text-[0.68rem] font-bold" style={{ color: g.dir === "up" ? "var(--accent)" : "var(--accent-2)" }}>{g.dir.toUpperCase()}</span>,
+        <span key="n" className="text-[var(--muted)]">{g.note}</span>,
+      ])}
+    />
+  );
+}
+
+function MethodologyView() {
+  const lines = [
+    <span key="0"><span className="text-[var(--muted)]">#!/usr/bin/env deg-sh</span></span>,
+    <span key="1"><span className="text-[var(--muted)]"># mouse-gout RNA-seq → differential expression → pain mediators</span></span>,
+    <span key="2"> </span>,
+    ...PIPELINE.map((s, i) => (
+      <span key={`s${i}`}>
+        <span style={{ color: "var(--accent)" }}>{s.n}</span>{"  "}
+        <span className="text-[var(--fg)]">run --step {s.step}</span>
+        <span className="text-[var(--muted)]">{"  ".repeat(Math.max(1, 22 - s.step.length))}# {s.detail}</span>
+      </span>
+    )),
+  ];
+  return <CodeBlock lang="project/methodology.sh" lines={lines} />;
+}
+
+function ProjectView() {
+  return (
+    <div className="max-w-2xl space-y-3">
+      <MdHeading>{PROJECT.title}</MdHeading>
+      <KeyVals
+        rows={[
+          ["method", PROJECT.method],
+          ["organism", PROJECT.organism],
+          ["model", PROJECT.model],
+          ["result", <span key="r" style={{ color: "var(--accent)" }}>{PROJECT.award}</span>],
+        ]}
+      />
+      <Prose>{PROJECT.abstract}</Prose>
+      <p className="text-[0.72rem] text-[var(--muted)]"><span className="text-[var(--accent)]">## </span>full citation</p>
+      <Prose>{PROJECT.result}</Prose>
+    </div>
+  );
+}
+
+function AbstractView() {
+  return (
+    <div className="max-w-2xl space-y-2">
+      <Prose>{PROJECT.abstract}</Prose>
+      <p className="text-[0.72rem] text-[var(--accent-2)]">— {PROJECT.award}</p>
+    </div>
+  );
+}
+
+function AwardsIndex() {
+  return (
+    <TermTable
+      caption="# awards/ — 3 results, single academic year"
+      head={["year", "award", "result", "open with"]}
+      rows={AWARDS.map((a) => [
+        <span key="y" className="text-[var(--muted)]">{a.year}</span>,
+        <span key="n" className="text-[var(--fg)]">{a.name}</span>,
+        <span key="r" className="font-semibold" style={{ color: "var(--accent)" }}>{a.result}</span>,
+        <span key="c" className="text-[var(--accent-2)]">{a.id}</span>,
+      ])}
+    />
+  );
+}
+
+function AwardView({ id }: { id: string }) {
+  const a = AWARDS.find((x) => x.id === id) as Award | undefined;
+  if (!a) return <Prose>award not found.</Prose>;
+  const viz = AWARD_VIZ[a.id];
+  return (
+    <div className="space-y-3">
+      <JsonView data={{ award: a.name, result: a.result, year: a.year, ...a.fields }} />
+      {a.id === "usabo" ? (
+        <AsciiPanel title="// honors">
+          <AsciiArt art={USABO_MEDAL} info={USABO_MEDAL_INFO} />
+        </AsciiPanel>
+      ) : viz ? (
+        <AsciiPanel title="// scorecard">
+          {viz.map((m, i) => <AsciiMeter key={i} {...m} />)}
+        </AsciiPanel>
+      ) : null}
+      <div className="border-t border-[var(--line)] pt-2">
+        <p className="text-[0.72rem] text-[var(--accent)]">{"// analysis"}</p>
+        <Prose>{a.summary}</Prose>
+        <Prose>{a.detail}</Prose>
       </div>
     </div>
   );
 }
 
-function WhoamiView() {
-  const rows = [
-    ["name", "Jadon Li"],
-    ["role", "bio researcher · builder · student leader"],
-    ["school", "Mission San Jose HS, Fremont · class of 2027"],
-    ["focus", "RNA-seq · differential expression · pain biology"],
-    ["tools", "R · DESeq2 · limma · ggplot2 · GSEA"],
-    ["olympiads", "USABO HM · UK BBO Silver · ACSEF 3rd"],
-  ];
+function StatsView() {
   return (
-    <div className="space-y-1 text-[0.8rem]">
-      {rows.map(([k, v]) => (
-        <p key={k} className="flex flex-wrap gap-2">
-          <span className="w-24 shrink-0 text-[var(--accent)]">{k}</span>
-          <span className="text-[var(--fg)]">{v}</span>
+    <div className="space-y-3">
+      <JsonView data={STATS} />
+      <AsciiPanel title="// standing across competitions">
+        {STAT_BARS.map((m, i) => <AsciiMeter key={i} {...m} />)}
+      </AsciiPanel>
+    </div>
+  );
+}
+
+function ProgramsIndex() {
+  return (
+    <TermTable
+      caption="# field/ — teaching, outreach & the competition pipeline"
+      head={["role", "program", "open with"]}
+      rows={PROGRAMS.map((p) => [
+        <span key="r" className="text-[var(--accent-2)]">{p.role}</span>,
+        <span key="n" className="text-[var(--fg)]">{p.name}</span>,
+        <span key="c" className="text-[var(--accent)]">{p.id === "stempac" ? "stem-pac" : p.id}</span>,
+      ])}
+    />
+  );
+}
+
+function ProgramView({ id }: { id: string }) {
+  const p = PROGRAMS.find((x) => x.id === id) as Program | undefined;
+  if (!p) return <Prose>program not found.</Prose>;
+  return (
+    <div className="max-w-2xl space-y-3">
+      <MdHeading>{p.name}</MdHeading>
+      <p className="text-[0.72rem] text-[var(--accent-2)]">{p.role}</p>
+      <KeyVals rows={Object.entries(p.meta).map(([k, v]) => [k, v])} pad={12} />
+      {p.body.map((b, i) => <Prose key={i}>{b}</Prose>)}
+      {p.list && (
+        <ul className="space-y-1 border-l border-[var(--line)] pl-3">
+          {p.list.map((l, i) => (
+            <li key={i} className="text-[0.76rem]">
+              <span className="text-[var(--accent)]">▸ {l.label}</span>
+              <span className="text-[var(--muted)]"> — {l.text}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {p.image && <ImagePreview {...p.image} />}
+    </div>
+  );
+}
+
+function ReadmeView() {
+  return (
+    <div className="max-w-2xl space-y-3">
+      <MdHeading>Reading the genome of pain</MdHeading>
+      <Prose>{PROJECT.abstract}</Prose>
+      <Prose>
+        This console holds Jadon&apos;s STEM work — a self-built RNA-seq pipeline, biology-olympiad results, and the
+        programs he runs. It is a terminal: nothing shows until you summon it.
+      </Prose>
+      <p className="text-[0.74rem] text-[var(--muted)]">
+        <span className="text-[var(--accent)]">## </span>quick start
+      </p>
+      <KeyVals
+        pad={10}
+        rows={[
+          ["ls", "list every file"],
+          ["volcano", "render the DEG plot"],
+          ["genes", "the DESeq2 results table"],
+          ["usabo", "one award (or `awards` for all)"],
+          ["neofetch", "system readout"],
+        ]}
+      />
+    </div>
+  );
+}
+
+function WhoamiView() {
+  return (
+    <KeyVals
+      pad={12}
+      rows={[
+        ["name", PROFILE.name],
+        ["role", PROFILE.role],
+        ["school", `${PROFILE.school} · '${String(PROFILE.class_of).slice(2)}`],
+        ["focus", PROFILE.focus],
+        ["stack", PROFILE.stack.join(" · ")],
+        ["olympiads", PROFILE.olympiads.join(" · ")],
+      ]}
+    />
+  );
+}
+
+function TreeView() {
+  return (
+    <div className="text-[0.78rem]">
+      <p className="text-[var(--accent-2)]">~/research</p>
+      {EXPLORER.map((it, i) => (
+        <p key={i} className="flex gap-2" style={{ paddingLeft: `${it.depth * 1.4}rem` }}>
+          <span className="text-[var(--muted)]/60">{it.depth === 0 ? "├──" : "│   └──"}</span>
+          <span className={it.folder ? "text-[var(--accent-2)]" : "text-[var(--muted)]"}>{it.label}{it.folder ? "/" : ""}</span>
         </p>
       ))}
     </div>
   );
 }
 
-function TreeView({ run }: { run: (cmd: string) => void }) {
+function Neofetch() {
+  const dna = [
+    "    ___    ",
+    "  ╭┴─┴╮  ",
+    "  │A═T│  ",
+    "  ╰┬─┬╯  ",
+    "  ╭┴─┴╮  ",
+    "  │G≡C│  ",
+    "  ╰┬─┬╯  ",
+    "  │T═A│  ",
+    "  ╰───╯  ",
+  ];
+  const specs: [string, string][] = [
+    ["host", "jadon.li · Mission San Jose HS"],
+    ["os", "research-os (gout-model)"],
+    ["kernel", "deg-sh 3.1"],
+    ["uptime", "class of 2027"],
+    ["shell", "R 4.x"],
+    ["packages", "DESeq2 · limma · ggplot2 · GSEA"],
+    ["de", "RNA-seq differential expression"],
+    ["awards", "USABO HM · UK BBO Silver · ACSEF 3rd"],
+    ["theme", "acid-lime on near-black"],
+  ];
   return (
-    <div className="text-[0.78rem]">
-      <p className="text-[var(--accent-2)]">~/research</p>
-      {TREE.map((t, i) => (
-        <button
-          key={i}
-          data-cursor-hover
-          onClick={() => run(t.cmd)}
-          className="group flex w-full items-center gap-2 py-0.5 text-left transition-colors hover:text-[var(--accent)]"
-          style={{ paddingLeft: `${0.5 + t.depth * 1.2}rem` }}
-        >
-          <span className="text-[var(--muted)]">{t.depth === 0 ? "├─" : "│  ├─"}</span>
-          <span className={t.folder ? "text-[var(--accent-2)]" : "text-[var(--muted)] group-hover:text-[var(--accent)]"}>
-            {t.label}{t.folder ? "/" : ""}
-          </span>
-        </button>
-      ))}
-      <p className="mt-3 text-[0.7rem] text-[var(--muted)]">click a file, or type its name (e.g. <span className="text-[var(--accent)]">project</span>).</p>
+    <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+      <pre className="shrink-0 text-[0.7rem] leading-tight" style={{ color: "var(--accent)" }}>{dna.join("\n")}</pre>
+      <div className="min-w-0 space-y-0.5 text-[0.76rem]">
+        <p><span className="text-[var(--accent)]">visitor</span>@<span className="text-[var(--accent)]">deg-console</span></p>
+        <p className="text-[var(--muted)]">-----------------</p>
+        {specs.map(([k, v]) => (
+          <p key={k} className="flex flex-wrap gap-x-2">
+            <span className="shrink-0 text-[var(--accent-2)]" style={{ minWidth: "9ch" }}>{k}</span>
+            <span className="text-[var(--fg)]">{v}</span>
+          </p>
+        ))}
+      </div>
     </div>
   );
 }
 
-function HelpView({ run }: { run: (cmd: string) => void }) {
+function HelpView() {
   const groups: { title: string; items: [string, string][] }[] = [
-    {
-      title: "view achievements",
-      items: [
-        ["volcano", "the interactive differential-expression plot"],
-        ["project", "the mouse-gout RNA-seq science-fair project"],
-        ["awards", "USABO, UK Biology Olympiad, ACSEF"],
-        ["field", "teaching, outreach & the competition pipeline"],
-        ["stats", "the numbers, at a glance"],
-      ],
-    },
-    {
-      title: "navigate",
-      items: [
-        ["ls", "list every file in the explorer"],
-        ["readme", "what this is + where to start"],
-        ["whoami", "the short bio"],
-        ["clear", "wipe the terminal"],
-      ],
-    },
-    {
-      title: "system",
-      items: [
-        ["mutate", "🧬 flip the mutant colourway"],
-        ["exit", "back to the rest of the portfolio"],
-      ],
-    },
+    { title: "view achievements", items: [
+      ["volcano", "interactive differential-expression plot"],
+      ["genes", "DESeq2 results table (top hits)"],
+      ["project", "the mouse-gout RNA-seq project"],
+      ["methodology", "the 8-step pipeline (methodology.sh)"],
+      ["abstract", "the project abstract"],
+      ["awards", "all three olympiad/fair results"],
+      ["usabo · bbo · acsef", "open one award as JSON"],
+      ["field", "all programs (or ysjc/prism/stem-pac/umass)"],
+      ["stats", "the numbers (stats.json)"],
+    ]},
+    { title: "filesystem", items: [
+      ["ls [dir]", "list a directory"],
+      ["cd <dir>", "change directory (awards/field/project)"],
+      ["cat <file>", "print a file (e.g. cat awards/usabo.json)"],
+      ["tree", "the whole file tree"],
+      ["pwd", "print working directory"],
+    ]},
+    { title: "system", items: [
+      ["neofetch", "system + research readout"],
+      ["whoami", "the short bio"],
+      ["readme", "what this is + quick start"],
+      ["history", "your command history"],
+      ["clear", "wipe the terminal"],
+      ["mutate", "🧬 flip the mutant colourway"],
+      ["exit", "back to the portfolio"],
+    ]},
   ];
   return (
     <div className="space-y-4 text-[0.78rem]">
       <p className="text-[var(--muted)]">
-        Type a command and press <span className="text-[var(--accent)]">Enter</span>. <span className="text-[var(--accent)]">Tab</span> autocompletes,
-        <span className="text-[var(--accent)]"> ↑/↓</span> walk history. You can also click files in the explorer.
+        usage: <span className="text-[var(--fg)]">&lt;command&gt; [arg]</span> · <span className="text-[var(--accent)]">Enter</span> runs, <span className="text-[var(--accent)]">Tab</span> completes, <span className="text-[var(--accent)]">↑/↓</span> history. Click files in the explorer too.
       </p>
       {groups.map((g) => (
         <div key={g.title}>
           <p className="mb-1 text-[0.58rem] uppercase tracking-[0.2em] text-[var(--accent)]">{g.title}</p>
           <div className="space-y-0.5">
             {g.items.map(([cmd, desc]) => (
-              <button
-                key={cmd}
-                data-cursor-hover
-                onClick={() => run(cmd)}
-                className="group flex w-full items-baseline gap-3 text-left"
-              >
-                <span className="w-24 shrink-0 text-[var(--fg)] group-hover:text-[var(--accent)]">{cmd}</span>
+              <p key={cmd} className="flex flex-wrap items-baseline gap-x-3">
+                <span className="w-44 shrink-0 text-[var(--fg)]">{cmd}</span>
                 <span className="text-[var(--muted)]">{desc}</span>
-              </button>
+              </p>
             ))}
           </div>
         </div>
@@ -686,14 +831,11 @@ function HelpView({ run }: { run: (cmd: string) => void }) {
   );
 }
 
-function ChipRun({ cmd, run }: { cmd: string; run: (cmd: string) => void }) {
+function Legend({ color, label }: { color: string; label: string }) {
   return (
-    <button
-      data-cursor-hover
-      onClick={() => run(cmd)}
-      className="rounded-md border border-[color-mix(in_srgb,var(--accent)_45%,transparent)] bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-2.5 py-1 text-[0.68rem] text-[var(--accent)] transition-colors hover:bg-[color-mix(in_srgb,var(--accent)_22%,transparent)]"
-    >
-      {cmd}
-    </button>
+    <span className="flex items-center gap-2">
+      <span className="size-2 rounded-full" style={{ background: color, boxShadow: `0 0 6px ${color}` }} />
+      <span className="text-[0.6rem] text-[var(--muted)]">{label}</span>
+    </span>
   );
 }
