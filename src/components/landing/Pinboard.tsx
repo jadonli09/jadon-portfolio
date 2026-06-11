@@ -6,31 +6,42 @@ import { motion, useReducedMotion } from "motion/react";
 import { PINBOARD, PIN_LETTER_TEXT, type PinItem } from "@/lib/data";
 import { asset } from "@/lib/base";
 import { cn } from "@/lib/cn";
+import { BoardLabel, useBoard } from "@/components/landing/BoardSurface";
+
+/** Which world a pin belongs to, from its destination — lights the matching thread + word. */
+const HREF_WORLD: Record<string, string> = {
+  leadership: "leadership",
+  civic: "civic",
+  research: "research",
+  built: "built",
+  court: "court",
+  "locked-in": "lockedin",
+  about: "about",
+};
+const worldOf = (item: PinItem) =>
+  item.world ?? (item.href ? HREF_WORLD[item.href.replace(/^\//, "").split(/[#/]/)[0]] ?? null : null);
 
 /**
  * The record, pinned: a dense overlapping collage of achievements in physical
- * styles (polaroids, plaques, seals, tickets, notes, newsprint…). Hover lifts
- * an object above its neighbours and reveals where it links. Desktop is an
- * absolutely-placed board; mobile reflows into a tight 2-column collage.
+ * styles (polaroids, plaques, seals, tickets, notes, newsprint…) sitting
+ * directly on the evidence board. Hover lifts an object above its neighbours
+ * and reveals where it links; world-tagged pins glow when their thread (or
+ * sentence word) is hot. Desktop is an absolutely-placed wall; mobile reflows
+ * into a tight 2-column collage.
  */
 export function Pinboard() {
   return (
-    <section id="record" className="relative scroll-mt-24 py-20 md:py-28">
+    <section id="record" className="relative scroll-mt-24 py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-5 md:px-9">
-        <p className="eyebrow mb-3 text-center text-[#e8b15a]">The record · pinned</p>
+        <div className="mb-3 text-center">
+          <BoardLabel className="rotate-1">The record · pinned</BoardLabel>
+        </div>
         <h2 className="font-display mx-auto mb-12 max-w-xl text-center text-2xl leading-snug text-[#f4f1ea] md:text-3xl">
           Everything below links somewhere. Pull a pin.
         </h2>
 
-        {/* desktop board */}
-        <div
-          className="relative hidden rounded-lg border border-white/10 md:block"
-          style={{
-            height: 530,
-            background:
-              "radial-gradient(circle at 20% 30%, #11111a 0%, transparent 60%), radial-gradient(circle at 80% 70%, #10101a 0%, transparent 55%), repeating-linear-gradient(0deg, transparent 0 39px, rgba(255,255,255,0.02) 39px 40px), repeating-linear-gradient(90deg, transparent 0 39px, rgba(255,255,255,0.02) 39px 40px), #0a0a0f",
-          }}
-        >
+        {/* desktop wall — no frame; the board surface IS the background */}
+        <div className="relative hidden md:block" style={{ height: 530 }}>
           {PINBOARD.map((it, i) => (
             <Pinned key={i} item={it} index={i} />
           ))}
@@ -55,6 +66,9 @@ export function Pinboard() {
 function Pinned({ item, index }: { item: PinItem; index: number }) {
   const [hot, setHot] = useState(false);
   const reduce = useReducedMotion();
+  const { activeWorld, setActiveWorld, registerAnchor } = useBoard();
+  const world = worldOf(item);
+  const linked = world !== null && activeWorld === world && !hot;
   const body = (
     <motion.div
       initial={reduce ? false : { opacity: 0, y: 26, rotate: item.rot * 2.2 }}
@@ -63,15 +77,27 @@ function Pinned({ item, index }: { item: PinItem; index: number }) {
       whileHover={reduce ? undefined : { rotate: 0, scale: 1.09 }}
       transition={{ type: "spring", stiffness: 220, damping: 19, delay: index * 0.035 }}
       className="relative"
-      onHoverStart={() => setHot(true)}
-      onHoverEnd={() => setHot(false)}
+      onHoverStart={() => {
+        setHot(true);
+        if (world) setActiveWorld(world);
+      }}
+      onHoverEnd={() => {
+        setHot(false);
+        if (world) setActiveWorld(null);
+      }}
     >
-      <span
-        aria-hidden
-        className="absolute -top-1.5 left-1/2 z-30 size-2.5 -translate-x-1/2 rounded-full shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-        style={{ background: "radial-gradient(circle at 35% 30%, #f0d48a, #8a6312)" }}
-      />
-      <PinBody item={item} />
+      {/* the word's thread tugs the pin: linked pins lift and glow */}
+      <div
+        className="transition-[transform,filter] duration-300"
+        style={linked ? { transform: "scale(1.07)", filter: "brightness(1.18) saturate(1.05)" } : undefined}
+      >
+        <span
+          aria-hidden
+          className="absolute -top-1.5 left-1/2 z-30 size-2.5 -translate-x-1/2 rounded-full shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+          style={{ background: "radial-gradient(circle at 35% 30%, #f0d48a, #8a6312)" }}
+        />
+        <PinBody item={item} />
+      </div>
       {item.go && (
         <span
           className="pointer-events-none absolute -bottom-5 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#07070a]/90 px-2.5 py-1 font-mono text-[0.55rem] uppercase tracking-[0.14em] text-[#e8b15a] transition-opacity duration-200"
@@ -84,8 +110,16 @@ function Pinned({ item, index }: { item: PinItem; index: number }) {
   );
   return (
     <div
+      ref={(el) => {
+        if (item.world) registerAnchor(item.world, el);
+      }}
       className="absolute"
-      style={{ left: item.left, top: item.top, zIndex: hot ? 99 : item.z, width: item.w ? `${item.w}px` : undefined }}
+      style={{
+        left: item.left,
+        top: item.top,
+        zIndex: hot ? 99 : linked ? 60 : item.z,
+        width: item.w ? `${item.w}px` : undefined,
+      }}
     >
       {item.href ? (
         <Link href={item.href} data-cursor-hover className="block">

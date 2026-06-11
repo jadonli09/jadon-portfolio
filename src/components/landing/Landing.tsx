@@ -6,6 +6,7 @@ import { useLenis } from "lenis/react";
 import { ArrowDown } from "lucide-react";
 import { Preloader } from "@/components/hero/Preloader";
 import { asset } from "@/lib/base";
+import { BoardSurface } from "@/components/landing/BoardSurface";
 import { SentenceDoors } from "@/components/landing/SentenceDoors";
 import { Pinboard } from "@/components/landing/Pinboard";
 import { LandingClose } from "@/components/landing/LandingClose";
@@ -154,22 +155,26 @@ export function Landing() {
           Begin <ArrowDown className="size-3.5 animate-bounce" />
         </motion.div>
 
-        {/* melt into the dark below */}
+        {/* melt into the evidence board below */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 bottom-0 z-[4] h-16"
-          style={{ background: "linear-gradient(to bottom, transparent, #07070a)" }}
+          style={{ background: "linear-gradient(to bottom, transparent, #08080c)" }}
         />
       </section>
 
-      {/* THE SENTENCE — the 20-second overview, seven doors */}
-      <SentenceDoors />
+      {/* THE EVIDENCE BOARD — sentence, record and close on one continuous wall,
+          tied together by red threads from each pinned word to its proof. */}
+      <BoardSurface>
+        {/* THE SENTENCE — the 20-second overview, seven doors */}
+        <SentenceDoors />
 
-      {/* THE RECORD — achievements, pinned */}
-      <Pinboard />
+        {/* THE RECORD — achievements, pinned */}
+        <Pinboard />
 
-      {/* THE CLOSE */}
-      <LandingClose />
+        {/* THE CLOSE */}
+        <LandingClose />
+      </BoardSurface>
 
       <Footer />
     </main>

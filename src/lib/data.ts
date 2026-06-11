@@ -160,6 +160,8 @@ export type PinItem = {
   src?: string;
   lines?: string[];
   accent?: string;
+  /** SENTENCE_DOORS id this pin anchors — the red thread from that word ends here */
+  world?: string;
   /** desktop board placement */
   left: string;
   top: number;
@@ -174,21 +176,21 @@ export const PIN_LETTER_TEXT =
 
 export const PINBOARD: PinItem[] = [
   { kind: "letter", left: "1%", top: 26, rot: -2, z: 2, w: 270 },
-  { kind: "polaroid", href: "/court", go: "→ the court", img: "/img/ncs-champions.jpg", caption: "first NCS title in school history!", left: "21%", top: 12, rot: 4, z: 4, w: 180 },
+  { kind: "polaroid", world: "court", href: "/court", go: "→ the court", img: "/img/ncs-champions.jpg", caption: "first NCS title in school history!", left: "21%", top: 12, rot: 4, z: 4, w: 180 },
   { kind: "news", href: "/court", go: "→ the court · rafters", hed: "“Believe it: Mission San Jose wins first NCS title in boys basketball”", src: "The Mercury News · Feb 2026 · MSJ 46–40", left: "34%", top: 114, rot: -3.5, z: 6, w: 212 },
-  { kind: "seal", href: "/leadership#elected-offices-heading", go: "→ leadership · offices", text: "3× CLASS PRESIDENT · NOW ASB", left: "53%", top: 10, rot: 8, z: 5, w: 98 },
+  { kind: "seal", world: "leadership", href: "/leadership#elected-offices-heading", go: "→ leadership · offices", text: "3× CLASS PRESIDENT · NOW ASB", left: "53%", top: 10, rot: 8, z: 5, w: 98 },
   { kind: "polaroid", href: "/leadership", go: "→ leadership", img: "/img/speaking-at-rally.jpg", caption: "rally szn", left: "61%", top: 50, rot: -5, z: 3, w: 158 },
-  { kind: "plaque", href: "/locked-in#timeline", go: "→ the pursuit", value: "1.39M", label: "plays · yr one · @li_locked.in", accent: "#e8689c", left: "75%", top: 20, rot: 3, z: 6 },
+  { kind: "plaque", world: "lockedin", href: "/locked-in#timeline", go: "→ the pursuit", value: "1.39M", label: "plays · yr one · @li_locked.in", accent: "#e8689c", left: "75%", top: 20, rot: 3, z: 6 },
   { kind: "note", href: "/about", go: "→ the person", text: "journaling since 8th grade ✎ — naps highly recommended", accent: "#ffe27a", left: "87%", top: 90, rot: -6, z: 4, w: 132 },
   { kind: "polaroid", href: "/about", go: "→ the person", img: "/img/ironchef-win.jpg", caption: "Iron Chef — W", left: "85%", top: 192, rot: 5, z: 3, w: 146 },
   { kind: "polaroid", href: "/leadership#elected-offices-heading", go: "→ leadership · offices", img: "/img/asb-officers.jpg", caption: "ASB officer team", left: "2%", top: 246, rot: 3, z: 4, w: 168 },
   { kind: "receipt", href: "/leadership#elected-offices-heading", go: "→ leadership · offices", lines: ["CLASS OF 2027", "──────────", "FUNDRAISED  $15,000", "STOLES JOB     $700", "──────────", "TOTAL        A LOT"], left: "16%", top: 208, rot: -4, z: 5, w: 132 },
-  { kind: "ribbon", href: "/research", go: "→ research", value: "3rd", label: "ACSEF · comp bio", left: "27%", top: 190, rot: 6, z: 7, w: 96 },
+  { kind: "ribbon", world: "research", href: "/research", go: "→ research", value: "3rd", label: "ACSEF · comp bio", left: "27%", top: 190, rot: 6, z: 7, w: 96 },
   { kind: "polaroid", href: "/research", go: "→ research", img: "/img/acsef-science-fair.jpg", caption: "the genomics of gout pain", left: "33%", top: 236, rot: -2, z: 4, w: 162 },
-  { kind: "ticket", href: "/built", go: "→ built", text: "ACORNPREP · ADMIT 500+", label: "six AP exams · #1 on Google", accent: "#7c89e8", left: "48%", top: 204, rot: -5, z: 6, w: 154 },
+  { kind: "ticket", world: "built", href: "/built", go: "→ built", text: "ACORNPREP · ADMIT 500+", label: "six AP exams · #1 on Google", accent: "#7c89e8", left: "48%", top: 204, rot: -5, z: 6, w: 154 },
   { kind: "polaroid", href: "/built", go: "→ built", img: "/img/presenting-acornprep-at-gemini-meetup.jpg", caption: "pitching at the Gemini meetup", left: "57%", top: 242, rot: 5, z: 4, w: 168 },
-  { kind: "polaroid", href: "/civic", go: "→ civic", img: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg", caption: "Voices of Fremont, w/ the First Partner", left: "72%", top: 232, rot: -4, z: 5, w: 178 },
-  { kind: "polaroid", href: "/about", go: "→ the person", img: "/img/missionpeak2026-1.jpg", caption: "every birthday, same mountain", left: "4%", top: 352, rot: -5, z: 3, w: 158 },
+  { kind: "polaroid", world: "civic", href: "/civic", go: "→ civic", img: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg", caption: "Voices of Fremont, w/ the First Partner", left: "72%", top: 232, rot: -4, z: 5, w: 178 },
+  { kind: "polaroid", world: "about", href: "/about", go: "→ the person", img: "/img/missionpeak2026-1.jpg", caption: "every birthday, same mountain", left: "4%", top: 352, rot: -5, z: 3, w: 158 },
   { kind: "seal", href: "/about", go: "→ the person", value: "46:46", text: "MISSION PEAK", accent: "silver", left: "18%", top: 336, rot: 7, z: 6, w: 82 },
   { kind: "index", href: "/leadership#club-crews-heading", go: "→ leadership · clubs", text: "Also currently: MSJ Makes President · STEM-PAC Co-President · ~$4k profit shipping merch jobs", left: "26%", top: 382, rot: -3, z: 5, w: 178 },
   { kind: "ticket", href: "/civic", go: "→ civic", text: "★ 10K VIEWS", label: "per Mayor video", accent: "#e0644e", left: "41%", top: 350, rot: 4, z: 5, w: 126 },
