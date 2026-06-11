@@ -80,11 +80,11 @@ export function LockedFollowCTA() {
 
             <Magnetic strength={0.3}>
               <a
-                href="#feed"
+                href="#timeline"
                 data-cursor-hover
                 className="group inline-flex items-center gap-3 border border-[var(--line)] px-8 py-4 font-mono text-sm uppercase tracking-[0.18em] text-[var(--muted)] transition-all duration-300 hover:border-[var(--accent-2)] hover:text-[var(--accent-2)]"
               >
-                Back to feed
+                Back to day 001
               </a>
             </Magnetic>
           </div>

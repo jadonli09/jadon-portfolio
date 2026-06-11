@@ -48,14 +48,15 @@
 /* ── WORLD THEMES ─────────────────────────────────────────────── */
 
 [data-world="about"] {
-  --bg: #ece7dd; /* warm paper */
-  --bg-2: #e2dccf;
-  --fg: #1a1714;
-  --muted: #6b655c;
-  --accent: #7a8b6f; /* sage */
-  --accent-2: #b15c3c; /* clay */
-  --line: rgba(26, 23, 20, 0.14);
-  --selection: rgba(122, 139, 111, 0.3);
+  /* the scrapbook desk — cool gray paper, ink, one loud signal orange */
+  --bg: #ebeae6;
+  --bg-2: #dfdeda;
+  --fg: #171511;
+  --muted: #6e6c66;
+  --accent: #e8491d; /* signal orange */
+  --accent-2: #c33a12; /* pressed-ink orange */
+  --line: rgba(23, 21, 17, 0.16);
+  --selection: rgba(232, 73, 29, 0.28);
 }
 
 [data-world="civic"] {
@@ -70,14 +71,202 @@
 }
 
 [data-world="research"] {
-  --bg: #f4f9fa; /* bright lab paper */
-  --bg-2: #e7f0f2;
-  --fg: #0d2431;
-  --muted: #51707f;
-  --accent: #0c9c86; /* deep signal teal */
-  --accent-2: #d92e74; /* volcano magenta, deepened */
-  --line: rgba(13, 36, 49, 0.14);
-  --selection: rgba(12, 156, 134, 0.22);
+  /* DEG CONSOLE — dark bioinformatics terminal; acid-lime "significant" glow */
+  --bg: #0b0e13; /* lifted near-black, faint blue */
+  --bg-2: #171c24; /* console surface (brighter for contrast) */
+  --bg-3: #212834; /* raised surface */
+  --fg: #f1f5f9; /* terminal text — brighter */
+  --muted: #a2aebd; /* dim label slate — readable */
+  --accent: #bcff46; /* up-regulated / significant — acid lime */
+  --accent-2: #4fe6ee; /* down-regulated — cyan */
+  --hot: #ff5c95; /* threshold / danger magenta */
+  --line: rgba(236, 241, 247, 0.16); /* hairline — more visible */
+  --selection: rgba(191, 255, 74, 0.25);
+}
+
+/* "mutation mode" easter egg — fluorescent mutant colourway */
+:root.mutate [data-world="research"] {
+  --accent: #ff5cf0;
+  --accent-2: #ffd23c;
+  --hot: #5cff9e;
+  --selection: rgba(255, 92, 240, 0.25);
+}
+
+/* ── DEG CONSOLE (research world) — dark lab terminal ─────────── */
+
+[data-world="research"] {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(120% 80% at 50% -10%, rgba(53, 224, 232, 0.07), transparent 60%),
+    radial-gradient(100% 70% at 100% 110%, rgba(182, 255, 60, 0.06), transparent 60%);
+  color-scheme: dark;
+}
+
+/* The console grid + cursor spotlight (SpotlightField sets --mx/--my). */
+.lab-field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: radial-gradient(80% 60% at 50% 26%, #000 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(80% 60% at 50% 26%, #000 30%, transparent 100%);
+}
+.lab-field-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--accent) 85%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 85%, transparent) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(240px circle at var(--mx, -999px) var(--my, -999px), #000 0%, transparent 70%);
+  mask-image: radial-gradient(240px circle at var(--mx, -999px) var(--my, -999px), #000 0%, transparent 70%);
+}
+/* soft accent haze under the cursor */
+.lab-halo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(280px circle at var(--mx, -999px) var(--my, -999px), color-mix(in srgb, var(--accent) 17%, transparent), transparent 62%);
+}
+/* faint scanlines for CRT depth */
+.lab-scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.16) 0px,
+    rgba(0, 0, 0, 0.16) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+}
+
+/* Frosted dark console surfaces — lifted for legibility. */
+[data-world="research"] .glass {
+  background: linear-gradient(180deg, rgba(34, 41, 52, 0.86), rgba(20, 25, 32, 0.9));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 24px 60px -28px rgba(0, 0, 0, 0.9);
+}
+[data-world="research"] .glass-2 {
+  background: rgba(33, 40, 51, 0.7);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* The persistent terminal dock — clearly "the CLI": lime top edge + glow. */
+[data-world="research"] .lab-dock {
+  background: linear-gradient(180deg, rgba(28, 34, 44, 0.94), rgba(16, 20, 27, 0.97));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--line);
+  border-top: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line));
+  box-shadow:
+    0 -12px 44px -18px rgba(0, 0, 0, 0.85),
+    0 0 34px -12px color-mix(in srgb, var(--accent) 30%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Cursor-tracking glow border that lives inside a panel (--gx/--gy driven). */
+[data-world="research"] .glow-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(260px circle at var(--gx, 50%) var(--gy, 50%), color-mix(in srgb, var(--accent) 65%, transparent), transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+[data-world="research"] .glow-card:hover::before { opacity: 1; }
+[data-world="research"] .glow-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(320px circle at var(--gx, 50%) var(--gy, 50%), color-mix(in srgb, var(--accent) 12%, transparent), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+[data-world="research"] .glow-card:hover::after { opacity: 1; }
+
+/* Glow helpers. */
+.text-glow { text-shadow: 0 0 22px color-mix(in srgb, var(--accent) 55%, transparent); }
+.dot-live {
+  width: 7px; height: 7px; border-radius: 9999px;
+  background: var(--accent);
+  animation: dot-pulse 2.2s ease-out infinite;
+}
+@keyframes dot-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); }
+  70% { box-shadow: 0 0 0 7px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* ── RESEARCH IDE — terminal chrome ───────────────────────────── */
+
+/* thin accent scrollbars for the terminal + explorer */
+[data-world="research"] .term-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent) 32%, transparent) transparent;
+}
+[data-world="research"] .term-scroll::-webkit-scrollbar { width: 10px; height: 10px; }
+[data-world="research"] .term-scroll::-webkit-scrollbar-track { background: transparent; }
+[data-world="research"] .term-scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent) 26%, transparent);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+[data-world="research"] .term-scroll::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--accent) 50%, transparent);
+  background-clip: padding-box;
+}
+
+/* faint engineering grid behind the terminal output */
+[data-world="research"] .ide-stream {
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 44px 44px;
+  background-position: -1px -1px;
+}
+
+/* Heavy display headline — bold grotesk on black. */
+.flow-display {
+  font-family: var(--font-grotesk), system-ui, sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  line-height: 0.84;
+  text-transform: uppercase;
+}
+
+@keyframes flow-arrow {
+  0% { transform: translateY(0); opacity: 0.25; }
+  50% { opacity: 1; }
+  100% { transform: translateY(11px); opacity: 0.25; }
+}
+.flow-arrow { animation: flow-arrow 2.4s var(--ease-cine) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-arrow, .dot-live { animation: none !important; }
+  .lab-field-glow { display: none; }
 }
 
 /* The story spine on the landing — warm, bright, welcoming paper. */
@@ -93,14 +282,15 @@
 }
 
 [data-world="built"] {
-  --bg: #0a0b0f; /* slate */
-  --bg-2: #14161d;
-  --fg: #eef0f5;
-  --muted: #7c818f;
-  --accent: #7c9cff; /* electric periwinkle */
-  --accent-2: #b9ff66; /* product lime */
-  --line: rgba(238, 240, 245, 0.1);
-  --selection: rgba(124, 156, 255, 0.28);
+  /* the mission archive — halftone black, paper white, one rocket-red signal */
+  --bg: #0c0c0c;
+  --bg-2: #141414;
+  --fg: #f2f1ec;
+  --muted: #8f8f88;
+  --accent: #fc3d21; /* rocket red */
+  --accent-2: #b8b7b0; /* faded telemetry gray */
+  --line: rgba(242, 241, 236, 0.16);
+  --selection: rgba(252, 61, 33, 0.35);
 }
 
 [data-world="leadership"] {
@@ -208,6 +398,36 @@ body {
 .font-mono { font-family: var(--font-mono), ui-monospace, monospace; }
 .font-serif-i { font-family: var(--font-serif), Georgia, serif; }
 .font-anton { font-family: var(--font-anton), Impact, sans-serif; }
+.font-hand { font-family: var(--font-caveat), "Comic Sans MS", cursive; }
+
+/* ── SCRAPBOOK (about world) ──────────────────────────────────── */
+
+/* A print pinned to the desk: white mat + hard offset shadow. */
+.polaroid {
+  background: #fdfdfb;
+  border: 1px solid rgba(23, 21, 17, 0.12);
+  box-shadow: 6px 8px 0 rgba(23, 21, 17, 0.14);
+}
+
+/* A strip of translucent masking tape. */
+.tape {
+  position: absolute;
+  width: 5.5rem;
+  height: 1.5rem;
+  background: rgba(235, 234, 230, 0.82);
+  border-left: 1px dashed rgba(23, 21, 17, 0.18);
+  border-right: 1px dashed rgba(23, 21, 17, 0.18);
+  box-shadow: 0 1px 2px rgba(23, 21, 17, 0.1);
+  pointer-events: none;
+}
+
+/* Marker-pen highlight behind a phrase (reference: "Welcome to the club."). */
+.marker {
+  background: linear-gradient(104deg, transparent 0.5%, color-mix(in srgb, var(--accent) 32%, transparent) 3%, color-mix(in srgb, var(--accent) 32%, transparent) 97%, transparent 99%);
+  padding: 0 0.2em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
 
 .display-xl {
   font-size: clamp(3rem, 13vw, 12rem);
@@ -225,6 +445,147 @@ body {
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+/* ── MISSION ARCHIVE (built world) ────────────────────────────── */
+
+/* Registered so the viewfinder brackets can tween their length on hover. */
+@property --bl {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 13px;
+}
+
+/* Halftone dot field + faint cartographic grid over the whole world. */
+[data-world="built"] {
+  background-image:
+    radial-gradient(rgba(242, 241, 236, 0.05) 1px, transparent 1.4px),
+    linear-gradient(rgba(242, 241, 236, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242, 241, 236, 0.028) 1px, transparent 1px);
+  background-size: 5px 5px, 104px 104px, 104px 104px;
+}
+
+/* Heavy condensed mission type. */
+[data-world="built"] .mission-display {
+  font-family: var(--font-anton), Impact, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.015em;
+  line-height: 0.94;
+}
+
+/* Stroke-only word inside a display headline. */
+[data-world="built"] .stencil {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--fg);
+}
+
+/* Stroke-only word in rocket red — the one loud moment per screen. */
+[data-world="built"] .stencil-accent {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--accent);
+}
+
+/* Giant ghost type bleeding off the right edge. */
+[data-world="built"] .ghost-line {
+  font-family: var(--font-anton), Impact, sans-serif;
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1.04;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(242, 241, 236, 0.1);
+  user-select: none;
+}
+
+/* Filled mission button — hard white slab, no radius. */
+[data-world="built"] .btn-fill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: var(--fg);
+  color: #0c0c0c;
+  font-family: var(--font-grotesk), sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  padding: 1.05rem 2.1rem;
+  transition: transform 0.25s var(--ease-cine), box-shadow 0.25s var(--ease-cine);
+}
+[data-world="built"] .btn-fill:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+[data-world="built"] .btn-fill:active {
+  transform: translate(0, 0);
+  box-shadow: none;
+}
+
+/* Outline mission button — corner brackets only, like a viewfinder. */
+[data-world="built"] .btn-brackets {
+  --bk: 1.5px;
+  --bl: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  color: var(--fg);
+  font-family: var(--font-grotesk), sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  padding: 1.05rem 2.1rem;
+  background:
+    linear-gradient(currentColor, currentColor) left top / var(--bl) var(--bk) no-repeat,
+    linear-gradient(currentColor, currentColor) left top / var(--bk) var(--bl) no-repeat,
+    linear-gradient(currentColor, currentColor) right top / var(--bl) var(--bk) no-repeat,
+    linear-gradient(currentColor, currentColor) right top / var(--bk) var(--bl) no-repeat,
+    linear-gradient(currentColor, currentColor) left bottom / var(--bl) var(--bk) no-repeat,
+    linear-gradient(currentColor, currentColor) left bottom / var(--bk) var(--bl) no-repeat,
+    linear-gradient(currentColor, currentColor) right bottom / var(--bl) var(--bk) no-repeat,
+    linear-gradient(currentColor, currentColor) right bottom / var(--bk) var(--bl) no-repeat,
+    rgba(242, 241, 236, 0);
+  transition: --bl 0.25s, background-color 0.25s var(--ease-cine);
+}
+[data-world="built"] .btn-brackets:hover {
+  --bl: 22px;
+  color: var(--accent);
+  background-color: rgba(252, 61, 33, 0.07);
+}
+
+/* Bracket frame for media — same viewfinder corners, padded out. */
+[data-world="built"] .frame-brackets {
+  --bk: 1.5px;
+  --bl: 22px;
+  padding: 12px;
+  background:
+    linear-gradient(var(--fg), var(--fg)) left top / var(--bl) var(--bk) no-repeat,
+    linear-gradient(var(--fg), var(--fg)) left top / var(--bk) var(--bl) no-repeat,
+    linear-gradient(var(--fg), var(--fg)) right top / var(--bl) var(--bk) no-repeat,
+    linear-gradient(var(--fg), var(--fg)) right top / var(--bk) var(--bl) no-repeat,
+    linear-gradient(var(--fg), var(--fg)) left bottom / var(--bl) var(--bk) no-repeat,
+    linear-gradient(var(--fg), var(--fg)) left bottom / var(--bk) var(--bl) no-repeat,
+    linear-gradient(var(--fg), var(--fg)) right bottom / var(--bl) var(--bk) no-repeat,
+    linear-gradient(var(--fg), var(--fg)) right bottom / var(--bk) var(--bl) no-repeat;
+}
+
+/* Archival photo treatment — washed colour print + halftone screen on top. */
+[data-world="built"] .archival {
+  filter: saturate(0.72) contrast(1.1) brightness(1.02);
+}
+[data-world="built"] .archival-frame {
+  position: relative;
+}
+[data-world="built"] .archival-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.5) 0.7px, transparent 1px);
+  background-size: 3px 3px;
+  opacity: 0.22;
+  mix-blend-mode: multiply;
 }
 
 /* ── ATMOSPHERE ───────────────────────────────────────────────── */

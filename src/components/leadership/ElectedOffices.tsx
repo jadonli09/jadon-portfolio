@@ -6,6 +6,7 @@ import { Counter } from "@/components/primitives/Counter";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { TiltCard } from "@/components/primitives/TiltCard";
+import { Photo } from "@/components/primitives/Photo";
 import { LEADERSHIP } from "@/lib/data";
 
 type Role = (typeof LEADERSHIP.roles)[number];
@@ -164,11 +165,24 @@ function SupportingRoleRow({ role, index }: { role: Role; index: number }) {
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <div className="pb-5 pl-12 pt-1">
+            <div className="pb-6 pl-12 pt-1">
               <div className="mb-3 h-px w-8 bg-[var(--accent)] opacity-50" />
-              <p className="max-w-2xl text-sm leading-relaxed text-[var(--fg)] opacity-75 md:text-base">
-                {role.note}
-              </p>
+              <div className="flex flex-col gap-5 md:flex-row md:items-start md:gap-8">
+                <p className="max-w-2xl flex-1 text-sm leading-relaxed text-[var(--fg)] opacity-75 md:text-base">
+                  {role.note}
+                </p>
+                {/* Club photo — gold-framed evidence card */}
+                {"photo" in role && role.photo && (
+                  <div className="w-full max-w-[320px] shrink-0 border border-[rgba(212,175,106,0.45)] bg-[var(--bg-2)] p-1 md:w-72">
+                    <div className="relative aspect-[4/3] overflow-hidden">
+                      <Photo src={role.photo} alt={role.photoAlt} className="object-cover" />
+                    </div>
+                    <p className="px-1 pb-0.5 pt-1.5 font-mono text-[0.5rem] uppercase tracking-[0.25em] text-[var(--muted)]">
+                      {role.photoCaption}
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </motion.div>
         )}
@@ -296,28 +310,52 @@ export function ElectedOffices() {
         <SophomoreArcCallout />
       </div>
 
-      {/* Numbers strip — fundraising, applicant funnel, winning margin */}
+      {/* Numbers + the team — fundraising scale on the left, the ASB officers on the right */}
       <div className="mt-8 md:mt-10">
-        <RevealGroup
-          className="grid grid-cols-2 gap-px bg-[var(--line)] sm:grid-cols-4"
-          stagger={0.06}
-          delayChildren={0.05}
-        >
-          <StatPill
-            isCounter
-            counterTo={5520}
-            prefix="$"
-            label="Fundraising raised (13 drives)"
-          />
-          <StatPill value="3×" label="Class President wins" />
-          <StatPill value="90→30" label="Leadership II selection pipeline" />
-          <StatPill
-            isCounter
-            counterTo={10}
-            suffix=" votes"
-            label="Margin sophomore loss"
-          />
-        </RevealGroup>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-[1fr_1.25fr] md:gap-6">
+          {/* Stat pills — the two numbers that matter */}
+          <RevealGroup className="grid grid-rows-2 gap-px bg-[var(--line)]" stagger={0.08} delayChildren={0.05}>
+            <StatPill
+              isCounter
+              counterTo={15}
+              prefix="$"
+              suffix="k"
+              label="In fundraisers — drives & merch, three years"
+            />
+            <StatPill value="3×" label="Class President wins" />
+          </RevealGroup>
+
+          {/* The ASB officer team — gold-framed, duotone to colour */}
+          <Reveal delay={0.1}>
+            <div className="group h-full border border-[rgba(212,175,106,0.5)] bg-[var(--bg-2)] p-1.5" data-cursor-hover>
+              <div className="relative h-full min-h-[240px] overflow-hidden border border-[rgba(212,175,106,0.25)]">
+                <div className="absolute inset-0 transition-[filter] duration-500 [filter:grayscale(50%)_sepia(12%)] group-hover:[filter:grayscale(0%)_sepia(0%)]">
+                  <Photo
+                    src="/img/asb-officers.jpg"
+                    alt="The five ASB officers, 2026–2027, in the Mission San Jose gym"
+                    className="object-cover"
+                    style={{ objectPosition: "50% 30%" }}
+                  />
+                </div>
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
+                  style={{ background: "linear-gradient(to top, rgba(12,10,8,0.85) 0%, transparent 100%)" }}
+                />
+                <div className="absolute inset-x-0 bottom-0 flex items-baseline justify-between px-4 pb-3">
+                  <p className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--accent)]">
+                    The ASB Officers
+                  </p>
+                  <p className="font-mono text-[0.55rem] uppercase tracking-[0.25em] text-[var(--fg)] opacity-80">
+                    2026–2027
+                  </p>
+                </div>
+                <span aria-hidden className="absolute left-0 top-0 h-6 w-6 border-l-2 border-t-2 border-[var(--accent)] opacity-70" />
+                <span aria-hidden className="absolute bottom-0 right-0 h-6 w-6 border-b-2 border-r-2 border-[var(--accent)] opacity-70" />
+              </div>
+            </div>
+          </Reveal>
+        </div>
       </div>
 
       {/* Supporting roles — VP accordion rows */}

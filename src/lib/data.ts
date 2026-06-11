@@ -51,7 +51,7 @@ export const WORLDS: WorldMeta[] = [
     index: "01",
     title: "Civic & Storytelling",
     href: "/civic",
-    kicker: "Ampersand Media",
+    kicker: "The Mayor's videographer",
     blurb: "A city, documented. Mayors, podcasts, and a viral fight to bring back a restaurant.",
     art: "documentary / newsprint",
   },
@@ -168,7 +168,7 @@ export const CHAPTERS: Chapter[] = [
     num: "03",
     kicker: "The Storyteller",
     headline: "Documenting a city, and himself.",
-    lede: "Then he picked up a camera. Under Ampersand Media he tells a city's stories — directing the Voices of Fremont podcast with the Mayor, a viral push to revive a beloved restaurant, and a paid role as the Mayor's videographer.",
+    lede: "Then he picked up a camera. He tells a city's stories — directing the Voices of Fremont podcast with the Mayor, a viral push to revive a beloved restaurant, and a paid role as the Mayor's videographer.",
     stat: { value: "10k", label: "Views per Mayor video" },
     image: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg",
     world: "civic",
@@ -222,8 +222,8 @@ export const CHAPTERS: Chapter[] = [
     num: "07",
     kicker: "The Pursuit",
     headline: "The pursuit of happiness.",
-    lede: "And the whole thing is documented. @li_locked.in is the public journal — study tips, vlogs, the discomfort of trying new things — all pointing one direction: the pursuit of happiness.",
-    stat: { value: "500k+", label: "Views in a month" },
+    lede: "And the whole thing is documented. @li_locked.in is the public journal — one year, 83 reels, 1.39 million plays — study tips, vlogs, campaigns, the discomfort of trying new things — all pointing one direction: the pursuit of happiness.",
+    stat: { value: "1.39M+", label: "Plays in year one" },
     image: "/img/headshot1.jpg",
     position: "center 32%",
     world: "lockedin",
@@ -250,11 +250,12 @@ export const WORLD_TO_CHAPTER: Record<WorldId, string> = {
 /* ─────────────────────────── LOCKED IN ──────────────────────────── */
 export const LOCKED = {
   intro:
-    "@li_locked.in is the documentation of a grind — basketball, cooking, study tips, and the discomfort of putting yourself in new positions. 1,400+ followers, 500k+ views in under a month.",
+    "@li_locked.in started June 6, 2025 — a promise to document the grind in public. One year later: 83 reels, 1.39 million plays, and a city-sized story or two. Study tips, campaigns, feasts, the discomfort of trying new things — the whole year is below, in order.",
   metrics: [
-    { value: 1400, suffix: "+", label: "Followers" },
-    { value: 500, suffix: "k+", label: "Views in a month" },
-    { value: 262, suffix: "", label: "Players · li_locked.in scavenger hunt" },
+    { value: 368, suffix: "", label: "Days documented" },
+    { value: 83, suffix: "", label: "Reels" },
+    { value: 1.39, suffix: "M+", decimals: 2, label: "Plays in year one" },
+    { value: 1769, suffix: "", label: "Followers" },
   ],
   /** Real li_locked.in reels — Instagram blocks third-party iframe embeds, so each
    *  card links to the live reel. */
@@ -286,10 +287,479 @@ export const LOCKED = {
   },
 } as const;
 
+/* ─────────────────────────── THE PURSUIT ────────────────────────── */
+/**
+ * One year of @li_locked.in, documented — Jun 6, 2025 (Day 1) → Jun 8, 2026 (Day 368).
+ * Every date, caption, view and like count below is real, pulled from the live account
+ * on 2026-06-10. Keystone moments play natively from /vid/pursuit/<slug>.mp4 (+ .jpg
+ * poster); log rows and quotes link out to the reel.
+ */
+export type PursuitVideoMoment = {
+  kind: "video";
+  slug: string;
+  code: string;
+  date: string;
+  day: number;
+  title: string;
+  caption: string;
+  views: string;
+  likes: string;
+  /** homecoming is the only landscape source */
+  aspect?: "landscape";
+};
+export type PursuitLogMoment = {
+  kind: "log";
+  code: string;
+  date: string;
+  day: number;
+  text: string;
+  views?: string;
+};
+export type PursuitQuoteMoment = {
+  kind: "quote";
+  code: string;
+  date: string;
+  day: number;
+  text: string;
+};
+export type PursuitMoment = PursuitVideoMoment | PursuitLogMoment | PursuitQuoteMoment;
+
+export type PursuitChapter = {
+  id: string;
+  num: string;
+  range: string;
+  /** Two stacked bold headline lines. */
+  title: [string, string];
+  /** Per-chapter accent — the spine grades through these, season by season. */
+  accent: string;
+  narrative: string;
+  moments: PursuitMoment[];
+};
+
+export const PURSUIT: { chapters: PursuitChapter[] } = {
+  chapters: [
+    {
+      id: "summer-grind",
+      num: "01",
+      range: "June 2025",
+      title: ["The summer", "grind."],
+      accent: "#ffb43d",
+      narrative:
+        "June 6, 2025 — sophomore year ends, and the account begins with a promise: post every single day of summer. The early reels are raw — study tips, growing pains, a bulking arc, a few plot twists. But the thesis shows up fast. By week three the whole project has a name: a series called The Pursuit of Happiness, with Fremont's mayor in episode one.",
+      moments: [
+        {
+          kind: "video",
+          slug: "day1",
+          code: "DKlRbevxIjA",
+          date: "Jun 6, 2025",
+          day: 1,
+          title: "Day one.",
+          caption: "junior year is not ready for us (and vice versa)",
+          views: "5.9k",
+          likes: "160",
+        },
+        {
+          kind: "log",
+          code: "DKvhYEox2uc",
+          date: "Jun 10, 2025",
+          day: 5,
+          text: "the bulk begins 😬",
+          views: "9.7k",
+        },
+        {
+          kind: "log",
+          code: "DK0oc0TP4fP",
+          date: "Jun 12, 2025",
+          day: 7,
+          text: "Plot Twist Ep. 1 — “might’ve been the wrong call”",
+          views: "5.9k",
+        },
+        {
+          kind: "video",
+          slug: "climbing-wall",
+          code: "DLLyxnkJn6F",
+          date: "Jun 21, 2025",
+          day: 16,
+          title: "First civic campaign.",
+          caption: "vote for a climbing wall 😁 — your city, your park, your voice",
+          views: "31.7k",
+          likes: "637",
+        },
+        {
+          kind: "video",
+          slug: "poh-ep1",
+          code: "DLRF6eHxs5T",
+          date: "Jun 23, 2025",
+          day: 18,
+          title: "The series gets its name.",
+          caption: "The Pursuit of Happiness: Ep. 1 — Introduction and Mayor Salwan",
+          views: "32.5k",
+          likes: "677",
+        },
+        {
+          kind: "log",
+          code: "DLbZtJpRXlR",
+          date: "Jun 27, 2025",
+          day: 22,
+          text: "journaling is tuff",
+          views: "3.5k",
+        },
+        {
+          kind: "log",
+          code: "DLjB0XSRyvT",
+          date: "Jun 30, 2025",
+          day: 25,
+          text: "The Pursuit of Happiness Ep. 3 — “A Pivot”",
+          views: "4.0k",
+        },
+      ],
+    },
+    {
+      id: "road-to-1600",
+      num: "02",
+      range: "July 2025",
+      title: ["The road", "to 1600."],
+      accent: "#3df0ff",
+      narrative:
+        "July turns into a countdown. The Road to 1600 — a daily SAT-prep diary, T-minus days ticking down through library Khan Academy grinds, Desmos exploits, and nutrition takes. Then AP scores drop, the camera catches the reaction, and 95,000 people watch. First taste of real scale.",
+      moments: [
+        {
+          kind: "video",
+          slug: "ap-scores",
+          code: "DL3npLsRB3q",
+          date: "Jul 8, 2025",
+          day: 33,
+          title: "AP scores drop.",
+          caption: "we out 🤞🫡 — #apscorereactions",
+          views: "95.1k",
+          likes: "1,338",
+        },
+        {
+          kind: "log",
+          code: "DMOwl8wxqXM",
+          date: "Jul 17, 2025",
+          day: 42,
+          text: "studymaxing 🤫",
+          views: "9.2k",
+        },
+        {
+          kind: "log",
+          code: "DMWd7WGJilo",
+          date: "Jul 20, 2025",
+          day: 45,
+          text: "WE locked in — The Road to 1600: T-33",
+          views: "7.2k",
+        },
+        {
+          kind: "log",
+          code: "DMeOU8aJXVp",
+          date: "Jul 23, 2025",
+          day: 48,
+          text: "bro just e^x your way to an 800 using DESMOS 🤦‍♂️ — T-30",
+          views: "5.1k",
+        },
+        {
+          kind: "log",
+          code: "DMjUae8J-8A",
+          date: "Jul 25, 2025",
+          day: 50,
+          text: "nutrition is underrated in study strategies — T-28",
+          views: "8.1k",
+        },
+      ],
+    },
+    {
+      id: "sweet-tomatoes",
+      num: "03",
+      range: "July — August 2025",
+      title: ["The Sweet", "Tomatoes saga."],
+      accent: "#ff3d81",
+      narrative:
+        "Day 51 is supposed to be a throwaway: what if Sweet Tomatoes — Fremont's beloved, long-gone buffet — came back? 339,000 views later it's a campaign. Feasibility updates, lease-signage news from the landlord's realty, a whole city checking its mail. Half a million views in a single month — and one quiet reel to close it out.",
+      moments: [
+        {
+          kind: "video",
+          slug: "sweet-tomatoes",
+          code: "DMl8ytdxtOZ",
+          date: "Jul 26, 2025",
+          day: 51,
+          title: "The one that blew up.",
+          caption: "this would lit be a dream could true",
+          views: "339k",
+          likes: "8,249",
+        },
+        {
+          kind: "log",
+          code: "DM9JKrQIDZp",
+          date: "Aug 4, 2025",
+          day: 60,
+          text: "ong gotta lock in now — no time to edit today sorry 🙏",
+          views: "7.7k",
+        },
+        {
+          kind: "log",
+          code: "DNE1OxhJdh9",
+          date: "Aug 7, 2025",
+          day: 63,
+          text: "final confirmation of lease signage to RCFH was sent from Kimco. Praying that people check their mail 🙏",
+          views: "15.6k",
+        },
+        {
+          kind: "log",
+          code: "DNMtbsQxaV0",
+          date: "Aug 10, 2025",
+          day: 66,
+          text: "locked out.",
+          views: "7.9k",
+        },
+        {
+          kind: "video",
+          slug: "pursuing-happiness",
+          code: "DNPOJzcxZHm",
+          date: "Aug 11, 2025",
+          day: 67,
+          title: "The thank-you.",
+          caption: "Pursuing happiness. Thank you.",
+          views: "10.4k",
+          likes: "228",
+        },
+        {
+          kind: "video",
+          slug: "we-got-ts",
+          code: "DNYWKtFR4kZ",
+          date: "Aug 15, 2025",
+          day: 71,
+          title: "It worked.",
+          caption: "we got ts",
+          views: "25.8k",
+          likes: "715",
+        },
+      ],
+    },
+    {
+      id: "school-year",
+      num: "04",
+      range: "September — December 2025",
+      title: ["The school", "year."],
+      accent: "#ff7a3d",
+      narrative:
+        "Junior year starts and the daily promise relaxes — the camera doesn't. Homecoming hype reels that pull 39k between two classes, drone passes over the track, Diwali fireworks, and a three-part civic case for fixing a new park's parking plan. December closes with 41 Cursor credits left and a vibe-coding diary that turns into AcornPrep.",
+      moments: [
+        {
+          kind: "video",
+          slug: "homecoming",
+          code: "DO-JJ3bjsew",
+          date: "Sep 23, 2025",
+          day: 110,
+          title: "Homecoming season.",
+          caption: "IN OUR PRIME, WE’RE 29 💙💙",
+          views: "18.9k",
+          likes: "386",
+          aspect: "landscape",
+        },
+        {
+          kind: "log",
+          code: "DPB4xYsDkKJ",
+          date: "Sep 25, 2025",
+          day: 112,
+          text: "28, WE DOMINATE 💛",
+          views: "20.0k",
+        },
+        {
+          kind: "log",
+          code: "DPupKLEgX5m",
+          date: "Oct 12, 2025",
+          day: 129,
+          text: "recognize and apply your strengths — drone over the track",
+          views: "12.1k",
+        },
+        {
+          kind: "log",
+          code: "DQQMzyvAZvy",
+          date: "Oct 25, 2025",
+          day: 142,
+          text: "firecrackers def AI; don’t report us — Diwali",
+          views: "11.1k",
+        },
+        {
+          kind: "log",
+          code: "DRV2WHuiCa2",
+          date: "Nov 21, 2025",
+          day: 169,
+          text: "….so we designed a better plan — Palm Park parking, part 3",
+          views: "5.9k",
+        },
+        {
+          kind: "log",
+          code: "DRtKB99kT8N",
+          date: "Nov 30, 2025",
+          day: 178,
+          text: "Aeries can wait 😌 — a reset day in SF",
+          views: "8.8k",
+        },
+        {
+          kind: "video",
+          slug: "vibe-coding",
+          code: "DSoI-zvEZt9",
+          date: "Dec 23, 2025",
+          day: 201,
+          title: "The build log begins.",
+          caption: "down to our last 41 — follow along to see how far our vibes can take us with vibe coding 🤙",
+          views: "8.3k",
+          likes: "151",
+        },
+      ],
+    },
+    {
+      id: "seventeen",
+      num: "05",
+      range: "January — June 2026",
+      title: ["Seventeen.", "Still going."],
+      accent: "#b48cff",
+      narrative:
+        "January 2nd, before sunrise: the Mission Peak birthday tradition, on camera, at 17. The spring that follows puts the account everywhere — campus walkout coverage cut like a news package, the First Partner and then the Governor of California on mic, Iron Chef, prom in San Francisco, AP-season feasts. Day 368 is a June SAT post-mortem. The pursuit continues.",
+      moments: [
+        {
+          kind: "video",
+          slug: "mission-peak-17",
+          code: "DTCCFMrEVKs",
+          date: "Jan 2, 2026",
+          day: 211,
+          title: "The birthday climb.",
+          caption: "good morning, 17 🌅",
+          views: "5.9k",
+          likes: "266",
+        },
+        {
+          kind: "video",
+          slug: "mundane",
+          code: "DTrVWZnEd9g",
+          date: "Jan 18, 2026",
+          day: 227,
+          title: "The thesis.",
+          caption: "an attempt to create the extraordinary from the mundane",
+          views: "5.8k",
+          likes: "248",
+        },
+        {
+          kind: "video",
+          slug: "walkout",
+          code: "DUe38VrkTCK",
+          date: "Feb 7, 2026",
+          day: 247,
+          title: "Covering the walkout.",
+          caption: "hundreds of Mission students walked out with signs, chants, and speeches that echoed across campus",
+          views: "18.8k",
+          likes: "567",
+        },
+        {
+          kind: "log",
+          code: "DUzijNWkRs7",
+          date: "Feb 15, 2026",
+          day: 255,
+          text: "a deceptively simple (yet delectable) macaron recipe 😋",
+          views: "5.8k",
+        },
+        {
+          kind: "log",
+          code: "DVU1pJjES8G",
+          date: "Feb 28, 2026",
+          day: 268,
+          text: "happy questions with happy people in the happiest city in the US — with Jennifer Siebel Newsom",
+          views: "3.9k",
+        },
+        {
+          kind: "video",
+          slug: "newsom",
+          code: "DWDGRnzkdFA",
+          date: "Mar 18, 2026",
+          day: 286,
+          title: "The Governor, on mic.",
+          caption: "@cagovernor answers the hottest, most controversial takes in the county: milk or cereal first?",
+          views: "8.3k",
+          likes: "146",
+        },
+        {
+          kind: "log",
+          code: "DXk8WxzDZrg",
+          date: "Apr 25, 2026",
+          day: 324,
+          text: "thank you to all our participants in the 2026 Iron Chef competition 🙏🙏",
+          views: "15.7k",
+        },
+        {
+          kind: "log",
+          code: "DXo3at8h0NU",
+          date: "Apr 27, 2026",
+          day: 326,
+          text: "stay tuned for Wednesday’s drop 🥹 — prom, at SF’s Cal Academy",
+          views: "27.5k",
+        },
+        {
+          kind: "log",
+          code: "DYq5cONMOLs",
+          date: "May 22, 2026",
+          day: 351,
+          text: "core boys at prom 🥹❤️‍🩹",
+          views: "7.7k",
+        },
+        {
+          kind: "video",
+          slug: "june-sat",
+          code: "DZWMdCUNfbd",
+          date: "Jun 8, 2026",
+          day: 368,
+          title: "Day 368. Still posting.",
+          caption: "circle with points XYZ on circumference….huh?",
+          views: "9.6k",
+          likes: "207",
+        },
+      ],
+    },
+  ],
+};
+
 /* ───────────────────────────── CIVIC ───────────────────────────── */
 export const CIVIC = {
   intro:
-    "Under the banner of Ampersand Media, Jadon turns a city into a story — civic video, podcasts, and campaigns that move real numbers.",
+    "Jadon turns a city into a story — civic video, podcasts, and campaigns that move real numbers.",
+  vofInstagram: "https://www.instagram.com/voices_of_fremont/",
+  vofHandle: "@voices_of_fremont",
+  /** The Sweet Tomatoes saga, in order — real reels + stats from @li_locked.in (2025). */
+  sweetTomatoesReels: [
+    {
+      url: "https://www.instagram.com/reel/DMl8ytdxtOZ/",
+      caption: "this would lit be a dream could true",
+      likes: "8,249",
+      comments: "198",
+      date: "Jul 26, 2025",
+      poster: "/embeds/st-01.jpg",
+    },
+    {
+      url: "https://www.instagram.com/reel/DMtpLnSvfcl/",
+      caption: "update: still clarifying the availability of the facility",
+      likes: "674",
+      comments: "29",
+      date: "Jul 29, 2025",
+      poster: "/embeds/st-02.jpg",
+    },
+    {
+      url: "https://www.instagram.com/reel/DM35ZM7J5gS/",
+      caption: "might be feasible…",
+      likes: "2,886",
+      comments: "65",
+      date: "Aug 2, 2025",
+      poster: "/embeds/st-03.jpg",
+    },
+    {
+      url: "https://www.instagram.com/reel/DNYWKtFR4kZ/",
+      caption: "we got ts",
+      likes: "715",
+      comments: "198",
+      date: "Aug 15, 2025",
+      poster: "/embeds/st-04.jpg",
+    },
+  ],
   metrics: [
     { value: 10, suffix: "k", label: "Views per mayor video", note: "grown from ~1k" },
     { value: 500, suffix: "k+", label: "Views in under a month", note: "@li_locked.in" },
@@ -345,6 +815,25 @@ export const CIVIC = {
     window: "Nov 2025 – present",
     detail:
       "One of 13 commissioners selected from ~100 applicants for a single open seat. Plans youth-issue events (mental-wellness workshops) and meets council-style the first Monday of every month.",
+    url: "https://www.fremont.gov/government/departments/city-clerk/boards-commissions-committees/youth-advisory-commission",
+    /** The commission, off the record — real reel + stats from @li_locked.in. */
+    reel: {
+      url: "https://www.instagram.com/reel/DV7auLNEc2P/",
+      caption: "YAC Fremont — students get a real voice in local government",
+      likes: "213",
+      comments: "13",
+      date: "Mar 15, 2026",
+      poster: "/embeds/yac-reel.jpg",
+    },
+  },
+  /** The SBAI op-ed as published — real article metadata (San Mateo Daily Journal). */
+  opEd: {
+    url: "https://www.smdailyjournal.com/opinion/guest_perspectives/pragmatic-win-for-accessibility-small-businesses/article_7acc77ef-4f78-40c5-bb45-fa4218094077.html",
+    title: "Pragmatic win for accessibility, small businesses",
+    byline: "By Luke Wu, Arissa Cao and Jadon Li",
+    outlet: "San Mateo Daily Journal",
+    date: "Aug 22, 2025",
+    image: "/embeds/oped-smdj.jpg",
   },
   awards: [
     "ACWD Water Clip Contest 2025 — 1st & 3rd place (100+ contestants, two submissions) · $600",
@@ -388,7 +877,7 @@ export const RESEARCH = {
       role: "Co-President — competition pipeline",
       site: "science fairs · olympiads",
       detail:
-        "Built STEM-PAC (from the HOSA chapter Jadon founded in 10th) into a club that guides students toward real competitions — coaching them into the Alameda County Science Fair (ACSEF), biology and broader STEM olympiads, and other external contests, not just in-house events. Iron Chef (23 contestants) and the egg drop (12 teams) are the community glue; the science-fair and olympiad pipeline is the point.",
+        "Built MSJ STEM-PAC — Projects and Competitions — from the club Jadon founded as a 10th-grade officer into a pipeline that guides students toward real competitions: the Alameda County Science Fair (ACSEF), biology and broader STEM olympiads, and other external contests, not just in-house events. Iron Chef (23 contestants) and the egg drop (12 teams) are the community glue; the science-fair and olympiad pipeline is the point.",
     },
     {
       title: "UMass Research Intensive",
@@ -477,15 +966,16 @@ export const PROJECTS: Project[] = [
   },
   {
     name: "MSJ Makes",
-    url: "https://instagram.com/li_locked.in",
-    domain: "Merch design",
-    embeddable: false,
+    url: "https://msjmakes.framer.website/",
+    domain: "msjmakes.framer.website",
+    embeddable: true,
+    shot: "/embeds/msjmakes.jpg",
     tagline: "Student merch, designed & sold.",
     stats: [
-      { value: "~$700", label: "Revenue" },
+      { value: "~$4k", label: "Profit · all jobs" },
       { value: "Design", label: "Operation" },
     ],
-    body: "A student merch-design operation — concept, design, and sales — generating roughly $700 in revenue.",
+    body: "A student merch-design operation — concept, design, and sales — servicing clubs and sports teams campus-wide (badminton and volleyball hoodies, basketball merch, DECA minicon glass, senior stoles), with around $4,000 in profit across jobs.",
     stack: ["Design", "Operations"],
   },
 ];
@@ -493,7 +983,7 @@ export const PROJECTS: Project[] = [
 /* ─────────────────────── LEADERSHIP & EVENTS ────────────────────── */
 export const LEADERSHIP = {
   intro:
-    "Elected to lead, every year. Three-time Class President, now ASB President — plus VP of two clubs. The office is the point; the events are the proof.",
+    "Elected to lead, every year. Three-time Class President, now ASB President — plus President of MSJ Makes and Co-President of STEM-PAC. The office is the point; the events are the proof.",
   /** THE HEADLINE — the elected offices, front and centre. */
   roles: [
     {
@@ -513,25 +1003,41 @@ export const LEADERSHIP = {
       highlight: true,
     },
     {
+      title: "MSJ Makes President",
+      window: "VP → President",
+      tag: "Clubs",
+      note:
+        "The school's maker-and-merch club: a real design studio servicing clubs and sports teams across campus — MSJ badminton hoodies, volleyball hoodies, basketball merch, glass awards for DECA's minicons and the STEM clubs, stickers, tees. The headline job: 40 custom senior stoles, cut and pressed in-house ($700 revenue and $400 profit from that one commission alone). Across all jobs, the club has cleared around $4,000 in profit. Now, as President, he runs the whole operation — client intake, design pipeline, production days, and the books.",
+      photo: "/img/msjmakes-stoles.jpg",
+      photoAlt: "MSJ Makes officers at a work table covered in stole fabrics, vinyl lettering, and pressed designs",
+      photoCaption: "Stole season — production day",
+    },
+    {
+      title: "MSJ STEM-PAC Co-President",
+      window: "Founder → Co-Pres",
+      tag: "Clubs",
+      note:
+        "The club he founded as a 10th-grade officer, rebuilt around what members actually do: STEM Projects and Competitions — that's the PAC. Weekly posts surface upcoming competitions and deadlines; bi-weekly workshops help students start and develop projects; a staged-entry pipeline coaches them from smaller contests into ACSEF, biology and STEM olympiads, and regional research fairs. Iron Chef (23 contestants) and the egg drop (12 teams) keep students walking through the door — the competition pipeline is what they stay for. Co-President with Ashley Kang, plus 3 officers.",
+      photo: "/img/stempac-meeting.jpg",
+      photoAlt: "A full classroom at an MSJ STEM-PAC meeting, officers presenting slides at the front",
+      photoCaption: "Full room — a STEM-PAC meeting",
+    },
+    {
       title: "Climbing Club VP",
       window: "Treasurer → VP",
       tag: "Clubs",
       note:
-        "Ran the (notoriously fiddly) fundraising and reimbursement forms, led boba fundraisers past $800, and built a permanent climbing wall in the weight room — a first for the school.",
-    },
-    {
-      title: "MSJ Makes VP",
-      window: "Merch design",
-      tag: "Clubs",
-      note:
-        "Led merch design for clubs and teams — hoodies, tees, glass awards, stickers, and 40 senior stoles. ~$700 revenue, ~$400 profit, 8 clients.",
+        "Started as Treasurer running the (notoriously fiddly) fundraising and reimbursement forms, then stepped up to VP. Built the club's money engine: boba fundraisers past $800, the school's first Raising Cane's fundraiser at $1,300+ revenue, and a Google Apps Script system that automated pre-orders. The capstone: a permanent climbing wall in the weight room — a first for the school, pitched, funded, and built.",
+      photo: "/img/climbingclub-all1.jpg",
+      photoAlt: "The full Climbing Club membership posing together",
+      photoCaption: "All hands — Climbing Club",
     },
   ],
   winterBall: {
     title: "Winter Ball — Built From Scratch",
     date: "February 2026",
     body:
-      "The first winter ball since before COVID — no precedent, no playbook. To set the bar, he proposed two new initiatives: a live drink bar (his freshman/JV coach, Coach Ed, bartended mocktails on the spot — people were gutted when it ran out) and game tables (he got MPPFA's fundraising lead to lend poker/roulette tables instead of buying new). 350 students came.",
+      "The first winter ball since before COVID — no precedent, no playbook. To set the bar, he proposed two new initiatives: a live drink bar mixing mocktails on the spot (people were gutted when it ran out) and game tables (he got MPPFA's fundraising lead to lend poker/roulette tables instead of buying new). 350 students came.",
     stat: { value: "350", label: "Students" },
   },
   /** Car Meet — a notable event, no longer the headline. */
@@ -548,16 +1054,142 @@ export const LEADERSHIP = {
     body:
       "One of five seniors leading it; Jadon ran the media side — promotion and coverage (@msjmeets) — and brought in City Council and the Mayor to speak. The team door-knocked the neighborhood so all of Fremont, not just MSJ, was invited.",
   },
-  /** The operator's event log — expanded. */
+  /**
+   * Club officer crews — one entry per club Jadon helps lead.
+   * `photo` slots render a styled placeholder until the real officer-team
+   * shot lands in /public/img (drop the file in; no code change needed).
+   */
+  crews: [
+    {
+      club: "MSJ Makes",
+      role: "President",
+      arc: "VP → President",
+      monogram: "MM",
+      photo: "/img/msjmakes-officers.jpg",
+      photoAlt: "MSJ Makes officer team",
+      blurb:
+        "The maker-and-merch club, servicing clubs and sports teams campus-wide — badminton and volleyball hoodies, basketball merch, DECA minicon glass, STEM club awards, and 40 senior stoles. Now he runs it.",
+      stat: { value: "~$4k", label: "profit across all jobs" },
+    },
+    {
+      club: "MSJ STEM-PAC",
+      role: "Co-President",
+      arc: "Founded it in 10th",
+      monogram: "SP",
+      photo: "/img/stempac-officers.jpg",
+      photoAlt: "MSJ STEM-PAC officer team",
+      blurb:
+        "Projects and Competitions — that's the PAC. A coaching pipeline into ACSEF, biology and STEM olympiads, and external contests, with Iron Chef and the egg drop as community glue.",
+      stat: { value: "50", label: "club members" },
+    },
+    {
+      club: "Climbing Club",
+      role: "Vice President",
+      arc: "Treasurer → VP",
+      monogram: "CC",
+      photo: "/img/climbingclub-officers.jpg",
+      photoAlt: "Climbing Club officer team",
+      blurb:
+        "Ran the fundraising machine — boba drives past $800, the first Raising Cane's fundraiser at $1,300+ — and built a permanent climbing wall in the weight room, a first for the school.",
+      stat: { value: "$2.7k", label: "raised across drives" },
+    },
+  ],
+  /**
+   * The operator's event log — expanded. Notes use **bold** markers for the
+   * load-bearing words (rendered gold in the ledger); `facts` are the
+   * line-item cells under each note. Text-only by design — the photos live
+   * in the In the Field strip.
+   */
   events: [
-    { title: "ICE Protest", window: "2026", metric: "20k+ views", note: "Organized a 500+-person protest at Mission, then made a news-anchor-style video about it that reached 20k+ views across the district." },
-    { title: "Valentine's Scavenger Hunt", window: "2026", metric: "262 players", note: "Hosted under li_locked.in ($300 in prizes, self-funded). School-trivia clues you couldn't Google — you had to talk to people. 262 participants." },
-    { title: "Homecoming ×3", window: "9th–11th", metric: "2nd place", note: "Tangled (hour-long), Spirited Away (45 min — 2nd place), Legend of Korra. Delegated deco / airband / skit, set deadlines, supervised practices." },
-    { title: "Senior Breakfast", window: "2026", metric: "$4.8k · 500", note: "Sourced 4 caterers, deliberated with the incoming ASB team, ordered $4.8k for 500 servings — and saved the day when the mailed check vanished in transit." },
-    { title: "CO26 Graduation", window: "2026", metric: "500 names", note: "Led the planning, built the name-card system end to end, and personally announced all 500 names at TAK Stadium (one missed syllable, out of 500)." },
-    { title: "Prom @ Cal Academy of Sciences", window: "2026", metric: "—", note: "Helped plan prom at the California Academy of Sciences." },
-    { title: "JP Basketball", window: "Founder · 2025", metric: "$60/hr", note: "Founded a coaching program for grades 4–8 — Sundays, ~$60/hr, 6 students, 2 coaches." },
-    { title: "City of Fremont", window: "Summer 2024", metric: "Rec Director", note: "Coached 5–12-year-olds across many sports at the Irvington Sports Jam — learning to keep kids engaged and comfortable." },
+    {
+      title: "ICE Protest",
+      window: "2026",
+      metric: "20k+ views",
+      note: "Organized a **500+-person protest** at Mission — because staying silent tells those in power they can act without accountability, and what affects our neighbors today affects us tomorrow. Then turned it into a **news-anchor-style recap video** that travelled across the district.",
+      facts: [
+        { value: "500+", label: "participants" },
+        { value: "20k+", label: "video views" },
+        { value: "500+", label: "likes, district-wide" },
+      ],
+      video: { url: "https://www.instagram.com/reel/DUe38VrkTCK/", label: "Watch the recap — 20k+ views" },
+    },
+    {
+      title: "Valentine's Scavenger Hunt",
+      window: "2026",
+      metric: "262 players",
+      note: "Hosted under **li_locked.in** with **$300 in prizes, self-funded**. Every clue was school trivia you couldn't Google — players had to **talk to teachers and classmates** to crack the puzzles. Engagement was the whole point.",
+      facts: [
+        { value: "262", label: "participants" },
+        { value: "$300", label: "prizes · self-funded" },
+        { value: "3", label: "winners" },
+      ],
+    },
+    {
+      title: "Homecoming ×3",
+      window: "9th–11th",
+      metric: "150+ participants",
+      note: "Ran Homecoming **all three years** — recruiting and organizing **150+ participants per year** across **deco, airband, and skit**: delegating leaders, setting deadlines, supervising practices, and clearing every piece of ASB paperwork end to end.",
+      facts: [
+        { value: "3", label: "years running it" },
+        { value: "150+", label: "participants / year" },
+        { value: "3", label: "squads — deco · airband · skit" },
+      ],
+    },
+    {
+      title: "Senior Breakfast",
+      window: "2026",
+      metric: "$4.8k",
+      note: "Sourced and compared **4 caterers**, deliberated the menu with the incoming ASB team, and placed a **$4.8k order for 500 servings** — then **saved the event** when the mailed check vanished in transit.",
+      facts: [
+        { value: "4", label: "caterers sourced" },
+        { value: "$4.8k", label: "the order" },
+        { value: "500", label: "servings" },
+      ],
+    },
+    {
+      title: "CO26 Graduation",
+      window: "2026",
+      metric: "500 students",
+      note: "Led the planning and built the **name-card system end to end** — on site for **6am prep**, then personally **announced all 500 names** at TAK Stadium.",
+      facts: [
+        { value: "500", label: "names announced" },
+        { value: "6am", label: "prep call" },
+        { value: "TAK", label: "stadium stage" },
+      ],
+    },
+    {
+      title: "Prom @ Cal Academy of Sciences",
+      window: "2026",
+      metric: "600+ students",
+      note: "Helped plan prom at the **California Academy of Sciences** — **600+ students** and a **$98k production** for a night in the museum. Also shot the **K-drama-style promo** in SF with the video team: the most popular MSJTV video yet.",
+      facts: [
+        { value: "600+", label: "students" },
+        { value: "$98k", label: "production cost" },
+        { value: "500+", label: "likes on the promo, day one" },
+      ],
+    },
+    {
+      title: "JP Basketball",
+      window: "Founder · 2025",
+      metric: "$60/hr",
+      note: "**Founded** a basketball training program with 'Coach PradyFlex' — business plan to coaching, built to **ignite passion first, skills second**. Sunday sessions, **20 players** coached, and **over $2k made**.",
+      facts: [
+        { value: "$60/hr", label: "rate" },
+        { value: "20", label: "players coached" },
+        { value: "$2k+", label: "made" },
+      ],
+    },
+    {
+      title: "City of Fremont",
+      window: "Summer 2024",
+      metric: "Rec Director",
+      note: "Part-time **Recreational Director** at the Irvington Sports Jam — coaching **5–12-year-olds** across many sports, learning to keep kids **comfortable and engaged**, and earning **~$600** doing it.",
+      facts: [
+        { value: "5–12", label: "ages coached" },
+        { value: "~$600", label: "earned" },
+        { value: "ISJ", label: "Irvington Sports Jam" },
+      ],
+    },
   ],
 } as const;
 
@@ -577,7 +1209,29 @@ export const COURT = {
     { period: "11th", role: "Varsity · started first 5", note: "Started in the opening five while better players were injured early; took fewer minutes as they returned, and learned how much bench energy drives team synergy." },
     { period: "2026", role: "NCS Champion", note: "Won the NCS title — the first in both school and Fremont district history. Recognized by the Mayor and the City." },
   ],
-  douyin: { value: "569k", label: "Likes on DouYin", note: "At a gym in China, he played with and against a 网红 (influencer); his game drew media attention and the clip hit 569k+ likes." },
+  douyin: {
+    value: "569k",
+    label: "Likes on DouYin",
+    note: "At a gym in China, he played with and against a 网红 (influencer); his game drew media attention and the clip hit 569k+ likes.",
+    url: "https://www.douyin.com/video/7247003661631622458",
+    /** Video id for the open.douyin.com iframe player. */
+    vid: "7247003661631622458",
+    /** Exact counts from the DouYin share API (digg_count / comment_count), June 2026. */
+    likes: "569,002",
+    comments: "15,164",
+    statsAsOf: "06·2026",
+  },
+  /** Mercury News coverage of the NCS title game (headline/deck verbatim from the article). */
+  press: {
+    outlet: "The Mercury News",
+    section: "High School Sports",
+    headline: "Believe it! Mission San Jose wins first NCS title in boys basketball",
+    deck: "Joseph Standfield scores 23 points as Mission San Jose rallies from double-digit deficit to beat Rancho Cotate in North Coast Section Division IV final.",
+    byline: "Darren Sabedra",
+    date: "Feb 27, 2026",
+    url: "https://www.mercurynews.com/2026/02/27/believe-it-mission-san-jose-wins-first-ncs-title-in-boys-basketball/",
+    score: { msj: 46, opp: 40, oppName: "Rancho Cotate", venue: "NCS D-IV Final · Santa Rosa" },
+  },
 } as const;
 
 /* ───────────────────────────── ABOUT ───────────────────────────── */
@@ -593,9 +1247,38 @@ const CLIMBS: Climb[] = [
   { year: "2026", time: "54:00", seconds: 3240, note: "the 7AM sunrise climb, filmed for li_locked.in — stopped chasing the PR, started noticing the view" },
 ];
 
+export type TravelStop = {
+  place: string;
+  region: string;
+  /** Longitude/latitude in degrees, for the world-map projection. */
+  lon: number;
+  lat: number;
+  home?: boolean;
+  note?: string;
+};
+
+/** Travel stops for the interactive world map. */
+const TRAVEL_STOPS: TravelStop[] = [
+  { place: "Fremont, CA", region: "Home base", lon: -121.99, lat: 37.55, home: true, note: "Where every trip starts and ends." },
+  { place: "Xi'an", region: "China", lon: 108.94, lat: 34.34, note: "6 weeks with grandparents — street food, cities within cities" },
+  { place: "Tianjin", region: "China", lon: 117.36, lat: 39.34, note: "Part of the same six-week China summer" },
+  { place: "Chengdu", region: "China", lon: 104.07, lat: 30.57, note: "Part of the same six-week China summer" },
+  { place: "Chongqing", region: "China", lon: 106.55, lat: 29.56, note: "Part of the same six-week China summer" },
+  { place: "Tokyo", region: "Japan", lon: 139.69, lat: 35.68 },
+  { place: "Kyoto · Osaka", region: "Japan", lon: 135.6, lat: 34.9 },
+  { place: "Taipei", region: "Taiwan", lon: 121.57, lat: 25.03 },
+  { place: "Vancouver", region: "Canada", lon: -123.12, lat: 49.28, note: "Spring-break travel vlog — chose the trip over grinding APs, and came back energized" },
+  { place: "Toronto", region: "Canada", lon: -79.38, lat: 43.65 },
+  { place: "Quebec City", region: "Canada", lon: -71.21, lat: 46.81 },
+  { place: "Cabo San Lucas", region: "Mexico", lon: -109.91, lat: 22.89 },
+  { place: "London", region: "United Kingdom", lon: -0.13, lat: 51.51 },
+  { place: "Las Vegas", region: "Nevada", lon: -115.14, lat: 36.17 },
+  { place: "Reno", region: "Nevada", lon: -119.81, lat: 39.53 },
+];
+
 export const ABOUT = {
   ethos:
-    "li_locked.in is the documentation of a grind — basketball, cooking, study tips, and the discomfort of putting yourself in new positions for self-improvement. 1,400+ followers, 500k+ views in under a month.",
+    "li_locked.in is the documentation of a grind — basketball, cooking, study tips, and the discomfort of putting yourself in new positions for self-improvement. One year in: 83 reels, 1.39M plays.",
   missionPeak: {
     title: "Mission Peak",
     ritual: "Every birthday, a solo run to the summit — a reflection ritual, journaled since 8th grade.",
@@ -626,13 +1309,7 @@ export const ABOUT = {
     { name: "DJI Avata 2", note: "FPV — bought with saved + earned money" },
     { name: "Osmo Pocket 3", note: "the everyday cinema rig" },
   ],
-  /** Travel map, for graphical rendering. */
-  travel: [
-    { place: "Xi'an, China", note: "6 weeks with grandparents — Tianjin, Chengdu, Chongqing too" },
-    { place: "Japan", note: "Kyoto · Tokyo · Osaka" },
-    { place: "Taiwan", note: "Taipei" },
-    { place: "Vancouver", note: "Spring-break travel vlog — chose the trip over grinding APs, and came back energized" },
-  ],
+  travel: TRAVEL_STOPS,
   close: "It all points one direction — the pursuit of happiness.",
 } as const;
 
@@ -693,7 +1370,7 @@ export const TROPHIES: Trophy[] = [
   { year: "2024", title: "Link Crew Leader", cat: "leadership", detail: "Guided freshmen through their first days — summer training + orientation day." },
   { year: "2025", title: "JV Basketball Co-Captain", cat: "court", detail: "Led JV to a .500 league record; team dinners after losses." },
   { year: "2025", title: "DECA — top 10 BTDM at SVCDC", cat: "academic", detail: "Top-10 finish in Business & Tech Decision-Making; on DECA's Diamond Leadership Team." },
-  { year: "2025", title: "MSJ HOSA — founding officer", cat: "research", detail: "Health-science club; launched MSJ Iron Chef." },
+  { year: "2025", title: "MSJ STEM-PAC — founding officer", cat: "research", detail: "Projects-and-competitions club; launched MSJ Iron Chef." },
   { year: "2025", title: "Lost ASB President by ~10 votes", cat: "leadership", detail: "The underdog sophomore run — heartbreak that became the comeback." },
   { year: "2025", title: "Climbing Club money engine", cat: "leadership", detail: "Treasurer → VP: led the first Raising Cane's fundraiser, $1,300+ revenue, and automated pre-orders with Google Apps Script." },
   // ── Summer 2025 / Junior — research ──
@@ -721,7 +1398,9 @@ export const TROPHIES: Trophy[] = [
   // ── Junior — built ──
   { year: "2026", title: "AcornPrep — launched", cat: "built", detail: "AI AP study tool: 500+ users, 13,000 MCQs, #1 Google result, 4 AP-teacher endorsements." },
   { year: "2025", title: "CueSheet — shipped", cat: "built", detail: "A music-supervision tool, live at cuesheet.xyz." },
-  { year: "2025", title: "MSJ Makes VP", cat: "built", detail: "Led merch design; 40 senior stoles; ~$700 revenue, ~$400 profit." },
+  { year: "2025", title: "MSJ Makes VP", cat: "built", detail: "Led merch design; 40 senior stoles — $700 revenue, $400 profit on that job alone." },
+  { year: "2026", title: "MSJ Makes President", cat: "built", detail: "VP → President; runs the maker-and-merch operation — ~$4,000 profit across club jobs." },
+  { year: "2026", title: "MSJ STEM-PAC Co-President", cat: "research", detail: "Co-leads the projects-and-competitions club he founded; ACSEF + olympiad pipeline." },
   { year: "2026", title: "Hermes — in build", cat: "built", detail: "An Instagram club-info scraper; ~90% complete." },
   // ── Junior — leadership / events ──
   { year: "2025", title: "MSJ Car Meet", cat: "leadership", detail: "First in MSJ history · $35M+ in cars · a $3.5M Pagani." },
@@ -782,6 +1461,7 @@ export const ALBUMS: Album[] = [
       { src: "/img/ncs-champs-recognized-by-city.jpg", caption: "Recognized by the City of Fremont" },
       { src: "/img/jv-bbal.jpg", caption: "JV season" },
       { src: "/img/frosh-bbal.jpg", caption: "Where it started — frosh ball" },
+      { src: "/img/aau-basketball.jpg", caption: "AAU ball — driving the lane" },
     ],
   },
   {
@@ -799,13 +1479,20 @@ export const ALBUMS: Album[] = [
       { src: "/img/school-fundraising3.jpg", caption: "Fundraiser crew" },
       { src: "/img/highschoolpanel-wide.jpg", caption: "High-school panel, wide" },
       { src: "/img/highschoolpanel-close.jpg", caption: "On the panel" },
+      { src: "/img/seniorbreakfast-baskets.jpg", caption: "Senior Breakfast — pastry baskets ($4.8k, 500 servings)" },
+      { src: "/img/seniorbreakfast-bagels.jpg", caption: "Senior Breakfast — the bagel towers" },
+      { src: "/img/prom-calacademy.jpg", caption: "Prom at the Cal Academy of Sciences" },
+      { src: "/img/freshmenyear-speech.jpg", caption: "Freshman year — the first speech" },
+      { src: "/img/classofficer-freshman.jpg", caption: "Class officers, 9th — the freshman slate" },
+      { src: "/img/classofficer-sophomore.jpg", caption: "Class officers, 10th — on the rally mic" },
+      { src: "/img/classofficer-junior.jpg", caption: "Class officers, 11th — never second" },
     ],
   },
   {
     id: "lens",
     index: "03",
     title: "Behind the Lens",
-    kicker: "Ampersand Media shoots",
+    kicker: "Civic shoots",
     blurb: "Podcast sets, mayoral edits, car meets, and the drone — the city as seen through the work.",
     photos: [
       { src: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg", caption: "Voices of Fremont — with Jennifer Siebel Newsom" },
@@ -833,6 +1520,12 @@ export const ALBUMS: Album[] = [
       { src: "/img/acornprep-cofounders.jpg", caption: "AcornPrep co-founders" },
       { src: "/img/acwd-water-contest-1stplace.jpg", caption: "ACWD water contest — 1st place" },
       { src: "/img/ysjc-2025-summer-showcase.jpg", caption: "YSJC 2025 summer showcase" },
+      { src: "/img/acwd-water-tour.jpg", caption: "ACWD water-treatment plant — the private tour" },
+      { src: "/img/ironchef-win.jpg", caption: "Stoichiometry Iron Chef — 2025 winner's plaque" },
+      { src: "/img/stempac-meeting.jpg", caption: "STEM-PAC meeting — full room" },
+      { src: "/img/stempac-officers.jpg", caption: "MSJ STEM-PAC — the officer team" },
+      { src: "/img/msjmakes-stoles.jpg", caption: "MSJ Makes — senior stole production" },
+      { src: "/img/msjmakes-officers.jpg", caption: "MSJ Makes — the officer team" },
     ],
   },
   {
@@ -844,10 +1537,15 @@ export const ALBUMS: Album[] = [
     photos: [
       { src: "/img/missionpeak2026-1.jpg", caption: "Mission Peak, 2026 — sunrise" },
       { src: "/img/missionpeak2026-2.jpg", caption: "Mission Peak, 2026" },
+      { src: "/img/missionpeak2026.jpg", caption: "Mission Peak, 2026 — at the summit tree" },
       { src: "/img/missionpeak2025.jpg", caption: "Mission Peak, 2025" },
+      { src: "/img/missionpeak2024.jpg", caption: "Mission Peak, 2024 — the sub-48 climb" },
       { src: "/img/climbingclub-all2.jpg", caption: "Climbing club, all hands" },
+      { src: "/img/missionpeak2023.jpg", caption: "Mission Peak, 2023" },
       { src: "/img/climbingclub-officers.jpg", caption: "Climbing club officers" },
+      { src: "/img/missionpeak2022.jpg", caption: "Mission Peak, 2022 — ten minutes faster" },
       { src: "/img/climbingclub-all1.jpg", caption: "Climbing club" },
+      { src: "/img/missionpeak-2021.jpg", caption: "The first climb — twelve years old, 2021" },
     ],
   },
   {
@@ -859,6 +1557,7 @@ export const ALBUMS: Album[] = [
     photos: [
       { src: "/img/headshot1.jpg", caption: "Headshot" },
       { src: "/img/headshot2.jpg", caption: "Headshot, alternate" },
+      { src: "/img/hero-bridge-v2.jpg", caption: "Golden Gate — the hero frame" },
     ],
   },
 ];

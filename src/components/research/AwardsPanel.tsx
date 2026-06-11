@@ -39,30 +39,16 @@ const AWARD_COMMENTARY: Record<
   },
 };
 
-// Stat bar data for visual context
-const USABO_STAT = {
-  score: 26,
-  cutoff: 28,
-  max: 50,
-  pct: "~15%", // top percentile
-};
-
 // ── component ─────────────────────────────────────────────────────────────────
 
 export function AwardsPanel() {
   const [active, setActive] = useState<string | null>(null);
 
   return (
-    <div className="space-y-16">
-
-      {/* ── Section header ────────────────────────────────────── */}
-      <Reveal>
-        <p className="eyebrow mb-2">Competitions</p>
-        <h2 className="font-display text-3xl leading-tight md:text-5xl">Awards &amp; Olympiads</h2>
-      </Reveal>
+    <div className="space-y-14">
 
       {/* ── Context blurb ─────────────────────────────────────── */}
-      <Reveal delay={0.1}>
+      <Reveal>
         <p className="max-w-2xl font-mono text-sm leading-relaxed text-[var(--muted)]">
           Three independent competitions, three strong results — all in a single academic year
           alongside a full AP courseload. The USABO and UK BBO reflect self-directed biology
@@ -146,46 +132,6 @@ export function AwardsPanel() {
                         {/* USABO visualisation */}
                         {award.name === "USABO" && (
                           <div className="mt-6 space-y-3">
-                            {/* Score bar */}
-                            <div>
-                              <div className="flex items-center justify-between mb-2">
-                                <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-                                  Score
-                                </span>
-                                <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-                                  / {USABO_STAT.max}
-                                </span>
-                              </div>
-                              <div className="relative h-2.5 w-full rounded-full bg-[var(--line)] overflow-hidden">
-                                <motion.div
-                                  className="absolute inset-y-0 left-0 rounded-full"
-                                  style={{ background: "var(--accent)" }}
-                                  initial={{ width: "0%" }}
-                                  animate={{ width: `${(USABO_STAT.score / USABO_STAT.max) * 100}%` }}
-                                  transition={{ delay: 0.15, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                                />
-                                {/* Cutoff marker */}
-                                <div
-                                  className="absolute inset-y-0 w-0.5 rounded-full"
-                                  style={{
-                                    left: `${(USABO_STAT.cutoff / USABO_STAT.max) * 100}%`,
-                                    background: "var(--accent-2)",
-                                  }}
-                                />
-                              </div>
-                              <div className="flex justify-between mt-1.5">
-                                <span className="font-mono text-[0.65rem]" style={{ color: "var(--accent)" }}>
-                                  {USABO_STAT.score} — scored
-                                </span>
-                                <span className="font-mono text-[0.65rem] text-[var(--muted)]">
-                                  50 max
-                                </span>
-                                <span className="font-mono text-[0.65rem]" style={{ color: "var(--accent-2)" }}>
-                                  {USABO_STAT.cutoff} cutoff
-                                </span>
-                              </div>
-                            </div>
-
                             {/* Percentile pills */}
                             <div className="flex flex-wrap gap-3">
                               {[

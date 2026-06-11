@@ -9,12 +9,15 @@ export function Counter({
   suffix = "",
   prefix = "",
   duration = 1.8,
+  decimals,
   className,
 }: {
   to: number;
   suffix?: string;
   prefix?: string;
   duration?: number;
+  /** Fixed decimal places (e.g. 2 → "1.39"); defaults to 0 for integers, 1 otherwise. */
+  decimals?: number;
   className?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -36,7 +39,12 @@ export function Counter({
     return () => controls.stop();
   }, [inView, to, duration]);
 
-  const display = Number.isInteger(to) ? Math.round(val).toLocaleString() : val.toFixed(1);
+  const display =
+    decimals !== undefined
+      ? val.toFixed(decimals)
+      : Number.isInteger(to)
+        ? Math.round(val).toLocaleString()
+        : val.toFixed(1);
 
   return (
     <span ref={ref} className={className}>

@@ -118,21 +118,47 @@ function CarMeetCollage() {
   );
 }
 
-/** Compact stat card for the grid below the collage. */
+/** License-plate stat chip — stamped metal look, screw dots in the corners. */
 function StatCard({ value, label }: { value: string; label: string }) {
   return (
-    <div className="group relative flex flex-col justify-end border border-[var(--line)] bg-[var(--bg-2)] p-4 transition-colors duration-500 hover:border-[var(--accent)] md:p-5">
-      <span
-        aria-hidden
-        className="absolute left-0 top-0 h-0.5 w-8 bg-[var(--accent)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-      />
-      <p className="font-anton text-[1.6rem] leading-none text-[var(--fg)] md:text-[2.2rem]">
+    <div
+      className="group relative flex flex-col items-center justify-center rounded-md px-4 py-5 text-center transition-transform duration-300 hover:-translate-y-1 md:px-5"
+      style={{
+        background: "linear-gradient(180deg, #1b1610 0%, #120e09 100%)",
+        border: "2px solid rgba(212,175,106,0.55)",
+        boxShadow: "inset 0 0 0 1px rgba(12,10,8,0.9), inset 0 0 0 3px rgba(212,175,106,0.18), 0 6px 14px rgba(0,0,0,0.4)",
+      }}
+    >
+      {/* Corner screws */}
+      {["left-1.5 top-1.5", "right-1.5 top-1.5", "left-1.5 bottom-1.5", "right-1.5 bottom-1.5"].map((pos) => (
+        <span
+          key={pos}
+          aria-hidden
+          className={`absolute ${pos} block h-1.5 w-1.5 rounded-full`}
+          style={{ background: "rgba(212,175,106,0.5)", boxShadow: "inset 0 0 1px #000" }}
+        />
+      ))}
+      <p className="font-anton text-[1.6rem] leading-none tracking-wide text-[var(--accent)] md:text-[2.2rem]">
         {value}
       </p>
-      <p className="mt-1.5 font-mono text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">
+      <p className="mt-1.5 font-mono text-[0.55rem] uppercase tracking-[0.22em] text-[var(--muted)]">
         {label}
       </p>
     </div>
+  );
+}
+
+/** Diagonal hazard-stripe divider — pit-lane texture. */
+function HazardStripe() {
+  return (
+    <div
+      aria-hidden
+      className="h-2.5 w-full"
+      style={{
+        background:
+          "repeating-linear-gradient(-45deg, rgba(212,175,106,0.75) 0 14px, transparent 14px 28px)",
+      }}
+    />
   );
 }
 
@@ -145,24 +171,29 @@ export function CarMeetShowpiece() {
   const { carMeet } = LEADERSHIP;
 
   return (
-    <section
-      className="relative mx-auto mt-20 max-w-7xl px-5 md:mt-32 md:px-9"
-      aria-labelledby="car-meet-title"
-    >
-      {/* Section header */}
+    <section className="relative mt-20 md:mt-32" aria-labelledby="car-meet-title">
+      {/* Pit-board header — full-bleed oxblood band between hazard stripes */}
       <Reveal>
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--line)] pb-4">
-          <div className="flex items-baseline gap-5">
-            <span className="eyebrow text-[var(--accent)]">Notable Event</span>
-            <span className="eyebrow text-[var(--muted)]">·</span>
-            <span className="eyebrow text-[var(--muted)]">{carMeet.date}</span>
+        <div>
+          <HazardStripe />
+          <div
+            className="flex flex-wrap items-center justify-between gap-3 px-5 py-2.5 md:px-9"
+            style={{ background: "var(--accent-2)" }}
+          >
+            <span className="font-mono text-[0.6rem] font-bold uppercase tracking-[0.3em] text-[#f5ecd8]">
+              Notable event · {carMeet.date}
+            </span>
+            <span className="font-mono text-[0.6rem] font-bold uppercase tracking-[0.3em] text-[#f5ecd8]">
+              @msjmeets · pit lane open
+            </span>
           </div>
-          <span className="eyebrow text-[var(--accent)]">@msjmeets</span>
+          <HazardStripe />
         </div>
       </Reveal>
 
+      <div className="mx-auto max-w-7xl px-5 md:px-9">
       {/* Title */}
-      <div className="mt-5 md:mt-6" id="car-meet-title">
+      <div className="mt-8 md:mt-10" id="car-meet-title">
         <KineticHeadline
           as="h2"
           text="MSJ Car Meet."
@@ -302,6 +333,7 @@ export function CarMeetShowpiece() {
         viewport={{ once: true }}
         transition={{ duration: 1.2, delay: 0.2 }}
       />
+      </div>
     </section>
   );
 }

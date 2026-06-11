@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { World } from "@/components/chrome/World";
-import { Footer } from "@/components/chrome/Footer";
 import { Reveal } from "@/components/primitives/Reveal";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
-import { Magnetic } from "@/components/primitives/Magnetic";
 import { Marquee } from "@/components/primitives/Marquee";
 import { ContactSpotlight } from "@/components/contact/ContactSpotlight";
 import { EmailCopy } from "@/components/contact/EmailCopy";
 import { MailtoComposer } from "@/components/contact/MailtoComposer";
 import { Channels } from "@/components/contact/Channels";
-import { PROFILE } from "@/lib/data";
+import { PROFILE, WORLDS } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -29,212 +29,122 @@ const MARQUEE_ITEMS = [
 ];
 
 export default function ContactPage() {
+  const idx = WORLDS.findIndex((w) => w.id === "contact");
+  const next = idx >= 0 ? WORLDS[(idx + 1) % WORLDS.length] : WORLDS[0];
+
   return (
     <World id="contact">
-      {/* ── 1. CINEMATIC HERO CLOSE ──────────────────────────────── */}
-      <section className="relative flex min-h-[90svh] flex-col justify-center overflow-hidden px-5 pt-36 pb-20 md:px-9 md:pt-48 md:pb-28">
+      {/* ── ONE FRAME — everything on a single viewport ──────────── */}
+      <section className="relative flex min-h-[100svh] flex-col overflow-hidden px-5 pt-[4.5rem] md:h-[100svh] md:px-9 md:pt-24">
         {/* Cursor-tracking spotlight */}
         <ContactSpotlight />
 
-        {/* Corner accent lines — art direction: end-credits frame */}
-        <span
-          aria-hidden
-          className="pointer-events-none absolute left-5 top-20 h-14 w-px md:left-9"
-          style={{ background: "linear-gradient(180deg, var(--accent) 0%, transparent 100%)" }}
-        />
-        <span
-          aria-hidden
-          className="pointer-events-none absolute left-5 top-20 h-px w-14 md:left-9"
-          style={{ background: "linear-gradient(90deg, var(--accent) 0%, transparent 100%)" }}
-        />
-        <span
-          aria-hidden
-          className="pointer-events-none absolute bottom-20 right-5 h-14 w-px md:right-9"
-          style={{ background: "linear-gradient(0deg, var(--accent) 0%, transparent 100%)" }}
-        />
-        <span
-          aria-hidden
-          className="pointer-events-none absolute bottom-20 right-5 h-px w-14 md:right-9"
-          style={{ background: "linear-gradient(270deg, var(--accent) 0%, transparent 100%)" }}
-        />
-
-        <div className="relative z-10 mx-auto w-full max-w-5xl">
-          <Reveal>
-            <p className="eyebrow">Let&apos;s build something</p>
-          </Reveal>
-
-          {/* Big kinetic headline */}
-          <KineticHeadline
-            as="h1"
-            text="Say hello."
-            delay={0.05}
-            className="mt-5 font-anton display-xl leading-[0.88] tracking-tighter"
+        {/* ── MAIN: hero + composer ──────────────────────────────── */}
+        <div className="relative z-10 mx-auto grid w-full max-w-6xl flex-1 content-center gap-6 py-4 md:min-h-0 md:py-6 md:grid-cols-12 md:items-center md:gap-10">
+          {/* Corner accent lines — end-credits frame around the main area */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -left-1 top-2 h-12 w-px"
+            style={{ background: "linear-gradient(180deg, var(--accent) 0%, transparent 100%)" }}
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -left-1 top-2 h-px w-12"
+            style={{ background: "linear-gradient(90deg, var(--accent) 0%, transparent 100%)" }}
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -right-1 bottom-2 h-12 w-px"
+            style={{ background: "linear-gradient(0deg, var(--accent) 0%, transparent 100%)" }}
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -right-1 bottom-2 h-px w-12"
+            style={{ background: "linear-gradient(270deg, var(--accent) 0%, transparent 100%)" }}
           />
 
-          {/* Subhead — editorial italic */}
-          <Reveal delay={0.3} className="mt-8 max-w-xl">
-            <p className="font-serif-i text-xl italic leading-snug text-[var(--muted)] md:text-2xl">
-              Civic storyteller · bio researcher · builder · student leader.
-              <span
-                className="mt-2 block not-italic font-mono text-[0.72rem] uppercase tracking-widest"
-                style={{ color: "var(--accent)" }}
-              >
-                Mission San Jose · Fremont, CA · Class of 2027
-              </span>
-            </p>
-          </Reveal>
+          {/* Left — cinematic hero */}
+          <div className="md:col-span-7">
+            <Reveal>
+              <p className="eyebrow">Let&apos;s build something</p>
+            </Reveal>
 
-          {/* Email copy affordance — the primary hero action */}
-          <Reveal delay={0.45} className="mt-12">
-            <EmailCopy />
-          </Reveal>
-
-          {/* Scroll nudge */}
-          <Reveal delay={0.6} className="mt-16 flex items-center gap-3">
-            <div
-              aria-hidden
-              className="h-px flex-1 max-w-[5rem]"
-              style={{
-                background:
-                  "linear-gradient(90deg, var(--accent) 0%, transparent 100%)",
-              }}
+            <KineticHeadline
+              as="h1"
+              text="Say hello."
+              delay={0.05}
+              className="mt-2 font-anton md:mt-3 leading-[0.9] tracking-tighter text-[clamp(2.8rem,min(13vh,9.5vw),7.5rem)]"
             />
-            <span className="font-mono text-[0.62rem] uppercase tracking-[0.3em] text-[var(--muted)]">
-              or pick a channel below
-            </span>
+
+            <Reveal delay={0.3} className="mt-4 max-w-xl md:mt-5">
+              <p className="font-serif-i text-base italic leading-snug text-[var(--muted)] md:text-xl">
+                Civic storyteller · bio researcher · builder · student leader.
+                <span
+                  className="mt-1.5 block not-italic font-mono text-[0.66rem] uppercase tracking-widest"
+                  style={{ color: "var(--accent)" }}
+                >
+                  Mission San Jose · Fremont, CA · Class of 2027
+                </span>
+              </p>
+            </Reveal>
+
+            {/* Email copy affordance — the primary action */}
+            <Reveal delay={0.45} className="mt-5 md:mt-7">
+              <EmailCopy />
+            </Reveal>
+          </div>
+
+          {/* Right — mailto composer card */}
+          <Reveal delay={0.25} className="md:col-span-5">
+            <div className="rounded-2xl border border-[var(--line)] bg-[var(--bg-2)]/70 p-4 backdrop-blur-sm md:p-6">
+              <h2 className="font-display text-xl leading-tight tracking-tight md:text-2xl">
+                Have something{" "}
+                <span className="italic" style={{ color: "var(--accent)" }}>
+                  specific
+                </span>{" "}
+                in mind?
+              </h2>
+              <div className="mt-3 md:mt-4">
+                <MailtoComposer />
+              </div>
+            </div>
           </Reveal>
         </div>
-      </section>
 
-      {/* ── 2. MARQUEE DIVIDER ───────────────────────────────────── */}
-      <div
-        className="relative border-y border-[var(--line)] py-4 font-display text-lg text-[var(--muted)] md:py-5 md:text-2xl"
-        style={{ background: "var(--bg-2)" }}
-      >
-        <Marquee items={MARQUEE_ITEMS} sep="✦" durationSec={38} />
-      </div>
+        {/* ── MARQUEE DIVIDER (full bleed) ───────────────────────── */}
+        <div className="relative z-10 -mx-5 md:-mx-9">
+          <div
+            className="border-y border-[var(--line)] py-1.5 font-display text-sm text-[var(--muted)] md:py-2.5 md:text-lg"
+            style={{ background: "var(--bg-2)" }}
+          >
+            <Marquee items={MARQUEE_ITEMS} sep="✦" durationSec={38} />
+          </div>
 
-      {/* ── 3. CHANNELS ──────────────────────────────────────────── */}
-      <Channels />
+          {/* ── CHANNELS STRIP ───────────────────────────────────── */}
+          <Channels />
 
-      {/* ── 4. MAILTO COMPOSER ───────────────────────────────────── */}
-      <section
-        className="border-y border-[var(--line)]"
-        style={{ background: "var(--bg-2)" }}
-      >
-        <div className="mx-auto max-w-5xl px-5 py-20 md:px-9 md:py-28">
-          <div className="grid gap-16 md:grid-cols-2 md:gap-12 lg:gap-20">
-            {/* Left — editorial copy */}
-            <div>
-              <Reveal>
-                <h2 className="font-display text-3xl leading-tight tracking-tight md:text-4xl lg:text-5xl">
-                  Have something{" "}
-                  <span
-                    className="italic"
-                    style={{ color: "var(--accent)" }}
-                  >
-                    specific
-                  </span>{" "}
-                  in mind?
-                </h2>
-              </Reveal>
-              <Reveal delay={0.1} className="mt-5 max-w-sm">
-                <p className="leading-relaxed text-[var(--muted)]">
-                  Pick a topic and I&apos;ll get your mail app open with a
-                  head-start. No forms, no fuss — just a direct line.
-                </p>
-              </Reveal>
-
-              {/* Location / sign-off */}
-              <Reveal delay={0.2} className="mt-10">
-                <div
-                  className="inline-block rounded-full border px-5 py-2.5 font-mono text-[0.68rem] uppercase tracking-widest text-[var(--muted)]"
-                  style={{ borderColor: "var(--line)" }}
-                >
-                  {PROFILE.school} · Fremont, CA
-                </div>
-              </Reveal>
-            </div>
-
-            {/* Right — composer */}
-            <Reveal delay={0.15}>
-              <MailtoComposer />
-            </Reveal>
+          {/* ── SIGN-OFF BAR ─────────────────────────────────────── */}
+          <div className="flex min-h-[3rem] items-center md:min-h-[4.5rem] justify-between gap-4 border-t border-[var(--line)] py-3 pl-40 pr-5 md:pl-48 md:pr-9">
+            <p className="hidden font-mono text-[0.6rem] uppercase tracking-[0.25em] text-[var(--muted)] sm:block">
+              © 2026 — {PROFILE.school} · Fremont, CA
+            </p>
+            <p
+              className="hidden truncate font-serif-i text-sm italic lg:block"
+              style={{ color: "var(--accent-2)" }}
+            >
+              {PROFILE.links.instagramHandle} — Documenting the grind.
+            </p>
+            <Link
+              href={next.href}
+              data-cursor-hover
+              className="group inline-flex shrink-0 items-center gap-1.5 font-mono text-[0.6rem] uppercase tracking-[0.25em] text-[var(--muted)] transition-colors hover:text-[var(--accent)]"
+            >
+              Next — {next.title}
+              <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
           </div>
         </div>
       </section>
-
-      {/* ── 5. SIGN-OFF ──────────────────────────────────────────── */}
-      <section className="mx-auto max-w-5xl px-5 py-24 text-center md:px-9 md:py-36">
-        <Reveal>
-          <p className="eyebrow mb-6">{PROFILE.links.instagramHandle}</p>
-        </Reveal>
-
-        {/* Big editorial quote */}
-        <KineticHeadline
-          as="h2"
-          text="Documenting the grind."
-          delay={0.08}
-          className="font-display text-[2.2rem] leading-[1.05] tracking-tight md:text-[4.2rem]"
-        />
-
-        <Reveal delay={0.28} className="mt-6">
-          <p
-            className="font-serif-i text-xl italic"
-            style={{ color: "var(--accent-2)" }}
-          >
-            {PROFILE.tagline}
-          </p>
-        </Reveal>
-
-        {/* Magnetic social pill cluster */}
-        <Reveal delay={0.4} className="mt-12 flex flex-wrap justify-center gap-4">
-          {[
-            {
-              label: PROFILE.links.instagramHandle,
-              href: PROFILE.links.instagram,
-            },
-            { label: `github/${PROFILE.links.githubUser}`, href: PROFILE.links.github },
-            { label: "LinkedIn", href: PROFILE.links.linkedin },
-          ].map((l) => (
-            <Magnetic key={l.label} strength={0.35} className="inline-block">
-              <a
-                href={l.href}
-                target="_blank"
-                rel="noreferrer"
-                data-cursor-hover
-                className="group inline-flex items-center gap-1.5 rounded-full border px-5 py-2.5 font-mono text-[0.68rem] uppercase tracking-widest text-[var(--muted)] transition-colors duration-300 hover:border-[var(--accent)]/60 hover:text-[var(--fg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-                style={{ borderColor: "var(--line)" }}
-              >
-                {l.label}
-              </a>
-            </Magnetic>
-          ))}
-        </Reveal>
-
-        {/* Decorative ember lines */}
-        <Reveal delay={0.55} className="mt-14 flex justify-center gap-3">
-          <div
-            aria-hidden
-            className="h-px w-20"
-            style={{
-              background:
-                "linear-gradient(90deg, transparent, var(--accent))",
-            }}
-          />
-          <div
-            aria-hidden
-            className="h-px w-20"
-            style={{
-              background:
-                "linear-gradient(90deg, var(--accent-2), transparent)",
-            }}
-          />
-        </Reveal>
-      </section>
-
-      {/* ── 6. FOOTER ────────────────────────────────────────────── */}
-      <Footer current="contact" />
     </World>
   );
 }

@@ -37,6 +37,18 @@ export function MailtoComposer() {
     );
   }, [topic]);
 
+  // Gmail web compose — works even when no OS mail handler is configured,
+  // where a mailto: click silently does nothing.
+  const gmailHref = useMemo(() => {
+    if (!topic) return null;
+    return (
+      `https://mail.google.com/mail/?view=cm&fs=1` +
+      `&to=${encodeURIComponent(EMAIL)}` +
+      `&su=${encodeURIComponent(topic.subject)}` +
+      `&body=${encodeURIComponent(topic.body)}`
+    );
+  }, [topic]);
+
   const select = useCallback(
     (id: TopicId) => setSelected((prev) => (prev === id ? null : id)),
     []
@@ -45,10 +57,10 @@ export function MailtoComposer() {
   return (
     <div className="w-full">
       {/* Label */}
-      <p className="eyebrow mb-5">What&apos;s on your mind?</p>
+      <p className="eyebrow mb-4">What&apos;s on your mind?</p>
 
       {/* Topic chips */}
-      <div className="flex flex-wrap gap-2 md:gap-3" role="group" aria-label="Select a topic">
+      <div className="flex flex-wrap gap-2" role="group" aria-label="Select a topic">
         {TOPICS.map((t) => {
           const active = selected === t.id;
           return (
@@ -59,7 +71,7 @@ export function MailtoComposer() {
               aria-pressed={active}
               data-cursor-hover
               className={cn(
-                "rounded-full border px-4 py-2 font-mono text-[0.72rem] uppercase tracking-widest transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
+                "rounded-full border px-3.5 py-1.5 font-mono text-[0.66rem] uppercase tracking-widest transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
                 active
                   ? "border-[var(--accent)] bg-[var(--accent)] text-[#07070a] shadow-[0_0_24px_rgba(232,177,90,0.25)]"
                   : "border-[var(--line)] text-[var(--muted)] hover:border-[var(--accent)]/60 hover:text-[var(--fg)]"
@@ -73,23 +85,35 @@ export function MailtoComposer() {
 
       {/* CTA */}
       <AnimatePresence mode="wait">
-        {href ? (
-          <motion.a
+        {href && gmailHref ? (
+          <motion.div
             key="open"
-            href={href}
-            target="_blank"
-            rel="noreferrer"
-            data-cursor-hover
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 6 }}
             transition={{ duration: 0.35 }}
-            className="group mt-6 inline-flex items-center gap-3 rounded-full bg-[var(--accent)] px-7 py-3.5 font-grotesk text-sm font-medium text-[#07070a] shadow-[0_0_32px_rgba(232,177,90,0.22)] transition-all duration-300 hover:bg-[var(--accent-2)] hover:text-white hover:shadow-[0_0_40px_rgba(217,96,63,0.28)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]"
+            className="mt-5 flex flex-wrap items-center gap-2.5"
           >
-            <Mail className="size-4 shrink-0" />
-            Open in mail app
-            <ArrowUpRight className="size-4 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </motion.a>
+            <a
+              href={href}
+              data-cursor-hover
+              className="group inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-4 py-2 font-grotesk text-xs font-medium md:gap-2.5 md:px-5 md:py-2.5 md:text-sm text-[#07070a] shadow-[0_0_32px_rgba(232,177,90,0.22)] transition-all duration-300 hover:bg-[var(--accent-2)] hover:text-white hover:shadow-[0_0_40px_rgba(217,96,63,0.28)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]"
+            >
+              <Mail className="size-4 shrink-0" />
+              Open in mail app
+              <ArrowUpRight className="size-4 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+            <a
+              href={gmailHref}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor-hover
+              className="group inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] px-4 py-2 font-grotesk text-xs text-[var(--fg)] md:gap-2 md:px-5 md:py-2.5 md:text-sm transition-all duration-300 hover:border-[var(--accent)]/70 hover:text-[var(--accent)] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]"
+            >
+              Use Gmail
+              <ArrowUpRight className="size-4 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+          </motion.div>
         ) : (
           <motion.div
             key="placeholder"
@@ -97,7 +121,7 @@ export function MailtoComposer() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="mt-6 inline-flex items-center gap-3 rounded-full border border-[var(--line)] px-7 py-3.5 font-grotesk text-sm text-[var(--muted)] select-none"
+            className="mt-5 inline-flex items-center gap-2.5 rounded-full border border-[var(--line)] px-5 py-2.5 font-grotesk text-sm text-[var(--muted)] select-none"
             aria-hidden
           >
             <Mail className="size-4 shrink-0" />

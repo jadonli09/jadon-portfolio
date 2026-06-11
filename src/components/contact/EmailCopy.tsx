@@ -11,27 +11,49 @@ const RESET_DELAY = 1600;
 
 type State = "idle" | "copied" | "error";
 
+/** Legacy clipboard path for browsers where the async Clipboard API is
+ *  unavailable or denied (e.g. permissions policy, older Safari). */
+function legacyCopy(text: string): boolean {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.setAttribute("readonly", "");
+  ta.style.position = "fixed";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.select();
+  let ok = false;
+  try {
+    ok = document.execCommand("copy");
+  } catch {
+    ok = false;
+  }
+  ta.remove();
+  return ok;
+}
+
 export function EmailCopy({ className }: { className?: string }) {
   const [state, setState] = useState<State>("idle");
 
   const copy = useCallback(async () => {
     if (state !== "idle") return;
 
-    if (!navigator?.clipboard?.writeText) {
-      // Fallback: open mailto directly
-      window.location.href = `mailto:${EMAIL}`;
-      return;
+    // The async Clipboard API can stall for seconds on a hidden permission
+    // check — race it against a short deadline so the button always responds
+    // instantly, falling back to the synchronous legacy path.
+    let ok = false;
+    if (navigator.clipboard?.writeText) {
+      ok = await Promise.race([
+        navigator.clipboard.writeText(EMAIL).then(
+          () => true,
+          () => false
+        ),
+        new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 350)),
+      ]);
     }
+    if (!ok) ok = legacyCopy(EMAIL);
 
-    try {
-      await navigator.clipboard.writeText(EMAIL);
-      setState("copied");
-      setTimeout(() => setState("idle"), RESET_DELAY);
-    } catch {
-      // Clipboard failed — fail silently; mailto link is still there
-      setState("error");
-      setTimeout(() => setState("idle"), RESET_DELAY);
-    }
+    setState(ok ? "copied" : "error");
+    setTimeout(() => setState("idle"), RESET_DELAY);
   }, [state]);
 
   return (
@@ -90,18 +112,21 @@ export function EmailCopy({ className }: { className?: string }) {
         </AnimatePresence>
       </motion.button>
 
-      {/* Copied confirmation label */}
+      {/* Copied / error feedback label */}
       <AnimatePresence>
-        {state === "copied" && (
+        {state !== "idle" && (
           <motion.span
-            key="label"
+            key={state}
             initial={{ opacity: 0, x: -6 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -4 }}
             transition={{ duration: 0.25 }}
-            className="font-mono text-[0.68rem] uppercase tracking-widest text-emerald-400"
+            className={cn(
+              "font-mono text-[0.68rem] uppercase tracking-widest",
+              state === "copied" ? "text-emerald-400" : "text-[var(--accent-2)]"
+            )}
           >
-            Copied
+            {state === "copied" ? "Copied" : "Select & copy manually"}
           </motion.span>
         )}
       </AnimatePresence>

@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion } from "motion/react";
 import { ImageTrail } from "@/components/ui/image-trail";
+import { AlbumImmersive } from "@/components/albums/AlbumImmersive";
 import { ALBUM_TRAIL } from "@/lib/data";
 import { asset } from "@/lib/base";
 import { EASE } from "@/lib/motion";
@@ -63,6 +64,17 @@ export function AlbumsHero() {
           Move the cursor — the originals follow
         </motion.p>
       </div>
+
+      {/* View-mode switch — CURSOR (trail) vs FLOAT (3D flythrough), pinned
+          below the nav. The 3D overlay itself portals to <body>. */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.55, ease: EASE }}
+        className="absolute left-1/2 top-16 z-20 -translate-x-1/2 md:top-20"
+      >
+        <AlbumImmersive />
+      </motion.div>
 
       <motion.span
         initial={{ opacity: 0 }}

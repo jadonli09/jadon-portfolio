@@ -36,7 +36,18 @@ export function KineticHeadline({
         variants={{ hidden: {}, show: {} }}
       >
         {words.map((w, i) => (
-          <span key={i} className="inline-block overflow-hidden align-baseline pb-[0.12em] -mb-[0.12em]" style={{ marginRight: "0.26em" }}>
+          <span
+            key={i}
+            className="inline-block overflow-hidden align-baseline pb-[0.12em] -mb-[0.12em]"
+            // Horizontal padding (cancelled by margins) widens the clip box so
+            // edge glyphs survive negative letter-spacing; total advance stays 0.26em.
+            style={{
+              paddingRight: "0.14em",
+              marginRight: "0.12em",
+              paddingLeft: "0.06em",
+              marginLeft: "-0.06em",
+            }}
+          >
             <motion.span className="inline-block" variants={lineWord} transition={{ duration: 1, ease: EASE }}>
               {w}
             </motion.span>

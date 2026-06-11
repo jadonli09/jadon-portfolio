@@ -9,10 +9,11 @@ const TICKER_ITEMS = [
   "350 students at Winter Ball",
   "500-person ICE Protest · 20k+ views",
   "262-player Scavenger Hunt",
-  "500 names at CO26 Graduation",
+  "500 students at CO26 Graduation",
   "Prom @ Cal Academy of Sciences",
   "Climbing Club VP · Boba $800+",
-  "MSJ Makes VP · 40 senior stoles",
+  "MSJ Makes President · 40 senior stoles",
+  "STEM-PAC Co-President · ACSEF pipeline",
   "$35M+ in cars · First in MSJ history",
 ];
 

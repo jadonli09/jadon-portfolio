@@ -6,33 +6,39 @@ import { ElectedOffices } from "@/components/leadership/ElectedOffices";
 import { EventsTicker } from "@/components/leadership/EventsTicker";
 import { EventsGrid } from "@/components/leadership/EventsGrid";
 import { WinterBall } from "@/components/leadership/WinterBall";
+import { DisplayMarquee } from "@/components/leadership/DisplayMarquee";
 import { CarMeetShowpiece } from "@/components/leadership/CarMeetShowpiece";
+import { ClubCrews } from "@/components/leadership/ClubCrews";
 import { FieldPhotoStrip } from "@/components/leadership/FieldPhotoStrip";
 import { LeadershipCTA } from "@/components/leadership/LeadershipCTA";
 
 export const metadata: Metadata = {
   title: "Leadership & Events — Jadon Li",
   description:
-    "Three-time Class President, now ASB President — elected every year. 13 fundraisers, $5,520 raised, 500-person protests, a first-ever car meet, and a Winter Ball built from scratch.",
+    "Three-time Class President, now ASB President — plus MSJ Makes President and STEM-PAC Co-President. 13 fundraisers, $5,520 raised, 500-person protests, a first-ever car meet, and a Winter Ball built from scratch.",
 };
 
 /**
  * Leadership & Events world page.
- * Art direction: luxury editorial poster / elected-office showcase.
- * Asphalt black, champagne gold (#d4af6a), oxblood (#6e1f2a).
+ * Art direction: luxury editorial poster spine (asphalt black, champagne
+ * gold #d4af6a, oxblood #6e1f2a) — but every section speaks its own
+ * graphic dialect so the page never repeats itself:
  *
- * Page order:
- *   1. Hero — "Elected to lead, every year."
- *   2. ElectedOffices — ASB President + Class President ×3 as editorial stars;
- *      two VP roles as supporting accordion rows; counters + arc callout.
- *   3. EventsTicker — kinetic gold separator.
- *   4. EventsGrid — rich interactive ledger; each event card leads with its metric.
- *   5. WinterBall — distinct feature treatment, built-from-scratch story.
- *   6. EventsTicker (reversed) — second separator.
- *   7. CarMeetShowpiece — demoted notable-event section (strong but secondary).
- *   8. FieldPhotoStrip — ASB / climbing / fundraising / panels photo marquee.
- *   9. LeadershipCTA — magnetic reach-out section.
- *  10. Footer with next-world handoff.
+ *   1. LeadershipHero — luxury poster (Anton + gold rules).
+ *   2. ElectedOffices — editorial gold highlight cards (the centerpiece).
+ *   3. EventsTicker — small gold mono ticker separator.
+ *   4. EventsGrid — "The Range" as a brutalist full-bleed ledger:
+ *      gold header band, heavy rules, row-inversion hovers.
+ *   5. WinterBall — full inversion: ivory invitation paper, serif dance
+ *      card, wax-seal stamp, tilted polaroid photo slots.
+ *   6. DisplayMarquee — poster-scale outlined-Anton marquee.
+ *   7. CarMeetShowpiece — automotive: hazard stripes, oxblood pit-board
+ *      band, license-plate stat chips, photo collage.
+ *   8. ClubCrews — scrapbook wall: handwritten Caveat, pinned paper cards,
+ *      officer-team photo slots (MSJ Makes · STEM-PAC · Climbing).
+ *   9. FieldPhotoStrip — ASB / climbing / fundraising photo marquee.
+ *  10. LeadershipCTA — magnetic reach-out section.
+ *  11. Footer with next-world handoff.
  *
  * Server component — all interactive sub-sections carry their own "use client".
  */
@@ -42,31 +48,34 @@ export default function LeadershipPage() {
       {/* 1. Hero poster — "Elected to lead, every year." */}
       <LeadershipHero />
 
-      {/* 2. Elected offices — the centerpiece: ASB + Class President highlight cards */}
+      {/* 2. Elected offices — ASB + Class President highlight cards */}
       <ElectedOffices />
 
-      {/* 3. Gold ticker — transitions from offices to the event log */}
+      {/* 3. Gold mono ticker — transitions from offices to the ledger */}
       <EventsTicker />
 
-      {/* 4. Event log grid — range and volume, metrics prominent */}
+      {/* 4. Event ledger — brutalist full-bleed table */}
       <EventsGrid />
 
-      {/* 5. Winter Ball — distinct built-from-scratch feature */}
+      {/* 5. Winter Ball — ivory invitation-paper inversion + photo slots */}
       <WinterBall />
 
-      {/* 6. Second ticker (reversed) — between Winter Ball and the car meet */}
-      <EventsTicker reverse />
+      {/* 6. Poster-scale outlined marquee */}
+      <DisplayMarquee />
 
-      {/* 7. MSJ Car Meet — notable event section (demoted from hero) */}
+      {/* 7. MSJ Car Meet — automotive treatment */}
       <CarMeetShowpiece />
 
-      {/* 8. In-the-field photo strip — ASB / climbing / fundraising / panels */}
+      {/* 8. Club officer crews — scrapbook wall with photo slots */}
+      <ClubCrews />
+
+      {/* 9. In-the-field photo strip — ASB / climbing / fundraising */}
       <FieldPhotoStrip />
 
-      {/* 9. Magnetic CTA — reach out */}
+      {/* 10. Magnetic CTA — reach out */}
       <LeadershipCTA />
 
-      {/* 10. Footer with next-world handoff */}
+      {/* 11. Footer with next-world handoff */}
       <Footer current="leadership" />
     </World>
   );

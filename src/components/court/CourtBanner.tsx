@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { Counter } from "@/components/primitives/Counter";
+import { PebbleGrain, SeamArcs } from "@/components/court/BallMotifs";
 import { COURT } from "@/lib/data";
 
 /** Full-bleed championship banner — the "retire the jersey" moment. */
@@ -33,25 +34,23 @@ export function CourtBanner() {
         </span>
       </div>
 
-      {/* Diagonal scan-line texture */}
+      {/* Pebbled leather grain — this section IS the ball */}
+      <PebbleGrain className="text-black opacity-[0.10]" size={8} />
+
+      {/* Giant seam channels sweeping across the leather */}
+      <div className="pointer-events-none absolute -right-[18%] -top-[40%] w-[75%] opacity-[0.10] text-black" aria-hidden>
+        <SeamArcs strokeWidth={3} />
+      </div>
+      <div className="pointer-events-none absolute -bottom-[55%] -left-[22%] w-[65%] opacity-[0.08] text-black" aria-hidden>
+        <SeamArcs strokeWidth={3} />
+      </div>
+
+      {/* Leather sheen — radial light like a ball under gym lights */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage: "repeating-linear-gradient(118deg, #000 0px, #000 1px, transparent 1px, transparent 18px)",
-        }}
+        className="pointer-events-none absolute inset-0"
+        style={{ background: "radial-gradient(ellipse at 32% 18%, rgba(255,255,255,0.14) 0%, transparent 55%)" }}
         aria-hidden
       />
-
-      {/* Vertical rule lines */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-10" aria-hidden>
-        {[0, 1, 2, 3, 4].map((i) => (
-          <div
-            key={i}
-            className="absolute inset-y-0 border-r border-black"
-            style={{ left: `${i * 25}%` }}
-          />
-        ))}
-      </div>
 
       <div className="relative mx-auto max-w-7xl px-5 md:px-9">
         {/* Label */}

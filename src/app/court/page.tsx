@@ -16,30 +16,31 @@ export const metadata: Metadata = {
 };
 
 /**
- * The Court world — kinetic sports-magazine energy, stat-forward.
+ * The Court world — the page IS a basketball.
  * Server component. All interactive sections carry their own "use client" directive.
- * Art direction: SLAM magazine meets broadcast lower-third. font-anton, electric orange,
- * near-black, bold condensed type, motion blur, court-line SVG motifs, oversized numbers.
+ * Art direction: every element borrows from the ball, the hoop or the gym —
+ * pebbled leather, seam channels, scoreboard LEDs, rafter banners, backboard glass.
+ * The career timeline runs along the seams of the ball, game photos stitched in.
  */
 export default function CourtPage() {
   return (
     <World id="court">
-      {/* 1. Championship magazine-cover hero */}
+      {/* 1. Championship magazine-cover hero — the ball checks in */}
       <CourtHero />
 
-      {/* 2. Relentless stat ticker (orange band) */}
+      {/* 2. Courtside LED ad board */}
       <CourtTicker />
 
-      {/* 2b. Broadcast lower-third stat line — FIRST 5 · NCS · 569k · .500 JV */}
+      {/* 2b. Gym scoreboard — FIRST 5 · NCS · 569k · .500 JV */}
       <CourtStatLine />
 
-      {/* 3. Career timeline — AAU → NCS Champion */}
+      {/* 3. Career timeline — the seams of the ball, game photos embedded per era */}
       <CourtTimeline />
 
-      {/* 3b. Championship moments — mayor, city recognition, game action strip */}
+      {/* 3b. Championship moments — banners raised to the rafters */}
       <ChampionshipMoments />
 
-      {/* 4. DouYin viral moment — stat showpiece */}
+      {/* 4. DouYin viral moment — mounted on backboard glass */}
       <CourtDouyin />
 
       {/* 5. Championship banner — by the numbers */}

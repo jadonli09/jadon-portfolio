@@ -1,54 +1,57 @@
 "use client";
 
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { Reveal } from "@/components/primitives/Reveal";
+import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { Magnetic } from "@/components/primitives/Magnetic";
+import { DashedGrid } from "@/components/ui/dashed-grid";
 import { PROFILE } from "@/lib/data";
 
 /**
- * Magnetic Instagram CTA — editorial "field dispatch" block.
- * Links to the real Instagram account.
+ * Closing dispatch CTA — hero-04 bookend: dashed grid, centered poster
+ * headline, mono uppercase deck, magnetic Instagram button.
  */
 export function CivicInstagramCTA() {
   return (
-    <section className="mx-auto max-w-7xl px-5 py-16 md:px-9 md:py-24">
-      <div className="relative border border-[var(--line)] bg-[var(--bg-2)] p-8 md:p-14">
-        {/* Corner accent */}
-        <span
-          aria-hidden
-          className="absolute left-0 top-0 h-px w-20 bg-[var(--accent)]"
-        />
-        <span
-          aria-hidden
-          className="absolute left-0 top-0 h-20 w-px bg-[var(--accent)]"
-        />
+    <section className="relative overflow-hidden py-20 md:py-32">
+      <DashedGrid fade="bottom" />
 
+      <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
         <Reveal>
-          <p className="eyebrow mb-4 text-[var(--accent)]">Follow the dispatch</p>
+          <div className="mb-6 flex items-center justify-center gap-2">
+            <span className="text-base font-medium tracking-wider md:text-lg">
+              FOLLOW THE DISPATCH
+            </span>
+            <ArrowDownRight className="size-5 text-[var(--accent)]" />
+          </div>
         </Reveal>
 
-        <Reveal delay={0.08}>
-          <p className="max-w-xl font-display text-3xl font-semibold leading-snug md:text-5xl">
-            The story doesn&apos;t end here.
+        <KineticHeadline
+          as="h2"
+          text="The Story Doesn't End Here"
+          className="mx-auto font-grotesk text-[10vw] font-bold uppercase leading-[1.02] tracking-[-0.06em] sm:text-6xl sm:tracking-[-4px] md:text-8xl md:tracking-[-7px]"
+          delay={0.08}
+        />
+
+        <Reveal delay={0.2}>
+          <p className="mx-auto mt-8 max-w-2xl font-mono text-sm font-medium tracking-wide md:text-base">
+            500K+ VIEWS IN UNDER A MONTH.
+            <br />
+            CIVIC VIDEO, BEHIND-THE-SCENES DISPATCHES,
+            <br />
+            AND THE GRIND — ALL ON INSTAGRAM
           </p>
         </Reveal>
 
-        <Reveal delay={0.15}>
-          <p className="mt-4 max-w-md text-base leading-relaxed text-[var(--muted)] md:text-lg">
-            500k+ views in under a month. Civic video, behind-the-scenes dispatches, and the grind
-            — all on Instagram.
-          </p>
-        </Reveal>
-
-        <Reveal delay={0.22}>
-          <div className="mt-8">
+        <Reveal delay={0.3}>
+          <div className="mt-10 flex justify-center">
             <Magnetic strength={0.35} className="inline-block">
               <a
                 href={PROFILE.links.instagram}
                 target="_blank"
                 rel="noreferrer"
                 data-cursor-hover
-                className="group inline-flex items-center gap-3 border border-[var(--accent)] bg-[var(--accent)] px-7 py-4 font-mono text-xs uppercase tracking-widest text-white transition-colors duration-300 hover:bg-transparent hover:text-[var(--accent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+                className="group inline-flex h-11 items-center gap-3 rounded-md bg-primary px-8 font-mono text-xs uppercase tracking-widest text-primary-foreground transition-colors duration-300 hover:bg-[var(--accent)] hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 {PROFILE.links.instagramHandle}
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -57,13 +60,12 @@ export function CivicInstagramCTA() {
           </div>
         </Reveal>
 
-        {/* Background type watermark */}
-        <span
-          aria-hidden
-          className="pointer-events-none absolute -bottom-4 right-6 select-none font-anton text-[6rem] uppercase leading-none text-[var(--accent)]/[0.06] md:text-[9rem]"
-        >
-          &amp;
-        </span>
+        {/* Sign-off — bookends the hero's name treatment */}
+        <Reveal delay={0.4}>
+          <p className="mt-14 text-4xl font-thin tracking-[6px] text-[var(--muted)]">
+            {PROFILE.name.toUpperCase()}
+          </p>
+        </Reveal>
       </div>
     </section>
   );

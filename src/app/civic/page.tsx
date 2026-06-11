@@ -5,7 +5,6 @@ import { HeroSection04 } from "@/components/ui/hero-04";
 import { CivicMetricsBand } from "@/components/civic/CivicMetricsBand";
 import { CivicAwardsTicker } from "@/components/civic/CivicAwardsTicker";
 import { CivicFeaturedPress } from "@/components/civic/CivicFeaturedPress";
-import { CivicFreemontStories } from "@/components/civic/CivicFreemontStories";
 import { CivicStories } from "@/components/civic/CivicStories";
 import { CivicSBAIFlow } from "@/components/civic/CivicSBAIFlow";
 import { CivicCommission } from "@/components/civic/CivicCommission";
@@ -14,7 +13,7 @@ import { CivicInstagramCTA } from "@/components/civic/CivicInstagramCTA";
 export const metadata: Metadata = {
   title: "Civic & Storytelling — Jadon Li",
   description:
-    "Under the banner of Ampersand Media, Jadon Li turns a city into a story — civic video, podcasts, and campaigns that move real numbers.",
+    "Jadon Li turns a city into a story — civic video, podcasts, and campaigns that move real numbers.",
 };
 
 /**
@@ -37,10 +36,7 @@ export default function CivicPage() {
       {/* 3b. Jennifer Siebel Newsom press feature + podcast origin deep-dive */}
       <CivicFeaturedPress />
 
-      {/* 4. Voices of Fremont + Fremont Stories dual-series section */}
-      <CivicFreemontStories />
-
-      {/* 5. Editorial stories section — all six stories with deep bylines/detail */}
+      {/* 4. Editorial stories section — all six stories with deep bylines/detail */}
       <CivicStories />
 
       {/* 6. Small Business Accessibility Initiative — process flow deep dive */}

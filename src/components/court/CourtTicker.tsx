@@ -15,25 +15,35 @@ const TICKER_ITEMS = [
   "BROKEN ARM — STILL A-TEAM",
 ];
 
-/** Orange-band championship stat ticker. Server component — Marquee is CSS-only. */
+/** Courtside LED ad board — glowing dot-matrix ticker on the scorer's table. Server component. */
 export function CourtTicker() {
   return (
-    <div className="relative overflow-hidden border-y border-[var(--accent)] bg-[var(--accent)] py-3.5">
+    <div className="relative overflow-hidden border-y-2 border-[#1d1d21] bg-[#08080a] py-3.5">
+      {/* LED dot-matrix grid */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-25"
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(255,91,31,0.35) 0.8px, transparent 1px)",
+          backgroundSize: "5px 5px",
+        }}
+      />
+
       {/* Bleed fade masks */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-[var(--accent)] to-transparent"
+        className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-[#08080a] to-transparent"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[var(--accent)] to-transparent"
+        className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[#08080a] to-transparent"
       />
 
       <Marquee
         items={TICKER_ITEMS}
-        sep="✦"
+        sep="●"
         durationSec={36}
-        className="font-mono text-[0.7rem] font-bold uppercase tracking-[0.22em] text-white"
+        className="font-mono text-[0.7rem] font-bold uppercase tracking-[0.22em] text-[var(--accent)] [text-shadow:0_0_5px_rgba(255,91,31,0.9),0_0_18px_rgba(255,91,31,0.4)]"
       />
     </div>
   );

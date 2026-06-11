@@ -3,8 +3,30 @@ import React from "react";
 import Link from "next/link";
 import { ArrowDownRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DashedGrid } from "@/components/ui/dashed-grid";
+import { PhotoStack } from "@/components/ui/photo-stack";
+import { KineticHeadline } from "@/components/primitives/KineticHeadline";
+import { Reveal } from "@/components/primitives/Reveal";
 import { asset } from "@/lib/base";
 import { PROFILE } from "@/lib/data";
+
+const WORK_PHOTOS = [
+  {
+    src: asset("/img/speaking-at-rally.jpg"),
+    alt: "Speaking at a rally in Fremont",
+    caption: "Rally · 500+ turnout",
+  },
+  {
+    src: asset("/img/editing-for-mayor-timeline.jpg"),
+    alt: "Editing timeline for a mayor video",
+    caption: "Editing for the Mayor",
+  },
+  {
+    src: asset("/img/voices-of-fremont-with-jennifersiebalnewsom.jpg"),
+    alt: "Voices of Fremont with Jennifer Siebel Newsom",
+    caption: "With the First Partner",
+  },
+];
 
 /**
  * Hero 04 — oversized-headline poster hero, themed for the Civic &
@@ -13,21 +35,29 @@ import { PROFILE } from "@/lib/data";
  */
 export function HeroSection04() {
   return (
-    <section className="relative min-h-screen overflow-hidden pb-20 pt-36 md:pt-40">
+    <section className="relative overflow-hidden pb-10 pt-36 md:pb-14 md:pt-40">
       <div className="relative z-20 mx-auto max-w-7xl px-6">
         <div className="relative">
-          <p className="absolute -top-4 left-20 text-sm font-medium tracking-wider">
-            EST. 2025
-          </p>
-          <h1 className="relative z-20 text-center font-grotesk text-7xl font-bold tracking-[-7px] text-primary md:text-9xl md:tracking-[-14px] xl:text-[10rem] xl:tracking-[-1rem]">
-            CIVIC STORYTELLER
-          </h1>
-          <p className="absolute -bottom-12 right-24 hidden text-4xl font-thin tracking-[6px] xl:block">
-            {PROFILE.name.toUpperCase()}
-          </p>
-          <p className="absolute -bottom-12 left-24 text-4xl font-thin tracking-[6px] xl:hidden">
-            {PROFILE.name.toUpperCase()}
-          </p>
+          <Reveal delay={0.5}>
+            <p className="absolute -top-4 left-20 text-sm font-medium tracking-wider">
+              EST. 2025
+            </p>
+          </Reveal>
+          {/* Fluid below sm: "STORYTELLER" is too long for the original fixed text-7xl at 375px */}
+          <KineticHeadline
+            as="h1"
+            text="CIVIC STORYTELLER"
+            balance={false}
+            className="relative z-20 text-center font-grotesk text-[13vw] font-bold tracking-[-0.08em] text-primary sm:text-7xl sm:tracking-[-7px] md:text-9xl md:tracking-[-14px] xl:text-[10rem] xl:tracking-[-1rem]"
+          />
+          <Reveal delay={0.6}>
+            <p className="absolute -bottom-12 right-24 hidden text-4xl font-thin tracking-[6px] xl:block">
+              {PROFILE.name.toUpperCase()}
+            </p>
+            <p className="absolute -bottom-12 left-24 text-4xl font-thin tracking-[6px] xl:hidden">
+              {PROFILE.name.toUpperCase()}
+            </p>
+          </Reveal>
         </div>
 
         <div className="relative grid">
@@ -38,11 +68,11 @@ export function HeroSection04() {
                 <div>/ PODCAST DIRECTION</div>
                 <div>/ OP-ED &amp; CAMPAIGNS</div>
               </div>
-              <div className="absolute -top-10 left-1/2 hidden w-fit overflow-hidden bg-secondary md:flex">
+              <div className="group absolute -top-10 left-1/2 hidden w-fit overflow-hidden bg-secondary md:flex">
                 <img
-                  src={asset("/img/headshot1.jpg")}
+                  src={asset("/img/civics-jadon-picture.jpg")}
                   alt={`${PROFILE.name} portrait`}
-                  className="h-100 w-full object-contain grayscale"
+                  className="h-100 w-72 object-cover object-[35%_40%] transition-transform duration-700 ease-[var(--ease-cine)] group-hover:scale-[1.04]"
                 />
                 <div className="rotate-180 p-2 text-left text-xs font-medium tracking-widest [writing-mode:vertical-rl]">
                   BASED IN FREMONT, CALIFORNIA
@@ -52,9 +82,9 @@ export function HeroSection04() {
           </div>
           <div className="-top-10 left-1/2 flex w-full overflow-hidden bg-secondary md:hidden md:w-fit">
             <img
-              src={asset("/img/headshot1.jpg")}
+              src={asset("/img/civics-jadon-picture.jpg")}
               alt={`${PROFILE.name} portrait`}
-              className="h-100 w-full object-contain grayscale"
+              className="h-100 w-full object-cover object-[35%_40%]"
             />
             <div className="rotate-180 p-2 text-left text-xs font-medium tracking-widest [writing-mode:vertical-rl]">
               BASED IN FREMONT, CALIFORNIA
@@ -63,109 +93,48 @@ export function HeroSection04() {
         </div>
 
         <div className="mt-10 md:mt-40">
-          <p className="mx-auto max-w-2xl text-center font-mono text-sm font-medium tracking-wide md:text-base">
-            UNDER THE BANNER OF AMPERSAND MEDIA,
-            <br />
-            I TURN A CITY INTO A STORY — CIVIC VIDEO, PODCASTS,
-            <br />
-            AND CAMPAIGNS THAT MOVE REAL NUMBERS
-          </p>
+          <Reveal>
+            <p className="mx-auto max-w-2xl text-center font-mono text-sm font-medium tracking-wide md:text-base">
+              I TURN A CITY INTO A STORY —
+              <br />
+              CIVIC VIDEO, PODCASTS, AND CAMPAIGNS
+              <br />
+              THAT MOVE REAL NUMBERS
+            </p>
+          </Reveal>
         </div>
-        <div className="flex justify-center pt-6">
-          <Button size="lg" asChild>
-            <Link href="/contact">Get in touch</Link>
-          </Button>
-        </div>
-
-        <div className="mt-20 items-end justify-between md:flex">
-          <div className="relative">
-            <div className="mb-8 h-36 w-60 overflow-hidden rounded-md border shadow-lg md:mb-0">
-              <img
-                src={asset("/img/speaking-at-rally.jpg")}
-                alt="Speaking at a rally in Fremont"
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <div className="absolute -top-6 left-6 mb-8 h-36 w-60 overflow-hidden rounded-md border shadow-lg md:mb-0">
-              <img
-                src={asset("/img/editing-for-mayor-timeline.jpg")}
-                alt="Editing timeline for a mayor video"
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <div className="absolute -top-12 left-12 mb-8 h-36 w-60 overflow-hidden rounded-md border shadow-lg md:mb-0">
-              <img
-                src={asset("/img/voices-of-fremont-with-jennifersiebalnewsom.jpg")}
-                alt="Voices of Fremont with Jennifer Siebel Newsom"
-                className="h-full w-full object-cover"
-              />
-            </div>
+        <Reveal delay={0.1}>
+          <div className="flex justify-center pt-6">
+            <Button size="lg" asChild>
+              <Link href="/contact">Get in touch</Link>
+            </Button>
           </div>
+        </Reveal>
+
+        <div className="mt-6 items-end justify-between md:mt-8 lg:flex">
+          <Reveal>
+            <PhotoStack photos={WORK_PHOTOS} />
+          </Reveal>
           <div>
-            <div className="flex items-center gap-2 md:justify-end">
+            <div className="flex items-center gap-2 lg:justify-end">
               <span className="text-lg font-medium tracking-wider">
                 RECENT WORK
               </span>
               <ArrowDownRight className="size-6" />
             </div>
 
-            <div className="mt-3 md:text-right">
-              <h2 className="text-5xl uppercase tracking-[-4px]">
-                A City, Documented
-              </h2>
+            <div className="mt-3 lg:text-right">
+              <KineticHeadline
+                as="h2"
+                text="A City, Documented"
+                className="text-5xl uppercase tracking-[-4px]"
+              />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Dashed-grid backdrop, fading from the top — follows the world's --line colour */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: `
-        linear-gradient(to right, var(--line) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--line) 1px, transparent 1px)
-      `,
-          backgroundSize: "20px 20px",
-          backgroundPosition: "0 0, 0 0",
-          maskImage: `
-        repeating-linear-gradient(
-              to right,
-              black 0px,
-              black 3px,
-              transparent 3px,
-              transparent 8px
-            ),
-            repeating-linear-gradient(
-              to bottom,
-              black 0px,
-              black 3px,
-              transparent 3px,
-              transparent 8px
-            ),
-            radial-gradient(ellipse 70% 60% at 50% 0%, #000 60%, transparent 100%)
-      `,
-          WebkitMaskImage: `
- repeating-linear-gradient(
-              to right,
-              black 0px,
-              black 3px,
-              transparent 3px,
-              transparent 8px
-            ),
-            repeating-linear-gradient(
-              to bottom,
-              black 0px,
-              black 3px,
-              transparent 3px,
-              transparent 8px
-            ),
-            radial-gradient(ellipse 70% 60% at 50% 0%, #000 60%, transparent 100%)
-      `,
-          maskComposite: "intersect",
-          WebkitMaskComposite: "source-in",
-        }}
-      />
+      <DashedGrid fade="top" />
     </section>
   );
 }

@@ -15,7 +15,7 @@ import { cn } from "@/lib/cn";
 const STEM_PAC_DETAIL = {
   full_name: "STEM Projects and Competitions",
   origin:
-    "Rebranded from HOSA — which Jadon founded as a 10th-grade officer — after losing the CTE advisor needed to maintain HOSA's formal affiliation.",
+    "Founded by Jadon as a 10th-grade officer, then rebuilt and renamed around what members actually do: STEM Projects and Competitions — that's the PAC.",
   co_pres: "Co-President with Ashley Kang",
   officers: 3,
   pipeline: [
@@ -68,7 +68,7 @@ const YSJC_TOPICS = [
 ];
 
 const PRISM_DETAIL = {
-  partner: "Arav",
+  partner: "Arav Bhise",
   problem:
     "Many clinical trials systematically underrepresent Asian, Hispanic, and Black populations — skewing safety and efficacy data and allowing side-effect profiles to go undetected in those groups.",
   mission:
@@ -167,13 +167,7 @@ const PROGRAM_ICONS: Record<string, React.ReactNode> = {
 
 export function ProgramsGrid() {
   return (
-    <div className="space-y-24">
-
-      {/* ── Section header ────────────────────────────────────── */}
-      <Reveal>
-        <p className="eyebrow mb-2">Teaching · Programs · Outreach</p>
-        <h2 className="font-display text-3xl leading-tight md:text-5xl">In the field</h2>
-      </Reveal>
+    <div className="space-y-20">
 
       {/* ── STEM-PAC deep-dive ────────────────────────────────── */}
       <Reveal delay={0.05}>
@@ -378,6 +372,7 @@ export function ProgramsGrid() {
                               <Photo
                                 src="/img/ysjc-2025-summer-showcase.jpg"
                                 alt="Youth STEM Journal Club 2025 Summer Showcase — students presenting capstone research to parents at Fremont Library"
+                                priority
                                 className="transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
                               />
                             </div>
@@ -385,7 +380,7 @@ export function ProgramsGrid() {
                           <span
                             className="absolute left-0 top-0 font-mono text-[0.55rem] uppercase tracking-[0.2em] px-2 py-1"
                             style={{
-                              background: "rgba(244,249,250,0.92)",
+                              background: "rgba(16,19,23,0.94)",
                               color: "var(--accent)",
                               borderRight: "1px solid var(--line)",
                               borderBottom: "1px solid var(--line)",
@@ -424,7 +419,41 @@ export function ProgramsGrid() {
                       <div className="flex items-center gap-2 rounded border border-[var(--line)] bg-[var(--bg-2)] px-3 py-2">
                         <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">Partner</span>
                         <span className="h-3 w-px bg-[var(--line)]" />
-                        <span className="font-mono text-xs text-[var(--fg)]">Arav</span>
+                        <span className="font-mono text-xs text-[var(--fg)]">Arav Bhise</span>
+                      </div>
+
+                      {/* Outreach photo — lab-figure treatment */}
+                      <div>
+                        <div
+                          className="relative overflow-hidden rounded"
+                          style={{ border: "1px solid var(--line)" }}
+                        >
+                          <div className="relative w-full" style={{ paddingBottom: "100%" }}>
+                            <div className="absolute inset-0">
+                              <Photo
+                                src="/img/prism-project-with-mayor.jpg"
+                                alt="The PRISM Project booth at the Ohlone Flea Market — the Mayor of Fremont with co-founders Jadon Li and Arav Bhise"
+                                priority
+                                className="transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+                              />
+                            </div>
+                          </div>
+                          <span
+                            className="absolute left-0 top-0 font-mono text-[0.55rem] uppercase tracking-[0.2em] px-2 py-1"
+                            style={{
+                              background: "rgba(16,19,23,0.94)",
+                              color: "var(--accent)",
+                              borderRight: "1px solid var(--line)",
+                              borderBottom: "1px solid var(--line)",
+                            }}
+                          >
+                            Fig. 1
+                          </span>
+                        </div>
+                        <p className="mt-2 font-mono text-[0.6rem] leading-snug text-[var(--muted)]">
+                          Tabling at the Ohlone Flea Market — the Mayor of Fremont stopped by the booth, with
+                          co-founders Jadon Li &amp; Arav Bhise.
+                        </p>
                       </div>
                     </div>
                   )}
@@ -474,7 +503,7 @@ export function ProgramsGrid() {
           {FIELD_NOTES.map((note) => (
             <Reveal key={note.id} delay={0.05}>
               <div
-                className="group relative overflow-hidden rounded-lg border bg-[var(--bg-2)] p-7 transition-colors hover:bg-white hover:shadow-[0_8px_24px_rgba(13,36,49,0.08)]"
+                className="group relative overflow-hidden rounded-lg border bg-[var(--bg-2)] p-7 transition-colors hover:bg-[var(--bg-3)] hover:shadow-[0_18px_40px_-18px_rgba(0,0,0,0.8)]"
                 style={{ borderColor: "var(--line)" }}
               >
                 {/* Accent left border */}
@@ -505,7 +534,7 @@ export function ProgramsGrid() {
                 {/* Detail tag line */}
                 <div
                   className="rounded px-3 py-1.5"
-                  style={{ background: "rgba(12,156,134,0.05)", border: "1px solid rgba(12,156,134,0.18)" }}
+                  style={{ background: "color-mix(in srgb, var(--accent) 7%, transparent)", border: "1px solid color-mix(in srgb, var(--accent) 30%, transparent)" }}
                 >
                   <p className="font-mono text-[0.6rem] text-[var(--muted)]">{note.detail}</p>
                 </div>

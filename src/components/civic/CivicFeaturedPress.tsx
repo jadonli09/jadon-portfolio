@@ -1,16 +1,31 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
 import { motion } from "motion/react";
+import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { CivicPressPhoto } from "@/components/civic/CivicPressPhoto";
-import { Reveal } from "@/components/primitives/Reveal";
+import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { Counter } from "@/components/primitives/Counter";
-import { EASE } from "@/lib/motion";
+import { PosterHeading } from "@/components/ui/poster-heading";
+import { asset } from "@/lib/base";
+import { CIVIC } from "@/lib/data";
+import { EASE, revealUp } from "@/lib/motion";
+
+/** Real posts from the @voices_of_fremont feed (thumbnails captured Jun 2026). */
+const VOF_FEED = [
+  { src: "/embeds/vof-01.jpg", caption: "Ep. 01 — the introductory episode" },
+  { src: "/embeds/vof-04.jpg", caption: "Governor Newsom takes the hot seat" },
+  { src: "/embeds/vof-06.jpg", caption: "With First Partner Jennifer Siebel Newsom" },
+  { src: "/embeds/vof-03.jpg", caption: "We asked Fremont: who runs the city?" },
+  { src: "/embeds/vof-02.jpg", caption: "Central Park milestone · Lake Elizabeth" },
+  { src: "/embeds/vof-05.jpg", caption: "Real questions, real answers" },
+] as const;
 
 const CREDENTIAL_ROWS = [
   { label: "Format", val: "Podcast · ~7 min + short-form" },
   { label: "Cadence", val: "Monthly · thousands of views" },
   { label: "Role", val: "Director + Editor" },
-  { label: "Origin", val: "Mayor's ask via Manav Patel" },
+  { label: "Origin", val: "The Mayor's direct ask" },
   { label: "Team", val: "8 people · 3 sections" },
   { label: "Since", val: "Fall 2025" },
 ] as const;
@@ -23,15 +38,13 @@ const CREDENTIAL_ROWS = [
 export function CivicFeaturedPress() {
   return (
     <section className="mx-auto max-w-7xl px-5 py-12 md:px-9 md:py-16">
-      {/* Section rule */}
-      <Reveal>
-        <div className="mb-6 flex items-center justify-between border-b border-[var(--fg)] pb-3 md:mb-8">
-          <p className="font-anton text-sm uppercase tracking-widest text-[var(--accent)] md:text-base">
-            Press&nbsp;&amp;&nbsp;Access
-          </p>
-          <p className="eyebrow hidden sm:block">California&nbsp;·&nbsp;2025</p>
-        </div>
-      </Reveal>
+      {/* Poster section heading */}
+      <PosterHeading
+        label="Press & Access"
+        title="A Podcast at the State Level"
+        meta="California · 2025"
+        className="mb-10 md:mb-14"
+      />
 
       {/* Asymmetric press layout — photo left, editorial right */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_360px] md:items-start md:gap-10">
@@ -52,22 +65,33 @@ export function CivicFeaturedPress() {
             {/* Red rule */}
             <div className="h-[2px] w-12 bg-[var(--accent)]" />
 
-            {/* Headline */}
-            <div>
-              <p className="eyebrow mb-2 text-[var(--accent)]">Voices of Fremont</p>
-              <h2 className="font-display text-3xl font-semibold leading-tight md:text-4xl">
-                A Podcast at the <span className="italic">State Level</span>
-              </h2>
-            </div>
+            {/* Series mark + label — links to the show's Instagram */}
+            <a
+              href={CIVIC.vofInstagram}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor-hover
+              className="group inline-flex items-center gap-3 transition-colors duration-300 hover:text-[var(--accent)]"
+            >
+              <img
+                src={asset("/embeds/vof-logo.jpg")}
+                alt="Voices of Fremont logo"
+                className="h-12 w-12 shrink-0 rounded-md border bg-white object-contain p-1 shadow-sm transition-transform duration-500 ease-[var(--ease-cine)] group-hover:-rotate-3"
+              />
+              <span className="inline-flex items-center gap-2 text-lg font-semibold tracking-wide">
+                / VOICES OF FREMONT
+                <ArrowUpRight className="h-4 w-4 opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100" />
+              </span>
+            </a>
 
             {/* Origin story */}
             <div>
               <p className="text-sm leading-relaxed text-[var(--muted)]">
-                It started with a single phone call.{" "}
-                <strong className="text-[var(--fg)]">Manav Patel</strong>, the Mayor&apos;s assistant,
-                reached out — the Mayor wanted an outlet to discuss city issues, solutions, and events
-                with the public. Jadon was asked to build it from the ground up: concept, team, format,
-                and distribution.
+                It started with a single phone call — from{" "}
+                <strong className="text-[var(--fg)]">the Mayor himself</strong>. Mayor Salwan wanted
+                an outlet to discuss city issues, solutions, and events with the public, and asked
+                Jadon directly to build it from the ground up: concept, team, format, and
+                distribution.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
                 Each episode runs approximately 7 minutes, paired with short-form publicity cuts.
@@ -77,17 +101,17 @@ export function CivicFeaturedPress() {
               </p>
             </div>
 
-            {/* Credential grid */}
-            <div className="border border-[var(--line)]">
-              {CREDENTIAL_ROWS.map((r, i) => (
+            {/* Credential list — flat secondary box, hero-04 "/" vocabulary */}
+            <div className="bg-secondary p-6 md:p-8">
+              {CREDENTIAL_ROWS.map((r) => (
                 <div
                   key={r.label}
-                  className={`flex items-start justify-between gap-4 px-4 py-3 ${i !== CREDENTIAL_ROWS.length - 1 ? "border-b border-[var(--line)]" : ""}`}
+                  className="group flex items-baseline justify-between gap-4 py-1.5"
                 >
-                  <p className="shrink-0 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-                    {r.label}
+                  <p className="shrink-0 text-sm font-semibold tracking-wide transition-colors duration-300 group-hover:text-[var(--accent)]">
+                    / {r.label.toUpperCase()}
                   </p>
-                  <p className="text-right font-mono text-[0.65rem] text-[var(--fg)]">{r.val}</p>
+                  <p className="text-right font-mono text-[0.65rem] text-[var(--muted)]">{r.val}</p>
                 </div>
               ))}
             </div>
@@ -97,7 +121,7 @@ export function CivicFeaturedPress() {
 
       {/* Governor row — second press beat */}
       <Reveal delay={0.18}>
-        <div className="mt-10 border border-[var(--line)] bg-[var(--bg-2)] p-6 md:mt-14 md:p-8">
+        <div className="mt-10 bg-secondary p-6 md:mt-14 md:p-8">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-10">
             {/* Red accent mark */}
             <div className="hidden h-px w-10 shrink-0 bg-[var(--accent)] md:block" />
@@ -128,6 +152,60 @@ export function CivicFeaturedPress() {
           </div>
         </div>
       </Reveal>
+
+      {/* From the feed — real posts, hero-04 card treatment, all link to the show's IG */}
+      <div className="mt-12 md:mt-16">
+        <Reveal>
+          <div className="mb-6 flex flex-wrap items-center gap-2">
+            <span className="text-base font-medium tracking-wider md:text-lg">FROM THE FEED</span>
+            <ArrowDownRight className="size-5 text-[var(--accent)]" />
+            <a
+              href={CIVIC.vofInstagram}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor-hover
+              className="ml-3 font-mono text-[0.62rem] uppercase tracking-[0.28em] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--accent)]"
+            >
+              {CIVIC.vofHandle} ↗
+            </a>
+          </div>
+        </Reveal>
+
+        <RevealGroup
+          className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-6"
+          stagger={0.06}
+          delayChildren={0.05}
+        >
+          {VOF_FEED.map((post) => (
+            <motion.a
+              key={post.src}
+              href={CIVIC.vofInstagram}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor-hover
+              variants={revealUp}
+              whileHover={{ y: -6, rotate: -1 }}
+              transition={{ duration: 0.4, ease: EASE }}
+              className="group relative block aspect-square overflow-hidden rounded-md border shadow-lg"
+            >
+              <img
+                src={asset(post.src)}
+                alt={`Voices of Fremont — ${post.caption}`}
+                loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-cine)] group-hover:scale-[1.06]"
+              />
+              {/* Caption strip slides up on hover */}
+              <div className="absolute inset-x-0 bottom-0 translate-y-full bg-[var(--fg)]/85 px-2.5 py-1.5 transition-transform duration-500 ease-[var(--ease-cine)] group-hover:translate-y-0">
+                <p className="truncate font-mono text-[0.55rem] uppercase tracking-widest text-[var(--bg)]">
+                  {post.caption}
+                </p>
+              </div>
+              {/* Corner glyph */}
+              <ArrowUpRight className="absolute right-2 top-2 h-3.5 w-3.5 text-white opacity-0 drop-shadow transition-opacity duration-300 group-hover:opacity-100" />
+            </motion.a>
+          ))}
+        </RevealGroup>
+      </div>
 
       {/* Thin rule end */}
       <Reveal delay={0.22}>

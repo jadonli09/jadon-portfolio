@@ -12,7 +12,7 @@ export function CivicAwardsTicker() {
   ];
 
   return (
-    <div className="relative overflow-hidden border-y border-[var(--accent)] bg-[var(--accent)] py-3.5">
+    <div className="relative overflow-hidden border-y border-[var(--accent)] bg-[var(--accent)] py-3.5 [&:hover_.marquee-track]:[animation-play-state:paused]">
       {/* Bleed masks on each side */}
       <div
         aria-hidden

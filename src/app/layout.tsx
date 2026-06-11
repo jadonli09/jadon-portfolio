@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Archivo, Instrument_Serif, JetBrains_Mono, Anton } from "next/font/google";
+import { Fraunces, Archivo, Instrument_Serif, JetBrains_Mono, Anton, Caveat } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { Cursor } from "@/components/chrome/Cursor";
@@ -12,6 +12,7 @@ const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo", displa
 const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400", style: ["normal", "italic"], variable: "--font-instrument", display: "swap" });
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", display: "swap" });
 const anton = Anton({ subsets: ["latin"], weight: "400", variable: "--font-anton", display: "swap" });
+const caveat = Caveat({ subsets: ["latin"], variable: "--font-caveat", display: "swap" });
 
 const ogImage = `${BASE}/og.png`;
 
@@ -37,7 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body
         data-cursor="on"
-        className={`${fraunces.variable} ${archivo.variable} ${instrument.variable} ${jetbrains.variable} ${anton.variable} antialiased`}
+        className={`${fraunces.variable} ${archivo.variable} ${instrument.variable} ${jetbrains.variable} ${anton.variable} ${caveat.variable} antialiased`}
       >
         <Grain />
         <Cursor />

@@ -6,22 +6,77 @@ import { TiltCard } from "@/components/primitives/TiltCard";
 import { Counter } from "@/components/primitives/Counter";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { COURT } from "@/lib/data";
-import { Play, Globe } from "lucide-react";
+import { RimNet, NetMesh } from "@/components/court/BallMotifs";
+import { ExternalLink, Heart, MessageCircle } from "lucide-react";
 
-/** Designed video-placeholder frame with Chinese-gym broadcast aesthetic. */
-function VideoPlaceholderFrame() {
+/** Glass backboard mount — shooter's square framing the clip, rim + net hung beneath. */
+function Backboard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative aspect-[9/16] w-full max-w-[280px] overflow-hidden border border-[var(--accent)] bg-[var(--bg-2)] md:max-w-[320px]">
-      {/* Scan-line texture */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-10"
-        style={{
-          backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,91,31,0.15) 3px, rgba(255,91,31,0.15) 4px)",
-        }}
-        aria-hidden
+    <div className="relative flex flex-col items-center">
+      <div className="relative border-2 border-white/25 bg-white/[0.04] p-4 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.9),inset_0_0_30px_rgba(255,255,255,0.03)] backdrop-blur-[1px] md:p-6">
+        {/* Mounting bolts */}
+        {["left-1.5 top-1.5", "right-1.5 top-1.5", "bottom-1.5 left-1.5", "bottom-1.5 right-1.5"].map((c) => (
+          <span
+            key={c}
+            aria-hidden
+            className={`pointer-events-none absolute size-1.5 rounded-full bg-white/25 shadow-[inset_0_1px_1px_rgba(0,0,0,0.6)] ${c}`}
+          />
+        ))}
+        {/* Shooter's square */}
+        <div className="border-2 border-[var(--accent)] p-2 md:p-2.5">{children}</div>
+      </div>
+      {/* Rim + net, hung off the board */}
+      <RimNet className="-mt-1 w-28 text-[var(--accent)] drop-shadow-[0_6px_14px_rgba(255,91,31,0.25)] md:w-32" />
+
+      {/* Live tally plate — exact counts pulled from the DouYin share API */}
+      <div className="mt-3 flex items-stretch border border-[var(--line)] bg-black/50">
+        <div className="flex items-center gap-2 px-4 py-2">
+          <Heart className="size-3.5 fill-[var(--accent)] text-[var(--accent)]" aria-hidden />
+          <span className="font-anton text-base leading-none text-[var(--fg)]">{COURT.douyin.likes}</span>
+          <span className="font-mono text-[0.5rem] uppercase tracking-[0.18em] text-[var(--muted)]">Likes</span>
+        </div>
+        <span className="w-px bg-[var(--line)]" aria-hidden />
+        <div className="flex items-center gap-2 px-4 py-2">
+          <MessageCircle className="size-3.5 text-[var(--accent)]" aria-hidden />
+          <span className="font-anton text-base leading-none text-[var(--fg)]">{COURT.douyin.comments}</span>
+          <span className="font-mono text-[0.5rem] uppercase tracking-[0.18em] text-[var(--muted)]">Comments</span>
+        </div>
+      </div>
+      <span className="mt-1.5 font-mono text-[0.5rem] uppercase tracking-[0.25em] text-[var(--muted)]">
+        DouYin · {COURT.douyin.statsAsOf}
+      </span>
+
+      {/* Guaranteed path to the clip if the embed is blocked for a visitor */}
+      <a
+        href={COURT.douyin.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-cursor-hover
+        className="mt-3 inline-flex items-center gap-2 border border-[var(--accent)] px-4 py-2 font-mono text-[0.6rem] uppercase tracking-[0.25em] text-[var(--accent)] transition-colors duration-300 hover:bg-[var(--accent)] hover:text-black"
+      >
+        Watch on DouYin
+        <ExternalLink className="size-3" />
+      </a>
+    </div>
+  );
+}
+
+/** The real clip — DouYin iframe player in the broadcast chrome. */
+function DouyinPlayer() {
+  return (
+    <div className="relative aspect-[9/16] w-[256px] overflow-hidden border border-[var(--accent)] bg-[var(--bg-2)] md:w-[300px]">
+      {/* The embed — same player DouYin serves for sharing */}
+      <iframe
+        src={`https://open.douyin.com/player/video?vid=${COURT.douyin.vid}&autoplay=0`}
+        title="DouYin — Jadon vs the 网红, 569k likes"
+        className="absolute inset-0 h-full w-full"
+        allowFullScreen
+        allow="fullscreen; encrypted-media"
+        referrerPolicy="unsafe-url"
+        loading="lazy"
       />
 
-      {/* Corner marks */}
+      {/* Corner broadcast marks */}
       {[
         "top-0 left-0 border-t-2 border-l-2",
         "top-0 right-0 border-t-2 border-r-2",
@@ -34,62 +89,6 @@ function VideoPlaceholderFrame() {
           className={`pointer-events-none absolute h-5 w-5 border-[var(--accent)] ${c}`}
         />
       ))}
-
-      {/* Background diagonal energy line */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage: "repeating-linear-gradient(118deg, var(--accent) 0px, var(--accent) 1px, transparent 1px, transparent 32px)",
-        }}
-        aria-hidden
-      />
-
-      {/* Central play button */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
-        <motion.div
-          className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-[var(--accent)] bg-[var(--accent)]/20"
-          animate={{ scale: [1, 1.08, 1] }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <Play className="size-7 fill-[var(--accent)] text-[var(--accent)]" />
-        </motion.div>
-
-        {/* Chinese text label */}
-        <div className="flex flex-col items-center gap-1">
-          <span className="font-grotesk text-lg font-bold leading-none text-[var(--accent)]">
-            网红
-          </span>
-          <span className="font-mono text-[0.55rem] uppercase tracking-[0.3em] text-[var(--muted)]">
-            Influencer · DouYin
-          </span>
-        </div>
-      </div>
-
-      {/* Bottom stats bar */}
-      <div className="absolute bottom-0 left-0 right-0 border-t border-[var(--accent)] bg-[var(--bg)] px-3 py-2">
-        <div className="flex items-center justify-between">
-          <div>
-            <span className="font-mono text-[0.5rem] uppercase tracking-widest text-[var(--muted)]">
-              Likes
-            </span>
-            <p className="font-anton text-sm leading-none text-[var(--accent)]">569K</p>
-          </div>
-          <Globe className="size-3 text-[var(--accent)]" />
-        </div>
-      </div>
-
-      {/* Live indicator */}
-      <div className="absolute right-3 top-3 flex items-center gap-1.5">
-        <motion.span
-          className="h-2 w-2 rounded-full bg-[var(--accent)]"
-          animate={{ opacity: [1, 0.2, 1] }}
-          transition={{ duration: 1.4, repeat: Infinity }}
-          aria-hidden
-        />
-        <span className="font-mono text-[0.55rem] uppercase tracking-widest text-[var(--accent)]">
-          Viral
-        </span>
-      </div>
     </div>
   );
 }
@@ -129,15 +128,8 @@ function StatBlock() {
 export function CourtDouyin() {
   return (
     <section className="relative overflow-hidden bg-[var(--bg-2)] py-20 md:py-28">
-      {/* Background court-dot motif */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: "radial-gradient(circle, var(--accent) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-        aria-hidden
-      />
+      {/* Background net-mesh weave */}
+      <NetMesh className="text-[var(--accent)] opacity-[0.04]" gap={22} />
 
       {/* Diagonal energy stripe — background kinetic texture */}
       <div
@@ -163,8 +155,10 @@ export function CourtDouyin() {
           {/* Left: video frame */}
           <Reveal>
             <div className="flex justify-center md:justify-start">
-              <TiltCard max={8}>
-                <VideoPlaceholderFrame />
+              <TiltCard max={6}>
+                <Backboard>
+                  <DouyinPlayer />
+                </Backboard>
               </TiltCard>
             </div>
           </Reveal>

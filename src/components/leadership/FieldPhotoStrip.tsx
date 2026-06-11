@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { Photo } from "@/components/primitives/Photo";
+import { SlotPhoto } from "@/components/leadership/SlotPhoto";
 import { Reveal } from "@/components/primitives/Reveal";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 
@@ -41,7 +41,7 @@ function FieldPhoto({
         animate={{ filter: hovered ? "grayscale(0%)" : "grayscale(70%)" }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
-        <Photo src={src} alt={alt} className="object-cover" />
+        <SlotPhoto src={src} alt={alt} monogram="ASB" note="photo en route" className="object-cover" />
       </motion.div>
 
       {/* Bottom gradient scrim */}
@@ -97,10 +97,78 @@ const PHOTOS: {
   wide?: boolean;
 }[] = [
   {
+    // Slot for the new ASB leadership photo — drop the file in /public/img.
+    src: "/img/asb-leadership-2026.jpg",
+    alt: "ASB Leadership 2026–2027 — Mission San Jose High School",
+    caption: "ASB Leadership",
+    sub: "2026–2027 · President",
+    wide: true,
+  },
+  {
     src: "/img/asb-officers.jpg",
     alt: "ASB Officers — Mission San Jose High School",
     caption: "ASB Officers",
     sub: "Associated Student Body",
+    wide: true,
+  },
+  {
+    src: "/img/seniorbreakfast-spread.jpg",
+    alt: "Seniors serving themselves at the catered Senior Breakfast buffet",
+    caption: "Senior Breakfast",
+    sub: "$4.8k · 500 servings",
+  },
+  {
+    src: "/img/speaking-at-rally.jpg",
+    alt: "Jadon speaking at the school rally",
+    caption: "At the Rally",
+    sub: "On the mic",
+    wide: true,
+  },
+  {
+    src: "/img/classofficer-junior.jpg",
+    alt: "Junior class officers with the Never Second 2027 sign",
+    caption: "Class Officers · 11th",
+    sub: "Never second",
+    wide: true,
+  },
+  {
+    src: "/img/prom-calacademy.jpg",
+    alt: "Students at prom inside the California Academy of Sciences",
+    caption: "Prom @ Cal Academy",
+    sub: "600+ students",
+    wide: true,
+  },
+  {
+    src: "/img/seniorbreakfast-bagels.jpg",
+    alt: "Bagel towers and parfaits at the Senior Breakfast",
+    caption: "The Bagel Towers",
+    sub: "Senior Breakfast",
+  },
+  {
+    src: "/img/freshmenyear-speech.jpg",
+    alt: "Jadon giving his freshman-year speech in the gym",
+    caption: "The First Speech",
+    sub: "Freshman year",
+    wide: true,
+  },
+  {
+    src: "/img/classofficer-freshman.jpg",
+    alt: "Freshman class officers in Santa hats",
+    caption: "Class Officers · 9th",
+    sub: "The freshman slate",
+    wide: true,
+  },
+  {
+    src: "/img/seniorbreakfast-baskets.jpg",
+    alt: "Pastry baskets at the Senior Breakfast",
+    caption: "Pastry Baskets",
+    sub: "Senior Breakfast",
+  },
+  {
+    src: "/img/classofficer-sophomore.jpg",
+    alt: "Sophomore class officers on the rally stage",
+    caption: "Class Officers · 10th",
+    sub: "On the rally stage",
     wide: true,
   },
   {
@@ -192,7 +260,7 @@ export function FieldPhotoStrip() {
           <div className="flex items-baseline gap-6 border-b border-[var(--line)] pb-4">
             <span className="eyebrow text-[var(--accent)]">In the Field</span>
             <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-              ASB · Climbing · Fundraising · Panels
+              ASB · Events · Class Officers · Climbing · Fundraising
             </span>
           </div>
         </Reveal>
@@ -215,7 +283,7 @@ export function FieldPhotoStrip() {
         {/* Inner track — drag-scrollable overflow */}
         <div
           className="marquee-track"
-          style={{ animationDuration: "55s" }}
+          style={{ animationDuration: "100s" }}
           aria-label="Photo strip — ASB, climbing club, fundraising, panels"
         >
           {[...PHOTOS, ...PHOTOS].map((p, i) => (

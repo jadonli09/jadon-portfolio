@@ -1,9 +1,23 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
 import { motion } from "motion/react";
-import { ArrowRight, FileText, Users, Mic, BookOpen, Building2, Scale } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowDownRight,
+  ArrowUpRight,
+  FileText,
+  Users,
+  Mic,
+  BookOpen,
+  Building2,
+  Scale,
+} from "lucide-react";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
+import { PosterHeading } from "@/components/ui/poster-heading";
+import { asset } from "@/lib/base";
+import { CIVIC } from "@/lib/data";
 import { EASE } from "@/lib/motion";
 
 /** Local detail constants — SBAI op-ed journey. */
@@ -57,34 +71,38 @@ const SBAI_PULLQUOTE =
 
 export function CivicSBAIFlow() {
   return (
-    <section className="mx-auto max-w-7xl px-5 py-16 md:px-9 md:py-28">
-      {/* Section rule */}
-      <Reveal>
-        <div className="mb-8 flex items-baseline justify-between border-b-2 border-[var(--fg)] pb-3 md:mb-12">
-          <div className="flex items-baseline gap-4">
-            <span className="font-anton text-sm uppercase tracking-widest text-[var(--accent)] md:text-base">
-              Deep Dive
-            </span>
-            <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-              Small Business Accessibility Initiative
-            </span>
+    <section className="mx-auto max-w-7xl px-5 py-16 md:px-9 md:py-20">
+      {/* Poster section heading */}
+      <PosterHeading
+        label="Deep Dive"
+        title="Small Business Accessibility"
+        meta="2025 – present"
+        className="mb-10 md:mb-16"
+      />
+
+      {/* Headline + inciting pull-quote — full-width intro above the columns */}
+      <div className="mb-10 md:mb-12">
+        <KineticHeadline
+          as="h2"
+          text="From a Boba Shop to City Council."
+          className="font-grotesk text-[2rem] font-bold uppercase leading-[0.94] tracking-[-2px] md:text-[3.2rem] md:tracking-[-3px]"
+          delay={0.05}
+        />
+        <Reveal delay={0.15}>
+          <div className="mt-6 max-w-3xl border-l-2 border-[var(--accent)] pl-5">
+            <p className="font-serif-i text-lg italic leading-relaxed text-[var(--fg)] md:text-xl">
+              &ldquo;{SBAI_PULLQUOTE}&rdquo;
+            </p>
+            <p className="mt-2 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
+              — Luke Wu&apos;s story · the inciting case
+            </p>
           </div>
-          <span className="eyebrow hidden sm:block">2025 – present</span>
-        </div>
-      </Reveal>
+        </Reveal>
+      </div>
 
       <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_380px] md:gap-16">
-        {/* Left — headline + flow */}
+        {/* Left — the flow, with the published artifact embedded at step 03 */}
         <div>
-          <div className="mb-8">
-            <KineticHeadline
-              as="h2"
-              text="From a Boba Shop to City Council."
-              className="font-anton text-[2.2rem] uppercase leading-[0.94] tracking-tight md:text-[3.6rem]"
-              delay={0.05}
-            />
-          </div>
-
           {/* Step flow */}
           <RevealGroup stagger={0.09} delayChildren={0.08} className="flex flex-col">
             {SBAI_STEPS.map((step, i) => {
@@ -120,6 +138,44 @@ export function CivicSBAIFlow() {
                     </div>
                     <p className="text-sm leading-relaxed text-[var(--muted)]">{step.detail}</p>
 
+                    {/* The receipt — the published op-ed, embedded where it happened */}
+                    {step.n === "03" && (
+                      <div className="mt-4 max-w-md">
+                        <div className="mb-2 flex items-center gap-2">
+                          <span className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-[var(--accent)]">
+                            As published
+                          </span>
+                          <ArrowDownRight className="size-3 text-[var(--accent)]" />
+                          <span className="font-mono text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">
+                            {CIVIC.opEd.date}
+                          </span>
+                        </div>
+                        <a
+                          href={CIVIC.opEd.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          data-cursor-hover
+                          className="group/clip relative block overflow-hidden rounded-md border bg-white shadow-lg transition-transform duration-500 ease-[var(--ease-cine)] hover:-translate-y-1"
+                        >
+                          <img
+                            src={asset(CIVIC.opEd.image)}
+                            alt={`${CIVIC.opEd.title} — ${CIVIC.opEd.byline}, ${CIVIC.opEd.outlet}`}
+                            loading="lazy"
+                            className="w-full transition-transform duration-700 ease-[var(--ease-cine)] group-hover/clip:scale-[1.02]"
+                          />
+                          <div className="flex items-center justify-between gap-3 border-t border-[var(--line)] bg-[var(--fg)] px-3 py-2">
+                            <p className="truncate font-mono text-[0.56rem] uppercase tracking-widest text-[var(--bg)]">
+                              {CIVIC.opEd.byline}
+                            </p>
+                            <p className="flex shrink-0 items-center gap-1.5 font-mono text-[0.56rem] uppercase tracking-widest text-[var(--bg)]">
+                              Read it
+                              <ArrowUpRight className="h-3 w-3 transition-transform duration-300 group-hover/clip:translate-x-0.5 group-hover/clip:-translate-y-0.5" />
+                            </p>
+                          </div>
+                        </a>
+                      </div>
+                    )}
+
                     {/* Arrow connector — not on last */}
                     {i < SBAI_STEPS.length - 1 && (
                       <ArrowRight
@@ -135,32 +191,8 @@ export function CivicSBAIFlow() {
           </RevealGroup>
         </div>
 
-        {/* Right — pull-quote + credential panel */}
-        <div className="flex flex-col gap-6">
-          {/* Pull-quote card */}
-          <Reveal delay={0.15}>
-            <div className="relative border border-[var(--line)] bg-[var(--bg-2)] p-7 md:p-9">
-              {/* Big quotation mark */}
-              <span
-                aria-hidden
-                className="pointer-events-none absolute -top-5 left-6 select-none font-anton text-[5rem] leading-none text-[var(--accent)]/20"
-              >
-                "
-              </span>
-              <p className="relative font-serif-i text-lg italic leading-relaxed text-[var(--fg)] md:text-xl">
-                {SBAI_PULLQUOTE}
-              </p>
-              <div className="mt-5 border-t border-[var(--line)] pt-4">
-                <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--accent)]">
-                  — Luke Wu's story
-                </p>
-                <p className="mt-0.5 font-mono text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">
-                  The inciting case
-                </p>
-              </div>
-            </div>
-          </Reveal>
-
+        {/* Right — credential rail (sticky so it tracks the longer flow) */}
+        <div className="flex flex-col gap-6 md:sticky md:top-28 md:self-start">
           {/* Key people card */}
           <Reveal delay={0.22}>
             <div className="border border-[var(--line)] bg-[var(--bg)]">
@@ -219,7 +251,7 @@ export function CivicSBAIFlow() {
       {/* Bottom closing rule */}
       <Reveal delay={0.3}>
         <motion.div
-          className="mt-14 h-[1px] bg-[var(--line)] md:mt-20"
+          className="mt-10 h-[1px] bg-[var(--line)] md:mt-14"
           initial={{ scaleX: 0, originX: 0 }}
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true }}

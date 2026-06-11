@@ -6,37 +6,8 @@ import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { Reveal } from "@/components/primitives/Reveal";
 import { Photo } from "@/components/primitives/Photo";
 import { COURT, PROFILE } from "@/lib/data";
+import { HalfCourt } from "@/components/court/BallMotifs";
 import { cn } from "@/lib/cn";
-
-/** Diagonal court-line SVG (half-court key + three-point arc motif). */
-function CourtLineSVG({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 480 480"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={cn("pointer-events-none select-none", className)}
-      aria-hidden
-    >
-      {/* Three-point arc */}
-      <path
-        d="M 60 440 A 200 200 0 0 1 420 440"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeDasharray="6 5"
-        opacity="0.35"
-      />
-      {/* Key / paint box */}
-      <rect x="175" y="280" width="130" height="160" stroke="currentColor" strokeWidth="1.5" opacity="0.3" />
-      {/* Free-throw circle */}
-      <circle cx="240" cy="280" r="48" stroke="currentColor" strokeWidth="1.5" opacity="0.25" />
-      {/* Basket circle */}
-      <circle cx="240" cy="420" r="12" stroke="currentColor" strokeWidth="1.5" opacity="0.4" />
-      {/* Center line mark */}
-      <line x1="60" y1="440" x2="420" y2="440" stroke="currentColor" strokeWidth="1.5" opacity="0.3" />
-    </svg>
-  );
-}
 
 /** Large blurred diagonal number watermark. */
 function WatermarkNumber({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -158,7 +129,7 @@ export function CourtHero() {
 
       {/* Court lines — decorative, bottom-anchored */}
       <div className="pointer-events-none absolute bottom-0 right-0 w-[520px] translate-x-1/4 translate-y-1/4 opacity-30 text-[var(--line)] md:w-[640px]">
-        <CourtLineSVG />
+        <HalfCourt />
       </div>
 
       {/* Giant watermark year */}

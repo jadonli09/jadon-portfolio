@@ -8,6 +8,7 @@ import { EASE } from "@/lib/motion";
 
 const DOORS = [
   { href: "/achievements", label: "Experiences & Achievements", note: "The full archive — every award, role, and project by year", accent: "#b07c1e" },
+  { href: "/albums", label: "Albums", note: "The photo archive — every frame from all five worlds", accent: "#c9a227" },
   { href: "/contact", label: "Say Hello", note: "Email · Instagram · LinkedIn · GitHub", accent: "#b04a32" },
 ];
 
@@ -27,7 +28,7 @@ export function StoryClose() {
           <span className="italic text-[var(--accent)]">the pursuit of happiness.</span>
         </motion.p>
 
-        <div className="mt-14 grid gap-px overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--line)] md:grid-cols-2">
+        <div className="mt-14 grid gap-px overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--line)] md:grid-cols-3">
           {DOORS.map((d) => (
             <Link
               key={d.href}

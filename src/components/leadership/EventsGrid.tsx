@@ -3,81 +3,105 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
-import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { LEADERSHIP } from "@/lib/data";
 
 type EventItem = (typeof LEADERSHIP.events)[number];
 
-/** Individual event card in the grid — metric prominent, note on hover/tap. */
-function EventCard({
+/** Render a note's **bold** markers as gold emphasis. */
+function NoteText({ text }: { text: string }) {
+  return (
+    <>
+      {text.split("**").map((seg, i) =>
+        i % 2 === 1 ? (
+          <strong key={i} className="font-semibold text-[var(--accent)]">
+            {seg}
+          </strong>
+        ) : (
+          <span key={i}>{seg}</span>
+        )
+      )}
+    </>
+  );
+}
+
+/**
+ * One ledger row — brutalist table treatment. The whole row inverts to
+ * solid gold (black type) on hover/expand; the metric rides the right edge.
+ */
+function LedgerRow({
   event,
   index,
+  isOpen,
+  onToggle,
 }: {
   event: EventItem;
   index: number;
+  isOpen: boolean;
+  onToggle: () => void;
 }) {
-  const [open, setOpen] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const inverted = hovered || isOpen;
 
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 24 },
-        show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
+        hidden: { opacity: 0, y: 14 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } },
       }}
-      className="group relative"
+      className="border-b-2 border-[rgba(212,175,106,0.35)]"
     >
       <button
         type="button"
         data-cursor-hover
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        className="relative w-full cursor-pointer overflow-hidden border border-[var(--line)] bg-[var(--bg-2)] p-6 text-left transition-colors duration-400 hover:border-[rgba(212,175,106,0.5)] focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--accent)] md:p-7"
+        onClick={onToggle}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        aria-expanded={isOpen}
+        className="relative w-full cursor-pointer text-left transition-colors duration-200 focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--accent)]"
+        style={{ background: inverted ? "var(--accent)" : "transparent" }}
       >
-        {/* Gold bar top accent — reveals on hover */}
-        <motion.span
-          aria-hidden
-          className="pointer-events-none absolute left-0 top-0 h-0.5 w-full bg-gradient-to-r from-[var(--accent)] to-transparent"
-          initial={{ scaleX: 0, originX: 0 }}
-          animate={{ scaleX: open ? 1 : 0 }}
-          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-        />
-
-        {/* Index + window row */}
-        <div className="flex items-center justify-between">
-          <span className="font-mono text-[0.55rem] uppercase tracking-[0.28em] text-[var(--muted)] opacity-50">
+        <div className="flex items-baseline gap-4 px-1 py-5 md:gap-8 md:px-3 md:py-6">
+          {/* Giant ghost numeral */}
+          <span
+            aria-hidden
+            className="hidden w-16 shrink-0 select-none font-anton text-[2.6rem] leading-none tracking-tight sm:block md:w-24 md:text-[3.4rem]"
+            style={{
+              color: "transparent",
+              WebkitTextStroke: inverted ? "1px rgba(12,10,8,0.8)" : "1px rgba(212,175,106,0.45)",
+            }}
+          >
             {String(index + 1).padStart(2, "0")}
           </span>
-          <span className="font-mono text-[0.55rem] uppercase tracking-widest text-[var(--muted)]">
-            {event.window}
-          </span>
-        </div>
 
-        {/* Metric — the big number / headline stat */}
-        {event.metric !== "—" && (
-          <p
-            className="mt-3 font-anton leading-none tracking-tight text-[var(--accent)]"
-            style={{ fontSize: "clamp(1.8rem, 5vw, 3rem)" }}
+          {/* Title + window */}
+          <span className="flex-1">
+            <span
+              className="block font-anton text-[1.4rem] uppercase leading-none tracking-tight md:text-[2.2rem]"
+              style={{ color: inverted ? "#0c0a08" : "var(--fg)" }}
+            >
+              {event.title}
+            </span>
+            <span
+              className="mt-1.5 block font-mono text-[0.58rem] uppercase tracking-[0.25em]"
+              style={{ color: inverted ? "rgba(12,10,8,0.65)" : "var(--muted)" }}
+            >
+              {event.window} · {isOpen ? "— close" : "+ open"}
+            </span>
+          </span>
+
+          {/* Metric — right edge, huge */}
+          <span
+            className="shrink-0 text-right font-anton text-[1.3rem] leading-none tracking-tight md:text-[2.4rem]"
+            style={{ color: inverted ? "#0c0a08" : "var(--accent)" }}
           >
             {event.metric}
-          </p>
-        )}
-
-        {/* Event title */}
-        <p
-          className={`font-anton uppercase leading-tight tracking-tight text-[var(--fg)] transition-colors duration-300 group-hover:text-[var(--accent)] ${event.metric !== "—" ? "mt-1 text-[1.1rem] md:text-[1.3rem]" : "mt-3 text-[1.5rem] md:text-[2rem]"}`}
-        >
-          {event.title}
-        </p>
-
-        {/* Tap hint */}
-        <p className="mt-3 font-mono text-[0.55rem] uppercase tracking-widest text-[var(--muted)]">
-          {open ? "▲ less" : "▼ story"}
-        </p>
+          </span>
+        </div>
       </button>
 
-      {/* Expandable note */}
+      {/* Expanded note — keyed to the row, kept on asphalt for contrast */}
       <AnimatePresence>
-        {open && (
+        {isOpen && (
           <motion.div
             key="note"
             initial={{ height: 0, opacity: 0 }}
@@ -86,11 +110,42 @@ function EventCard({
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <div className="border border-t-0 border-[rgba(212,175,106,0.3)] bg-[var(--bg-2)] px-6 pb-6 pt-4 md:px-7 md:pb-7">
-              <div className="mb-3 h-px w-8 bg-[var(--accent)] opacity-60" />
-              <p className="text-sm leading-relaxed text-[var(--fg)] opacity-80 md:text-base">
-                {event.note}
+            <div className="px-1 pb-7 pt-1 sm:pl-20 md:pl-28">
+              {/* The story — bold words run gold */}
+              <p className="max-w-3xl text-sm leading-relaxed text-[var(--fg)] opacity-85 md:text-base">
+                <NoteText text={event.note} />
               </p>
+
+              {/* Line-item facts — sub-ledger cells */}
+              <div className="mt-5 flex flex-wrap gap-2.5">
+                {event.facts.map((f) => (
+                  <div
+                    key={f.label}
+                    className="border-l-2 border-[var(--accent)] bg-[var(--bg-2)] py-2 pl-3.5 pr-5"
+                  >
+                    <p className="font-anton text-xl leading-none text-[var(--accent)] md:text-2xl">
+                      {f.value}
+                    </p>
+                    <p className="mt-1 font-mono text-[0.52rem] uppercase tracking-[0.22em] text-[var(--muted)]">
+                      {f.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Video link — rows that have footage */}
+              {"video" in event && event.video && (
+                <a
+                  href={event.video.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  data-cursor-hover
+                  className="mt-5 inline-flex items-center gap-2.5 border border-[rgba(212,175,106,0.5)] bg-[var(--bg-2)] px-4 py-2.5 font-mono text-[0.6rem] uppercase tracking-[0.2em] text-[var(--accent)] transition-colors duration-300 hover:bg-[var(--accent)] hover:text-[#0c0a08]"
+                >
+                  <span aria-hidden>▶</span>
+                  {event.video.label}
+                </a>
+              )}
             </div>
           </motion.div>
         )}
@@ -100,65 +155,77 @@ function EventCard({
 }
 
 /**
- * EventsGrid — a rich, interactive ledger showing Jadon's range and volume
- * as an operator. Each card leads with its metric; tap reveals the note.
+ * EventsGrid — "The Range" as a brutalist full-bleed ledger.
+ * Solid gold header band, heavy rules, row-inversion hovers: deliberately
+ * table-like, the visual opposite of the editorial office cards above it.
  */
 export function EventsGrid() {
   const { events } = LEADERSHIP;
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section
-      className="mx-auto mt-20 max-w-7xl px-5 md:mt-32 md:px-9"
-      aria-labelledby="events-grid-heading"
-    >
-      {/* Section header */}
+    <section className="mt-20 md:mt-32" aria-labelledby="events-grid-heading">
+      {/* Solid gold header band — full bleed */}
       <Reveal>
-        <div className="flex items-baseline justify-between border-b border-[var(--fg)] pb-4">
-          <div className="flex items-baseline gap-6">
-            <span className="eyebrow text-[var(--accent)]">Event Log</span>
-            <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-              {events.length}&nbsp;entries
-            </span>
-          </div>
-          <span className="eyebrow hidden text-[var(--muted)] sm:block">
-            Tap to expand
+        <div className="flex items-center justify-between gap-4 bg-[var(--accent)] px-5 py-2.5 md:px-9">
+          <span className="font-mono text-[0.6rem] font-bold uppercase tracking-[0.3em] text-[#0c0a08]">
+            Event Log — {events.length} entries
+          </span>
+          <span className="hidden font-mono text-[0.6rem] font-bold uppercase tracking-[0.3em] text-[#0c0a08] sm:block">
+            FY 2023 → 2027 · audited
           </span>
         </div>
       </Reveal>
 
-      {/* Section headline */}
-      <div className="mt-5 md:mt-6" id="events-grid-heading">
-        <KineticHeadline
-          as="h2"
-          text="The Range."
-          className="font-anton text-[2.8rem] uppercase leading-none tracking-tight text-[var(--fg)] md:text-[5.5rem]"
-          delay={0.05}
-        />
+      <div className="mx-auto max-w-7xl px-5 md:px-9">
+        {/* Oversized headline, hard against the band */}
+        <h2 id="events-grid-heading" className="sr-only">
+          The Range — event ledger
+        </h2>
+        <Reveal>
+          <p
+            aria-hidden
+            className="mt-6 font-anton uppercase leading-[0.92] tracking-tight text-[var(--fg)] md:mt-8"
+            style={{ fontSize: "clamp(3rem, 10vw, 8rem)" }}
+          >
+            The&nbsp;Range<span className="text-[var(--accent)]">.</span>
+          </p>
+        </Reveal>
+        <Reveal delay={0.12}>
+          <p className="mt-3 max-w-2xl font-serif-i text-base italic text-[var(--fg)] opacity-70 md:text-lg">
+            From 500-person protests to 262-player scavenger hunts — every line item, on the record.
+          </p>
+        </Reveal>
+
+        {/* The ledger */}
+        <RevealGroup
+          className="mt-8 border-t-2 border-[rgba(212,175,106,0.35)] md:mt-10"
+          stagger={0.05}
+          delayChildren={0.05}
+        >
+          {events.map((ev, i) => (
+            <LedgerRow
+              key={ev.title}
+              event={ev}
+              index={i}
+              isOpen={openIndex === i}
+              onToggle={() => setOpenIndex((prev) => (prev === i ? null : i))}
+            />
+          ))}
+        </RevealGroup>
+
+        {/* Ledger footer — running totals */}
+        <Reveal delay={0.15}>
+          <div className="flex flex-wrap items-baseline justify-between gap-3 py-4">
+            <p className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-[var(--muted)]">
+              Σ — 13 fundraisers · $5,520.40 raised · 3 Homecomings · 1 graduation
+            </p>
+            <p className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-[var(--accent)]">
+              balance: in his favor
+            </p>
+          </div>
+        </Reveal>
       </div>
-
-      <Reveal delay={0.15}>
-        <p className="mt-4 max-w-2xl font-serif-i text-base italic text-[var(--fg)] opacity-70 md:text-lg">
-          From 500-person protests to 262-player scavenger hunts — running at scale across every dimension.
-        </p>
-      </Reveal>
-
-      {/* Event cards grid */}
-      <RevealGroup
-        className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 md:mt-12 md:gap-4 lg:grid-cols-3 xl:grid-cols-4"
-        stagger={0.06}
-        delayChildren={0.05}
-      >
-        {events.map((ev, i) => (
-          <EventCard key={ev.title} event={ev} index={i} />
-        ))}
-      </RevealGroup>
-
-      {/* Footer note */}
-      <Reveal delay={0.2}>
-        <p className="mt-8 font-mono text-[0.6rem] uppercase tracking-[0.28em] text-[var(--muted)]">
-          Class President ×3&nbsp;·&nbsp;ASB President 2026–2027&nbsp;·&nbsp;Mission San Jose H.S.
-        </p>
-      </Reveal>
     </section>
   );
 }
