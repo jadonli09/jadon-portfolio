@@ -175,7 +175,7 @@ export const PIN_LETTER_TEXT =
   "Jadon Li is a junior at Mission San Jose. Elected president every year since freshman year, films for the Mayor of Fremont, traced gout pain through the genome, built a study app 500+ students use, started on the first championship team in school history — and posted the whole journey.";
 
 export const PINBOARD: PinItem[] = [
-  { kind: "letter", left: "1%", top: 26, rot: -2, z: 2, w: 270 },
+  { kind: "letter", left: "1%", top: 26, rot: -2, z: 7, w: 300 },
   { kind: "polaroid", world: "court", href: "/court", go: "→ the court", img: "/img/ncs-champions.jpg", caption: "first NCS title in school history!", left: "21%", top: 12, rot: 4, z: 4, w: 180 },
   { kind: "news", href: "/court", go: "→ the court · rafters", hed: "“Believe it: Mission San Jose wins first NCS title in boys basketball”", src: "The Mercury News · Feb 2026 · MSJ 46–40", left: "34%", top: 114, rot: -3.5, z: 6, w: 212 },
   { kind: "seal", world: "leadership", href: "/leadership#elected-offices-heading", go: "→ leadership · offices", text: "3× CLASS PRESIDENT · NOW ASB", left: "53%", top: 10, rot: 8, z: 5, w: 98 },
@@ -194,7 +194,7 @@ export const PINBOARD: PinItem[] = [
   { kind: "seal", href: "/about", go: "→ the person", value: "46:46", text: "MISSION PEAK", accent: "silver", left: "18%", top: 336, rot: 7, z: 6, w: 82 },
   { kind: "index", href: "/leadership#club-crews-heading", go: "→ leadership · clubs", text: "Also currently: MSJ Makes President · STEM-PAC Co-President · ~$4k profit shipping merch jobs", left: "26%", top: 382, rot: -3, z: 5, w: 178 },
   { kind: "ticket", href: "/civic", go: "→ civic", text: "★ 10K VIEWS", label: "per Mayor video", accent: "#e0644e", left: "41%", top: 350, rot: 4, z: 5, w: 126 },
-  { kind: "note", href: "/civic", go: "→ civic", text: "saved a beloved restaurant w/ one viral push", accent: "#ffd0e2", left: "50%", top: 388, rot: -6, z: 4, w: 118 },
+  { kind: "note", href: "/civic", go: "→ civic", text: "rallying Fremont to bring Sweet Tomatoes back — to be continued…", accent: "#ffd0e2", left: "50%", top: 388, rot: -6, z: 4, w: 132 },
   { kind: "polaroid", href: "/leadership#winter-ball-title", go: "→ leadership · events", img: "/img/winterball-1.jpg", caption: "Winter Ball — sold out", left: "61%", top: 358, rot: 6, z: 4, w: 152 },
 ];
 

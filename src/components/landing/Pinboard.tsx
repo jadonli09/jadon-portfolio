@@ -161,10 +161,10 @@ function PinBody({ item }: { item: PinItem }) {
   switch (item.kind) {
     case "letter":
       return (
-        <div className="font-display bg-[#f7f3e8] p-4 text-[#2a2722] shadow-[0_10px_26px_rgba(0,0,0,0.66)]">
-          <p className="font-mono text-[0.5rem] uppercase tracking-[0.18em] text-[#8a6312]">In sixty words</p>
-          <p className="mt-2 text-[0.72rem] leading-[1.7]">{PIN_LETTER_TEXT}</p>
-          <p className="font-hand mt-2 text-lg leading-none">— Jadon</p>
+        <div className="font-display bg-[#f9f5ea] p-[1.1rem] text-[#1f1d18] shadow-[0_14px_34px_rgba(0,0,0,0.72)]">
+          <p className="font-mono text-[0.56rem] font-bold uppercase tracking-[0.2em] text-[#b04a32]">Read me first</p>
+          <p className="mt-2 text-[0.8rem] leading-[1.62]">{PIN_LETTER_TEXT}</p>
+          <p className="font-hand mt-2.5 text-xl leading-none">— Jadon</p>
         </div>
       );
     case "polaroid":
