@@ -21,11 +21,9 @@ const TOKENS: Token[] = [
   { door: D.researches, rot: -1.2, after: "," },
   { door: D.builds, rot: 2, after: "," },
   { door: D.competes, rot: -1.7 },
-  { text: "—" },
-  { text: "and" },
+  { text: "— and" },
   { door: D.documents, rot: 1.1 },
-  { text: "—" },
-  { text: "one" },
+  { text: "— one" },
   { door: D.person, rot: -2.1, after: "," },
   { text: "locked" },
   { text: "in." },
@@ -93,7 +91,7 @@ export function SentenceDoors() {
             if (!revealTimer.current) revealTimer.current = setTimeout(() => setRevealed(true), 2400);
           }}
           onAnimationComplete={() => setRevealed(true)}
-          className="font-display max-w-5xl text-[2.6rem] leading-[1.52] tracking-tight md:text-[4.1rem] md:leading-[1.46] lg:max-w-none lg:text-[3.3rem] lg:leading-[1.5] xl:text-[3.7rem] xl:leading-[1.48]"
+          className="font-display max-w-5xl text-[2.6rem] leading-[1.52] tracking-tight md:text-[3.4rem] md:leading-[1.5] lg:max-w-none lg:text-[3rem] lg:leading-[1.52] xl:text-[3.6rem] xl:leading-[1.48]"
         >
           {TOKENS.map((t, i) => (
             <span
