@@ -51,7 +51,7 @@ export function SentenceDoors() {
   return (
     <section
       id="doors"
-      className="relative flex min-h-[100svh] scroll-mt-24 items-center overflow-hidden"
+      className="relative flex min-h-[68svh] scroll-mt-24 items-center overflow-hidden md:min-h-[76svh]"
       onMouseLeave={() => setActiveWorld(null)}
     >
       {/* photo floods, one per door, cross-fading behind the words */}
@@ -77,7 +77,7 @@ export function SentenceDoors() {
         }}
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-5 py-24 md:px-9">
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-5 py-16 md:px-9 md:py-20">
         <div className="mb-9">
           <BoardLabel>Who he is · in one sentence</BoardLabel>
         </div>

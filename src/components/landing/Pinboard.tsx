@@ -31,7 +31,7 @@ const worldOf = (item: PinItem) =>
  */
 export function Pinboard() {
   return (
-    <section id="record" className="relative scroll-mt-24 py-20 md:py-24">
+    <section id="record" className="relative scroll-mt-24 pb-20 pt-6 md:pb-24 md:pt-8">
       <div className="mx-auto max-w-7xl px-5 md:px-9">
         <div className="mb-3 text-center">
           <BoardLabel className="rotate-1">The record · pinned</BoardLabel>
