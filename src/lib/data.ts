@@ -1123,7 +1123,7 @@ export const LEADERSHIP = {
       title: "JP Basketball",
       window: "Founder · 2025",
       metric: "$60/hr",
-      note: "**Founded** a basketball training program with 'Coach PradyFlex' — business plan to coaching, built to **ignite passion first, skills second**. Sunday sessions, **20 players** coached, and **over $2k made**.",
+      note: "**Founded** a basketball training program with “Coach PradyFlex” — business plan to coaching, built to **ignite passion first, skills second**. Sunday sessions, **20 players** coached, and **over $2k made**.",
       facts: [
         { value: "$60/hr", label: "rate" },
         { value: "20", label: "players coached" },
@@ -1310,9 +1310,9 @@ export const TROPHIES: Trophy[] = [
   { year: "2023", title: "China gym moment — 569k likes", cat: "court", detail: "Outplayed a 网红 (influencer) at a gym in Xi'an; the clip went viral on DouYin." },
   // ── Freshman (2023–24) ──
   { year: "2023", title: "Class President — elected", cat: "leadership", detail: "Won the freshman race; organized 153 students into 6 airbands, 3 deco teams and a skit; built the class site on Wix." },
-  { year: "2023", title: "JP Basketball — co-founded", cat: "leadership", detail: "Built the camp from scratch with 'Coach PradyFlex' — business plan to coaching; $400+ each in one 4-day camp." },
+  { year: "2023", title: "JP Basketball — co-founded", cat: "leadership", detail: "Built the camp from scratch with “Coach PradyFlex” — business plan to coaching; $400+ each in one 4-day camp." },
   { year: "2024", title: "Freshman Basketball Co-Captain", cat: "court", detail: "Kept team responsibility and motivation." },
-  { year: "2024", title: "The milk-fridge crusade", cat: "civic", detail: "Emailed the principal about spoiled milk, followed up until the school bought fridges. 'The reason your milk is good now.'" },
+  { year: "2024", title: "The milk-fridge crusade", cat: "civic", detail: "Emailed the principal about spoiled milk, followed up until the school bought fridges. “The reason your milk is good now.”" },
   { year: "2024", title: "Tutoring business — founded", cat: "built", detail: "Independently created, marketed and taught a high-school-readiness program — 30+ hours in two weeks." },
   { year: "2024", title: "FAA-approved drone pilot", cat: "personal", detail: "First drone (DJI Mini 2 SE) → Avata 2 FPV → Osmo Pocket 3." },
   // ── Sophomore (2024–25) ──
