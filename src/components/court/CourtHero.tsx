@@ -163,8 +163,9 @@ export function CourtHero() {
 
         {/* Championship headline */}
         <div className="relative">
+          <h1 className="sr-only">NCS Champions 2026</h1>
           <KineticHeadline
-            as="h1"
+            as="div"
             text="NCS"
             className="font-anton display-xl block w-full uppercase leading-none tracking-[-0.02em] text-[var(--fg)]"
             delay={0.05}
@@ -176,7 +177,7 @@ export function CourtHero() {
             style={{ fontSize: "clamp(3.8rem, 16vw, 14rem)", lineHeight: 0.88 }}
           >
             <KineticHeadline
-              as="h1"
+              as="div"
               text="CHAMPIONS"
               className="font-anton block leading-none tracking-[-0.02em] text-[var(--accent)]"
               delay={0.12}

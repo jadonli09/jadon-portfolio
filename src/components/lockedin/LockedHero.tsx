@@ -111,8 +111,9 @@ export function LockedHero() {
         </Reveal>
 
         {/* Main headline — word-by-word kinetic */}
+        <h1 className="sr-only">One year, documented. Still locked in.</h1>
         <KineticHeadline
-          as="h1"
+          as="div"
           text="One year,"
           className="font-anton display-xl block uppercase text-[var(--fg)]"
           delay={0.05}
@@ -130,7 +131,7 @@ export function LockedHero() {
           }}
         >
           <KineticHeadline
-            as="h1"
+            as="div"
             text="documented."
             className="font-anton block uppercase leading-none"
             delay={0.2}
@@ -138,7 +139,7 @@ export function LockedHero() {
         </div>
         <div style={{ fontSize: "clamp(2.5rem, 10vw, 9rem)", lineHeight: 0.95 }}>
           <KineticHeadline
-            as="h1"
+            as="div"
             text="still locked in."
             className="font-anton block uppercase leading-none text-[#b48cff] opacity-75"
             delay={0.35}

@@ -14,6 +14,7 @@ export default function ResearchPage() {
       data-world="research"
       className="relative h-[100dvh] overflow-hidden pt-[3.25rem] md:pt-[4.25rem]"
     >
+      <h1 className="sr-only">Research & STEM</h1>
       {/* hidden delights — Konami + factoid toasts */}
       <LabEasterEggs />
       <ResearchIDE />

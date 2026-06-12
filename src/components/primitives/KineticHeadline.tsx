@@ -18,7 +18,7 @@ export function KineticHeadline({
 }: {
   text: string;
   className?: string;
-  as?: "h1" | "h2" | "h3";
+  as?: "h1" | "h2" | "h3" | "div";
   delay?: number;
   once?: boolean;
   /** Balance line lengths so the title doesn't wrap one short word per line. */
