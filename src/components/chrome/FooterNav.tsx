@@ -42,7 +42,8 @@ export function FooterNav() {
   return (
     <nav aria-label="Continue to another chapter" className="mb-14">
       <p className="eyebrow">Where to next</p>
-      <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      {/* on non-chapter pages all 7 doors show — widen the row so none orphans */}
+      <div className={`mt-5 grid grid-cols-2 gap-3 ${doors.length === 7 ? "sm:grid-cols-4 lg:grid-cols-7" : "sm:grid-cols-3 lg:grid-cols-6"}`}>
         {doors.map((door) => (
           <Link
             key={door.id}
