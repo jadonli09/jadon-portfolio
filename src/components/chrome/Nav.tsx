@@ -3,12 +3,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "motion/react";
-import { PROFILE, SENTENCE_DOORS } from "@/lib/data";
-
-const DOORS = Object.values(SENTENCE_DOORS);
-import { EASE } from "@/lib/motion";
+import { AnimatePresence } from "motion/react";
 import { Magnetic } from "@/components/primitives/Magnetic";
+import { ContactSheet } from "@/components/chrome/ContactSheet";
 
 export function Nav() {
   const [open, setOpen] = useState(false);
@@ -59,65 +56,7 @@ export function Nav() {
       </header>
 
       <AnimatePresence>
-        {open && (
-          <motion.nav
-            className="fixed inset-0 z-40 flex flex-col bg-[#07070a] text-[#f4f1ea]"
-            initial={{ clipPath: "inset(0 0 100% 0)" }}
-            animate={{ clipPath: "inset(0 0 0% 0)" }}
-            exit={{ clipPath: "inset(100% 0 0 0)" }}
-            transition={{ duration: 0.7, ease: EASE }}
-          >
-            <div className="grain" />
-            <div className="flex flex-1 flex-col justify-center px-5 pt-24 md:px-9">
-              <div className="mb-4 flex items-center gap-3">
-                <Link href="/" data-cursor-hover className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-[#8a8a99] transition-colors hover:text-[#f4f1ea]">
-                  ↑ One person, from the top
-                </Link>
-              </div>
-              <ul className="flex flex-col">
-                {DOORS.map((c, i) => (
-                  <motion.li
-                    key={c.id}
-                    initial={{ y: 40, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.18 + i * 0.05, duration: 0.7, ease: EASE }}
-                    className="border-b border-white/10"
-                  >
-                    <Link
-                      href={c.href}
-                      className="group flex items-baseline justify-between gap-4 py-2.5 md:py-3.5"
-                      data-cursor-hover
-                    >
-                      <span className="flex items-baseline gap-4 md:gap-7">
-                        <span className="font-mono text-xs" style={{ color: c.accent }}>{c.num}</span>
-                        <span className="font-display text-[1.7rem] leading-none text-[#f4f1ea] transition-transform duration-500 ease-out group-hover:translate-x-3 md:text-[3.4rem]">
-                          {c.kicker}
-                        </span>
-                      </span>
-                      <span className="hidden max-w-[40%] text-right font-mono text-[0.62rem] uppercase tracking-widest text-[#8a8a99] md:block">
-                        {c.peek}
-                      </span>
-                    </Link>
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="flex flex-wrap items-center gap-x-7 gap-y-2 px-5 pb-8 font-mono text-[0.68rem] uppercase tracking-widest text-[#8a8a99] md:px-9"
-            >
-              <Link href="/built" className="hover:text-[#f4f1ea]" data-cursor-hover>Built</Link>
-              <Link href="/achievements" className="hover:text-[#f4f1ea]" data-cursor-hover>Trophy Case</Link>
-              <Link href="/albums" className="hover:text-[#f4f1ea]" data-cursor-hover>Albums</Link>
-              <Link href="/contact" className="hover:text-[#f4f1ea]" data-cursor-hover>Contact</Link>
-              <a href={PROFILE.links.instagram} target="_blank" rel="noreferrer" className="ml-auto hover:text-[#f4f1ea]" data-cursor-hover>
-                {PROFILE.links.instagramHandle}
-              </a>
-            </motion.div>
-          </motion.nav>
-        )}
+        {open && <ContactSheet onClose={() => setOpen(false)} />}
       </AnimatePresence>
     </>
   );
