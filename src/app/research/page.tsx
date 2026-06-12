@@ -3,7 +3,7 @@ import { ResearchIDE } from "@/components/research/lab/ResearchIDE";
 import { LabEasterEggs } from "@/components/research/lab/LabEasterEggs";
 
 export const metadata: Metadata = {
-  title: "Research & STEM — Jadon Li",
+  title: "Research & STEM",
   description:
     "A bioinformatics IDE: explore Jadon Li's RNA-seq research on a mouse gout model, biology-olympiad results, and STEM programs entirely through a command line.",
 };

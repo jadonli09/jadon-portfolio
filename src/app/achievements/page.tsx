@@ -8,7 +8,7 @@ import { TrophyCase } from "@/components/achievements/TrophyCase";
 import { OriginsStrip } from "@/components/achievements/OriginsStrip";
 
 export const metadata: Metadata = {
-  title: "Experiences & Achievements — Jadon Li",
+  title: "Experiences & Achievements",
   description:
     "Every experience and achievement in one place — SAT 1530, six AP fives, NCS Champions, USABO, UK Biology Olympiad, and more.",
 };

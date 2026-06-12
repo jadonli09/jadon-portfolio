@@ -13,7 +13,7 @@ import { FieldPhotoStrip } from "@/components/leadership/FieldPhotoStrip";
 import { LeadershipCTA } from "@/components/leadership/LeadershipCTA";
 
 export const metadata: Metadata = {
-  title: "Leadership & Events — Jadon Li",
+  title: "Leadership & Events",
   description:
     "Three-time Class President, now ASB President — plus MSJ Makes President and STEM-PAC Co-President. 13 fundraisers, $5,520 raised, 500-person protests, a first-ever car meet, and a Winter Ball built from scratch.",
 };

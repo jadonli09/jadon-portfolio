@@ -10,7 +10,7 @@ import { CourtDouyin } from "@/components/court/CourtDouyin";
 import { CourtBanner } from "@/components/court/CourtBanner";
 
 export const metadata: Metadata = {
-  title: "The Court — Jadon Li",
+  title: "The Court",
   description:
     "NCS Champions 2026. First title in school and district history. Jadon Li started in the first five for MSJ Varsity Basketball.",
 };

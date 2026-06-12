@@ -11,7 +11,7 @@ import { DecodeText, MissionRail } from "@/components/built/MissionFX";
 import { PROFILE } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Things I've Built — Jadon Li",
+  title: "Things I've Built",
   description:
     "AcornPrep, CueSheet, Hermes — real products with real users. 500+ users, #1 Google result, shipped by a high-school builder.",
 };

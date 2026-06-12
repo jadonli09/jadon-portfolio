@@ -11,7 +11,7 @@ import { CivicCommission } from "@/components/civic/CivicCommission";
 import { CivicInstagramCTA } from "@/components/civic/CivicInstagramCTA";
 
 export const metadata: Metadata = {
-  title: "Civic & Storytelling — Jadon Li",
+  title: "Civic & Storytelling",
   description:
     "Jadon Li turns a city into a story — civic video, podcasts, and campaigns that move real numbers.",
 };

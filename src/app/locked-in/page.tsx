@@ -7,7 +7,7 @@ import { PursuitTimeline } from "@/components/lockedin/PursuitTimeline";
 import { LockedFollowCTA } from "@/components/lockedin/LockedFollowCTA";
 
 export const metadata: Metadata = {
-  title: "The Pursuit — Jadon Li",
+  title: "The Pursuit",
   description:
     "@li_locked.in, one year documented — 83 reels, 1.39M plays, 368 days. From a summer-grind promise to the Sweet Tomatoes saga to interviewing the Governor: the whole journey, in order.",
 };

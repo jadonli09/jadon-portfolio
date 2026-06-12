@@ -5,7 +5,7 @@ import { AlbumsHero } from "@/components/albums/AlbumsHero";
 import { AlbumGallery } from "@/components/albums/AlbumGallery";
 
 export const metadata: Metadata = {
-  title: "Albums — Jadon Li",
+  title: "Albums",
   description:
     "The photo archive — every original frame from the court, the podium, the lens, the lab, and the climb, in one place.",
 };
