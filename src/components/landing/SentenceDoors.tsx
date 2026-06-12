@@ -82,7 +82,7 @@ export function SentenceDoors() {
           <BoardLabel>Who he is · in one sentence</BoardLabel>
         </div>
 
-        <div className="lg:grid lg:grid-cols-[7fr_4fr] lg:items-center lg:gap-14">
+        <div className="lg:grid lg:grid-cols-[7fr_4.6fr] lg:items-center lg:gap-12 xl:gap-16">
           <div>
         <motion.h2
           initial={reduce ? undefined : "hidden"}
@@ -147,7 +147,7 @@ export function SentenceDoors() {
 function DoorCard({ door }: { door: SentenceDoor | null }) {
   const reduce = useReducedMotion();
   return (
-    <div className="relative flex min-h-[460px] items-center">
+    <div className="relative flex min-h-[560px] items-center xl:min-h-[640px]">
       <AnimatePresence mode="wait" initial={false}>
         {door ? (
           <motion.div
@@ -158,28 +158,28 @@ function DoorCard({ door }: { door: SentenceDoor | null }) {
             transition={{ duration: 0.28, ease: EASE }}
             className="w-full"
           >
-            <Link href={door.href} data-cursor-hover className="group block bg-[#f6f1e4] p-3 pb-5 shadow-[0_22px_50px_rgba(0,0,0,0.7)]">
+            <Link href={door.href} data-cursor-hover className="group block bg-[#f6f1e4] p-4 pb-6 shadow-[0_22px_50px_rgba(0,0,0,0.7)]">
               <span
                 aria-hidden
                 className="absolute -top-1.5 left-1/2 z-10 size-3 -translate-x-1/2 rounded-full shadow-[0_2px_5px_rgba(0,0,0,0.8)]"
                 style={{ background: "radial-gradient(circle at 35% 30%, #f0d48a, #8a6312)" }}
               />
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset(door.photo)} alt="" className="aspect-[16/10] w-full object-cover" />
+              <img src={asset(door.photo)} alt="" className="aspect-[16/10] w-full object-cover xl:aspect-[4/3]" />
               <div className="px-1.5">
-                <p className="mt-4 font-mono text-[0.62rem] font-bold uppercase tracking-[0.22em]" style={{ color: door.accent }}>
+                <p className="mt-5 font-mono text-[0.66rem] font-bold uppercase tracking-[0.22em]" style={{ color: door.accent }}>
                   {door.num} · {door.kicker}
                 </p>
-                <h3 className="font-display mt-2 text-[1.55rem] leading-[1.12] tracking-tight text-[#1d1b16] xl:text-[1.8rem]">
+                <h3 className="font-display mt-2.5 text-[1.8rem] leading-[1.1] tracking-tight text-[#1d1b16] xl:text-[2.05rem]">
                   {door.title}
                 </h3>
-                <p className="font-display mt-3 text-[0.95rem] leading-relaxed text-[#3d3a33]">{door.lede}</p>
-                <p className="mt-3.5 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[#8a8273]">{door.peek}</p>
+                <p className="font-display mt-3.5 text-[1rem] leading-relaxed text-[#3d3a33] xl:text-[1.05rem]">{door.lede}</p>
+                <p className="mt-4 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-[#8a8273]">{door.peek}</p>
                 <span
-                  className="mt-4 flex items-center gap-1.5 font-mono text-[0.64rem] font-bold uppercase tracking-[0.2em] transition-transform duration-300 group-hover:translate-x-1.5"
+                  className="mt-5 flex items-center gap-1.5 font-mono text-[0.7rem] font-bold uppercase tracking-[0.2em] transition-transform duration-300 group-hover:translate-x-1.5"
                   style={{ color: door.accent }}
                 >
-                  {door.cta} <ArrowRight className="size-3.5" />
+                  {door.cta} <ArrowRight className="size-4" />
                 </span>
               </div>
             </Link>
