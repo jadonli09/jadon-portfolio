@@ -103,7 +103,7 @@ function FilmFrame({
 
 export function ContactSheet({ onClose }: { onClose: () => void }) {
   const pathname = usePathname();
-  /** trailingSlash builds report "/court/" while door hrefs are "/court". */
+  /** trailingSlash builds report "/court/" while door hrefs are "/court"; the length guard keeps root "/" intact. */
   const current = pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
   const router = useRouter();
   const stripRef = useRef<HTMLDivElement>(null);
