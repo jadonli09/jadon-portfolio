@@ -103,6 +103,8 @@ function FilmFrame({
 
 export function ContactSheet({ onClose }: { onClose: () => void }) {
   const pathname = usePathname();
+  /** trailingSlash builds report "/court/" while door hrefs are "/court". */
+  const current = pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
   const router = useRouter();
   const stripRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -110,7 +112,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
   /** Hand off to the Develop overlay, then navigate once the cover has settled. */
   const onNavigate = (e: React.MouseEvent, door: Door) => {
     e.preventDefault();
-    if (pathname === door.href) return onClose();
+    if (current === door.href) return onClose();
     try {
       sessionStorage.setItem("develop", JSON.stringify({ photo: door.photo, accent: door.accent, t: Date.now() }));
     } catch {
@@ -184,7 +186,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
       >
         <div className="mx-auto flex w-max items-center gap-5 px-6 pb-7 md:gap-6">
           {FRAMES.map((door, i) => (
-            <FilmFrame key={door.id} door={door} index={i} isCurrent={pathname === door.href} onNavigate={onNavigate} />
+            <FilmFrame key={door.id} door={door} index={i} isCurrent={current === door.href} onNavigate={onNavigate} />
           ))}
         </div>
       </div>
@@ -197,7 +199,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
         className="flex flex-wrap items-center justify-center gap-2.5 px-5 pb-8"
       >
         {UTILITY.map((u) => {
-          const here = pathname === u.href;
+          const here = current === u.href;
           return (
             <Link
               key={u.href}
