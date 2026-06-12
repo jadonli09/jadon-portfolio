@@ -69,7 +69,7 @@ export function Landing() {
 
       {/* COLD OPEN — the Golden Gate lookout. Name slides in BEHIND the subject:
           photo (back) → ghost watermark → giant name → pixel-aligned cutout (front). */}
-      <section className="relative h-[100svh] min-h-[640px] w-full overflow-hidden">
+      <section className="relative h-[100svh] min-h-[440px] w-full overflow-hidden">
         {/* L0 — the scene */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -85,7 +85,7 @@ export function Landing() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 1.4 }}
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-[8%] z-[1] hidden text-center font-anton leading-none tracking-tight text-white/25 md:block md:text-[20vw]"
+          className="pointer-events-none absolute inset-x-0 top-[8%] z-[1] hidden text-center font-anton text-[20vw] leading-none tracking-tight text-white/25 [@media(min-width:768px)_and_(orientation:landscape)_and_(min-height:561px)]:block"
         >
           LI_LOCKED.IN
         </motion.div>
@@ -93,19 +93,19 @@ export function Landing() {
         {/* L1.5 — soft scrim band so the name pops (sits under the name + subject) */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-[9%] z-[1] h-[24%] md:top-auto md:bottom-0 md:h-[38%]"
+          className="pointer-events-none absolute inset-x-0 top-[9%] z-[1] h-[24%] md:landscape:top-auto md:landscape:bottom-0 md:landscape:h-[38%]"
           style={{ background: "linear-gradient(to bottom, transparent, rgba(13,36,49,0.34) 55%, rgba(13,36,49,0.42))" }}
         />
 
         {/* L2 — the giant name, lower third (behind the subject) */}
         <motion.div
           style={{ y: heroY, opacity: heroOpacity }}
-          className="pointer-events-none absolute inset-x-0 top-[13%] z-[2] text-center md:inset-x-auto md:left-[47%] md:right-[2%] md:top-auto md:bottom-[6%] md:text-left"
+          className="pointer-events-none absolute inset-x-0 top-[13%] z-[2] text-center md:landscape:inset-x-auto md:landscape:left-[47%] md:landscape:right-[2%] md:landscape:top-auto md:landscape:bottom-[6%] md:landscape:text-left"
         >
           <h1 className="font-anton leading-[0.85] tracking-tight text-white [text-shadow:0_2px_6px_rgba(13,36,49,0.45),0_10px_44px_rgba(13,36,49,0.55)]">
             <span className="block overflow-hidden whitespace-nowrap pb-[0.05em]">
               <motion.span
-                className="inline-block text-[18vw] md:text-[13.5vw]"
+                className="inline-block text-[min(18vw,16svh)] md:landscape:text-[min(13.5vw,38svh)]"
                 initial={{ y: "112%" }}
                 animate={{ y: 0 }}
                 transition={{ delay: 0.35, duration: 1.1, ease: EASE }}
@@ -133,7 +133,7 @@ export function Landing() {
           transition={{ delay: 0.9, duration: 0.9, ease: EASE }}
           className="absolute bottom-[9%] left-5 z-[4] md:bottom-[8%] md:left-9"
         >
-          <p className="font-mono text-[0.55rem] uppercase tracking-[0.18em] text-white/90 md:text-[0.85rem] md:tracking-[0.28em]">
+          <p className="font-mono text-[clamp(0.45rem,2.35vw,0.55rem)] uppercase tracking-[0.18em] text-white/90 md:text-[0.85rem] md:tracking-[0.28em]">
             <span className="whitespace-nowrap">{PROFILE.school}</span>
             <br />
             <span className="whitespace-nowrap">{PROFILE.city} · {PROFILE.gradeNote}</span>
