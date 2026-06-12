@@ -124,7 +124,7 @@ const SUGGEST: Record<string, string[]> = {
 };
 
 const HINT: Record<string, { text: string; tone?: Tone }> = {
-  volcano: { text: "→ hover the glowing points to inspect genes · `genes` for the DESeq2 table" },
+  volcano: { text: "→ real per-tissue plots up top · `genes` for the pain mediators · `degs` for the counts" },
   awards: { text: "→ open one: `usabo` · `bbo` · `acsef`  (or `cat awards/usabo.json`)" },
   programs: { text: "→ open one: `ysjc` · `prism` · `stem-pac` · `umass`" },
   project: { text: "→ dig in: `results` · `volcano` · `heatmap` · `pathways` · `design` · `poster`" },
@@ -237,12 +237,12 @@ export function ResearchIDE() {
       { text: "deg-console v3.1 · research IDE", tone: "accent", at: 100 },
       { text: "booting kernel ............ ok", tone: "muted", at: 230 },
       { text: "mounting /research ........ ok", tone: "muted", at: 360 },
-      { text: "indexed: 1 project · 7 DEGs · 7 pathways · 4 graphs · 3 awards · 4 programs", tone: "muted", at: 520 },
+      { text: "indexed: 1 poster · GSE190138 · 3 tissues · 9 pain mediators · 3 awards · 4 programs", tone: "muted", at: 520 },
       { text: " ", at: 580 },
       { text: "This page is a terminal. Nothing is shown until you ask for it.", tone: "fg", at: 700 },
       { text: "Try a command — file outputs render like a real IDE.", tone: "fg", at: 700 },
       { text: " ", at: 740 },
-      { text: "→ start with  help  ·  results  ·  heatmap  ·  volcano  ·  or  ls  to browse", tone: "accent", at: 880 },
+      { text: "→ start with  poster  ·  photo  ·  results  ·  volcano  ·  or  help  to see it all", tone: "accent", at: 880 },
     ];
     const timers = boot.map((b) =>
       window.setTimeout(() => setLog((l) => [...l, { id: nextId(), kind: "out", lines: [{ text: b.text, tone: b.tone }] }]), b.at),
@@ -605,8 +605,8 @@ function VolcanoView() {
       <DegCountsView />
       <div>
         <p className="mb-2 text-[0.72rem] text-[var(--muted)]">$ ./volcano.plot --interactive <span className="text-[var(--muted)]/60"># illustrative re-render — hover the points</span></p>
-        <div className="mx-auto max-w-xl"><VolcanoPlot /></div>
-        <div className="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 border-t border-[var(--line)] pt-3">
+        <div className="max-w-xl"><VolcanoPlot /></div>
+        <div className="mt-3 flex flex-wrap items-center justify-start gap-x-5 gap-y-1.5 border-t border-[var(--line)] pt-3">
           <Legend color="#bcff46" label="up-regulated" />
           <Legend color="#4fe6ee" label="down-regulated" />
           <Legend color="#3a4250" label="ns" />
@@ -687,7 +687,7 @@ function ProjectView() {
 function PosterView() {
   return (
     <div className="space-y-2">
-      <ImagePreview {...IMAGES.poster} aspect="4 / 3" />
+      <ImagePreview {...IMAGES.poster} aspect="4 / 3" maxW="max-w-xl" />
       <p className="text-[0.7rem] text-[var(--muted)]"># the full board — zoom in your browser, or open figures: `volcano` · `heatmap` · `design` · `pathways`</p>
     </div>
   );

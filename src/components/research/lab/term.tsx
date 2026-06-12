@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { Photo } from "@/components/primitives/Photo";
 
 /* ── JSON with syntax highlighting (the IDE "cat file.json" look) ───────────── */
@@ -74,6 +74,92 @@ export function AsciiArt({ art, info }: { art: string[]; info: [string, string][
             <span className="shrink-0 text-[var(--accent-2)]" style={{ minWidth: "7ch" }}>{k}</span>
             <span className="text-[var(--fg)]">{v}</span>
           </p>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── expression heatmap (genes × conditions, z-scores) ───────────────────────── */
+
+export function Heatmap({ samples, rows }: { samples: string[]; rows: { gene: string; z: number[] }[] }) {
+  const cell = (v: number) => {
+    const t = Math.min(1, Math.abs(v) / 2);
+    const rgb = v >= 0 ? "188,255,70" : "79,230,238";
+    return `color-mix(in srgb, rgb(${rgb}) ${Math.round(t * 90)}%, rgba(12,18,26,0.55))`;
+  };
+  return (
+    <div className="text-[0.72rem]">
+      <p className="mb-2 text-[var(--muted)]"># expression z-scores · row = gene · col = tissue/condition</p>
+      <div className="term-scroll overflow-x-auto" data-lenis-prevent>
+        <div className="inline-grid gap-1" style={{ gridTemplateColumns: `5rem repeat(${samples.length}, 4.4rem)` }}>
+          <span />
+          {samples.map((s) => (
+            <span key={s} className="px-1 text-center text-[0.55rem] uppercase tracking-wider text-[var(--muted)]">{s}</span>
+          ))}
+          {rows.map((r) => (
+            <Fragment key={r.gene}>
+              <span className="flex items-center font-semibold text-[var(--fg)]">{r.gene}</span>
+              {r.z.map((v, i) => (
+                <span
+                  key={i}
+                  className="flex h-7 items-center justify-center rounded text-[0.58rem] tabular-nums"
+                  style={{ background: cell(v), color: Math.abs(v) > 1 ? "#0b0e13" : "var(--muted)" }}
+                >
+                  {v > 0 ? "+" : ""}{v.toFixed(1)}
+                </span>
+              ))}
+            </Fragment>
+          ))}
+        </div>
+      </div>
+      <div className="mt-2.5 flex items-center gap-2 text-[0.56rem] uppercase tracking-wider text-[var(--muted)]">
+        <span style={{ color: "var(--accent-2)" }}>down</span>
+        <span className="h-2 w-28 rounded" style={{ background: "linear-gradient(90deg, #4fe6ee, rgba(12,18,26,0.55), #bcff46)" }} />
+        <span style={{ color: "var(--accent)" }}>up</span>
+      </div>
+    </div>
+  );
+}
+
+/* ── PCA / scatter plot (SVG) ─────────────────────────────────────────────────── */
+
+export function ScatterPlot({
+  groups,
+  points,
+}: {
+  groups: { id: string; color: string }[];
+  points: { x: number; y: number; g: number }[];
+}) {
+  const W = 320;
+  const H = 220;
+  const P = { l: 28, r: 12, t: 14, b: 26 };
+  const sx = (x: number) => P.l + (x / 100) * (W - P.l - P.r);
+  const sy = (y: number) => H - P.b - (y / 100) * (H - P.t - P.b);
+  return (
+    <div>
+      <p className="mb-2 text-[0.72rem] text-[var(--muted)]">$ ./pca.plot --color-by group --pc 1,2</p>
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full max-w-md" role="img" aria-label="PCA sample-clustering scatter plot">
+        {[25, 50, 75].map((g) => (
+          <Fragment key={g}>
+            <line x1={sx(g)} y1={P.t} x2={sx(g)} y2={H - P.b} stroke="var(--line)" strokeWidth="0.5" strokeDasharray="2,3" />
+            <line x1={P.l} y1={sy(g)} x2={W - P.r} y2={sy(g)} stroke="var(--line)" strokeWidth="0.5" strokeDasharray="2,3" />
+          </Fragment>
+        ))}
+        <line x1={P.l} y1={H - P.b} x2={W - P.r} y2={H - P.b} stroke="var(--line)" />
+        <line x1={P.l} y1={P.t} x2={P.l} y2={H - P.b} stroke="var(--line)" />
+        {points.map((p, i) => (
+          <circle key={i} cx={sx(p.x)} cy={sy(p.y)} r={4.5} fill={groups[p.g].color} opacity={0.9} style={{ filter: `drop-shadow(0 0 4px ${groups[p.g].color})` }} />
+        ))}
+        <text x={(W + P.l) / 2} y={H - 6} fontSize="7" fill="var(--muted)" textAnchor="middle" fontFamily="monospace" letterSpacing="0.1em">PC1 →</text>
+        <text x={9} y={(H - P.b + P.t) / 2} fontSize="7" fill="var(--muted)" textAnchor="middle" fontFamily="monospace" letterSpacing="0.1em" transform={`rotate(-90 9 ${(H - P.b + P.t) / 2})`}>PC2 →</text>
+      </svg>
+      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+        {groups.map((g) => (
+          <span key={g.id} className="flex items-center gap-1.5 text-[0.6rem] text-[var(--muted)]">
+            <span className="size-2 rounded-full" style={{ background: g.color, boxShadow: `0 0 6px ${g.color}` }} />
+            {g.id}
+          </span>
         ))}
       </div>
     </div>
@@ -196,23 +282,29 @@ export function ImagePreview({
   caption,
   dims,
   aspect = "3 / 2",
+  objectPosition = "center",
+  maxW,
 }: {
   src: string;
   alt: string;
   caption: string;
   dims: string;
   aspect?: string;
+  objectPosition?: string;
+  maxW?: string;
 }) {
   const [w, h] = aspect.split(/[/ ]+/).map(Number);
   const portrait = h > w;
+  // keep previews small enough that the whole image fits the terminal pane
+  const cap = maxW ?? (portrait ? "max-w-[240px]" : "max-w-md");
   return (
-    <figure className={`overflow-hidden rounded border border-[var(--line)]${portrait ? " mx-auto max-w-xs" : ""}`}>
+    <figure className={`${cap} overflow-hidden rounded border border-[var(--line)]`}>
       <figcaption className="flex items-center justify-between border-b border-[var(--line)] bg-[var(--bg-2)]/60 px-3 py-1 text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">
         <span className="text-[var(--accent-2)]">🖼 {src.split("/").pop()}</span>
         <span>{dims} · jpeg</span>
       </figcaption>
       <div className="relative w-full bg-[var(--bg)]" style={{ aspectRatio: `${w} / ${h}` }}>
-        <Photo src={src} alt={alt} priority className="object-cover" />
+        <Photo src={src} alt={alt} priority className="object-cover" style={{ objectPosition }} />
       </div>
       <p className="px-3 py-2 text-[0.66rem] leading-snug text-[var(--muted)]">{caption}</p>
     </figure>

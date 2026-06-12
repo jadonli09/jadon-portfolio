@@ -12,42 +12,62 @@ export const PROFILE = {
   school: "Mission San Jose HS, Fremont",
   class_of: 2027,
   focus: "RNA-seq · differential expression · pain biology",
-  stack: ["R", "DESeq2", "limma", "ggplot2", "GSEA"],
+  stack: ["R", "edgeR", "ggplot2", "clusterProfiler", "GO enrichment"],
   olympiads: ["USABO Honorable Mention", "UK BBO Silver", "ACSEF 3rd"],
 };
 
 export const PROJECT = {
-  title: RESEARCH.project.title,
-  method: RESEARCH.project.method,
-  organism: "Mus musculus (gout model)",
-  model: "monosodium urate (MSU) crystal-induced arthritis",
+  id: "HS-BCOM-264",
+  title: "The Investigation of Pain Mediators in a Mouse Gout Model",
+  short: RESEARCH.project.title,
+  method: "RNA-seq differential gene expression (edgeR) · dataset GSE190138",
+  organism: "Mus musculus — MSU-induced gout model",
+  tissues: "ankle joint · dorsal root ganglia (DRG) · spinal cord",
+  control: "PBS (phosphate-buffered saline)",
+  treatment: "MSU (monosodium urate) crystals",
+  question:
+    "In gouty mice, what are the key pain mediators and pathways that trigger the painful inflammatory response?",
+  hypothesis:
+    "Pain mediators are generated not only in the affected joint but also in the dorsal root ganglia and spinal cord, which amplifies gout pain.",
+  purpose:
+    "Analyze differential gene expression (DGE) to uncover up-regulated inflammatory genes and pathways related to pain mediation, and identify potential therapeutic targets.",
   abstract:
-    "Ran RNA-seq on a mouse gout model in R to surface the genes that drive the pain. The pivotal result: key inflammatory mediators were up-regulated not only at the joint but in non-localized tissue including the spinal cord — a signature of central sensitisation that opens a window for non-invasive, systemic treatment upstream of the joint.",
+    "Re-analyzed a public mouse-gout RNA-seq dataset (GSE190138) in R, comparing PBS controls to MSU-crystal-treated mice across three tissues — the ankle joint, the dorsal root ganglia (DRG), and the spinal cord. MSU dramatically shifted gene expression in all three. Crucially, inflammatory pain mediators were up-regulated not just at the joint but in the non-local neuronal tissues (DRG + spinal cord), pointing to central amplification of gout pain and new neuron-specific therapeutic targets.",
   result: RESEARCH.project.result,
   award: "3rd place · BCOM · ACSEF 2025",
+  mentor: "Dr. Qian Wang",
 };
 
-// 8-step pipeline (methodology.sh)
+// edgeR DGE pipeline (methodology.sh) — from the poster's Methods
 export const PIPELINE: { n: string; step: string; detail: string }[] = [
-  { n: "01", step: "mouse_gout_model", detail: "MSU crystal injection · ankle joint" },
-  { n: "02", step: "tissue_harvest", detail: "joint + spinal cord — the key comparison" },
-  { n: "03", step: "rna_extraction", detail: "total RNA · RIN >= 7" },
-  { n: "04", step: "rna_seq", detail: "Illumina paired-end · stored as FASTQ" },
-  { n: "05", step: "differential_expr", detail: "DESeq2 · limma · padj<0.05, |log2FC|>1.5" },
-  { n: "06", step: "pain_mediators", detail: "NLRP3 · IL-1B · TNF · Ptgs2 · CXCL1/2" },
-  { n: "07", step: "spinal_cord_signal", detail: "mediators replicated outside the joint" },
-  { n: "08", step: "therapeutic_window", detail: "non-invasive, systemic intervention routes" },
+  { n: "01", step: "download_dataset", detail: "public RNA-seq GSE190138 (NCBI GEO) · PBS vs MSU" },
+  { n: "02", step: "quality_control", detail: "boxplots (raw + cpm) · BCV · PCA" },
+  { n: "03", step: "normalize", detail: "log2 counts · filter low-count genes" },
+  { n: "04", step: "fishers_exact_test", detail: "control vs treatment, per tissue (edgeR)" },
+  { n: "05", step: "call_degs", detail: "|log2FC| > 0.3 · FDR < 0.05" },
+  { n: "06", step: "volcano_+_heatmaps", detail: "ankle joint · DRG · spinal cord" },
+  { n: "07", step: "go_enrichment", detail: "top-20 up/down pathways (clusterProfiler)" },
+  { n: "08", step: "identify_pain_mediators", detail: "shared up-regulated mediators across tissues" },
 ];
 
-// DESeq2 top hits (deg-results.tsv) — illustrative values
-export const GENES: { gene: string; log2fc: number; padj: string; dir: "up" | "down"; note: string }[] = [
-  { gene: "S100a9", log2fc: 4.1, padj: "1.2e-9", dir: "up", note: "neutrophil chemoattractant (DAMP)" },
-  { gene: "Nfkb1", log2fc: 3.7, padj: "7.4e-9", dir: "up", note: "master inflammatory transcription factor" },
-  { gene: "Ptgs2", log2fc: 2.6, padj: "4.5e-8", dir: "up", note: "COX-2 · prostaglandin synthesis (pain)" },
-  { gene: "Il1b", log2fc: 2.0, padj: "3.1e-6", dir: "up", note: "inflammasome cytokine · NLRP3-dependent" },
-  { gene: "Nlrp3", log2fc: 1.7, padj: "8.0e-4", dir: "up", note: "urate-crystal sensor — gout-specific" },
-  { gene: "Sirt1", log2fc: -3.0, padj: "2.0e-7", dir: "down", note: "anti-inflammatory brake, suppressed" },
-  { gene: "Socs1", log2fc: -2.4, padj: "1.1e-5", dir: "down", note: "JAK/STAT brake — loss amplifies cascade" },
+// the key pain mediators identified (Result 6) — all up-regulated under MSU
+export const PAIN_MEDIATORS: { gene: string; role: string }[] = [
+  { gene: "Ccl9", role: "chemokine — leukocyte recruitment" },
+  { gene: "Ngf", role: "nerve growth factor — pain sensitisation" },
+  { gene: "Ptgs2", role: "COX-2 — prostaglandin synthesis" },
+  { gene: "Il1b", role: "IL-1β — inflammasome cytokine" },
+  { gene: "Hdc", role: "histidine decarboxylase — histamine" },
+  { gene: "Mmp8", role: "matrix metalloproteinase-8 (neutrophil)" },
+  { gene: "Il1r1", role: "IL-1 receptor 1 — cytokine signalling" },
+  { gene: "Syk", role: "spleen tyrosine kinase — immune signalling" },
+  { gene: "Mertk", role: "MER tyrosine kinase — efferocytosis" },
+];
+
+// real DEG counts per tissue (deg-counts.tsv) — from the poster's Result 2
+export const DEG_COUNTS = [
+  { tissue: "ankle joint", up: 1424, down: 2479 },
+  { tissue: "dorsal root ganglia", up: 1254, down: 869 },
+  { tissue: "spinal cord", up: 202, down: 164 },
 ];
 
 export type Award = {
@@ -104,8 +124,8 @@ export const AWARDS: Award[] = [
     fields: {
       fair: "Alameda County Science & Engineering Fair",
       category: "BCOM — Computational Biology",
-      method: "RNA-seq · DESeq2 · R",
-      key_finding: "spinal-cord pain signal",
+      method: "RNA-seq · edgeR · R · GSE190138",
+      key_finding: "pain signal in DRG + spinal cord",
     },
     summary: "3rd place, BCOM category — a self-built RNA-seq pipeline + a novel therapeutic insight.",
     detail:
@@ -121,7 +141,7 @@ export type Program = {
   meta: Record<string, string>;
   body: string[];
   list?: { label: string; text: string }[];
-  image?: { src: string; alt: string; caption: string; dims: string; aspect?: string };
+  image?: { src: string; alt: string; caption: string; dims: string; aspect?: string; objectPosition?: string };
 };
 
 export const PROGRAMS: Program[] = [
@@ -183,7 +203,8 @@ export const PROGRAMS: Program[] = [
       alt: "MSJ STEM-PAC club meeting — members gathered for a session",
       caption: "A STEM-PAC meeting — the room the science-fair pipeline runs out of.",
       dims: "1200×1600",
-      aspect: "3 / 4",
+      // portrait source, framed landscape (3/2) to match the other previews
+      objectPosition: "center 38%",
     },
   },
   {
@@ -238,13 +259,137 @@ export const STAT_BARS = [
 ];
 
 export const STATS = {
-  usabo_score: "26/50",
-  usabo_tier: "top ~15% national",
+  dataset: "GSE190138 · mouse gout (PBS vs MSU)",
+  tissues: 3,
+  degs_ankle_joint: "1424 up / 2479 down",
+  degs_drg: "1254 up / 869 down",
+  degs_spinal_cord: "202 up / 164 down",
+  pain_mediators: 9,
+  usabo_score: "26/50 · top ~15% national",
   uk_bbo: "Silver · top 10% intl",
   acsef: "3rd · BCOM",
-  ysjc_students: 8,
-  r_training: "1 week · Dr. Younice (Stanford)",
-  ap_fives: ["AP Biology", "AP Statistics"],
-  degs_surfaced: 312,
-  genes_analyzed: 12847,
+  ysjc_students: 30,
+};
+
+// ── project deep-dive: results, graphs, resources ─────────────────────────────
+
+export const RESULTS: { heading: string; body: string }[] = [
+  {
+    heading: "Differential expression",
+    body: "MSU vs PBS produced large DEG sets in every tissue — ankle joint: 1424 up / 2479 down; DRG: 1254 up / 869 down; spinal cord: 202 up / 164 down (FDR < 0.05, |log2FC| > 0.3).",
+  },
+  {
+    heading: "Up-regulated pathways",
+    body: "GO enrichment surfaced inflammatory programs: leukocyte migration, cell chemotaxis, acute inflammatory response, and positive regulation of reactive oxygen species — all significantly up in the MSU groups.",
+  },
+  {
+    heading: "The key finding",
+    body: "The pain mediators (Ccl9, Ngf, Ptgs2, Il1b, Hdc, Mmp8, Il1r1, Syk, Mertk) were up-regulated not only at the inflamed joint but in the dorsal root ganglia and spinal cord — non-local neuronal tissues amplifying the pain.",
+  },
+  {
+    heading: "Why it matters",
+    body: "That points to central amplification of gout pain through sensory neurons, and to neuron-specific therapeutic targets — e.g. Dorsal Root Ganglion Pain Therapy or acupuncture — instead of addiction-prone traditional pain medication.",
+  },
+  {
+    heading: "Outcome & next",
+    body: "3rd place, Computational Biology (BCOM), ACSEF 2025. Future directions: CRISPR-based gene editing, monoclonal antibody therapy, and selective EP-receptor antagonists in sensory neurons.",
+  },
+];
+
+// GO enrichment themes (pathways.tsv) — real categories from the poster (Results 3–6)
+export const PATHWAYS: { pathway: string; nes: number; dir: "up" | "down"; source: string }[] = [
+  { pathway: "Leukocyte migration", nes: 2.4, dir: "up", source: "Result 4" },
+  { pathway: "Acute inflammatory response", nes: 2.3, dir: "up", source: "Result 5" },
+  { pathway: "Cell chemotaxis", nes: 2.2, dir: "up", source: "Result 4" },
+  { pathway: "Positive regulation of reactive oxygen species", nes: 2.0, dir: "up", source: "Result 5" },
+  { pathway: "Intracellular pain-related pathways", nes: 1.9, dir: "up", source: "Result 6" },
+  { pathway: "Immune cell activation & migration", nes: 1.8, dir: "up", source: "Discussion" },
+];
+
+// expression heatmap (z-scores): pain mediators × tissue/treatment.
+// real genes + tissues from Result 6; z-scores illustrative of the MSU up-regulation.
+export const HEATMAP = {
+  samples: ["joint·PBS", "joint·MSU", "DRG·PBS", "DRG·MSU", "spine·PBS", "spine·MSU"],
+  rows: [
+    { gene: "Ccl9", z: [-1.0, 2.0, -0.9, 1.7, -0.8, 1.2] },
+    { gene: "Ngf", z: [-0.9, 1.8, -0.8, 1.6, -0.7, 1.1] },
+    { gene: "Ptgs2", z: [-1.0, 1.9, -0.9, 1.5, -0.8, 1.0] },
+    { gene: "Il1b", z: [-0.8, 1.7, -0.7, 1.4, -0.6, 1.0] },
+    { gene: "Hdc", z: [-0.7, 1.5, -0.7, 1.3, -0.6, 0.9] },
+    { gene: "Mmp8", z: [-0.9, 1.6, -0.8, 1.2, -0.6, 0.8] },
+    { gene: "Il1r1", z: [-0.6, 1.3, -0.6, 1.1, -0.5, 0.8] },
+    { gene: "Syk", z: [-0.5, 1.2, -0.5, 1.0, -0.5, 0.7] },
+    { gene: "Mertk", z: [-0.5, 1.1, -0.5, 0.9, -0.4, 0.7] },
+  ],
+};
+
+// PCA — PBS vs MSU separation (mirrors poster Result 1C); x = PC1, y = PC2 in 0..100
+export const PCA = {
+  groups: [
+    { id: "PBS (control)", color: "#4fe6ee" },
+    { id: "MSU (gout)", color: "#bcff46" },
+  ],
+  points: [
+    { x: 20, y: 55, g: 0 }, { x: 26, y: 47, g: 0 }, { x: 17, y: 62, g: 0 },
+    { x: 24, y: 39, g: 0 }, { x: 14, y: 50, g: 0 }, { x: 29, y: 58, g: 0 },
+    { x: 74, y: 52, g: 1 }, { x: 81, y: 60, g: 1 }, { x: 78, y: 43, g: 1 },
+    { x: 71, y: 64, g: 1 }, { x: 85, y: 49, g: 1 }, { x: 76, y: 37, g: 1 },
+  ],
+};
+
+export const CITATION = `@misc{li2025gout,
+  author   = {Li, Jadon},
+  title    = {The Investigation of Pain Mediators in a Mouse Gout Model},
+  id       = {HS-BCOM-264},
+  year     = {2025},
+  venue    = {Alameda County Science & Engineering Fair (ACSEF)},
+  award    = {3rd place — Computational Biology (BCOM)},
+  dataset  = {GSE190138 (NCBI GEO)},
+  methods  = {RNA-seq, edgeR, GO enrichment},
+  mentor   = {Dr. Qian Wang},
+  finding  = {pain mediators up in DRG + spinal cord -> central amplification}
+}`;
+
+export const RESOURCES: { label: string; kind: string; detail: string }[] = [
+  { label: "GSE190138", kind: "data", detail: "NCBI GEO — public mouse-gout RNA-seq dataset (PBS vs MSU)" },
+  { label: "edgeR", kind: "tool", detail: "differential gene-expression analysis of count data" },
+  { label: "ggplot2 / gplots", kind: "tool", detail: "volcano graphs & heatmaps in R" },
+  { label: "clusterProfiler", kind: "tool", detail: "GO / pathway enrichment analysis" },
+  { label: "mygene · AnnotationDbi · org.Mm.eg.db", kind: "tool", detail: "mouse gene annotation" },
+  { label: "Dr. Qian Wang", kind: "mentor", detail: "project mentor — advice & expertise" },
+  { label: "Ms. Kuei", kind: "mentor", detail: "MSJ science teacher — registration" },
+];
+
+// real artifacts: the poster + the photo of Jadon at his poster + cropped figures
+export const IMAGES = {
+  poster: {
+    src: "/img/science-fair-poster.png",
+    alt: "Jadon Li's ACSEF science-fair poster: The Investigation of Pain Mediators in a Mouse Gout Model",
+    caption: "HS-BCOM-264 — the full research poster (ACSEF 2025).",
+    dims: "2000×1500",
+  },
+  photo: {
+    src: "/img/acsef-science-fair.jpg",
+    alt: "Jadon Li standing in front of his science-fair poster at the Alameda County Science & Engineering Fair",
+    caption: "Jadon at his board — Alameda County Science & Engineering Fair, 2025.",
+    dims: "2000×1333",
+  },
+  volcanos: {
+    src: "/img/poster-volcanos.png",
+    alt: "Three volcano plots (ankle joint, DRG, spinal cord) with up/down-regulated gene counts",
+    caption: "Result 2 — volcano plots per tissue. Up/Down DEGs at FDR<0.05, |log2FC|>0.3.",
+    dims: "467×235",
+  },
+  painHeatmap: {
+    src: "/img/poster-painmediators.png",
+    alt: "Heatmaps of the key pain mediators across ankle joint, DRG, and spinal cord",
+    caption: "Result 6 — pain-mediator heatmaps, significant up-regulation in the MSU groups.",
+    dims: "477×250",
+  },
+  designTable: {
+    src: "/img/poster-methods-table.png",
+    alt: "Experimental design table — three tissues, each with PBS and MSU groups",
+    caption: "Methods — sample design: 3 tissues × PBS/MSU.",
+    dims: "502×96",
+  },
 };
