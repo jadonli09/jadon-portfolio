@@ -99,7 +99,7 @@ export default function BuiltPage() {
       </section>
 
       {/* ── 7. FOOTER ─────────────────────────────────────────── */}
-      <Footer current="built" />
+      <Footer />
     </World>
   );
 }

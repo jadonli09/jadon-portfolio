@@ -43,8 +43,8 @@ export default function LockedInPage() {
       {/* 4. Follow CTA section */}
       <LockedFollowCTA />
 
-      {/* 5. Footer with next-world handoff */}
-      <Footer current="lockedin" />
+      {/* 5. Footer */}
+      <Footer />
     </World>
   );
 }

@@ -75,8 +75,8 @@ export default function LeadershipPage() {
       {/* 10. Magnetic CTA — reach out */}
       <LeadershipCTA />
 
-      {/* 11. Footer with next-world handoff */}
-      <Footer current="leadership" />
+      {/* 11. Footer */}
+      <Footer />
     </World>
   );
 }

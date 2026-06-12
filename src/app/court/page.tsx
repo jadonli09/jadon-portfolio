@@ -49,8 +49,8 @@ export default function CourtPage() {
       {/* 6. Second ticker before footer (reversed) */}
       <CourtTicker />
 
-      {/* 7. Footer with next-world handoff */}
-      <Footer current="court" />
+      {/* 7. Footer */}
+      <Footer />
     </World>
   );
 }

@@ -64,7 +64,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <Footer current="about" />
+      <Footer />
     </World>
   );
 }

@@ -48,8 +48,8 @@ export default function CivicPage() {
       {/* 8. Instagram CTA — magnetic interaction */}
       <CivicInstagramCTA />
 
-      {/* 9. Footer with next-world handoff */}
-      <Footer current="civic" />
+      {/* 9. Footer */}
+      <Footer />
     </World>
   );
 }

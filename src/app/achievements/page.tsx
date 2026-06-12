@@ -37,8 +37,8 @@ export default function AchievementsPage() {
       {/* 5. Origins footnote — where it started */}
       <OriginsStrip />
 
-      {/* 6. Footer with next-world handoff */}
-      <Footer current="achievements" />
+      {/* 6. Footer */}
+      <Footer />
     </World>
   );
 }
