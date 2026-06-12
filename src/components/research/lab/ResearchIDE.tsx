@@ -470,12 +470,12 @@ export function ResearchIDE() {
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="mb-4 border-b border-[var(--line)] pb-4"
             >
-              <p className="font-mono text-[0.6rem] uppercase tracking-[0.35em] text-[var(--muted)]">03 — The Scientist</p>
-              <p className="font-display mt-1.5 text-4xl leading-none text-[var(--fg)] md:text-6xl">
-                RESEARCH<span className="text-[var(--accent)]">.</span>
+              <p className="font-mono text-[0.62rem] uppercase tracking-[0.35em] text-[var(--muted)]">03 — The Scientist</p>
+              <p className="font-display mt-2 text-5xl leading-[0.95] text-[var(--fg)] md:text-7xl">
+                PAIN, DECODED<span className="text-[var(--accent)]">.</span>
               </p>
-              <p className="mt-2.5 font-mono text-[0.68rem] uppercase tracking-[0.2em] text-[var(--muted)]">
-                Gout pain in the genome — RNA-seq · DEG console
+              <p className="mt-3 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[var(--muted)]">
+                Gout in the genome — RNA-seq · DEG console
               </p>
             </motion.div>
             {log.map((e) => (

@@ -237,7 +237,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className="flex flex-wrap items-center justify-center gap-3 px-5 pb-9"
+        className="flex flex-wrap items-center justify-center gap-4 px-5 pb-10"
       >
         {UTILITY.map((u) => {
           const here = pathname === u.href || current === u.href;
@@ -248,8 +248,8 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
               data-cursor-hover
               onClick={here ? (e) => { e.preventDefault(); onClose(); } : undefined}
               aria-current={here ? "page" : undefined}
-              className={`border px-5 py-3 font-mono text-[0.7rem] uppercase tracking-[0.22em] transition-colors [background:linear-gradient(#1c1c24,#1c1c24)_padding-box,repeating-linear-gradient(90deg,#070709_0_6px,#3a3a45_6px_8px)_border-box] ${
-                here ? "border-[#c43e2c] text-[#f4f1ea]" : "border-transparent text-[#cfccc2] hover:border-[#d9a83f] hover:text-[#f4f1ea]"
+              className={`border px-7 py-4 font-mono text-[0.82rem] uppercase tracking-[0.24em] transition-colors [background:linear-gradient(#1c1c24,#1c1c24)_padding-box,repeating-linear-gradient(90deg,#070709_0_6px,#3a3a45_6px_8px)_border-box] ${
+                here ? "border-[#c43e2c] text-[#f4f1ea]" : "border-transparent text-[#e2dfd6] hover:border-[#d9a83f] hover:text-[#f4f1ea]"
               }`}
             >
               {u.label}
@@ -261,7 +261,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
           target="_blank"
           rel="noreferrer"
           data-cursor-hover
-          className="px-3 py-3 font-mono text-[0.7rem] uppercase tracking-[0.22em] text-[#cfccc2] transition-colors hover:text-[#f4f1ea]"
+          className="px-4 py-4 font-mono text-[0.82rem] uppercase tracking-[0.24em] text-[#e2dfd6] transition-colors hover:text-[#f4f1ea]"
         >
           {PROFILE.links.instagramHandle}
         </a>
