@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { SENTENCE_DOORS, SENTENCE_TICKER, type SentenceDoor } from "@/lib/data";
 import { asset } from "@/lib/base";
@@ -82,6 +82,8 @@ export function SentenceDoors() {
           <BoardLabel>Who he is · in one sentence</BoardLabel>
         </div>
 
+        <div className="lg:grid lg:grid-cols-[7fr_4fr] lg:items-center lg:gap-14">
+          <div>
         <motion.h2
           initial={reduce ? undefined : "hidden"}
           whileInView={reduce ? undefined : "show"}
@@ -91,7 +93,7 @@ export function SentenceDoors() {
             if (!revealTimer.current) revealTimer.current = setTimeout(() => setRevealed(true), 2400);
           }}
           onAnimationComplete={() => setRevealed(true)}
-          className="font-display max-w-5xl text-[2.6rem] leading-[1.52] tracking-tight md:text-[4.1rem] md:leading-[1.46]"
+          className="font-display max-w-5xl text-[2.6rem] leading-[1.52] tracking-tight md:text-[4.1rem] md:leading-[1.46] lg:max-w-none lg:text-[3.3rem] lg:leading-[1.5] xl:text-[3.7rem] xl:leading-[1.48]"
         >
           {TOKENS.map((t, i) => (
             <span
@@ -115,22 +117,12 @@ export function SentenceDoors() {
           ))}
         </motion.h2>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: reduce ? 0 : 1.5, duration: 0.8 }}
-          className="font-hand mt-9 -rotate-1 text-xl text-[#e8b15a] md:text-2xl"
-        >
-          every pinned word is a door — pull one ↗
-        </motion.p>
-
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: reduce ? 0 : 1.8, duration: 0.8 }}
-          className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-[#8a8a99]"
+          transition={{ delay: reduce ? 0 : 1.6, duration: 0.8 }}
+          className="mt-9 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-[#8a8a99]"
         >
           {SENTENCE_TICKER.map((s, i) => (
             <span key={s} className="flex items-center gap-4">
@@ -139,14 +131,101 @@ export function SentenceDoors() {
             </span>
           ))}
         </motion.div>
+          </div>
+
+          {/* the case card — hover a word, read what it means */}
+          <div className="hidden lg:block">
+            <DoorCard door={DOORS.find((d) => d.id === activeWorld) ?? null} />
+          </div>
+        </div>
       </div>
     </section>
+  );
+}
+
+/** Right-column dossier: explains the hovered verb, and is itself the door. */
+function DoorCard({ door }: { door: SentenceDoor | null }) {
+  const reduce = useReducedMotion();
+  return (
+    <div className="relative flex min-h-[460px] items-center">
+      <AnimatePresence mode="wait" initial={false}>
+        {door ? (
+          <motion.div
+            key={door.id}
+            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18, rotate: 3 }}
+            animate={{ opacity: 1, y: 0, rotate: 1.2 }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -12, rotate: 0, transition: { duration: 0.16 } }}
+            transition={{ duration: 0.28, ease: EASE }}
+            className="w-full"
+          >
+            <Link href={door.href} data-cursor-hover className="group block bg-[#f6f1e4] p-3 pb-5 shadow-[0_22px_50px_rgba(0,0,0,0.7)]">
+              <span
+                aria-hidden
+                className="absolute -top-1.5 left-1/2 z-10 size-3 -translate-x-1/2 rounded-full shadow-[0_2px_5px_rgba(0,0,0,0.8)]"
+                style={{ background: "radial-gradient(circle at 35% 30%, #f0d48a, #8a6312)" }}
+              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={asset(door.photo)} alt="" className="aspect-[16/10] w-full object-cover" />
+              <div className="px-1.5">
+                <p className="mt-3.5 font-mono text-[0.62rem] font-bold uppercase tracking-[0.22em]" style={{ color: door.accent }}>
+                  {door.num} · {door.kicker}
+                </p>
+                <p className="font-display mt-2 text-[1.05rem] leading-snug text-[#26231d]">{door.desc}</p>
+                <p className="mt-2.5 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[#8a8273]">{door.peek}</p>
+                <span
+                  className="mt-4 flex items-center gap-1.5 font-mono text-[0.64rem] font-bold uppercase tracking-[0.2em] transition-transform duration-300 group-hover:translate-x-1.5"
+                  style={{ color: door.accent }}
+                >
+                  Step inside <ArrowRight className="size-3.5" />
+                </span>
+              </div>
+            </Link>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="empty"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.14 } }}
+            transition={{ duration: 0.3 }}
+            className="w-full border-2 border-dashed border-white/15 px-8 py-14 text-center"
+          >
+            <p className="font-mono text-[0.62rem] uppercase tracking-[0.25em] text-[#8a8a99]">The seven doors</p>
+            <p className="font-display mt-4 text-xl leading-relaxed text-[#cfcfd8]">
+              Hover any pinned word —<br />
+              this card shows the world behind it.
+            </p>
+            <div className="mt-6 flex items-center justify-center gap-2.5">
+              {DOORS.map((d) => (
+                <span key={d.id} aria-hidden className="size-2 rounded-full" style={{ background: d.color }} />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 
 function Door({ door, rot }: { door: SentenceDoor; rot: number }) {
   const { activeWorld, setActiveWorld } = useBoard();
   const open = activeWorld === door.id;
+  // keep the peek card inside the viewport for words near the screen edges
+  const peekRef = useRef<HTMLSpanElement>(null);
+  const [shift, setShift] = useState(0);
+  useEffect(() => {
+    if (!open) return;
+    const id = requestAnimationFrame(() => {
+      const el = peekRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      if (r.width === 0) return;
+      const pad = 10;
+      if (r.left < pad) setShift((s) => s + (pad - r.left));
+      else if (r.right > window.innerWidth - pad) setShift((s) => s + (window.innerWidth - pad - r.right));
+    });
+    return () => cancelAnimationFrame(id);
+  }, [open]);
   return (
     <Link
       href={door.href}
@@ -192,9 +271,10 @@ function Door({ door, rot }: { door: SentenceDoor; rot: number }) {
 
       {/* stat peek — a small pinned card under the word */}
       <span
+        ref={peekRef}
         aria-hidden={!open}
-        className="pointer-events-none absolute left-1/2 top-[118%] z-20 block w-60 -translate-x-1/2 rounded-[2px] border border-white/20 bg-[#0e0e14]/95 p-2.5 font-mono text-[0.6rem] not-italic normal-case tracking-wide text-[#f4f1ea] shadow-2xl transition-all duration-300"
-        style={{ opacity: open ? 1 : 0, transform: `translateX(-50%) translateY(${open ? 0 : 6}px)` }}
+        className="pointer-events-none absolute left-1/2 top-[118%] z-20 block w-60 -translate-x-1/2 rounded-[2px] border border-white/20 bg-[#0e0e14]/95 p-2.5 font-mono text-[0.6rem] not-italic normal-case tracking-wide text-[#f4f1ea] shadow-2xl transition-all duration-300 lg:hidden"
+        style={{ opacity: open ? 1 : 0, transform: `translateX(calc(-50% + ${shift}px)) translateY(${open ? 0 : 6}px)` }}
       >
         <span
           className="absolute -top-1 left-1/2 size-2 -translate-x-1/2 rounded-full shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
@@ -202,7 +282,8 @@ function Door({ door, rot }: { door: SentenceDoor; rot: number }) {
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={asset(door.photo)} alt="" className="mb-2 h-20 w-full rounded-sm object-cover" />
-        {door.peek}
+        <span className="font-display block text-[0.74rem] leading-snug">{door.desc}</span>
+        <span className="mt-1.5 block text-[0.55rem] text-[#9a9aa8]">{door.peek}</span>
         <span className="mt-1.5 flex items-center gap-1.5 font-bold" style={{ color: door.color }}>
           enter <ArrowRight className="size-3" />
         </span>
