@@ -137,7 +137,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
     if (navigating.current) return;
     navigating.current = true;
     window.dispatchEvent(new CustomEvent("develop:start", { detail: { world: door.id } }));
-    window.setTimeout(() => router.push(door.href), 520);
+    window.setTimeout(() => router.push(door.href), 650);
   };
 
   /** Esc closes; Tab is trapped inside the dialog; ←/→ move focus along the roll. */
