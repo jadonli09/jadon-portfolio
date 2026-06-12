@@ -168,10 +168,10 @@ function DoorCard({ door }: { door: SentenceDoor | null }) {
                 <p className="mt-5 font-mono text-[0.66rem] font-bold uppercase tracking-[0.22em]" style={{ color: door.accent }}>
                   {door.num} · {door.kicker}
                 </p>
-                <h3 className="font-display mt-2.5 text-[1.8rem] leading-[1.1] tracking-tight text-[#1d1b16] xl:text-[2.05rem]">
+                <h3 className="font-display mt-2.5 text-balance text-[1.8rem] leading-[1.1] tracking-tight text-[#1d1b16] xl:text-[2.05rem]">
                   {door.title}
                 </h3>
-                <p className="font-display mt-3.5 text-[1rem] leading-relaxed text-[#3d3a33] xl:text-[1.05rem]">{door.lede}</p>
+                <p className="font-display mt-3.5 text-pretty text-[1rem] leading-relaxed text-[#3d3a33] xl:text-[1.05rem]">{door.lede}</p>
                 <p className="mt-4 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-[#8a8273]">{door.peek}</p>
                 <span
                   className="mt-5 flex items-center gap-1.5 font-mono text-[0.7rem] font-bold uppercase tracking-[0.2em] transition-transform duration-300 group-hover:translate-x-1.5"
@@ -283,8 +283,8 @@ function Door({ door, rot }: { door: SentenceDoor; rot: number }) {
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={asset(door.photo)} alt="" className="mb-2 h-20 w-full rounded-sm object-cover" />
-        <span className="font-display block text-[0.95rem] font-bold leading-tight">{door.title}</span>
-        <span className="font-display mt-1 block text-[0.74rem] leading-snug">{door.desc}</span>
+        <span className="font-display block text-balance text-[0.95rem] font-bold leading-tight">{door.title}</span>
+        <span className="font-display mt-1 block text-pretty text-[0.74rem] leading-snug">{door.desc}</span>
         <span className="mt-1.5 block text-[0.55rem] text-[#9a9aa8]">{door.peek}</span>
         <span className="mt-1.5 flex items-center gap-1.5 font-bold" style={{ color: door.color }}>
           enter <ArrowRight className="size-3" />
