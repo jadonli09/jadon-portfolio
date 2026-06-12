@@ -108,11 +108,15 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
   const router = useRouter();
   const stripRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
+  /** A click already queued navigation — ignore further frame clicks. */
+  const navigating = useRef(false);
 
   /** Hand off to the Develop overlay, then navigate once the cover has settled. */
   const onNavigate = (e: React.MouseEvent, door: Door) => {
     e.preventDefault();
     if (current === door.href) return onClose();
+    if (navigating.current) return;
+    navigating.current = true;
     try {
       sessionStorage.setItem("develop", JSON.stringify({ photo: door.photo, accent: door.accent, t: Date.now() }));
     } catch {

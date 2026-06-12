@@ -30,6 +30,7 @@ export function Develop() {
   const stageRef = useRef(stage);
   stageRef.current = stage;
   const lastPath = useRef(pathname);
+  const bathTimer = useRef<number | null>(null);
 
   // Failsafe: any non-idle stage self-clears.
   useEffect(() => {
@@ -37,6 +38,14 @@ export function Develop() {
     const t = window.setTimeout(() => setStage({ kind: "idle" }), FAILSAFE_MS);
     return () => window.clearTimeout(t);
   }, [stage]);
+
+  // The bath-hold timer must not outlive the component.
+  useEffect(
+    () => () => {
+      if (bathTimer.current !== null) window.clearTimeout(bathTimer.current);
+    },
+    [],
+  );
 
   // Click side: cover the screen before navigation starts.
   useEffect(() => {
@@ -113,7 +122,9 @@ export function Develop() {
                 : { duration: 0.5, ease: EASE }
             }
             onAnimationComplete={() => {
-              if (stageRef.current.kind === "bath") window.setTimeout(() => setStage({ kind: "idle" }), 220);
+              if (stageRef.current.kind === "bath") {
+                bathTimer.current = window.setTimeout(() => setStage({ kind: "idle" }), 220);
+              }
             }}
           />
           {/* safelight wash — present on cover, lifts during the bath */}
