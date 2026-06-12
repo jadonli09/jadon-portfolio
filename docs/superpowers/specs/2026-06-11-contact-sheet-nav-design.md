@@ -33,7 +33,7 @@ New component `src/components/chrome/ContactSheet.tsx`, rendered by `Nav.tsx` in
 
 - **Desktop**: all 7 frames fit in the viewport; wheel/drag gives a gentle scrub/parallax nudge. Keyboard: ←/→ move a focus loupe, Enter navigates, Esc closes. Frames are real `next/link` anchors (focus-visible styles included).
 - **Mobile**: horizontal swipe strip with scroll-snap per frame; utility strip wraps below. **The inner scroller carries `data-lenis-prevent`** (Lenis swallows native wheel/touch otherwise — known site gotcha).
-- **Z-order**: overlay at `z-[60]` — above the nav header (z-50), **below the custom Cursor layer (z-[70])**; anything above z-70 makes the hidden-native-cursor site appear cursorless (known constraint).
+- **Z-order**: the sheet sits at `z-[45]` — above `DeepDiveBar` (z-40, later in DOM so equal z loses) but **under the z-50 nav header so the Close trigger stays clickable**. Only the `Develop` transition overlay uses `z-[60]` (above the header, **below the custom Cursor layer at z-[70]**; anything above z-70 makes the hidden-native-cursor site appear cursorless — known constraint).
 - All image paths go through the `BASE`/asset helper (GitHub Pages base path).
 
 ## The develop transition
