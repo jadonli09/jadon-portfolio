@@ -7,11 +7,14 @@ import { motion } from "motion/react";
 import { PROFILE, SENTENCE_DOORS } from "@/lib/data";
 import { asset } from "@/lib/base";
 import { EASE } from "@/lib/motion";
+import { startWorldTransition, WORLD_NAV_DELAY_MS } from "@/lib/transition";
 
 type Door = (typeof SENTENCE_DOORS)[keyof typeof SENTENCE_DOORS];
 
 /** Insertion order is num order: 01 leads … 07 person. */
 const FRAMES: Door[] = Object.values(SENTENCE_DOORS);
+/** Two cut strips on the light table: four frames up top, three below. */
+const STRIPS: Door[][] = [FRAMES.slice(0, 4), FRAMES.slice(4)];
 
 /**
  * Native aspect ratio of each door photo, as a static Tailwind class setting `--ar`
@@ -84,7 +87,7 @@ function FilmFrame({
             loading="lazy"
             className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-0 group-focus-visible:opacity-0"
           />
-          {/* the page preview — frame widens to its 16:10 aspect on hover, then zooms into the page on click */}
+          {/* the page preview — frame widens to its 16:10 aspect on hover */}
           <img
             src={asset(previewOf(door.id))}
             alt=""
@@ -98,7 +101,7 @@ function FilmFrame({
           />
         </div>
         {/* rebate — film edge markings under the frame */}
-        <div className="relative h-5 font-mono text-[0.52rem] uppercase tracking-[0.18em]">
+        <div className="relative h-6 font-mono text-[0.58rem] uppercase tracking-[0.18em]">
           <span className="absolute inset-x-0.5 inset-y-0 flex items-center gap-1.5 overflow-hidden text-[#d9a83f] transition-opacity duration-300 group-hover:opacity-0 group-focus-visible:opacity-0">
             <span className="truncate">FR {door.num} · {door.word}</span>
             {isCurrent && <span className="shrink-0 text-[#c43e2c]">● here</span>}
@@ -118,16 +121,16 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
   /** trailingSlash builds report "/court/" while door hrefs are "/court"; the length guard keeps root "/" intact. */
   const current = pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
   const router = useRouter();
-  const stripRef = useRef<HTMLDivElement>(null);
+  const rollRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   /** A click already queued navigation — ignore further frame clicks. */
   const navigating = useRef(false);
 
-  // On small screens the roll scrolls — bring the current page's frame into view.
+  // On small screens the strips scroll — bring the current page's frame into view.
   useEffect(() => {
-    const strip = stripRef.current;
-    if (!strip || strip.scrollWidth <= strip.clientWidth) return;
-    strip.querySelector('a[aria-current="page"]')?.scrollIntoView({ inline: "center", block: "nearest" });
+    const link = rollRef.current?.querySelector('a[aria-current="page"]');
+    const strip = link?.closest("[data-strip]");
+    if (strip && strip.scrollWidth > strip.clientWidth) link?.scrollIntoView({ inline: "center", block: "nearest" });
   }, []);
 
   /** Kick off the destination world's transition, then navigate once the screen is covered. */
@@ -136,8 +139,8 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
     if (current === door.href) return onClose();
     if (navigating.current) return;
     navigating.current = true;
-    window.dispatchEvent(new CustomEvent("develop:start", { detail: { world: door.id } }));
-    window.setTimeout(() => router.push(door.href), 650);
+    startWorldTransition(door.id);
+    window.setTimeout(() => router.push(door.href), WORLD_NAV_DELAY_MS);
   };
 
   /** Esc closes; Tab is trapped inside the dialog; ←/→ move focus along the roll. */
@@ -164,7 +167,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
     }
     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
     e.preventDefault();
-    const links = Array.from(stripRef.current?.querySelectorAll<HTMLAnchorElement>("a") ?? []);
+    const links = Array.from(rollRef.current?.querySelectorAll<HTMLAnchorElement>("a") ?? []);
     if (!links.length) return;
     const i = links.indexOf(document.activeElement as HTMLAnchorElement);
     const next = links[(i + (e.key === "ArrowRight" ? 1 : -1) + links.length) % links.length];
@@ -177,7 +180,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
       ref={dialogRef}
       role="dialog"
       aria-modal="true"
-      aria-label="Site navigation — film roll"
+      aria-label="Site navigation — film strips"
       onKeyDown={onKeyDown}
       className="fixed inset-0 z-[45] flex flex-col bg-[#070709] text-[#f4f1ea]"
       initial={{ opacity: 0 }}
@@ -189,43 +192,51 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
       {/* safelight glow */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-44 bg-[radial-gradient(ellipse_at_50%_0%,rgba(196,62,44,0.3),transparent_70%)]" />
 
-      <p className="pt-24 text-center font-mono text-[0.62rem] uppercase tracking-[0.3em] text-[#8a8a99]">
+      <p className="pt-20 text-center font-mono text-[0.62rem] uppercase tracking-[0.3em] text-[#8a8a99] md:pt-24">
         One year · one roll — hover a frame to preview the page
       </p>
 
-      {/* the roll — a full-bleed strip of film laid across the screen */}
-      <div className="flex flex-1 items-center">
-        <motion.div
-          initial={{ y: 24, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.7, ease: EASE }}
-          className="w-full bg-[#141419] shadow-[0_30px_90px_rgba(0,0,0,0.8)]"
-        >
-          <PerfRow />
-          {/* frame sizing: desktop fits all 7 at once (incl. one hover-widened frame); small screens swipe */}
-          <div
-            ref={stripRef}
-            data-lenis-prevent
-            onWheel={(e) => {
-              const el = stripRef.current;
-              if (el && el.scrollWidth > el.clientWidth) el.scrollLeft += e.deltaY;
-            }}
-            className="flex snap-x items-end gap-2 overflow-x-auto px-4 pb-0.5 pt-1.5 [--fh:30vh] md:justify-center md:overflow-visible md:[--fh:min(calc((100vw-180px)/10.6),24vh)]"
+      {/* two cut strips of film on the light table — 4 frames up, 3 below */}
+      <div ref={rollRef} className="flex flex-1 flex-col justify-center gap-3 py-3">
+        {STRIPS.map((strip, r) => (
+          <motion.div
+            key={r}
+            initial={{ y: 24, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.7, delay: r * 0.1, ease: EASE }}
+            className="w-full bg-[#141419] shadow-[0_22px_60px_rgba(0,0,0,0.75)]"
           >
-            {FRAMES.map((door, i) => (
-              <FilmFrame key={door.id} door={door} index={i} isCurrent={current === door.href} onNavigate={onNavigate} />
-            ))}
-          </div>
-          <PerfRow />
-        </motion.div>
+            <PerfRow />
+            <div
+              data-strip
+              data-lenis-prevent
+              onWheel={(e) => {
+                const el = e.currentTarget;
+                if (el.scrollWidth > el.clientWidth) el.scrollLeft += e.deltaY;
+              }}
+              className="flex snap-x items-end gap-3 overflow-x-auto px-4 pb-0.5 pt-2 [--fh:24vh] md:justify-center md:overflow-visible md:[--fh:min(calc((100vw-190px)/5.95),26vh)]"
+            >
+              {strip.map((door, i) => (
+                <FilmFrame
+                  key={door.id}
+                  door={door}
+                  index={r * 4 + i}
+                  isCurrent={current === door.href}
+                  onNavigate={onNavigate}
+                />
+              ))}
+            </div>
+            <PerfRow />
+          </motion.div>
+        ))}
       </div>
 
       {/* utility strip — cut single negatives */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.55 }}
-        className="flex flex-wrap items-center justify-center gap-2.5 px-5 pb-8"
+        transition={{ delay: 0.5 }}
+        className="flex flex-wrap items-center justify-center gap-3 px-5 pb-9"
       >
         {UTILITY.map((u) => {
           const here = pathname === u.href || current === u.href;
@@ -236,8 +247,8 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
               data-cursor-hover
               onClick={here ? (e) => { e.preventDefault(); onClose(); } : undefined}
               aria-current={here ? "page" : undefined}
-              className={`border px-3.5 py-2 font-mono text-[0.58rem] uppercase tracking-[0.22em] transition-colors [background:linear-gradient(#14141b,#14141b)_padding-box,repeating-linear-gradient(90deg,#070709_0_6px,#2a2a33_6px_8px)_border-box] ${
-                here ? "border-[#c43e2c] text-[#f4f1ea]" : "border-transparent text-[#8a8a99] hover:text-[#f4f1ea]"
+              className={`border px-5 py-3 font-mono text-[0.7rem] uppercase tracking-[0.22em] transition-colors [background:linear-gradient(#1c1c24,#1c1c24)_padding-box,repeating-linear-gradient(90deg,#070709_0_6px,#3a3a45_6px_8px)_border-box] ${
+                here ? "border-[#c43e2c] text-[#f4f1ea]" : "border-transparent text-[#cfccc2] hover:border-[#d9a83f] hover:text-[#f4f1ea]"
               }`}
             >
               {u.label}
@@ -249,7 +260,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
           target="_blank"
           rel="noreferrer"
           data-cursor-hover
-          className="px-2 font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[#8a8a99] transition-colors hover:text-[#f4f1ea]"
+          className="px-3 py-3 font-mono text-[0.7rem] uppercase tracking-[0.22em] text-[#cfccc2] transition-colors hover:text-[#f4f1ea]"
         >
           {PROFILE.links.instagramHandle}
         </a>

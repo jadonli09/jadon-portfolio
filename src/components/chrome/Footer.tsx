@@ -1,13 +1,15 @@
 import { ArrowUpRight } from "lucide-react";
 import { PROFILE } from "@/lib/data";
 import { Magnetic } from "@/components/primitives/Magnetic";
+import { FooterNav } from "@/components/chrome/FooterNav";
 
-/** Designed page close: name block + contact links — never a blank white footer. */
+/** Designed page close: a "where to next" chapter picker + contact links — never a blank white footer. */
 export function Footer() {
   return (
     <footer className="relative border-t border-[var(--line)] bg-[var(--bg-2)] px-5 py-16 md:px-9 md:py-24">
       <div className="mx-auto max-w-6xl">
-        <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+        <FooterNav />
+        <div className="flex flex-col justify-between gap-8 border-t border-[var(--line)] pt-8 md:flex-row md:items-end">
           <div>
             <p className="font-display text-2xl">{PROFILE.name}</p>
             <p className="mt-1 font-mono text-xs uppercase tracking-widest text-[var(--muted)]">
