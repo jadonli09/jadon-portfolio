@@ -105,6 +105,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
   const stripRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   /** Hand off to the Develop overlay, then navigate once the cover has settled. */
   const onNavigate = (e: React.MouseEvent, door: Door) => {
@@ -119,8 +120,28 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
     window.setTimeout(() => router.push(door.href), 480);
   };
 
-  /** ←/→ move focus along the roll; Enter on a focused frame navigates (native link). */
+  /** Esc closes; Tab is trapped inside the dialog; ←/→ move focus along the roll. */
   const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") {
+      onClose();
+      return;
+    }
+    if (e.key === "Tab") {
+      const all = Array.from(
+        dialogRef.current?.querySelectorAll<HTMLElement>('a[href], button, [tabindex]:not([tabindex="-1"])') ?? [],
+      );
+      if (!all.length) return;
+      const first = all[0];
+      const last = all[all.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+      return;
+    }
     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
     e.preventDefault();
     const links = Array.from(stripRef.current?.querySelectorAll<HTMLAnchorElement>("a") ?? []);
@@ -133,6 +154,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
 
   return (
     <motion.div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-label="Site navigation — contact sheet"
