@@ -30,44 +30,76 @@ const EXIT_MS: Record<string, number> = {
    Contract: by ~500ms into `enter` the screen must be fully covered —
    navigation fires at 650ms — and `exit` reveals the destination page. */
 
-/** civic — the storyteller: the lens iris stops down, the flash fires, the iris reopens on the page. */
-function CivicFlash({ phase }: { phase: Phase }) {
+/** civic — the storyteller: a boom mic drops in and the room's voice slams up as an equalizer wall. */
+function CivicMic({ phase }: { phase: Phase }) {
+  const BARS = 24;
+  const mid = (BARS - 1) / 2;
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {/* iris — a shrinking hole whose giant shadow is the cover */}
+      {/* equalizer wall — bars rise from the centre line outward and become the cover */}
+      <div className="absolute inset-0 flex">
+        {Array.from({ length: BARS }, (_, i) => (
+          <motion.div
+            key={i}
+            className="h-full flex-1 [background:linear-gradient(180deg,#2a0c06,#c2402c_48%,#5c1810_100%)] shadow-[inset_1px_0_0_rgba(10,4,2,0.6)]"
+            initial={{ scaleY: 0 }}
+            animate={{ scaleY: phase === "enter" ? 1 : 0 }}
+            transition={{
+              duration: 0.3,
+              delay: (phase === "enter" ? Math.abs(i - mid) : mid - Math.abs(i - mid)) * 0.02,
+              ease: phase === "enter" ? "easeOut" : "easeIn",
+            }}
+            style={{ transformOrigin: "center" }}
+          />
+        ))}
+      </div>
+      {/* live waveform pulsing across the wall */}
+      <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 items-center justify-center gap-[6px]">
+        {Array.from({ length: 36 }, (_, i) => (
+          <motion.span
+            key={i}
+            className="w-[3px] rounded-full bg-[#f4ecd9]/85"
+            initial={{ height: 4, opacity: 0 }}
+            animate={
+              phase === "enter"
+                ? { height: [4, 10 + 46 * Math.abs(Math.sin(i * 1.7)), 6 + 22 * Math.abs(Math.sin(i * 2.3)), 12 + 38 * Math.abs(Math.sin(i * 1.1))], opacity: 1 }
+                : { height: 3, opacity: 0 }
+            }
+            transition={
+              phase === "enter"
+                ? { duration: 0.9, delay: 0.4 + (i % 6) * 0.03, times: [0, 0.4, 0.7, 1], ease: "easeInOut" }
+                : { duration: 0.25 }
+            }
+          />
+        ))}
+      </div>
+      {/* the boom mic, dropping in on its cable with a little swing */}
       <motion.div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-[0_0_0_300vmax_#050507]"
-        initial={{ width: "125vmax", height: "125vmax" }}
-        animate={phase === "enter" ? { width: "0vmax", height: "0vmax" } : { width: "135vmax", height: "135vmax" }}
-        transition={{ duration: phase === "enter" ? 0.4 : 0.6, ease: EASE }}
-      />
-      {/* aperture ring around the closing hole */}
-      {phase === "enter" && (
-        <motion.div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/35"
-          initial={{ width: "70vmax", height: "70vmax", rotate: 0, opacity: 0.8 }}
-          animate={{ width: "0vmax", height: "0vmax", rotate: 70, opacity: 0 }}
-          transition={{ duration: 0.42, ease: EASE }}
-        />
-      )}
-      {/* the flash — fires the moment the iris is shut, decays slowly */}
-      <motion.div
-        className="absolute inset-0 bg-white"
-        initial={{ opacity: 0 }}
-        animate={phase === "enter" ? { opacity: [0, 0, 1, 0.7, 0.92] } : { opacity: 0 }}
-        transition={phase === "enter" ? { duration: 0.62, times: [0, 0.6, 0.68, 0.84, 1], ease: "easeOut" } : { duration: 0.45, ease: "easeOut" }}
+        className="absolute left-1/2 top-0 -translate-x-1/2"
+        initial={{ y: "-45vh" }}
+        animate={phase === "enter" ? { y: "0vh", rotate: [0, -3, 2, 0] } : { y: "-50vh" }}
+        transition={phase === "enter" ? { duration: 0.55, delay: 0.18, ease: EASE } : { duration: 0.4, ease: "easeIn" }}
+        style={{ transformOrigin: "top center" }}
       >
-        <div className="absolute inset-0 [background:radial-gradient(ellipse_at_center,transparent_50%,rgba(0,0,0,0.3)_100%)]" />
+        <div className="mx-auto h-[16vh] w-[3px] bg-[#120604]" />
+        <svg viewBox="0 0 60 100" className="mx-auto -mt-1 h-28 w-16 drop-shadow-[0_14px_30px_rgba(0,0,0,0.55)]">
+          <rect x="14" y="4" width="32" height="56" rx="16" fill="#1c0d08" stroke="#f4ecd9" strokeWidth="2.5" />
+          <path d="M20 14 H40 M20 24 H40 M20 34 H40 M20 44 H40" stroke="#f4ecd9" strokeWidth="2" opacity="0.7" />
+          <path d="M8 46 a22 22 0 0 0 44 0" fill="none" stroke="#f4ecd9" strokeWidth="2.5" />
+          <line x1="30" y1="68" x2="30" y2="84" stroke="#f4ecd9" strokeWidth="2.5" />
+        </svg>
       </motion.div>
-      {/* exposure readout */}
-      <motion.p
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 font-mono text-[0.62rem] uppercase tracking-[0.35em] text-black/60"
-        initial={{ opacity: 0, y: 6 }}
-        animate={phase === "enter" ? { opacity: 1, y: 0 } : { opacity: 0 }}
-        transition={{ delay: phase === "enter" ? 0.5 : 0, duration: 0.3 }}
-      >
-        f/2.8 · 1/250 · ISO 400
-      </motion.p>
+      {/* sound rings radiating once the mic is live */}
+      {phase === "enter" &&
+        [0, 1].map((n) => (
+          <motion.div
+            key={n}
+            className="absolute left-1/2 top-[24vh] h-24 w-24 -translate-x-1/2 rounded-full border border-[#f4ecd9]/60"
+            initial={{ scale: 0.3, opacity: 0 }}
+            animate={{ scale: 3 + n, opacity: [0, 0.7, 0] }}
+            transition={{ duration: 0.7, delay: 0.62 + n * 0.16, ease: "easeOut" }}
+          />
+        ))}
     </div>
   );
 }
@@ -122,7 +154,7 @@ function CourtSwish({ phase }: { phase: Phase }) {
   );
 }
 
-/** leadership — the operator: presidential stationery unfurls, the wax seal stamps, gold foil catches the light. */
+/** leadership — the operator: stationery unfurls and three wax seals stamp in — one per year, no words needed. */
 function LeadershipSeal({ phase }: { phase: Phase }) {
   return (
     <div className="absolute inset-0 overflow-hidden">
@@ -134,32 +166,35 @@ function LeadershipSeal({ phase }: { phase: Phase }) {
       >
         {/* laid-paper texture */}
         <div className="absolute inset-0 opacity-40 [background:repeating-linear-gradient(0deg,transparent_0_3px,rgba(140,110,50,0.05)_3px_4px)]" />
-        {/* letterhead */}
-        <motion.div
-          className="absolute inset-x-0 top-[22%] text-center"
-          initial={{ opacity: 0, y: 10 }}
-          animate={phase === "enter" ? { opacity: 1, y: 0 } : { opacity: 0 }}
-          transition={{ delay: phase === "enter" ? 0.3 : 0, duration: 0.35, ease: EASE }}
-        >
-          <p className="font-mono text-[0.6rem] uppercase tracking-[0.45em] text-[#8a6a1f]">The office of</p>
-          <p className="mt-2 font-display text-3xl text-[#3b2a08] md:text-5xl">The Class President</p>
-          <div className="mx-auto mt-3 h-px w-44 bg-[#b07c1e]/60" />
-        </motion.div>
-        {/* wax seal — stamps in with a pressure ring */}
-        <motion.div
-          className="absolute left-1/2 top-[58%] flex h-32 w-32 -translate-x-1/2 items-center justify-center rounded-full bg-[radial-gradient(circle_at_38%_32%,#8e3030,#5c1717_70%)] shadow-[0_14px_36px_rgba(60,20,10,0.55),inset_0_2px_8px_rgba(255,255,255,0.18)]"
-          initial={{ scale: 2.4, opacity: 0, rotate: -18 }}
-          animate={phase === "enter" ? { scale: 1, opacity: 1, rotate: -7 } : { opacity: 0, y: 30 }}
-          transition={phase === "enter" ? { duration: 0.28, delay: 0.42, ease: "easeIn" } : { duration: 0.35 }}
-        >
-          <span className="rounded-full border-2 border-dashed border-[#d9a83f]/70 px-4 py-5 font-anton text-2xl text-[#e9c87a]">3×</span>
-        </motion.div>
-        <motion.div
-          className="absolute left-1/2 top-[58%] h-32 w-32 -translate-x-1/2 rounded-full border-2 border-[#5c1717]/50"
-          initial={{ scale: 1, opacity: 0 }}
-          animate={phase === "enter" ? { scale: 1.7, opacity: [0, 0.7, 0] } : { opacity: 0 }}
-          transition={{ duration: 0.55, delay: 0.66, ease: "easeOut" }}
-        />
+        {/* three terms, three seals — stamped left to right, each year a little bigger; no words */}
+        {[
+          { left: "29%", size: 88, delay: 0.3, rotate: -10 },
+          { left: "50%", size: 106, delay: 0.44, rotate: 5 },
+          { left: "71%", size: 126, delay: 0.58, rotate: -6 },
+        ].map((seal, i) => (
+          <span key={i} className="absolute top-1/2" style={{ left: seal.left }}>
+            <motion.div
+              className="flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[radial-gradient(circle_at_38%_32%,#8e3030,#5c1717_70%)] shadow-[0_14px_36px_rgba(60,20,10,0.55),inset_0_2px_8px_rgba(255,255,255,0.18)]"
+              style={{ width: seal.size, height: seal.size }}
+              initial={{ scale: 2.3, opacity: 0, rotate: seal.rotate - 14 }}
+              animate={phase === "enter" ? { scale: 1, opacity: 1, rotate: seal.rotate } : { opacity: 0, y: 30 }}
+              transition={phase === "enter" ? { duration: 0.24, delay: seal.delay, ease: "easeIn" } : { duration: 0.35 }}
+            >
+              <div className="flex items-center justify-center rounded-full border-2 border-dashed border-[#d9a83f]/70" style={{ width: seal.size * 0.72, height: seal.size * 0.72 }}>
+                <svg viewBox="0 0 24 24" style={{ width: seal.size * 0.4, height: seal.size * 0.4 }}>
+                  <path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6.1 3.6 1.4-6.8L2.2 9.1l6.9-.8z" fill="#e9c87a" />
+                </svg>
+              </div>
+            </motion.div>
+            <motion.div
+              className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#5c1717]/50"
+              style={{ width: seal.size, height: seal.size }}
+              initial={{ scale: 1, opacity: 0 }}
+              animate={phase === "enter" ? { scale: 1.7, opacity: [0, 0.7, 0] } : { opacity: 0 }}
+              transition={{ duration: 0.5, delay: seal.delay + 0.2, ease: "easeOut" }}
+            />
+          </span>
+        ))}
         {/* gold foil shine sweeping the paper */}
         <motion.div
           className="absolute inset-y-0 w-1/3 [background:linear-gradient(100deg,transparent,rgba(217,168,63,0.35)_50%,transparent)]"
@@ -224,9 +259,9 @@ function BuiltTiles({ phase }: { phase: Phase }) {
   const maxWave = COLS - 1 + ROWS - 1;
   return (
     <div className="absolute inset-0">
-      {/* blueprint underlay */}
+      {/* blueprint underlay — acorn brown with warm drafting lines */}
       <motion.div
-        className="absolute inset-0 bg-[#0c0e22] [background-image:linear-gradient(rgba(124,137,232,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(124,137,232,0.12)_1px,transparent_1px)] [background-size:48px_48px]"
+        className="absolute inset-0 bg-[#1c0e02] [background-image:linear-gradient(rgba(240,120,24,0.13)_1px,transparent_1px),linear-gradient(90deg,rgba(240,120,24,0.13)_1px,transparent_1px)] [background-size:48px_48px]"
         initial={{ opacity: 0 }}
         animate={{ opacity: phase === "enter" ? 1 : 0 }}
         transition={{ duration: phase === "enter" ? 0.12 : 0.5, delay: phase === "enter" ? 0 : 0.3 }}
@@ -235,7 +270,7 @@ function BuiltTiles({ phase }: { phase: Phase }) {
         {tiles.map((i) => (
           <motion.div
             key={i}
-            className="[background:linear-gradient(150deg,#1b2046,#3a47a8_135%)] shadow-[inset_0_0_0_1px_rgba(12,14,34,0.9)]"
+            className="[background:linear-gradient(150deg,#601800,#f07818_150%)] shadow-[inset_0_0_0_1px_rgba(28,14,2,0.9)]"
             initial={{ rotateY: -92, opacity: 0 }}
             animate={phase === "enter" ? { rotateY: 0, opacity: 1 } : { rotateY: 92, opacity: 0 }}
             transition={{
@@ -248,7 +283,7 @@ function BuiltTiles({ phase }: { phase: Phase }) {
         ))}
       </div>
       <motion.p
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 font-mono text-[0.65rem] uppercase tracking-[0.3em] text-[#9fb0ff]"
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 font-mono text-[0.65rem] uppercase tracking-[0.3em] text-[#f0a05a]"
         initial={{ opacity: 0 }}
         animate={phase === "enter" ? { opacity: 1 } : { opacity: 0 }}
         transition={{ delay: phase === "enter" ? 0.42 : 0, duration: 0.25 }}
@@ -385,7 +420,7 @@ function PlainFade({ phase }: { phase: Phase }) {
 }
 
 const TRANSITIONS: Record<string, React.ComponentType<{ phase: Phase }>> = {
-  civic: CivicFlash,
+  civic: CivicMic,
   court: CourtSwish,
   leadership: LeadershipSeal,
   research: ResearchScan,
