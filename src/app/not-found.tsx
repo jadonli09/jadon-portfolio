@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { WORLDS } from "@/lib/data";
 import { Magnetic } from "@/components/primitives/Magnetic";
+
+export const metadata: Metadata = {
+  title: "Off the Map",
+};
 
 export default function NotFound() {
   return (
