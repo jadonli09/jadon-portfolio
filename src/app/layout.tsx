@@ -5,6 +5,7 @@ import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { Cursor } from "@/components/chrome/Cursor";
 import { Nav } from "@/components/chrome/Nav";
 import { Grain } from "@/components/chrome/Grain";
+import { Develop } from "@/components/chrome/Develop";
 import { BASE } from "@/lib/base";
 
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", display: "swap" });
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Grain />
         <Cursor />
         <Nav />
+        <Develop />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
