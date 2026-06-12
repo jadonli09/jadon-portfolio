@@ -7,8 +7,8 @@ import { VolcanoPlot } from "@/components/research/VolcanoPlot";
 import { asset } from "@/lib/base";
 import { cn } from "@/lib/cn";
 import { fireToast, toggleMutate } from "./bus";
-import { AWARDS, AWARD_VIZ, GENES, PIPELINE, PROFILE, PROGRAMS, PROJECT, STATS, STAT_BARS, USABO_MEDAL, USABO_MEDAL_INFO, type Award, type Program } from "./content";
-import { AsciiArt, AsciiMeter, AsciiPanel, CodeBlock, DirListing, ImagePreview, JsonView, KeyVals, MdHeading, Prose, TermTable } from "./term";
+import { AWARDS, AWARD_VIZ, CITATION, DEG_COUNTS, HEATMAP, IMAGES, PAIN_MEDIATORS, PATHWAYS, PCA, PIPELINE, PROFILE, PROGRAMS, PROJECT, RESOURCES, RESULTS, STATS, STAT_BARS, USABO_MEDAL, USABO_MEDAL_INFO, type Award, type Program } from "./content";
+import { AsciiArt, AsciiMeter, AsciiPanel, CodeBlock, DirListing, Heatmap, ImagePreview, JsonView, KeyVals, MdHeading, Prose, ScatterPlot, TermTable } from "./term";
 
 // ── model ─────────────────────────────────────────────────────────────────────
 
@@ -32,14 +32,25 @@ const TONE_CLASS: Record<Tone, string> = {
 // bare word / filename → render token
 const TOKEN_FOR: Record<string, string> = {
   readme: "readme", "readme.md": "readme", intro: "readme",
-  whoami: "whoami", about: "whoami", me: "whoami",
+  whoami: "whoami", about: "whoami", bio: "whoami",
   neofetch: "neofetch", fetch: "neofetch",
   stats: "stats", "stats.json": "stats", numbers: "stats",
   project: "project", "gout-rnaseq": "project", "gout-rnaseq.md": "project", rnaseq: "project", "rna-seq": "project", gout: "project",
   methodology: "methodology", method: "methodology", "methodology.sh": "methodology", pipeline: "methodology",
-  genes: "genes", mediators: "genes", "deg-results": "genes", "deg-results.tsv": "genes", deg: "genes", degs: "genes",
+  genes: "genes", mediators: "genes", "pain-mediators": "genes", "deg-results.tsv": "genes",
+  degs: "degcounts", deg: "degcounts", counts: "degcounts", "deg-counts": "degcounts", "deg-counts.tsv": "degcounts",
   abstract: "abstract", "abstract.txt": "abstract",
-  volcano: "volcano", plot: "volcano", "volcano.plot": "volcano",
+  volcano: "volcano", plot: "volcano", "volcano.plot": "volcano", volcanos: "volcano",
+  poster: "poster", board: "poster", "science-fair-poster.png": "poster",
+  photo: "photo", selfie: "photo", me: "photo", "science-fair": "photo", fair: "photo", "me.jpg": "photo",
+  design: "design", "sample-design": "design", "sample-design.png": "design", samples: "design",
+  question: "project", hypothesis: "project", purpose: "project",
+  results: "results", "results.md": "results", findings: "results", conclusion: "results",
+  pathways: "pathways", "pathways.tsv": "pathways", gsea: "pathways", enrichment: "pathways", go: "pathways",
+  heatmap: "heatmap", "heatmap.png": "heatmap", expr: "heatmap", expression: "heatmap",
+  pca: "pca", "pca.plot": "pca", clustering: "pca",
+  citation: "citation", "citation.bib": "citation", cite: "citation", bib: "citation", bibtex: "citation",
+  resources: "resources", "resources.md": "resources", links: "resources", refs: "resources", tools: "resources",
   awards: "awards", competitions: "awards", olympiads: "awards",
   usabo: "award:usabo", "usabo.json": "award:usabo",
   bbo: "award:bbo", "uk-bbo": "award:bbo", ukbbo: "award:bbo", "uk-bbo.json": "award:bbo",
@@ -51,7 +62,7 @@ const TOKEN_FOR: Record<string, string> = {
   umass: "program:umass", "umass.md": "program:umass",
 };
 
-const FILE_TOKENS = new Set(["readme", "stats", "project", "methodology", "genes", "abstract", "volcano"]);
+const FILE_TOKENS = new Set(["readme", "stats", "project", "methodology", "genes", "degcounts", "abstract", "volcano", "results", "pathways", "heatmap", "pca", "citation", "resources", "poster", "photo", "design"]);
 const isFileToken = (t: string) => FILE_TOKENS.has(t) || t.startsWith("award:") || t.startsWith("program:");
 
 function frameLabel(token: string): string {
@@ -63,7 +74,11 @@ function frameLabel(token: string): string {
     help: "help", tree: "tree ~/research", neofetch: "neofetch", whoami: "whoami",
     readme: "README.md", stats: "stats.json", awards: "ls awards/", programs: "ls field/",
     project: "project/gout-rnaseq.md", methodology: "project/methodology.sh",
-    genes: "project/deg-results.tsv", abstract: "project/abstract.txt", volcano: "project/volcano.plot",
+    genes: "project/pain-mediators.tsv", degcounts: "project/deg-counts.tsv", abstract: "project/abstract.txt",
+    volcano: "project/volcano.plot", results: "project/results.md", pathways: "project/pathways.tsv",
+    heatmap: "project/heatmap.png", pca: "project/pca.plot", citation: "project/citation.bib",
+    design: "project/sample-design.png", poster: "science-fair-poster.png", photo: "me-at-poster.jpg",
+    resources: "resources.md",
   }[base] ?? token;
 }
 
@@ -79,7 +94,7 @@ function frameTag(label: string): string {
 }
 
 const SUGGEST: Record<string, string[]> = {
-  default: ["help", "ls", "volcano", "project", "awards", "field"],
+  default: ["help", "poster", "photo", "results", "volcano", "awards"],
   help: ["ls", "volcano", "project", "awards"],
   tree: ["volcano", "project", "awards", "field"],
   ls: ["usabo", "project", "awards", "field"],
@@ -87,11 +102,21 @@ const SUGGEST: Record<string, string[]> = {
   award: ["awards", "genes", "project", "volcano"],
   programs: ["ysjc", "prism", "stem-pac", "umass"],
   program: ["field", "project", "awards", "stats"],
-  project: ["methodology", "genes", "volcano", "awards"],
-  methodology: ["genes", "volcano", "project", "stats"],
-  genes: ["volcano", "project", "methodology", "awards"],
-  abstract: ["project", "genes", "volcano", "awards"],
-  volcano: ["genes", "project", "awards", "field"],
+  project: ["results", "heatmap", "pathways", "pca", "genes", "volcano"],
+  methodology: ["genes", "results", "volcano", "pathways"],
+  genes: ["heatmap", "volcano", "pathways", "results"],
+  abstract: ["results", "genes", "volcano", "project"],
+  volcano: ["heatmap", "genes", "pathways", "pca"],
+  results: ["heatmap", "pathways", "pca", "volcano"],
+  pathways: ["heatmap", "genes", "pca", "volcano"],
+  heatmap: ["pca", "pathways", "genes", "volcano"],
+  pca: ["heatmap", "volcano", "pathways", "results"],
+  citation: ["resources", "results", "project", "awards"],
+  resources: ["citation", "project", "genes", "awards"],
+  poster: ["photo", "volcano", "heatmap", "design"],
+  photo: ["poster", "results", "project", "awards"],
+  design: ["volcano", "degs", "genes", "project"],
+  degcounts: ["volcano", "genes", "heatmap", "pathways"],
   stats: ["awards", "project", "field", "neofetch"],
   readme: ["volcano", "project", "awards", "field"],
   whoami: ["neofetch", "project", "awards", "field"],
@@ -102,8 +127,17 @@ const HINT: Record<string, { text: string; tone?: Tone }> = {
   volcano: { text: "→ hover the glowing points to inspect genes · `genes` for the DESeq2 table" },
   awards: { text: "→ open one: `usabo` · `bbo` · `acsef`  (or `cat awards/usabo.json`)" },
   programs: { text: "→ open one: `ysjc` · `prism` · `stem-pac` · `umass`" },
-  project: { text: "→ dig in: `methodology` · `genes` · `volcano` · `abstract`" },
-  methodology: { text: "→ `genes` for the differential-expression hits" },
+  project: { text: "→ dig in: `results` · `volcano` · `heatmap` · `pathways` · `design` · `poster`" },
+  poster: { text: "→ open specific figures: `volcano` · `heatmap` · `design` · `pathways`" },
+  photo: { text: "→ `poster` for the full board · `results` for the findings" },
+  design: { text: "→ `volcano` for per-tissue DEG counts · `genes` for the pain mediators" },
+  degcounts: { text: "→ `volcano` shows these graphically · `genes` lists the pain mediators" },
+  methodology: { text: "→ `genes` for the differential-expression hits, then `pathways`" },
+  genes: { text: "→ `heatmap` to see these across tissues · `pathways` for enrichment" },
+  results: { text: "→ the graphs behind it: `heatmap` · `pca` · `pathways` · `volcano`" },
+  pathways: { text: "→ `heatmap` for the gene-level view · `genes` for the hit list" },
+  heatmap: { text: "→ note gout·spine mirrors gout·joint — the spinal-cord signal. `pca` next" },
+  pca: { text: "→ gout samples cluster apart from controls. `heatmap` for gene detail" },
 };
 
 // explorer tree
@@ -112,11 +146,21 @@ const EXPLORER: { label: string; cmd: string; depth: number; folder?: boolean }[
   { label: "whoami", cmd: "whoami", depth: 0 },
   { label: "neofetch", cmd: "neofetch", depth: 0 },
   { label: "stats.json", cmd: "stats", depth: 0 },
+  { label: "resources.md", cmd: "resources", depth: 0 },
+  { label: "science-fair-poster.png", cmd: "poster", depth: 0 },
+  { label: "me-at-poster.jpg", cmd: "photo", depth: 0 },
   { label: "project", cmd: "project", depth: 0, folder: true },
   { label: "gout-rnaseq.md", cmd: "project", depth: 1 },
+  { label: "results.md", cmd: "results", depth: 1 },
   { label: "methodology.sh", cmd: "methodology", depth: 1 },
-  { label: "deg-results.tsv", cmd: "genes", depth: 1 },
+  { label: "sample-design.png", cmd: "design", depth: 1 },
+  { label: "deg-counts.tsv", cmd: "degs", depth: 1 },
+  { label: "pain-mediators.tsv", cmd: "genes", depth: 1 },
+  { label: "pathways.tsv", cmd: "pathways", depth: 1 },
+  { label: "heatmap.png", cmd: "heatmap", depth: 1 },
   { label: "volcano.plot", cmd: "volcano", depth: 1 },
+  { label: "pca.plot", cmd: "pca", depth: 1 },
+  { label: "citation.bib", cmd: "citation", depth: 1 },
   { label: "awards", cmd: "awards", depth: 0, folder: true },
   { label: "usabo.json", cmd: "usabo", depth: 1 },
   { label: "uk-bbo.json", cmd: "bbo", depth: 1 },
@@ -135,15 +179,25 @@ const FS: Record<Dir, { perms: string; size: string; name: string; kind: "dir" |
     { perms: "drwxr-xr-x", size: "4.0K", name: "field", kind: "dir" },
     { perms: "-rw-r--r--", size: "2.1K", name: "README.md", kind: "file" },
     { perms: "-rw-r--r--", size: "0.6K", name: "stats.json", kind: "file" },
+    { perms: "-rw-r--r--", size: "1.3K", name: "resources.md", kind: "file" },
+    { perms: "-rw-r--r--", size: "2.4M", name: "science-fair-poster.png", kind: "file" },
+    { perms: "-rw-r--r--", size: "1.1M", name: "me-at-poster.jpg", kind: "file" },
     { perms: "-rwxr-xr-x", size: "1.2K", name: "whoami", kind: "exec" },
     { perms: "-rwxr-xr-x", size: "1.8K", name: "neofetch", kind: "exec" },
   ],
   project: [
     { perms: "-rw-r--r--", size: "3.4K", name: "gout-rnaseq.md", kind: "file" },
+    { perms: "-rw-r--r--", size: "1.6K", name: "results.md", kind: "file" },
     { perms: "-rwxr-xr-x", size: "1.1K", name: "methodology.sh", kind: "exec" },
-    { perms: "-rw-r--r--", size: "0.9K", name: "deg-results.tsv", kind: "file" },
+    { perms: "-rw-r--r--", size: "240K", name: "sample-design.png", kind: "file" },
+    { perms: "-rw-r--r--", size: "0.4K", name: "deg-counts.tsv", kind: "file" },
+    { perms: "-rw-r--r--", size: "0.7K", name: "pain-mediators.tsv", kind: "file" },
+    { perms: "-rw-r--r--", size: "1.1K", name: "pathways.tsv", kind: "file" },
     { perms: "-rw-r--r--", size: "0.7K", name: "abstract.txt", kind: "file" },
-    { perms: "-rwxr-xr-x", size: "24K", name: "volcano.plot", kind: "exec" },
+    { perms: "-rwxr-xr-x", size: "82K", name: "heatmap.png", kind: "exec" },
+    { perms: "-rwxr-xr-x", size: "81K", name: "volcano.plot", kind: "exec" },
+    { perms: "-rwxr-xr-x", size: "12K", name: "pca.plot", kind: "exec" },
+    { perms: "-rw-r--r--", size: "0.5K", name: "citation.bib", kind: "file" },
   ],
   awards: AWARDS.map((a) => ({ perms: "-rw-r--r--", size: "0.8K", name: a.file, kind: "file" as const })),
   field: PROGRAMS.map((p) => ({ perms: "-rw-r--r--", size: "1.0K", name: p.file, kind: "file" as const })),
@@ -182,13 +236,13 @@ export function ResearchIDE() {
     const boot: { text: string; tone?: Tone; at: number }[] = [
       { text: "deg-console v3.1 · research IDE", tone: "accent", at: 100 },
       { text: "booting kernel ............ ok", tone: "muted", at: 230 },
-      { text: "mounting /achievements .... ok", tone: "muted", at: 360 },
-      { text: "indexed: 1 project · 7 DEGs · 3 awards · 4 programs", tone: "muted", at: 520 },
+      { text: "mounting /research ........ ok", tone: "muted", at: 360 },
+      { text: "indexed: 1 project · 7 DEGs · 7 pathways · 4 graphs · 3 awards · 4 programs", tone: "muted", at: 520 },
       { text: " ", at: 580 },
       { text: "This page is a terminal. Nothing is shown until you ask for it.", tone: "fg", at: 700 },
       { text: "Try a command — file outputs render like a real IDE.", tone: "fg", at: 700 },
       { text: " ", at: 740 },
-      { text: "→ type  help  ·  ls  ·  neofetch  ·  or open a file: `usabo`, `genes`, `volcano`", tone: "accent", at: 880 },
+      { text: "→ start with  help  ·  results  ·  heatmap  ·  volcano  ·  or  ls  to browse", tone: "accent", at: 880 },
     ];
     const timers = boot.map((b) =>
       window.setTimeout(() => setLog((l) => [...l, { id: nextId(), kind: "out", lines: [{ text: b.text, tone: b.tone }] }]), b.at),
@@ -304,7 +358,7 @@ export function ResearchIDE() {
       e.preventDefault();
       const tok = value.trim().toLowerCase();
       if (tok) {
-        const pool = ["help", "ls", "tree", "clear", "neofetch", "whoami", "readme", "stats", "volcano", "project", "methodology", "genes", "abstract", "awards", "usabo", "bbo", "acsef", "field", "ysjc", "prism", "stem-pac", "umass", "mutate", "exit"];
+        const pool = ["help", "ls", "tree", "clear", "neofetch", "whoami", "readme", "resources", "stats", "poster", "photo", "project", "results", "methodology", "design", "degs", "genes", "pathways", "heatmap", "volcano", "pca", "citation", "abstract", "awards", "usabo", "bbo", "acsef", "field", "ysjc", "prism", "stem-pac", "umass", "mutate", "exit"];
         const hit = pool.find((c) => c.startsWith(tok));
         if (hit) setValue(hit);
       }
@@ -512,24 +566,52 @@ function ViewBody({ token }: { token: string }) {
     case "project": return <ProjectView />;
     case "methodology": return <MethodologyView />;
     case "genes": return <GenesView />;
+    case "degcounts": return <DegCountsView />;
     case "abstract": return <AbstractView />;
+    case "results": return <ResultsView />;
+    case "pathways": return <PathwaysView />;
+    case "heatmap": return <Heatmap samples={HEATMAP.samples} rows={HEATMAP.rows} />;
+    case "pca": return <ScatterPlot groups={PCA.groups} points={PCA.points} />;
+    case "citation": return <CodeBlock lang="project/citation.bib" lines={CITATION.split("\n").map((l, i) => <span key={i}>{l}</span>)} />;
+    case "resources": return <ResourcesView />;
+    case "poster": return <PosterView />;
+    case "photo": return <ImagePreview {...IMAGES.photo} />;
+    case "design": return <DesignView />;
     case "stats": return <StatsView />;
     case "volcano": return <VolcanoView />;
     default: return <HelpView />;
   }
 }
 
+function DegCountsView() {
+  return (
+    <TermTable
+      caption="# deg-counts.tsv — DEGs per tissue (MSU vs PBS · FDR<0.05, |log2FC|>0.3)"
+      head={["tissue", "up", "down", "total"]}
+      rows={DEG_COUNTS.map((d) => [
+        <span key="t" className="text-[var(--fg)]">{d.tissue}</span>,
+        <span key="u" className="font-semibold tabular-nums" style={{ color: "var(--accent)" }}>{d.up.toLocaleString()} ▲</span>,
+        <span key="d" className="font-semibold tabular-nums" style={{ color: "var(--accent-2)" }}>{d.down.toLocaleString()} ▼</span>,
+        <span key="s" className="tabular-nums text-[var(--muted)]">{(d.up + d.down).toLocaleString()}</span>,
+      ])}
+    />
+  );
+}
+
 function VolcanoView() {
   return (
-    <div className="mx-auto max-w-2xl">
-      <p className="mb-2 text-[0.72rem] text-[var(--muted)]">$ ./volcano.plot --render --threshold &apos;padj&lt;0.05&apos;</p>
-      <VolcanoPlot />
-      <div className="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 border-t border-[var(--line)] pt-3">
-        <Legend color="#bcff46" label="up-regulated" />
-        <Legend color="#4fe6ee" label="down-regulated" />
-        <Legend color="#3a4250" label="ns" />
+    <div className="space-y-4">
+      <ImagePreview {...IMAGES.volcanos} aspect="2 / 1" />
+      <DegCountsView />
+      <div>
+        <p className="mb-2 text-[0.72rem] text-[var(--muted)]">$ ./volcano.plot --interactive <span className="text-[var(--muted)]/60"># illustrative re-render — hover the points</span></p>
+        <div className="mx-auto max-w-xl"><VolcanoPlot /></div>
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 border-t border-[var(--line)] pt-3">
+          <Legend color="#bcff46" label="up-regulated" />
+          <Legend color="#4fe6ee" label="down-regulated" />
+          <Legend color="#3a4250" label="ns" />
+        </div>
       </div>
-      <p className="mt-2 text-center text-[0.62rem] text-[var(--muted)]"># illustrative differential-expression motif · hover significant points</p>
     </div>
   );
 }
@@ -537,14 +619,12 @@ function VolcanoView() {
 function GenesView() {
   return (
     <TermTable
-      caption="# deg-results.tsv — top differential hits (padj < 0.05, |log2FC| > 1.5)"
-      head={["gene", "log2FC", "padj", "reg", "annotation"]}
-      rows={GENES.map((g) => [
-        <span key="g" className="font-semibold" style={{ color: g.dir === "up" ? "var(--accent)" : "var(--accent-2)" }}>{g.gene}</span>,
-        <span key="f" className="tabular-nums" style={{ color: g.dir === "up" ? "var(--accent)" : "var(--accent-2)" }}>{g.log2fc > 0 ? "+" : ""}{g.log2fc.toFixed(1)}</span>,
-        <span key="p" className="tabular-nums text-[var(--muted)]">{g.padj}</span>,
-        <span key="r" className="text-[0.68rem] font-bold" style={{ color: g.dir === "up" ? "var(--accent)" : "var(--accent-2)" }}>{g.dir.toUpperCase()}</span>,
-        <span key="n" className="text-[var(--muted)]">{g.note}</span>,
+      caption="# pain-mediators.tsv — key pain mediators (Result 6 · all up-regulated under MSU)"
+      head={["gene", "reg", "role"]}
+      rows={PAIN_MEDIATORS.map((g) => [
+        <span key="g" className="font-semibold" style={{ color: "var(--accent)" }}>{g.gene}</span>,
+        <span key="r" className="text-[0.68rem] font-bold" style={{ color: "var(--accent)" }}>UP ▲</span>,
+        <span key="n" className="text-[var(--muted)]">{g.role}</span>,
       ])}
     />
   );
@@ -570,17 +650,62 @@ function ProjectView() {
   return (
     <div className="max-w-2xl space-y-3">
       <MdHeading>{PROJECT.title}</MdHeading>
+      <p className="text-[0.7rem] text-[var(--muted)]">
+        {PROJECT.id} · <span style={{ color: "var(--accent)" }}>{PROJECT.award}</span> · mentor {PROJECT.mentor}
+      </p>
       <KeyVals
         rows={[
           ["method", PROJECT.method],
           ["organism", PROJECT.organism],
-          ["model", PROJECT.model],
-          ["result", <span key="r" style={{ color: "var(--accent)" }}>{PROJECT.award}</span>],
+          ["tissues", PROJECT.tissues],
+          ["control", PROJECT.control],
+          ["treatment", PROJECT.treatment],
         ]}
       />
+      <div>
+        <p className="text-[0.72rem] text-[var(--accent)]">## research question</p>
+        <Prose>{PROJECT.question}</Prose>
+      </div>
+      <div>
+        <p className="text-[0.72rem] text-[var(--accent)]">## hypothesis</p>
+        <Prose>{PROJECT.hypothesis}</Prose>
+      </div>
       <Prose>{PROJECT.abstract}</Prose>
-      <p className="text-[0.72rem] text-[var(--muted)]"><span className="text-[var(--accent)]">## </span>full citation</p>
-      <Prose>{PROJECT.result}</Prose>
+      <div>
+        <p className="text-[0.72rem] text-[var(--muted)]"><span className="text-[var(--accent)]">## </span>files in project/</p>
+        <p className="mt-1 font-mono text-[0.72rem] leading-relaxed text-[var(--muted)]">
+          <span className="text-[var(--accent)]">results.md</span> · <span className="text-[var(--accent)]">design</span> ·{" "}
+          <span className="text-[var(--accent)]">volcano</span> · <span className="text-[var(--accent)]">heatmap</span> ·{" "}
+          <span className="text-[var(--accent)]">pathways</span> · <span className="text-[var(--accent)]">pca</span> ·{" "}
+          <span className="text-[var(--accent)]">genes</span> · <span className="text-[var(--accent)]">poster</span>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function PosterView() {
+  return (
+    <div className="space-y-2">
+      <ImagePreview {...IMAGES.poster} aspect="4 / 3" />
+      <p className="text-[0.7rem] text-[var(--muted)]"># the full board — zoom in your browser, or open figures: `volcano` · `heatmap` · `design` · `pathways`</p>
+    </div>
+  );
+}
+
+function DesignView() {
+  return (
+    <div className="max-w-xl space-y-3">
+      <ImagePreview {...IMAGES.designTable} aspect="5 / 1" />
+      <KeyVals
+        pad={9}
+        rows={[
+          ["tissues", "ankle joint · DRG · spinal cord"],
+          ["groups", "PBS (control) · MSU (gout)"],
+          ["design", "3 tissues × 2 conditions × replicates"],
+          ["dataset", "GSE190138 (NCBI GEO)"],
+        ]}
+      />
     </div>
   );
 }
@@ -590,6 +715,56 @@ function AbstractView() {
     <div className="max-w-2xl space-y-2">
       <Prose>{PROJECT.abstract}</Prose>
       <p className="text-[0.72rem] text-[var(--accent-2)]">— {PROJECT.award}</p>
+    </div>
+  );
+}
+
+function ResultsView() {
+  return (
+    <div className="max-w-2xl space-y-3">
+      {RESULTS.map((r) => (
+        <div key={r.heading}>
+          <p className="text-[0.82rem] font-bold text-[var(--fg)]"><span className="text-[var(--accent)]">## </span>{r.heading}</p>
+          <Prose>{r.body}</Prose>
+        </div>
+      ))}
+      <p className="pt-1 text-[0.72rem] text-[var(--muted)]"># see the graphs: `heatmap` · `pca` · `pathways` · `volcano`</p>
+    </div>
+  );
+}
+
+function PathwaysView() {
+  return (
+    <TermTable
+      caption="# pathways.tsv — top GO enrichment categories (up-regulated under MSU)"
+      head={["pathway", "reg", "enrichment", "from"]}
+      rows={PATHWAYS.map((p) => {
+        const w = 12;
+        const fill = Math.round(Math.min(1, Math.abs(p.nes) / 3) * w);
+        const col = p.dir === "up" ? "var(--accent)" : "var(--accent-2)";
+        return [
+          <span key="n" className="text-[var(--fg)]">{p.pathway}</span>,
+          <span key="r" className="text-[0.68rem] font-bold" style={{ color: col }}>{p.dir.toUpperCase()}</span>,
+          <span key="b" className="whitespace-pre"><span style={{ color: col }}>{"█".repeat(fill)}</span><span className="text-[var(--muted)]/40">{"░".repeat(w - fill)}</span></span>,
+          <span key="s" className="text-[var(--muted)]">{p.source}</span>,
+        ];
+      })}
+    />
+  );
+}
+
+function ResourcesView() {
+  const KIND: Record<string, string> = { tool: "var(--accent)", data: "var(--accent-2)", text: "var(--accent-2)", mentor: "var(--hot)", link: "var(--accent)" };
+  return (
+    <div className="space-y-1.5 text-[0.78rem]">
+      <p className="mb-1 text-[var(--muted)]"># tools, mentors & references behind the work</p>
+      {RESOURCES.map((r) => (
+        <p key={r.label} className="flex flex-wrap items-baseline gap-x-2.5">
+          <span className="shrink-0 rounded px-1.5 text-[0.5rem] uppercase tracking-widest" style={{ color: KIND[r.kind] ?? "var(--muted)", border: "1px solid var(--line)" }}>{r.kind}</span>
+          <span className="shrink-0 font-semibold text-[var(--fg)]">{r.label}</span>
+          <span className="text-[var(--muted)]">— {r.detail}</span>
+        </p>
+      ))}
     </div>
   );
 }
@@ -757,7 +932,8 @@ function Neofetch() {
     ["kernel", "deg-sh 3.1"],
     ["uptime", "class of 2027"],
     ["shell", "R 4.x"],
-    ["packages", "DESeq2 · limma · ggplot2 · GSEA"],
+    ["dataset", "GSE190138 (PBS vs MSU)"],
+    ["packages", "edgeR · ggplot2 · clusterProfiler"],
     ["de", "RNA-seq differential expression"],
     ["awards", "USABO HM · UK BBO Silver · ACSEF 3rd"],
     ["theme", "acid-lime on near-black"],
@@ -781,16 +957,29 @@ function Neofetch() {
 
 function HelpView() {
   const groups: { title: string; items: [string, string][] }[] = [
-    { title: "view achievements", items: [
-      ["volcano", "interactive differential-expression plot"],
-      ["genes", "DESeq2 results table (top hits)"],
-      ["project", "the mouse-gout RNA-seq project"],
-      ["methodology", "the 8-step pipeline (methodology.sh)"],
-      ["abstract", "the project abstract"],
+    { title: "the science-fair project", items: [
+      ["poster", "🖼 the full ACSEF research poster"],
+      ["photo", "🖼 Jadon in front of his board"],
+      ["project", "overview of the mouse-gout RNA-seq study"],
+      ["results", "the findings + why they matter"],
+      ["methodology", "the edgeR pipeline (methodology.sh)"],
+      ["design", "experimental design (3 tissues × PBS/MSU)"],
+      ["citation", "BibTeX citation"],
+    ]},
+    { title: "graphs & data", items: [
+      ["volcano", "real volcano plots + DEG counts"],
+      ["degs", "DEGs per tissue (deg-counts.tsv)"],
+      ["heatmap", "pain-mediator × tissue heatmap"],
+      ["pca", "sample-clustering scatter (PCA)"],
+      ["genes", "the key pain mediators (Ccl9, Ngf, …)"],
+      ["pathways", "GO enrichment categories"],
+    ]},
+    { title: "achievements", items: [
       ["awards", "all three olympiad/fair results"],
       ["usabo · bbo · acsef", "open one award as JSON"],
       ["field", "all programs (or ysjc/prism/stem-pac/umass)"],
       ["stats", "the numbers (stats.json)"],
+      ["resources", "tools, mentors & references"],
     ]},
     { title: "filesystem", items: [
       ["ls [dir]", "list a directory"],
