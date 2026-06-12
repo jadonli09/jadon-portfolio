@@ -394,7 +394,7 @@ function YearSkyline({
                 onMouseLeave={() => setHoveredYear(null)}
                 onFocus={() => setHoveredYear(bar.year)}
                 onBlur={() => setHoveredYear(null)}
-                className="relative flex w-full flex-col-reverse overflow-hidden rounded-t focus:outline-none"
+                className="relative flex w-full flex-col-reverse overflow-hidden rounded-t focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
                 style={{
                   height: `${BAR_MAX_HEIGHT}px`,
                   cursor: "pointer",
