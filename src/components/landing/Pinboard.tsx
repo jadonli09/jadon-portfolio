@@ -33,12 +33,9 @@ export function Pinboard() {
   return (
     <section id="record" className="relative scroll-mt-24 pb-20 pt-6 md:pb-24 md:pt-8">
       <div className="mx-auto max-w-7xl px-5 md:px-9">
-        <div className="mb-3 text-center">
+        <div className="mb-10 text-center">
           <BoardLabel className="rotate-1">The record · pinned</BoardLabel>
         </div>
-        <h2 className="font-display mx-auto mb-12 max-w-xl text-center text-2xl leading-snug text-[#f4f1ea] md:text-3xl">
-          Everything below links somewhere. Pull a pin.
-        </h2>
 
         {/* desktop wall — no frame; the board surface IS the background */}
         <div className="relative hidden md:block" style={{ height: 530 }}>
@@ -162,7 +159,7 @@ function PinBody({ item }: { item: PinItem }) {
     case "letter":
       return (
         <div className="font-display bg-[#f9f5ea] p-[1.1rem] text-[#1f1d18] shadow-[0_14px_34px_rgba(0,0,0,0.72)]">
-          <p className="font-mono text-[0.56rem] font-bold uppercase tracking-[0.2em] text-[#b04a32]">Read me first</p>
+          <p className="font-mono text-[0.56rem] font-bold uppercase tracking-[0.2em] text-[#b04a32]">Who is he?</p>
           <p className="mt-2 text-[0.8rem] leading-[1.62]">{PIN_LETTER_TEXT}</p>
           <p className="font-hand mt-2.5 text-xl leading-none">— Jadon</p>
         </div>
