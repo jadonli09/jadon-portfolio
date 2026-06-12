@@ -27,10 +27,7 @@ const ASPECT_CLASS: Record<string, string> = {
   about: "[--ar:1.333]",
 };
 
-/** Page previews are 1280×800 screenshots — frames morph to this aspect on hover so the zoom-out is crop-accurate. */
-const PREVIEW_ASPECT = 1.6;
-
-/** Page-preview screenshot shown on hover and zoomed into on click. */
+/** Page-preview screenshot shown on hover (frames morph to its 16:10 aspect via `group-hover:[--ar:1.6]`). */
 const previewOf = (id: string) => `/img/previews/${id}.jpg`;
 
 const UTILITY = [
@@ -77,7 +74,6 @@ function FilmFrame({
         className="flex flex-col"
       >
         <div
-          data-zoom
           className={`relative overflow-hidden rounded-[2px] bg-[#0b0b0f] transition-[width] duration-300 ease-out ${aspectClass} group-hover:[--ar:1.6] group-focus-visible:[--ar:1.6]`}
           style={{ height: "var(--fh)", width: "calc(var(--fh) * var(--ar))" }}
         >
@@ -134,24 +130,13 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
     strip.querySelector('a[aria-current="page"]')?.scrollIntoView({ inline: "center", block: "nearest" });
   }, []);
 
-  /** Hand the preview + its on-screen rect to the zoom overlay, then navigate mid-zoom. */
+  /** Kick off the destination world's transition, then navigate once the screen is covered. */
   const onNavigate = (e: React.MouseEvent, door: Door) => {
     e.preventDefault();
     if (current === door.href) return onClose();
     if (navigating.current) return;
     navigating.current = true;
-    const preview = previewOf(door.id);
-    const r = (e.currentTarget as HTMLElement).querySelector("[data-zoom]")?.getBoundingClientRect();
-    try {
-      sessionStorage.setItem("develop", JSON.stringify({ preview, t: Date.now() }));
-    } catch {
-      /* private mode etc. — transition degrades to plain navigation */
-    }
-    window.dispatchEvent(
-      new CustomEvent("develop:start", {
-        detail: { preview, rect: r ? { top: r.top, left: r.left, width: r.width, height: r.height } : null },
-      }),
-    );
+    window.dispatchEvent(new CustomEvent("develop:start", { detail: { world: door.id } }));
     window.setTimeout(() => router.push(door.href), 520);
   };
 
