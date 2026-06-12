@@ -1,12 +1,14 @@
 # Contact Sheet Navigation — Design
 
 **Date:** 2026-06-11
-**Status:** Approved
+**Status:** Shipped, then revised same-day per user feedback (v2 below)
 **Replaces:** the Nav fullscreen text-list overlay and the Footer "Next chapter" hand-off.
+
+> **v2 revision (user-directed, 06/11/2026):** the seven separate tall frames became **one continuous horizontal film roll** (perforation rows top/bottom, amber rebate edge-markings `FR 0N · word` under each frame); frames now match each photo's **native aspect ratio** so nothing is cropped (`ASPECT` map in `ContactSheet.tsx`); **hovering a frame crossfades the still to a real screenshot of the destination page** (`public/img/previews/<id>.jpg`, captured headless at 1280×800); **clicking zooms that preview from its frame rect until it fills the screen and becomes the page** (replacing the developer-bath animation — `Develop.tsx` now animates top/left/width/height from the frame's `getBoundingClientRect()` to the viewport, holds through the route change, and fades out over the identical real hero). The `develop:start` event detail is now `{preview, rect}` and the sessionStorage flag `{preview, t}`. The roll auto-centers the current page's frame on open. Previews must be re-captured when page heroes change.
 
 ## Goal
 
-One click from any page to any other page, through a navigation experience that is itself part of the site's story. The metaphor: a photographer's **contact sheet in a darkroom** — every page of the site is a frame on a developed roll of film, and entering a page is the print *developing*. Leans into the "documents all of it" / @li_locked.in identity.
+One click from any page to any other page, through a navigation experience that is itself part of the site's story. The metaphor: a photographer's **film roll in a darkroom** — every page of the site is a frame on a developed roll of film; hovering a frame shows the page it leads to, and entering is the camera *zooming into the frame*. Leans into the "documents all of it" / @li_locked.in identity.
 
 ## What is removed
 
