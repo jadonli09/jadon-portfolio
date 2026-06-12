@@ -463,6 +463,21 @@ export function ResearchIDE() {
             onClick={(e) => { if (e.target === e.currentTarget) inputRef.current?.focus(); }}
             className="ide-stream term-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 text-[0.8rem] leading-relaxed md:px-6"
           >
+            {/* masthead — the page's clear title, first thing in the stream */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="mb-4 border-b border-[var(--line)] pb-4"
+            >
+              <p className="font-mono text-[0.6rem] uppercase tracking-[0.35em] text-[var(--muted)]">03 — The Scientist</p>
+              <p className="font-display mt-1.5 text-4xl leading-none text-[var(--fg)] md:text-6xl">
+                RESEARCH<span className="text-[var(--accent)]">.</span>
+              </p>
+              <p className="mt-2.5 font-mono text-[0.68rem] uppercase tracking-[0.2em] text-[var(--muted)]">
+                Gout pain in the genome — RNA-seq · DEG console
+              </p>
+            </motion.div>
             {log.map((e) => (
               <div key={e.id} className="mb-1">
                 {e.kind === "cmd" && (

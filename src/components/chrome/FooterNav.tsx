@@ -73,9 +73,14 @@ export function FooterNav() {
           </Link>
         ))}
       </div>
-      <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-widest">
+      <div className="mt-6 flex flex-wrap gap-3">
         {extras.map((x) => (
-          <Link key={x.href} href={x.href} data-cursor-hover className="text-[var(--muted)] underline-offset-4 transition-colors hover:text-[var(--fg)] hover:underline">
+          <Link
+            key={x.href}
+            href={x.href}
+            data-cursor-hover
+            className="border border-[var(--line)] bg-[var(--bg)]/40 px-5 py-3 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[var(--fg)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          >
             {x.label} →
           </Link>
         ))}

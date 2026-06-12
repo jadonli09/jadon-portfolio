@@ -11,10 +11,11 @@ import { startWorldTransition, WORLD_NAV_DELAY_MS } from "@/lib/transition";
 
 type Door = (typeof SENTENCE_DOORS)[keyof typeof SENTENCE_DOORS];
 
-/** Insertion order is num order: 01 leads … 07 person. */
 const FRAMES: Door[] = Object.values(SENTENCE_DOORS);
+/** Display order: the person opens the roll, then the chapters in num order. */
+const ORDERED: Door[] = [...FRAMES.filter((d) => d.id === "about"), ...FRAMES.filter((d) => d.id !== "about")];
 /** Two cut strips on the light table: four frames up top, three below. */
-const STRIPS: Door[][] = [FRAMES.slice(0, 4), FRAMES.slice(4)];
+const STRIPS: Door[][] = [ORDERED.slice(0, 4), ORDERED.slice(4)];
 
 /**
  * Native aspect ratio of each door photo, as a static Tailwind class setting `--ar`
