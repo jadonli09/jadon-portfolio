@@ -23,7 +23,7 @@ export default function AlbumsPage() {
       {/* 2. Six albums, masonry at natural aspect */}
       <AlbumGallery />
 
-      {/* 3. Footer (no next-world handoff — the archive sits outside the spine) */}
+      {/* 3. Footer */}
       <Footer />
     </World>
   );
