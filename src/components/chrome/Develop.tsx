@@ -6,10 +6,12 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { asset } from "@/lib/base";
 import { EASE } from "@/lib/motion";
 
+type Rect = { top: number; left: number; width: number; height: number };
+
 type Stage =
   | { kind: "idle" }
-  | { kind: "cover"; photo: string; accent: string }
-  | { kind: "bath"; photo: string; accent: string }
+  | { kind: "zoom"; preview: string; rect: Rect | null } // expanding toward fullscreen, pre-navigation
+  | { kind: "reveal"; preview: string; rect: Rect | null } // destination arrived — hold, then fade away
   | { kind: "subtle" };
 
 const FLAG = "develop";
@@ -17,11 +19,11 @@ const FLAG = "develop";
 const FAILSAFE_MS = 4200;
 
 /**
- * Darkroom page transition. `develop:start` (from ContactSheet) covers the
- * screen in a red-washed print before navigation; the pathname change flips it
- * to the developer bath (B&W ghost -> sharp -> colour), then the print lifts.
- * A sessionStorage flag covers hard refreshes mid-transition; plain hard loads
- * get a subtle backdrop develop instead.
+ * Zoom page transition. `develop:start` (from ContactSheet) hands over the page
+ * preview and its on-screen rect; the preview expands from the film frame until
+ * it fills the viewport, navigation happens beneath it, and the overlay fades
+ * to reveal the real page it was previewing. A sessionStorage flag covers hard
+ * refreshes mid-transition; plain hard loads get a subtle backdrop develop.
  */
 export function Develop() {
   const pathname = usePathname();
@@ -30,7 +32,7 @@ export function Develop() {
   const stageRef = useRef(stage);
   stageRef.current = stage;
   const lastPath = useRef(pathname);
-  const bathTimer = useRef<number | null>(null);
+  const revealTimer = useRef<number | null>(null);
 
   // Failsafe: any non-idle stage self-clears.
   useEffect(() => {
@@ -39,25 +41,25 @@ export function Develop() {
     return () => window.clearTimeout(t);
   }, [stage]);
 
-  // The bath-hold timer must not outlive the component.
+  // The reveal-hold timer must not outlive the component.
   useEffect(
     () => () => {
-      if (bathTimer.current !== null) window.clearTimeout(bathTimer.current);
+      if (revealTimer.current !== null) window.clearTimeout(revealTimer.current);
     },
     [],
   );
 
-  // Click side: cover the screen before navigation starts.
+  // Click side: start the zoom from the clicked frame's rect.
   useEffect(() => {
     const onStart = (e: Event) => {
-      const d = (e as CustomEvent).detail as { photo?: string; accent?: string } | undefined;
-      if (typeof d?.photo === "string") setStage({ kind: "cover", photo: d.photo, accent: d.accent ?? "#c43e2c" });
+      const d = (e as CustomEvent).detail as { preview?: string; rect?: Rect | null } | undefined;
+      if (typeof d?.preview === "string") setStage({ kind: "zoom", preview: d.preview, rect: d.rect ?? null });
     };
     window.addEventListener("develop:start", onStart);
     return () => window.removeEventListener("develop:start", onStart);
   }, []);
 
-  // Arrival: pathname changed while covered -> run the bath.
+  // Arrival: pathname changed while zooming -> hold fullscreen briefly, then fade.
   useEffect(() => {
     if (pathname === lastPath.current) return;
     lastPath.current = pathname;
@@ -65,75 +67,50 @@ export function Develop() {
       sessionStorage.removeItem(FLAG);
     } catch {}
     const s = stageRef.current;
-    if (s.kind === "cover") setStage({ kind: "bath", photo: s.photo, accent: s.accent });
+    if (s.kind === "zoom") {
+      setStage({ kind: "reveal", preview: s.preview, rect: s.rect });
+      revealTimer.current = window.setTimeout(() => setStage({ kind: "idle" }), 420);
+    }
   }, [pathname]);
 
   // Hard load: consume a fresh flag (refresh mid-transition), else subtle pass.
   useEffect(() => {
-    type FlagShape = { photo?: string; accent?: string; t?: number };
+    type FlagShape = { preview?: string; t?: number };
     let flag: FlagShape | null = null;
     try {
       const raw = sessionStorage.getItem(FLAG);
       if (raw) flag = JSON.parse(raw) as FlagShape;
       sessionStorage.removeItem(FLAG);
     } catch {}
-    if (flag?.photo && typeof flag.t === "number" && Date.now() - flag.t < 5000) {
-      setStage({ kind: "bath", photo: flag.photo, accent: flag.accent ?? "#c43e2c" });
+    if (flag?.preview && typeof flag.t === "number" && Date.now() - flag.t < 5000) {
+      setStage({ kind: "reveal", preview: flag.preview, rect: null });
+      revealTimer.current = window.setTimeout(() => setStage({ kind: "idle" }), 600);
     } else if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setStage({ kind: "subtle" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const active = stage.kind === "cover" || stage.kind === "bath";
+  const active = stage.kind === "zoom" || stage.kind === "reveal";
+  // Reduced motion (or a missing rect) skips the frame-to-fullscreen flight and just fades in.
+  const fromRect = active && !reduced ? stage.rect : null;
 
   return (
     <AnimatePresence>
       {active && (
         <motion.div
-          key="print"
-          className="fixed inset-0 z-[60] bg-[#070709]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ y: "-103%", transition: { duration: 0.65, ease: EASE } }}
-          transition={{ duration: 0.3 }}
+          key="zoom"
+          className="fixed z-[60] overflow-hidden bg-[#070709]"
+          initial={
+            fromRect
+              ? { top: fromRect.top, left: fromRect.left, width: fromRect.width, height: fromRect.height, borderRadius: 3, opacity: 1 }
+              : { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight, borderRadius: 0, opacity: 0 }
+          }
+          animate={{ top: 0, left: 0, width: window.innerWidth, height: window.innerHeight, borderRadius: 0, opacity: 1 }}
+          exit={{ opacity: 0, transition: { duration: 0.5, ease: EASE } }}
+          transition={{ duration: reduced ? 0.25 : 0.6, ease: EASE }}
         >
-          <motion.img
-            src={asset((stage as Extract<Stage, { kind: "cover" | "bath" }>).photo)}
-            alt=""
-            className="h-full w-full object-cover"
-            initial={{ scale: 1.08 }}
-            animate={
-              stage.kind === "bath" && !reduced
-                ? {
-                    scale: 1,
-                    filter: [
-                      "grayscale(1) brightness(1.9) contrast(0.45) blur(2.5px)",
-                      "grayscale(1) brightness(1.2) contrast(0.92) blur(0.5px)",
-                      "grayscale(0.35) brightness(1.04) contrast(1) blur(0px)",
-                      "grayscale(0) brightness(1) contrast(1) blur(0px)",
-                    ],
-                  }
-                : { scale: stage.kind === "bath" ? 1 : 1.04 }
-            }
-            transition={
-              stage.kind === "bath"
-                ? { duration: reduced ? 0.4 : 1.4, ease: "easeInOut", times: reduced ? undefined : [0, 0.45, 0.75, 1] }
-                : { duration: 0.5, ease: EASE }
-            }
-            onAnimationComplete={() => {
-              if (stageRef.current.kind === "bath") {
-                bathTimer.current = window.setTimeout(() => setStage({ kind: "idle" }), 220);
-              }
-            }}
-          />
-          {/* safelight wash — present on cover, lifts during the bath */}
-          <motion.div
-            className="pointer-events-none absolute inset-0"
-            style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,60,40,0.5), rgba(120,14,9,0.72) 75%)", mixBlendMode: "hard-light" }}
-            animate={{ opacity: stage.kind === "bath" ? 0 : 1 }}
-            transition={{ duration: 0.5, ease: EASE }}
-          />
+          <img src={asset(stage.preview)} alt="" className="h-full w-full object-cover" />
         </motion.div>
       )}
       {stage.kind === "subtle" && (

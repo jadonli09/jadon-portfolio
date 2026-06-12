@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "motion/react";
@@ -13,6 +13,20 @@ type Door = (typeof SENTENCE_DOORS)[keyof typeof SENTENCE_DOORS];
 /** Insertion order is num order: 01 leads … 07 person. */
 const FRAMES: Door[] = Object.values(SENTENCE_DOORS);
 
+/** Native aspect ratio of each door photo — frames match it so nothing is cropped. */
+const ASPECT: Record<string, number> = {
+  leadership: 1.5,
+  civic: 4 / 3,
+  research: 1.5,
+  built: 4 / 3,
+  court: 16 / 9,
+  lockedin: 1.5,
+  about: 4 / 3,
+};
+
+/** Page-preview screenshot shown on hover and zoomed into on click. */
+const previewOf = (id: string) => `/img/previews/${id}.jpg`;
+
 const UTILITY = [
   { label: "Home", href: "/" },
   { label: "Trophy Case", href: "/achievements" },
@@ -23,17 +37,27 @@ const UTILITY = [
 /** Photographer's red grease-pencil circle marking the frame you're on. */
 function GreasePencil() {
   return (
-    <svg viewBox="0 0 100 160" preserveAspectRatio="none" aria-hidden className="pointer-events-none absolute -inset-3 z-10">
+    <svg viewBox="0 0 160 100" preserveAspectRatio="none" aria-hidden className="pointer-events-none absolute -inset-1.5 z-10">
       <path
-        d="M50 6 C 82 4 96 38 94 80 C 92 124 78 154 48 155 C 20 156 5 122 6 78 C 7 36 22 8 50 6 Z"
+        d="M80 7 C 124 4 151 22 153 48 C 155 75 123 93 78 94 C 35 95 9 77 7 50 C 5 25 37 9 80 7 Z"
         fill="none"
         stroke="#c43e2c"
-        strokeWidth="3.5"
+        strokeWidth="2.5"
         strokeLinecap="round"
-        opacity="0.9"
-        style={{ transform: "rotate(-2.5deg)", transformOrigin: "50% 50%" }}
+        opacity="0.85"
+        style={{ transform: "rotate(-1.5deg)", transformOrigin: "50% 50%" }}
       />
     </svg>
+  );
+}
+
+/** A row of sprocket holes punched through the film base. */
+function PerfRow() {
+  return (
+    <div
+      aria-hidden
+      className="h-4 w-full [background-image:radial-gradient(circle,#06060a_0_3px,transparent_3.6px)] [background-position:10px_center] [background-repeat:repeat-x] [background-size:16px_16px]"
+    />
   );
 }
 
@@ -48,55 +72,58 @@ function FilmFrame({
   isCurrent: boolean;
   onNavigate: (e: React.MouseEvent, door: Door) => void;
 }) {
+  const aspect = ASPECT[door.id] ?? 1.5;
   return (
     <Link
       href={door.href}
       data-cursor-hover
       onClick={(e) => onNavigate(e, door)}
       aria-current={isCurrent ? "page" : undefined}
-      className="group relative shrink-0 snap-center outline-none"
+      className="group relative flex shrink-0 snap-center flex-col outline-none"
     >
       <motion.div
-        initial={{ y: 48, opacity: 0 }}
+        initial={{ y: 26, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.15 + index * 0.06, duration: 0.7, ease: EASE }}
-        whileHover={{ scale: 1.06, y: -10 }}
-        className="relative h-[46vh] w-[62vw] overflow-hidden rounded-[4px] bg-[#14141b] shadow-[0_18px_50px_rgba(0,0,0,0.6)] md:h-[52vh] md:w-[clamp(150px,12vw,220px)]"
+        transition={{ delay: 0.12 + index * 0.05, duration: 0.6, ease: EASE }}
+        className="flex flex-col"
       >
-        {/* sprocket holes */}
-        <div className="absolute inset-y-0 left-1 w-2 [background:repeating-linear-gradient(#070709_0_8px,transparent_8px_18px)]" />
-        <div className="absolute inset-y-0 right-1 w-2 [background:repeating-linear-gradient(#070709_0_8px,transparent_8px_18px)]" />
-        <span className="absolute left-4 top-2 font-mono text-[0.55rem] tracking-[0.2em] text-[#8a8a99]">FR {door.num}</span>
-        {/* negative — accent-tinted underlay doubles as the image-error fallback */}
         <div
-          className="absolute inset-x-4 bottom-12 top-7 overflow-hidden"
-          style={{ background: `linear-gradient(160deg, ${door.accent}33, #1a1a22)` }}
+          data-zoom
+          className="relative overflow-hidden rounded-[3px] bg-[#0b0b0f]"
+          style={{ aspectRatio: String(aspect), height: `min(44vh, calc(78vw / ${aspect}))` }}
         >
+          {/* the still — full image, frame matches its native aspect */}
           <img
             src={asset(door.photo)}
             alt=""
             loading="lazy"
-            className="h-full w-full object-cover contrast-[1.05] saturate-[0.92] transition-[filter] duration-300 group-hover:saturate-100"
+            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-0 group-focus-visible:opacity-0"
           />
+          {/* the page preview — revealed on hover, zoomed into on click */}
+          <img
+            src={asset(previewOf(door.id))}
+            alt=""
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
+          />
+          {/* accent edge glow on hover / keyboard focus */}
+          <div
+            className="pointer-events-none absolute inset-0 rounded-[3px] opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
+            style={{ boxShadow: `inset 0 0 0 1.5px ${door.accent}, 0 0 30px -8px ${door.accent}` }}
+          />
+          {isCurrent && <GreasePencil />}
         </div>
-        {/* label */}
-        <div className="absolute inset-x-4 bottom-2.5">
-          <p className="font-mono text-[0.5rem] uppercase tracking-[0.22em] text-[#8a8a99]">{door.kicker}</p>
-          <p className="truncate font-mono text-[0.62rem] uppercase tracking-[0.14em] text-[#f4f1ea]" style={{ textDecorationColor: door.accent }}>
-            {door.word}
-          </p>
+        {/* rebate — film edge markings under the frame */}
+        <div className="relative h-6 font-mono text-[0.55rem] uppercase tracking-[0.18em]">
+          <span className="absolute inset-x-0.5 inset-y-0 flex items-center text-[#d9a83f] transition-opacity duration-300 group-hover:opacity-0 group-focus-visible:opacity-0">
+            FR {door.num} · {door.word}
+          </span>
+          <span className="pointer-events-none absolute inset-x-0.5 inset-y-0 flex items-center gap-2 truncate opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+            <span className="shrink-0 text-[#d9a83f]">↗ enter</span>
+            <span className="truncate text-[#6f6f7d]">{door.peek}</span>
+          </span>
         </div>
-        {/* accent edge glow on hover / keyboard focus */}
-        <div
-          className="pointer-events-none absolute inset-0 rounded-[4px] opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
-          style={{ boxShadow: `inset 0 0 0 1.5px ${door.accent}, 0 0 28px -6px ${door.accent}` }}
-        />
-        {isCurrent && <GreasePencil />}
       </motion.div>
-      {/* peek stat under the loupe */}
-      <span className="pointer-events-none absolute -bottom-6 left-1/2 w-max max-w-[110%] -translate-x-1/2 truncate font-mono text-[0.55rem] uppercase tracking-[0.18em] text-[#8a8a99] opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        {door.peek}
-      </span>
     </Link>
   );
 }
@@ -111,19 +138,32 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
   /** A click already queued navigation — ignore further frame clicks. */
   const navigating = useRef(false);
 
-  /** Hand off to the Develop overlay, then navigate once the cover has settled. */
+  // Bring the current page's frame into view when the roll opens.
+  useEffect(() => {
+    stripRef.current
+      ?.querySelector('a[aria-current="page"]')
+      ?.scrollIntoView({ inline: "center", block: "nearest" });
+  }, []);
+
+  /** Hand the preview + its on-screen rect to the zoom overlay, then navigate mid-zoom. */
   const onNavigate = (e: React.MouseEvent, door: Door) => {
     e.preventDefault();
     if (current === door.href) return onClose();
     if (navigating.current) return;
     navigating.current = true;
+    const preview = previewOf(door.id);
+    const r = (e.currentTarget as HTMLElement).querySelector("[data-zoom]")?.getBoundingClientRect();
     try {
-      sessionStorage.setItem("develop", JSON.stringify({ photo: door.photo, accent: door.accent, t: Date.now() }));
+      sessionStorage.setItem("develop", JSON.stringify({ preview, t: Date.now() }));
     } catch {
       /* private mode etc. — transition degrades to plain navigation */
     }
-    window.dispatchEvent(new CustomEvent("develop:start", { detail: { photo: door.photo, accent: door.accent } }));
-    window.setTimeout(() => router.push(door.href), 480);
+    window.dispatchEvent(
+      new CustomEvent("develop:start", {
+        detail: { preview, rect: r ? { top: r.top, left: r.left, width: r.width, height: r.height } : null },
+      }),
+    );
+    window.setTimeout(() => router.push(door.href), 520);
   };
 
   /** Esc closes; Tab is trapped inside the dialog; ←/→ move focus along the roll. */
@@ -163,7 +203,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
       ref={dialogRef}
       role="dialog"
       aria-modal="true"
-      aria-label="Site navigation — contact sheet"
+      aria-label="Site navigation — film roll"
       onKeyDown={onKeyDown}
       className="fixed inset-0 z-[45] flex flex-col bg-[#070709] text-[#f4f1ea]"
       initial={{ opacity: 0 }}
@@ -176,7 +216,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
       <div className="pointer-events-none absolute inset-x-0 top-0 h-44 bg-[radial-gradient(ellipse_at_50%_0%,rgba(196,62,44,0.3),transparent_70%)]" />
 
       <p className="pt-24 text-center font-mono text-[0.62rem] uppercase tracking-[0.3em] text-[#8a8a99]">
-        One year · seven rolls — pick a frame
+        One year · one roll — hover a frame to preview the page
       </p>
 
       {/* the roll — native horizontal scroller; Lenis must ignore it */}
@@ -186,12 +226,23 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
         onWheel={(e) => {
           if (stripRef.current) stripRef.current.scrollLeft += e.deltaY;
         }}
-        className="flex flex-1 snap-x snap-mandatory items-center overflow-x-auto overflow-y-hidden"
+        className="flex flex-1 snap-x items-center overflow-x-auto overflow-y-hidden"
       >
-        <div className="mx-auto flex w-max items-center gap-5 px-6 pb-7 md:gap-6">
-          {FRAMES.map((door, i) => (
-            <FilmFrame key={door.id} door={door} index={i} isCurrent={current === door.href} onNavigate={onNavigate} />
-          ))}
+        <div className="mx-auto w-max px-6 py-4">
+          <motion.div
+            initial={{ x: 60, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.7, ease: EASE }}
+            className="rounded-[6px] bg-[#17171d] shadow-[0_28px_80px_rgba(0,0,0,0.7)]"
+          >
+            <PerfRow />
+            <div className="flex items-end gap-2.5 px-3 py-1.5">
+              {FRAMES.map((door, i) => (
+                <FilmFrame key={door.id} door={door} index={i} isCurrent={current === door.href} onNavigate={onNavigate} />
+              ))}
+            </div>
+            <PerfRow />
+          </motion.div>
         </div>
       </div>
 
@@ -203,7 +254,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
         className="flex flex-wrap items-center justify-center gap-2.5 px-5 pb-8"
       >
         {UTILITY.map((u) => {
-          const here = current === u.href;
+          const here = pathname === u.href || current === u.href;
           return (
             <Link
               key={u.href}
