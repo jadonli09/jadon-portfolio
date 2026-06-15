@@ -126,9 +126,11 @@ function SubScoreBar({ label, value, max = 800 }: { label: string; value: number
 function ScoreCard({
   score,
   primary,
+  className,
 }: {
   score: (typeof SCORES)[number];
   primary?: boolean;
+  className?: string;
 }) {
   const numVal = Number(score.value);
 
@@ -139,6 +141,7 @@ function ScoreCard({
         primary
           ? "border-2 border-[var(--accent)]"
           : "border border-[var(--line)]",
+        className,
       )}
       style={{
         background: primary ? "#fffdf7" : "#fffdf7",
@@ -208,47 +211,40 @@ export function ScoreBoard() {
           </Reveal>
         </RevealGroup>
 
-        {/* Score cards */}
+        {/* Scores + AP medallions, all in one place: SAT anchors the left and
+            spans both rows; PSAT/ACT sit top-right; the six AP fives tuck into
+            a panel directly underneath them. */}
         <div className="grid gap-4 md:grid-cols-3">
-          {SCORES.map((score, i) => (
-            <Reveal key={score.label} delay={i * 0.1}>
-              <ScoreCard score={score} primary={score.label === "SAT"} />
-            </Reveal>
-          ))}
-        </div>
-
-        {/* AP Fives section */}
-        <div className="mt-14 border-t border-[var(--line)] pt-14">
-          <RevealGroup className="mb-10">
-            <Reveal>
-              <p className="eyebrow">AP Exam Scores</p>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <h3 className="mt-3 font-display text-[1.6rem] leading-snug tracking-tight md:text-[2.4rem]">
-                Six fives.
-              </h3>
-            </Reveal>
-            <Reveal delay={0.2}>
-              <p className="mt-2 font-mono text-xs leading-relaxed text-[var(--muted)]">
-                Hover each medallion for the full subject name.
-              </p>
-            </Reveal>
-          </RevealGroup>
-
-          {/* Medallion row */}
-          <Reveal delay={0.15}>
-            <div className="flex flex-wrap gap-6 md:gap-8">
-              {AP_FIVES.map((exam) => (
-                <ApMedallion key={exam} exam={exam} />
-              ))}
-            </div>
+          {/* SAT — primary, left column, full height */}
+          <Reveal className="md:row-span-2">
+            <ScoreCard score={SCORES.find((s) => s.label === "SAT")!} primary className="md:h-full" />
           </Reveal>
 
-          {/* Decorative mono label */}
-          <Reveal delay={0.3} className="mt-10">
-            <p className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--muted)]">
-              Score 5 / 5 — highest possible on AP examinations
-            </p>
+          {/* PSAT + ACT — top-right */}
+          {SCORES.filter((s) => s.label !== "SAT").map((score, i) => (
+            <Reveal key={score.label} delay={0.1 + i * 0.08}>
+              <ScoreCard score={score} className="md:h-full" />
+            </Reveal>
+          ))}
+
+          {/* AP fives — one row, directly underneath PSAT/ACT */}
+          <Reveal delay={0.25} className="md:col-span-2">
+            <div
+              className="flex h-full flex-col gap-4 rounded-xl border border-[var(--line)] p-5 md:p-6"
+              style={{ background: "#fffdf7", boxShadow: "0 4px 16px rgba(34,28,16,0.05)" }}
+            >
+              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                <p className="eyebrow">AP Exam Scores</p>
+                <p className="font-mono text-[0.56rem] uppercase tracking-[0.22em] text-[var(--muted)]">
+                  six fives · 5/5 · hover for subject
+                </p>
+              </div>
+              <div className="flex flex-1 flex-wrap items-center gap-x-5 gap-y-4 md:gap-x-7">
+                {AP_FIVES.map((exam) => (
+                  <ApMedallion key={exam} exam={exam} />
+                ))}
+              </div>
+            </div>
           </Reveal>
         </div>
       </div>

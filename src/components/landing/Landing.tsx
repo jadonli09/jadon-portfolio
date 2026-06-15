@@ -133,16 +133,13 @@ export function Landing() {
           transition={{ delay: 0.9, duration: 0.9, ease: EASE }}
           className="absolute bottom-[9%] left-5 z-[4] md:bottom-[8%] md:left-9"
         >
-          <p className="font-mono text-[clamp(0.45rem,2.35vw,0.55rem)] uppercase tracking-[0.18em] text-white/90 md:text-[0.85rem] md:tracking-[0.28em]">
+          <p className="font-display text-2xl text-white md:text-4xl">
+            <RoleRotator />
+          </p>
+          <p className="mt-3 font-mono text-[clamp(0.45rem,2.35vw,0.55rem)] uppercase tracking-[0.18em] text-white/90 md:text-[0.85rem] md:tracking-[0.28em]">
             <span className="whitespace-nowrap">{PROFILE.school}</span>
             <br />
             <span className="whitespace-nowrap">{PROFILE.city} · {PROFILE.gradeNote}</span>
-          </p>
-          <p className="mt-3 font-display text-2xl text-white md:text-4xl">
-            I am a <RoleRotator />
-          </p>
-          <p className="mt-2.5 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-white/80 md:text-[0.8rem]">
-            One person · seven doors
           </p>
         </motion.div>
 

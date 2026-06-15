@@ -35,7 +35,7 @@ export function LaunchLedger() {
                 target="_blank"
                 rel="noreferrer noopener"
                 data-cursor-hover
-                className="group grid grid-cols-[3rem_1fr_auto] items-center gap-x-4 border-b border-[var(--line)] py-4 transition-colors duration-300 hover:bg-[var(--bg)] sm:grid-cols-[3.5rem_1.2fr_5.5rem_1fr_auto] md:gap-x-8"
+                className="group grid grid-cols-[3rem_1fr_1.5rem] items-center gap-x-4 border-b border-[var(--line)] py-4 transition-colors duration-300 hover:bg-[var(--bg)] sm:grid-cols-[3.5rem_1.2fr_5.5rem_1fr_1.75rem] md:grid-cols-[3.5rem_1.2fr_5.5rem_1fr_13rem] md:gap-x-8"
               >
                 {/* Mission number */}
                 <span className="font-mono text-[0.65rem] tracking-[0.2em] text-[var(--muted)]">
@@ -64,10 +64,11 @@ export function LaunchLedger() {
                   <span className="text-[var(--fg)]">{stat.value}</span> {stat.label}
                 </span>
 
-                {/* Domain + arrow */}
-                <span className="flex items-center gap-1.5 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-[var(--muted)] transition-colors group-hover:text-[var(--fg)]">
-                  <span className="hidden md:inline">{p.domain}</span>
-                  <ArrowUpRight className="size-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                {/* Domain + arrow — fixed-width, right-aligned so the arrow
+                    lands on a consistent edge and the columns above stay aligned */}
+                <span className="flex items-center justify-end gap-1.5 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-[var(--muted)] transition-colors group-hover:text-[var(--fg)]">
+                  <span className="hidden min-w-0 truncate md:inline">{p.domain}</span>
+                  <ArrowUpRight className="size-3.5 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </span>
               </a>
               </Reveal>

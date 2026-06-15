@@ -77,8 +77,8 @@ export function ChannelRow({
         rel={external ? "noreferrer" : undefined}
         data-cursor-hover
         className={cn(
-          "relative flex w-full items-center overflow-hidden border-b border-[var(--line)]",
-          "px-0 py-5 md:py-7",
+          "relative flex w-full items-center overflow-hidden border-b border-[var(--line)] first:border-t",
+          "px-3 py-4 md:px-4 md:py-6",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
           "focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]"
         )}

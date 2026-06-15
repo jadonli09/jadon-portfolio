@@ -161,7 +161,7 @@ export function AchievementsHero() {
         {/* Kinetic headline */}
         <KineticHeadline
           as="h1"
-          text="Experiences & Achievements."
+          text={"Experiences\u00A0& Achievements."}
           delay={0.08}
           className="mt-5 font-display display-xl"
         />

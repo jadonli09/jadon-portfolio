@@ -5,6 +5,7 @@ import { HeroSection04 } from "@/components/ui/hero-04";
 import { CivicMetricsBand } from "@/components/civic/CivicMetricsBand";
 import { CivicAwardsTicker } from "@/components/civic/CivicAwardsTicker";
 import { CivicFeaturedPress } from "@/components/civic/CivicFeaturedPress";
+import { CivicBroadcast } from "@/components/civic/CivicBroadcast";
 import { CivicStories } from "@/components/civic/CivicStories";
 import { CivicSBAIFlow } from "@/components/civic/CivicSBAIFlow";
 import { CivicCommission } from "@/components/civic/CivicCommission";
@@ -33,8 +34,11 @@ export default function CivicPage() {
       {/* 3. Awards ticker — red band, pace-setting accent */}
       <CivicAwardsTicker />
 
-      {/* 3b. Jennifer Siebel Newsom press feature + podcast origin deep-dive */}
+      {/* 3b. Jennifer Siebel Newsom press feature + podcast origin deep-dive (Voices of Fremont) */}
       <CivicFeaturedPress />
+
+      {/* 3c. MSJTV broadcast + Leadership II "L2 Vid" — anchor desk + Season 3 embeds */}
+      <CivicBroadcast />
 
       {/* 4. Editorial stories section — all six stories with deep bylines/detail */}
       <CivicStories />

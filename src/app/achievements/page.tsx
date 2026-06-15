@@ -5,7 +5,6 @@ import { AchievementsHero } from "@/components/achievements/AchievementsHero";
 import { AchievementsTicker } from "@/components/achievements/AchievementsTicker";
 import { ScoreBoard } from "@/components/achievements/ScoreBoard";
 import { TrophyCase } from "@/components/achievements/TrophyCase";
-import { OriginsStrip } from "@/components/achievements/OriginsStrip";
 
 export const metadata: Metadata = {
   title: "Experiences & Achievements",
@@ -31,13 +30,10 @@ export default function AchievementsPage() {
       {/* 3. Scores — SAT counter, PSAT/ACT, AP-5 medallions */}
       <ScoreBoard />
 
-      {/* 4. The archive — filterable by year or domain (centerpiece) */}
+      {/* 4. The archive — the interactive constellation (centerpiece) */}
       <TrophyCase />
 
-      {/* 5. Origins footnote — where it started */}
-      <OriginsStrip />
-
-      {/* 6. Footer */}
+      {/* 5. Footer */}
       <Footer />
     </World>
   );

@@ -109,7 +109,7 @@ export function CourtHero() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(to top, rgba(11,11,12,0.97) 0%, rgba(11,11,12,0.70) 35%, rgba(11,11,12,0.30) 70%, rgba(11,11,12,0.15) 100%)",
+              "linear-gradient(to top, rgba(11,11,12,0.97) 0%, rgba(11,11,12,0.80) 35%, rgba(11,11,12,0.56) 70%, rgba(11,11,12,0.40) 100%)",
           }}
           aria-hidden
         />

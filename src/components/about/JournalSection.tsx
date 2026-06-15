@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { Photo } from "@/components/primitives/Photo";
 import { EASE } from "@/lib/motion";
-import { LoopArrow, Sparkle } from "@/components/about/Doodles";
+import { LoopArrow } from "@/components/about/Doodles";
 
 /**
  * The journal page — a ruled-paper card that stays private until you hover
@@ -109,14 +109,14 @@ function ShelfBook({ book, index }: { book: Book; index: number }) {
 }
 
 export function JournalSection() {
-  /* hover reveals the journal; click/focus covers touch + keyboard */
+  /* hover/tap brings the blurred line behind the label into focus */
   const [peek, setPeek] = useState(false);
 
   return (
     <section>
       <div className="mx-auto max-w-6xl px-5 py-20 md:px-9 md:py-28">
         <div className="grid gap-14 lg:grid-cols-[0.55fr_0.45fr] lg:items-start">
-          {/* ── the private journal — blurred until hovered ── */}
+          {/* ── the journal — kept deliberately private ── */}
           <motion.div
             initial={{ opacity: 0, y: 26, rotate: 0 }}
             whileInView={{ opacity: 1, y: 0, rotate: -0.8 }}
@@ -131,7 +131,7 @@ export function JournalSection() {
             tabIndex={0}
             role="button"
             aria-expanded={peek}
-            aria-label="The journal — hover or press to peek inside"
+            aria-label="Journaling since 8th grade — hover or press to bring it into focus"
             onMouseEnter={() => setPeek(true)}
             onMouseLeave={() => setPeek(false)}
             onFocus={() => setPeek(true)}
@@ -147,39 +147,22 @@ export function JournalSection() {
             <span className="tape -top-3 left-8 rotate-[-5deg]" />
             <span className="tape -top-3 right-8 rotate-[4deg]" />
 
-            <p className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--accent)]">
-              The journal · since 8th grade
-            </p>
+            <div className="relative flex min-h-[190px] items-center justify-center">
+              {/* behind — "since 8th grade", blurred until you look closer */}
+              <motion.span
+                aria-hidden={!peek}
+                animate={{ filter: peek ? "blur(0px)" : "blur(7px)", opacity: peek ? 0.85 : 0.4 }}
+                transition={{ duration: 0.5, ease: EASE }}
+                className="font-hand pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-4 -rotate-3 whitespace-nowrap text-4xl text-[var(--fg)] md:text-5xl"
+              >
+                since 8th grade
+              </motion.span>
 
-            {/* the entries — private until hovered */}
-            <motion.div
-              animate={{
-                filter: peek ? "blur(0px)" : "blur(7px)",
-                opacity: peek ? 1 : 0.55,
-              }}
-              transition={{ duration: 0.45, ease: EASE }}
-              aria-hidden={!peek}
-            >
-              <p className="font-hand mt-5 text-3xl leading-snug text-[var(--fg)] md:text-4xl">
-                &ldquo;At first just summarising events — then releasing the truth and going deeper.&rdquo;
-              </p>
-              <p className="mt-6 text-sm leading-relaxed text-[var(--muted)]">
-                At least one entry a month: trivial events, motivations, purpose, feelings.
-                Every Mission Peak climb, every season, every loss worth keeping.
-              </p>
-            </motion.div>
-
-            {/* the "it's private" hint — fades out on reveal */}
-            <motion.p
-              animate={{ opacity: peek ? 0 : 1, y: peek ? 6 : 0 }}
-              transition={{ duration: 0.3, ease: EASE }}
-              aria-hidden={peek}
-              className="font-hand pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 rotate-[-2deg] text-center text-3xl text-[var(--fg)]"
-            >
-              it&apos;s a journal — that means private.
-              <br />
-              <span className="text-2xl text-[var(--accent)]">(ok fine, hover to peek)</span>
-            </motion.p>
+              {/* front — "journaling", always clear */}
+              <span className="relative z-10 -translate-y-3 font-hand text-6xl leading-none text-[var(--fg)] md:text-7xl">
+                journaling
+              </span>
+            </div>
           </motion.div>
 
           {/* ── the favorites shelf ── */}
@@ -217,13 +200,6 @@ export function JournalSection() {
                   transition={{ duration: 1, ease: "easeInOut", delay: 0.1 }}
                 />
               </svg>
-            </div>
-
-            <div className="mt-8 flex items-start gap-2">
-              <Sparkle className="mt-1 w-5 shrink-0" delay={0.6} />
-              <p className="font-mono text-[0.62rem] uppercase tracking-[0.24em] leading-relaxed text-[var(--muted)]">
-                Real covers, real rereads — the Eggers pair counts as one obsession.
-              </p>
             </div>
           </div>
         </div>

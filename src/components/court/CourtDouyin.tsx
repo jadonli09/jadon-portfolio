@@ -70,7 +70,6 @@ function DouyinPlayer() {
         src={`https://open.douyin.com/player/video?vid=${COURT.douyin.vid}&autoplay=0`}
         title="DouYin — Jadon vs the 网红, 569k likes"
         className="absolute inset-0 h-full w-full"
-        allowFullScreen
         allow="fullscreen; encrypted-media"
         referrerPolicy="unsafe-url"
         loading="lazy"

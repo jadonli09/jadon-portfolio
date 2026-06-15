@@ -120,7 +120,10 @@ export function LockedHero() {
         />
         {/* Wrapper div provides the responsive font-size without adding style prop to KineticHeadline.
             The word sweeps through the five chapter accents — the year compressed into one line. */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, filter: "blur(14px)" }}
+          animate={{ opacity: 1, filter: "blur(0px)" }}
+          transition={{ duration: 1.1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           style={{
             fontSize: "clamp(3.8rem, 16vw, 14rem)",
             lineHeight: 0.88,
@@ -136,7 +139,7 @@ export function LockedHero() {
             className="font-anton block uppercase leading-none"
             delay={0.2}
           />
-        </div>
+        </motion.div>
         <div style={{ fontSize: "clamp(2.5rem, 10vw, 9rem)", lineHeight: 0.95 }}>
           <KineticHeadline
             as="div"

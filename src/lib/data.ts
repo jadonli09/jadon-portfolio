@@ -882,34 +882,6 @@ export const PROJECTS: Project[] = [
     stack: ["React", "TypeScript", "AI grading"],
   },
   {
-    name: "CueSheet",
-    url: "https://cuesheet.xyz",
-    domain: "cuesheet.xyz",
-    embeddable: true,
-    shot: "/embeds/cuesheet.jpg",
-    tagline: "Music supervision, organized.",
-    stats: [
-      { value: "Live", label: "cuesheet.xyz" },
-      { value: "Tool", label: "Music supervision" },
-    ],
-    body: "A tool for music supervision workflows — built and shipped live.",
-    stack: ["TypeScript", "Web"],
-  },
-  {
-    name: "Hermes",
-    url: "https://github.com/jadonli09",
-    domain: "github.com/jadonli09",
-    embeddable: false,
-    tagline: "Instagram club-info scraper.",
-    stats: [
-      { value: "90%", label: "Complete by 03/26" },
-      { value: "Aug '26", label: "Target release" },
-    ],
-    body:
-      "A scraper that pulls club info from Instagram for the 2026–2027 school year. 90% of the system finished by March 2026, with the remainder and polish coming over the summer.",
-    stack: ["Automation", "Scraping"],
-  },
-  {
     name: "Youth STEM Journal",
     url: "https://youthstemjournal.org",
     domain: "youthstemjournal.org",
@@ -924,6 +896,20 @@ export const PROJECTS: Project[] = [
     stack: ["Web", "Education"],
   },
   {
+    name: "CueSheet",
+    url: "https://cuesheet.xyz",
+    domain: "cuesheet.xyz",
+    embeddable: true,
+    shot: "/embeds/cuesheet.jpg",
+    tagline: "Music supervision, organized.",
+    stats: [
+      { value: "Live", label: "cuesheet.xyz" },
+      { value: "Tool", label: "Music supervision" },
+    ],
+    body: "A tool for music supervision workflows — built and shipped live.",
+    stack: ["TypeScript", "Web"],
+  },
+  {
     name: "MSJ Makes",
     url: "https://msjmakes.framer.website/",
     domain: "msjmakes.framer.website",
@@ -936,6 +922,20 @@ export const PROJECTS: Project[] = [
     ],
     body: "A student merch-design operation — concept, design, and sales — servicing clubs and sports teams campus-wide (badminton and volleyball hoodies, basketball merch, DECA minicon glass, senior stoles), with around $4,000 in profit across jobs.",
     stack: ["Design", "Operations"],
+  },
+  {
+    name: "Hermes",
+    url: "https://github.com/jadonli09",
+    domain: "github.com/jadonli09",
+    embeddable: false,
+    tagline: "Instagram club-info scraper.",
+    stats: [
+      { value: "90%", label: "Complete by 03/26" },
+      { value: "Aug '26", label: "Target release" },
+    ],
+    body:
+      "A scraper that pulls club info from Instagram for the 2026–2027 school year. 90% of the system finished by March 2026, with the remainder and polish coming over the summer.",
+    stack: ["Automation", "Scraping"],
   },
 ];
 
@@ -996,7 +996,7 @@ export const LEADERSHIP = {
     title: "Winter Ball — Built From Scratch",
     date: "February 2026",
     body:
-      "The first winter ball since before COVID — no precedent, no playbook. To set the bar, he proposed two new initiatives: a live drink bar mixing mocktails on the spot (people were gutted when it ran out) and game tables (he got MPPFA's fundraising lead to lend poker/roulette tables instead of buying new). 350 students came.",
+      "The kind of night that looks effortless only because every piece of it was planned, pitched, and owned.",
     stat: { value: "350", label: "Students" },
   },
   /** Car Meet — a notable event, no longer the headline. */
@@ -1289,7 +1289,9 @@ export const AP_FIVES = [
 ];
 
 export type TrophyCat = "academic" | "research" | "civic" | "built" | "leadership" | "court" | "personal";
-export type Trophy = { year: string; title: string; cat: TrophyCat; detail: string };
+/** `w` = impressiveness weight, 1 (minor) … 5 (career-defining). Drives the
+ *  size of each star in the constellation, so bigger dot = bigger accomplishment. */
+export type Trophy = { year: string; title: string; cat: TrophyCat; detail: string; w: number };
 
 /** Category labels + colours — the archive is colour-coded by domain (tuned to read on a bright gallery). */
 export const CAT_META: Record<TrophyCat, { label: string; color: string }> = {
@@ -1308,82 +1310,78 @@ export const CAT_META: Record<TrophyCat, { label: string; color: string }> = {
  */
 export const TROPHIES: Trophy[] = [
   // ── Middle school (Hopkins, class of 2023) ──
-  { year: "2021", title: "Mission Peak tradition begins", cat: "personal", detail: "First solo birthday climb at twelve — sub-hour by two seconds." },
-  { year: "2022", title: "ATDP Entrepreneurship — UC Berkeley", cat: "academic", detail: "A pre-8th summer course that sharpened presentation and critical thinking." },
-  { year: "2022", title: "Began journaling", cat: "personal", detail: "At first just events, then 'releasing the truth.' Never stopped." },
-  { year: "2021–23", title: "6× Academic Excellence — Hopkins", cat: "academic", detail: "Character award given to ≤2 students per class of 30." },
-  { year: "2023", title: "Continental Math League — 30/30", cat: "academic", detail: "A perfect score across all six contest tests." },
-  { year: "2023", title: "DECA Headstart — 2nd of 12", cat: "academic", detail: "Placed 2nd at the pre-DECA middle-school conference." },
-  { year: "2023", title: "Hopkins Basketball A-Team", cat: "court", detail: "Made the A-team after a broken arm cost him 7th grade." },
-  { year: "2023", title: "China gym moment — 569k likes", cat: "court", detail: "Outplayed a 网红 (influencer) at a gym in Xi'an; the clip went viral on DouYin." },
+  { year: "2021", title: "Mission Peak tradition begins", cat: "personal", w: 3, detail: "First solo birthday climb at twelve — sub-hour by two seconds." },
+  { year: "2022", title: "ATDP Entrepreneurship — UC Berkeley", cat: "academic", w: 1, detail: "A pre-8th summer course that sharpened presentation and critical thinking — capped with a to-scale, lit-up Colosseum model." },
+  { year: "2022", title: "Began journaling", cat: "personal", w: 2, detail: "At first just events, then 'releasing the truth.' Never stopped." },
+  { year: "2021–23", title: "6× Academic Excellence — Hopkins", cat: "academic", w: 2, detail: "Character award given to ≤2 students per class of 30." },
+  { year: "2023", title: "Continental Math League — 30/30", cat: "academic", w: 2, detail: "A perfect score across all six contest tests." },
+  { year: "2023", title: "DECA Headstart — 2nd of 12", cat: "academic", w: 2, detail: "Placed 2nd at the pre-DECA middle-school conference." },
+  { year: "2023", title: "Hopkins Basketball A-Team", cat: "court", w: 2, detail: "Made the A-team after a broken arm cost him 7th grade." },
+  { year: "2023", title: "China gym moment — 569k likes", cat: "court", w: 3, detail: "Outplayed a 网红 (influencer) at a gym in Xi'an; the clip went viral on DouYin." },
   // ── Freshman (2023–24) ──
-  { year: "2023", title: "Class President — elected", cat: "leadership", detail: "Won the freshman race; organized 153 students into 6 airbands, 3 deco teams and a skit; built the class site on Wix." },
-  { year: "2023", title: "JP Basketball — co-founded", cat: "leadership", detail: "Built the camp from scratch with “Coach PradyFlex” — business plan to coaching; $400+ each in one 4-day camp." },
-  { year: "2024", title: "Freshman Basketball Co-Captain", cat: "court", detail: "Kept team responsibility and motivation." },
-  { year: "2024", title: "The milk-fridge crusade", cat: "civic", detail: "Emailed the principal about spoiled milk, followed up until the school bought fridges. “The reason your milk is good now.”" },
-  { year: "2024", title: "Tutoring business — founded", cat: "built", detail: "Independently created, marketed and taught a high-school-readiness program — 30+ hours in two weeks." },
-  { year: "2024", title: "FAA-approved drone pilot", cat: "personal", detail: "First drone (DJI Mini 2 SE) → Avata 2 FPV → Osmo Pocket 3." },
+  { year: "2023", title: "Class President — elected", cat: "leadership", w: 4, detail: "Won the freshman race; organized 153 students into 6 airbands, 3 deco teams and a skit; built the class site on Wix." },
+  { year: "2023", title: "JP Basketball — co-founded", cat: "leadership", w: 3, detail: "Built the camp from scratch with “Coach PradyFlex” — business plan to coaching; $400+ each in one 4-day camp." },
+  { year: "2024", title: "Freshman Basketball Co-Captain", cat: "court", w: 2, detail: "Kept team responsibility and motivation." },
+  { year: "2024", title: "The milk-fridge crusade", cat: "civic", w: 2, detail: "Emailed the principal about spoiled milk, followed up until the school bought fridges. “The reason your milk is good now.”" },
+  { year: "2024", title: "Tutoring business — founded", cat: "built", w: 3, detail: "Independently created, marketed and taught a high-school-readiness program — 30+ hours in two weeks." },
+  { year: "2024", title: "FAA-approved drone pilot", cat: "personal", w: 3, detail: "First drone (DJI Mini 2 SE) → Avata 2 FPV → Osmo Pocket 3." },
   // ── Sophomore (2024–25) ──
-  { year: "2024", title: "City of Fremont Rec Director", cat: "leadership", detail: "Coached 5–12-year-olds across many sports at Irvington Sports Jam; ~$600 earned." },
-  { year: "2024", title: "Class President — re-elected", cat: "leadership", detail: "Scaled Homecoming to 235 people in 9 airbands; consolidated feedback into a 25-page report." },
-  { year: "2024", title: "Link Crew Leader", cat: "leadership", detail: "Guided freshmen through their first days — summer training + orientation day." },
-  { year: "2025", title: "JV Basketball Co-Captain", cat: "court", detail: "Led JV to a .500 league record; team dinners after losses." },
-  { year: "2025", title: "DECA — top 10 BTDM at SVCDC", cat: "academic", detail: "Top-10 finish in Business & Tech Decision-Making; on DECA's Diamond Leadership Team." },
-  { year: "2025", title: "MSJ STEM-PAC — founding officer", cat: "research", detail: "Projects-and-competitions club; launched MSJ Iron Chef." },
-  { year: "2025", title: "Lost ASB President by ~10 votes", cat: "leadership", detail: "The underdog sophomore run — heartbreak that became the comeback." },
-  { year: "2025", title: "Climbing Club money engine", cat: "leadership", detail: "Treasurer → VP: led the first Raising Cane's fundraiser, $1,300+ revenue, and automated pre-orders with Google Apps Script." },
+  { year: "2024", title: "City of Fremont Rec Director", cat: "leadership", w: 3, detail: "Coached 5–12-year-olds across many sports at Irvington Sports Jam; ~$600 earned." },
+  { year: "2024", title: "Class President — re-elected", cat: "leadership", w: 4, detail: "Scaled Homecoming to 235 people in 9 airbands; consolidated feedback into a 25-page report." },
+  { year: "2024", title: "Link Crew Leader", cat: "leadership", w: 2, detail: "Guided freshmen through their first days — summer training + orientation day." },
+  { year: "2025", title: "JV Basketball Co-Captain", cat: "court", w: 3, detail: "Led JV to a .500 league record; team dinners after losses." },
+  { year: "2025", title: "DECA — top 10 BTDM at SVCDC", cat: "academic", w: 3, detail: "Top-10 finish in Business & Tech Decision-Making; on DECA's Diamond Leadership Team." },
+  { year: "2025", title: "MSJ STEM-PAC — founding officer", cat: "research", w: 3, detail: "Projects-and-competitions club; launched MSJ Iron Chef." },
+  { year: "2025", title: "Lost ASB President by ~10 votes", cat: "leadership", w: 3, detail: "The underdog sophomore run — heartbreak that became the comeback." },
+  { year: "2025", title: "Climbing Club money engine", cat: "leadership", w: 3, detail: "Treasurer → VP: led the first Raising Cane's fundraiser, $1,300+ revenue, and automated pre-orders with Google Apps Script." },
   // ── Summer 2025 / Junior — research ──
-  { year: "2025", title: "R + Bioinformatics training", cat: "research", detail: "Learned R (ggplot2) and the RNA-seq pipeline under Dr. Shady Younice, Stanford." },
-  { year: "2025", title: "ACSEF — 3rd, Computational Biology", cat: "research", detail: "Gout RNA-seq; pain mediators traced to the spinal cord → new therapeutic targets." },
-  { year: "2025", title: "USABO — Honorable Mention", cat: "research", detail: "26/50, top ~15% (semifinalist cutoff 28)." },
-  { year: "2025", title: "UK Biology Olympiad — Silver", cat: "research", detail: "Top 10%, taken with no explicit prep." },
-  { year: "2025", title: "Youth STEM Journal Club — founder", cat: "research", detail: "Taught 8 middle-schoolers to dissect research papers at the Fremont Library." },
-  { year: "2025", title: "PRISM — co-founder", cat: "research", detail: "Promoting representation in clinical trials, with partner Arav." },
-  { year: "2025", title: "Varian tour", cat: "research", detail: "Studied TrueBeam & Halcyon radiation-therapy machines." },
-  { year: "2025", title: "ACWD Water-Plant tour — led 10", cat: "research", detail: "Organized a private treatment-plant tour with outreach director Renee Gonzales." },
+  { year: "2025", title: "R + Bioinformatics training", cat: "research", w: 3, detail: "Learned R (ggplot2) and the RNA-seq pipeline under Dr. Shady Younice, Stanford." },
+  { year: "2025", title: "ACSEF — 3rd, Computational Biology", cat: "research", w: 5, detail: "Gout RNA-seq; pain mediators traced to the spinal cord → new therapeutic targets." },
+  { year: "2025", title: "USABO — Honorable Mention", cat: "research", w: 4, detail: "26/50, top ~15% (semifinalist cutoff 28)." },
+  { year: "2025", title: "UK Biology Olympiad — Silver", cat: "research", w: 3, detail: "Top 10%, taken with no explicit prep." },
+  { year: "2025", title: "Youth STEM Journal Club — founder", cat: "research", w: 3, detail: "Taught 8 middle-schoolers to dissect research papers at the Fremont Library." },
+  { year: "2025", title: "PRISM — co-founder", cat: "research", w: 3, detail: "Promoting representation in clinical trials, with partner Arav." },
+  { year: "2025", title: "Varian tour", cat: "research", w: 1, detail: "Studied TrueBeam & Halcyon radiation-therapy machines." },
+  { year: "2025", title: "ACWD Water-Plant tour — led 10", cat: "research", w: 2, detail: "Organized a private treatment-plant tour with outreach director Renee Gonzales." },
   // ── Junior — civic / media ──
-  { year: "2025", title: "li_locked.in launched", cat: "civic", detail: "0 → 1,000 followers in a summer; 500k+ views." },
-  { year: "2025", title: "Mayor's Intern Program", cat: "civic", detail: "Surveyed residents and worked city events." },
-  { year: "2025", title: "Mayor's Videographer (paid)", cat: "civic", detail: "Grew the Mayor's per-video reach ~1k → 10k; $50/video." },
-  { year: "2025", title: "Voices of Fremont — director", cat: "civic", detail: "Directs & edits the Mayor's ~7-minute podcast; thousands of views monthly." },
-  { year: "2025", title: "Sweet Tomatoes revival", cat: "civic", detail: "The viral origin — pitched reviving the restaurant; emailed Tucson with the Mayor." },
-  { year: "2025", title: "Fremont Stories", cat: "civic", detail: "A video series on unconventional career paths (with Akash Sethi & Brittany Lu)." },
-  { year: "2025", title: "Small Business Accessibility Initiative", cat: "civic", detail: "Op-ed in the San Mateo Daily Journal; backed SB 84 with Prof. Durazo; presented at City Council." },
-  { year: "2025", title: "HG Nguyen for D7 — social media", cat: "civic", detail: "Lead videographer/editor for a San Jose council campaign." },
-  { year: "2025", title: "Fremont Youth Advisory Commission", cat: "civic", detail: "1 of 13 commissioners from ~100 applicants." },
-  { year: "2025", title: "ACWD Water Clips — 1st", cat: "civic", detail: "1st of 100+ entries · $500 (with Pradyun)." },
-  { year: "2025", title: "ACWD Water Clips — 3rd", cat: "civic", detail: "A second entry placed 3rd · $100." },
-  { year: "2025", title: "Met the Governor & First Partner", cat: "civic", detail: "At a California Love, California Strong event." },
+  { year: "2025", title: "li_locked.in launched", cat: "civic", w: 4, detail: "0 → 1,000 followers in a summer; 500k+ views." },
+  { year: "2025", title: "Mayor's Intern Program", cat: "civic", w: 3, detail: "Surveyed residents and worked city events." },
+  { year: "2025", title: "Mayor's Videographer (paid)", cat: "civic", w: 4, detail: "Grew the Mayor's per-video reach ~1k → 10k; $50/video." },
+  { year: "2025", title: "Voices of Fremont — director", cat: "civic", w: 4, detail: "Directs & edits the Mayor's ~7-minute podcast; thousands of views monthly." },
+  { year: "2025", title: "Sweet Tomatoes revival", cat: "civic", w: 3, detail: "The viral origin — pitched reviving the restaurant; emailed Tucson with the Mayor." },
+  { year: "2025", title: "Fremont Stories", cat: "civic", w: 3, detail: "A video series on unconventional career paths (with Akash Sethi & Brittany Lu)." },
+  { year: "2025", title: "Small Business Accessibility Initiative", cat: "civic", w: 4, detail: "Op-ed in the San Mateo Daily Journal; backed SB 84 with Prof. Durazo; presented at City Council." },
+  { year: "2025", title: "HG Nguyen for D7 — social media", cat: "civic", w: 3, detail: "Lead videographer/editor for a San Jose council campaign." },
+  { year: "2025", title: "Fremont Youth Advisory Commission", cat: "civic", w: 4, detail: "1 of 13 commissioners from ~100 applicants." },
+  { year: "2025", title: "ACWD Water Clips — 1st", cat: "civic", w: 3, detail: "1st of 100+ entries · $500 (with Pradyun)." },
+  { year: "2025", title: "ACWD Water Clips — 3rd", cat: "civic", w: 2, detail: "A second entry placed 3rd · $100." },
+  { year: "2025", title: "Met the Governor & First Partner", cat: "civic", w: 3, detail: "At a California Love, California Strong event." },
   // ── Junior — built ──
-  { year: "2026", title: "AcornPrep — launched", cat: "built", detail: "AI AP study tool: 500+ users, 13,000 MCQs, #1 Google result, 4 AP-teacher endorsements." },
-  { year: "2025", title: "CueSheet — shipped", cat: "built", detail: "A music-supervision tool, live at cuesheet.xyz." },
-  { year: "2025", title: "MSJ Makes VP", cat: "built", detail: "Led merch design; 40 senior stoles — $700 revenue, $400 profit on that job alone." },
-  { year: "2026", title: "MSJ Makes President", cat: "built", detail: "VP → President; runs the maker-and-merch operation — ~$4,000 profit across club jobs." },
-  { year: "2026", title: "MSJ STEM-PAC Co-President", cat: "research", detail: "Co-leads the projects-and-competitions club he founded; ACSEF + olympiad pipeline." },
-  { year: "2026", title: "Hermes — in build", cat: "built", detail: "An Instagram club-info scraper; ~90% complete." },
+  { year: "2026", title: "AcornPrep — launched", cat: "built", w: 5, detail: "AI AP study tool: 500+ users, 13,000 MCQs, #1 Google result, 4 AP-teacher endorsements." },
+  { year: "2025", title: "CueSheet — shipped", cat: "built", w: 3, detail: "A music-supervision tool, live at cuesheet.xyz." },
+  { year: "2025", title: "MSJ Makes VP", cat: "built", w: 3, detail: "Led merch design; 40 senior stoles — $700 revenue, $400 profit on that job alone." },
+  { year: "2026", title: "MSJ Makes President", cat: "built", w: 4, detail: "VP → President; runs the maker-and-merch operation — ~$4,000 profit across club jobs." },
+  { year: "2026", title: "MSJ STEM-PAC Co-President", cat: "research", w: 4, detail: "Co-leads the projects-and-competitions club he founded; ACSEF + olympiad pipeline." },
+  { year: "2026", title: "Hermes — in build", cat: "built", w: 2, detail: "An Instagram club-info scraper; ~90% complete." },
   // ── Junior — leadership / events ──
-  { year: "2025", title: "MSJ Car Meet", cat: "leadership", detail: "First in MSJ history · $35M+ in cars · a $3.5M Pagani." },
-  { year: "2023–26", title: "Class President ×3", cat: "leadership", detail: "Three years running — 22 fundraisers plus two years of merch: ~$11k revenue over three semesters (yes, he once spent an entire READ period negotiating with Papa John's)." },
-  { year: "2026", title: "ASB President — elected", cat: "leadership", detail: "Beat Jane Huang; led the Leadership-II selection (90 → 60 → 30)." },
-  { year: "2026", title: "Winter Ball — built from scratch", cat: "leadership", detail: "First since COVID · 350 students · drink bar + borrowed game tables." },
-  { year: "2026", title: "Valentine's Scavenger Hunt", cat: "leadership", detail: "262 participants · $300 in self-funded prizes." },
-  { year: "2025", title: "Homecoming — 2nd place", cat: "leadership", detail: "Spirited Away, a 45-minute class performance." },
-  { year: "2026", title: "Campus climbing wall — built", cat: "leadership", detail: "A first for the school; led as Climbing Club VP." },
-  { year: "2026", title: "Senior Breakfast", cat: "leadership", detail: "$4.8k for 500 servings — and saved the day when the check vanished in the mail." },
-  { year: "2026", title: "CO26 Graduation — led planning", cat: "leadership", detail: "Built the name-card system; announced all 500 names at TAK Stadium." },
+  { year: "2025", title: "MSJ Car Meet", cat: "leadership", w: 3, detail: "First in MSJ history · $35M+ in cars · a $3.5M Pagani." },
+  { year: "2023–26", title: "Class President ×3", cat: "leadership", w: 5, detail: "Three years running — 22 fundraisers plus two years of merch: ~$11k revenue over three semesters (yes, he once spent an entire READ period negotiating with Papa John's)." },
+  { year: "2026", title: "ASB President — elected", cat: "leadership", w: 5, detail: "Beat Jane Huang; led the Leadership-II selection (90 → 60 → 30)." },
+  { year: "2026", title: "Winter Ball — built from scratch", cat: "leadership", w: 4, detail: "First since COVID · 350 students · drink bar + borrowed game tables." },
+  { year: "2026", title: "Valentine's Scavenger Hunt", cat: "leadership", w: 3, detail: "262 participants · $300 in self-funded prizes." },
+  { year: "2025", title: "Homecoming — 2nd place", cat: "leadership", w: 3, detail: "Spirited Away, a 45-minute class performance." },
+  { year: "2026", title: "Campus climbing wall — built", cat: "leadership", w: 3, detail: "A first for the school; led as Climbing Club VP." },
+  { year: "2026", title: "Senior Breakfast", cat: "leadership", w: 3, detail: "$4.8k for 500 servings — and saved the day when the check vanished in the mail." },
+  { year: "2026", title: "CO26 Graduation — led planning", cat: "leadership", w: 3, detail: "Built the name-card system; announced all 500 names at TAK Stadium." },
   // ── Junior — civic (protest) & court ──
-  { year: "2026", title: "ICE Protest — organized", cat: "civic", detail: "500+ participants; the recap video hit 20k+ views." },
-  { year: "2026", title: "NCS Basketball Champions", cat: "court", detail: "First title in school AND district history; started in the first five." },
-  { year: "2025", title: "Mission Peak PR — 46:46", cat: "personal", detail: "The fastest birthday ascent yet — up in time for the sunrise." },
-];
-
-/** Early-life texture for the timeline (from the achievements ledger). */
-export const ORIGINS = [
-  { year: "2021", note: "First solo Mission Peak birthday climb, at twelve — sub-hour by 2 seconds." },
-  { year: "2022", note: "Began journaling — at first events, then 'the truth.' Never stopped." },
-  { year: "2023", note: "AP Chinese · 5  |  ACT · 29  |  Continental Math 30/30 — all in eighth grade." },
-  { year: "2023", note: "Hopkins Basketball A-team — after a broken arm cost him 7th grade." },
-  { year: "2022", note: "ATDP entrepreneurship at UC Berkeley; a to-scale lit-up Colosseum model." },
+  { year: "2026", title: "ICE Protest — organized", cat: "civic", w: 4, detail: "500+ participants; the recap video hit 20k+ views." },
+  { year: "2026", title: "NCS Basketball Champions", cat: "court", w: 5, detail: "First title in school AND district history; started in the first five." },
+  { year: "2025", title: "Mission Peak PR — 46:46", cat: "personal", w: 3, detail: "The fastest birthday ascent yet — up in time for the sunrise." },
+  // ── The person — life outside the résumé ──
+  { year: "2023", title: "Six weeks in China", cat: "personal", w: 2, detail: "A summer with his grandparents across Xi'an, Tianjin, Chengdu and Chongqing — street food and cities within cities." },
+  { year: "2025", title: "The kitchen — feasts by design", cat: "personal", w: 2, detail: "Biweekly cooking with Samay; macarons, Beef Ragu and grilled chicken — designed-menu feasts for friends at Thanksgiving, New Year's and Lunar New Year." },
+  { year: "2026", title: "Vancouver over the APs", cat: "personal", w: 2, detail: "Spring break — chose the travel vlog over grinding for AP exams, and came back energized." },
+  { year: "2026", title: "Mission Peak — the sunrise climb", cat: "personal", w: 3, detail: "Stopped chasing the PR at 54:00; filmed the 7AM sunrise for li_locked.in and finally just noticed the view." },
 ];
 
 /* ───────────────────────────── ALBUMS ───────────────────────────── */

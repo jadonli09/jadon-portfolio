@@ -17,8 +17,6 @@ const DANCE_CARD = [
   { n: "II", label: "Game tables, borrowed", note: "Poker & roulette lent by MPPFA's fundraising lead. Acquired, not purchased." },
   { n: "III", label: "Gym-floor mat", note: "Lent by Newark Memorial — protected the floor for the night." },
   { n: "IV", label: "Student-interest poll", note: "The data that convinced a wary administration." },
-  { n: "V", label: "No precedent", note: "First winter ball since before COVID. Built from zero." },
-  { n: "VI", label: "Full night engineered", note: "Concept through cleanup. Every detail owned." },
 ];
 
 /** Winter Ball polaroids — from the night itself. */
@@ -119,7 +117,7 @@ export function WinterBall() {
               Winter&nbsp;Ball
             </h2>
             <p className="mt-4 max-w-xl font-serif-i text-base italic leading-relaxed md:text-lg" style={{ color: INK_SOFT }}>
-              the first since before COVID — no precedent, no playbook, built from scratch
+              the first since before COVID — no precedent, no playbook
             </p>
           </div>
         </Reveal>

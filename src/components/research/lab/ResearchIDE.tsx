@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { ChevronRight, Folder, FileText, Terminal as TermIcon } from "lucide-react";
+import { ArrowUpRight, ChevronRight, Folder, FileText, Terminal as TermIcon } from "lucide-react";
 import { VolcanoPlot } from "@/components/research/VolcanoPlot";
 import { asset } from "@/lib/base";
 import { cn } from "@/lib/cn";
@@ -212,6 +212,42 @@ function resolveDir(a: string): Dir | null {
   return null;
 }
 
+// ── cross-page navigation — the rest of the portfolio ─────────────────────────
+// Lets visitors hop to any other page straight from the terminal/sidebar,
+// instead of opening the global menu.
+const NAV_PAGES: { label: string; href: string; blurb: string }[] = [
+  { label: "home", href: "/", blurb: "the landing — one person, locked in" },
+  { label: "leadership", href: "/leadership", blurb: "3× class president · ASB" },
+  { label: "civic", href: "/civic", blurb: "films for the Mayor of Fremont" },
+  { label: "built", href: "/built", blurb: "AcornPrep · 500+ users" },
+  { label: "court", href: "/court", blurb: "first NCS title in school history" },
+  { label: "locked-in", href: "/locked-in", blurb: "@li_locked.in · the pursuit" },
+  { label: "about", href: "/about", blurb: "the person underneath" },
+  { label: "achievements", href: "/achievements", blurb: "the full trophy case" },
+  { label: "albums", href: "/albums", blurb: "every photo, immersive" },
+  { label: "contact", href: "/contact", blurb: "get in touch" },
+];
+
+const PAGE_ROUTES: Record<string, string> = {
+  home: "/", portfolio: "/", landing: "/",
+  leadership: "/leadership", leads: "/leadership", leader: "/leadership",
+  civic: "/civic", films: "/civic", film: "/civic", mayor: "/civic",
+  built: "/built", builds: "/built", build: "/built", acornprep: "/built",
+  court: "/court", competes: "/court", basketball: "/court", ball: "/court",
+  "locked-in": "/locked-in", lockedin: "/locked-in", pursuit: "/locked-in", documented: "/locked-in",
+  about: "/about", person: "/about",
+  achievements: "/achievements", trophy: "/achievements", "trophy-case": "/achievements", trophies: "/achievements",
+  albums: "/albums", photos: "/albums", gallery: "/albums",
+  contact: "/contact", email: "/contact",
+};
+
+function pageRouteFromArg(a: string): { route: string; label: string } | null {
+  const key = a.trim().replace(/^\//, "").replace(/\/$/, "").toLowerCase();
+  if (!key) return null;
+  const route = PAGE_ROUTES[key];
+  return route ? { route, label: key } : null;
+}
+
 // ── component ─────────────────────────────────────────────────────────────────
 
 export function ResearchIDE() {
@@ -242,7 +278,7 @@ export function ResearchIDE() {
       { text: "This page is a terminal. Nothing is shown until you ask for it.", tone: "fg", at: 700 },
       { text: "Try a command — file outputs render like a real IDE.", tone: "fg", at: 700 },
       { text: " ", at: 740 },
-      { text: "→ start with  poster  ·  photo  ·  results  ·  volcano  ·  or  help  to see it all", tone: "accent", at: 880 },
+      { text: "→ start with  poster  ·  results  ·  volcano  ·  help  — or  nav  to hop to another page", tone: "accent", at: 880 },
     ];
     const timers = boot.map((b) =>
       window.setTimeout(() => setLog((l) => [...l, { id: nextId(), kind: "out", lines: [{ text: b.text, tone: b.tone }] }]), b.at),
@@ -270,6 +306,10 @@ export function ResearchIDE() {
   }, []);
 
   const out = (lines: { text: string; tone?: Tone }[]) => setLog((l) => [...l, { id: nextId(), kind: "out", lines }]);
+  const goto = (route: string, label: string) => {
+    out([{ text: `opening ${label} → ${route} …`, tone: "cyan" }]);
+    window.setTimeout(() => { window.location.href = asset(route); }, 320);
+  };
   const show = (token: string) => {
     setLog((l) => [...l, { id: nextId(), kind: "view", token }]);
     if (isFileToken(token)) {
@@ -309,10 +349,18 @@ export function ResearchIDE() {
       case "pwd": out([{ text: promptPath(cwd), tone: "fg" }]); return;
       case "cd": {
         const d = resolveDir(arg || "~");
-        if (d === null) { out([{ text: `cd: no such directory: ${arg}`, tone: "err" }]); return; }
-        setCwd(d);
-        out([{ text: promptPath(d), tone: "muted" }]);
-        return;
+        if (d !== null) { setCwd(d); out([{ text: promptPath(d), tone: "muted" }]); return; }
+        // not a local dir — maybe it's another page (e.g. `cd /leadership`)
+        const pg = pageRouteFromArg(arg);
+        if (pg) { goto(pg.route, pg.label); return; }
+        out([{ text: `cd: no such directory: ${arg}`, tone: "err" }]); return;
+      }
+      case "nav": case "pages": case "sitemap": case "menu": case "portfolio":
+        show("nav"); setSuggest(["leadership", "built", "court", "achievements"]); return;
+      case "goto": case "go": case "visit": {
+        const pg = pageRouteFromArg(arg);
+        if (pg) { goto(pg.route, pg.label); return; }
+        show("nav"); return;
       }
       case "cat": case "open": case "less": case "more": case "view": case "vim": case "nano": case "run": case "./": {
         const tok = TOKEN_FOR[basename(arg)];
@@ -337,9 +385,12 @@ export function ResearchIDE() {
       default: {
         const tok = TOKEN_FOR[basename(head)] ?? TOKEN_FOR[head];
         if (tok) { show(tok); return; }
+        // bare page name (e.g. `leadership`, `court`) → navigate
+        const pg = pageRouteFromArg(head);
+        if (pg) { goto(pg.route, pg.label); return; }
         out([
           { text: `command not found: ${head}`, tone: "err" },
-          { text: "type  help  for the command list, or  ls  to browse.", tone: "muted" },
+          { text: "type  help  for commands · nav  for the other pages.", tone: "muted" },
         ]);
       }
     }
@@ -358,7 +409,7 @@ export function ResearchIDE() {
       e.preventDefault();
       const tok = value.trim().toLowerCase();
       if (tok) {
-        const pool = ["help", "ls", "tree", "clear", "neofetch", "whoami", "readme", "resources", "stats", "poster", "photo", "project", "results", "methodology", "design", "degs", "genes", "pathways", "heatmap", "volcano", "pca", "citation", "abstract", "awards", "usabo", "bbo", "acsef", "field", "ysjc", "prism", "stem-pac", "umass", "mutate", "exit"];
+        const pool = ["help", "ls", "tree", "clear", "neofetch", "whoami", "readme", "resources", "stats", "poster", "photo", "project", "results", "methodology", "design", "degs", "genes", "pathways", "heatmap", "volcano", "pca", "citation", "abstract", "awards", "usabo", "bbo", "acsef", "field", "ysjc", "prism", "stem-pac", "umass", "mutate", "exit", "nav", "goto", "leadership", "civic", "built", "court", "locked-in", "about", "achievements", "albums", "contact", "home"];
         const hit = pool.find((c) => c.startsWith(tok));
         if (hit) setValue(hit);
       }
@@ -409,10 +460,26 @@ export function ResearchIDE() {
           )}
         >
           <p className="border-b border-[var(--line)] px-3 py-2 text-[0.58rem] uppercase tracking-[0.2em] text-[var(--muted)]">Explorer</p>
-          <div className="flex items-center gap-1.5 px-3 py-2 text-[0.62rem] text-[var(--muted)]">
-            <ChevronRight className="size-3" /> ~/research
-          </div>
           <div className="term-scroll flex-1 overflow-y-auto pb-3" data-lenis-prevent>
+            {/* Portfolio — jump straight to the rest of the site (no menu needed) */}
+            <p className="px-3 pb-1 pt-2 text-[0.54rem] uppercase tracking-[0.22em] text-[var(--muted)]/70">Portfolio</p>
+            {NAV_PAGES.map((p) => (
+              <a
+                key={p.href}
+                href={asset(p.href)}
+                data-cursor-hover
+                onClick={() => setSidebarOpen(false)}
+                className="group flex w-full items-center gap-1.5 py-1 pl-3 pr-2 text-left text-[0.7rem] text-[var(--muted)] transition-colors hover:bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] hover:text-[var(--accent)]"
+              >
+                <ArrowUpRight className="size-3.5 shrink-0 text-[var(--accent-2)]" />
+                {p.label}
+              </a>
+            ))}
+
+            {/* the research filesystem */}
+            <div className="mt-2 flex items-center gap-1.5 border-t border-[var(--line)] px-3 pb-1 pt-2 text-[0.62rem] text-[var(--muted)]">
+              <ChevronRight className="size-3" /> ~/research
+            </div>
             {EXPLORER.map((it, i) => (
               <button
                 key={i}
@@ -454,6 +521,21 @@ export function ResearchIDE() {
                 </button>
               ))
             )}
+          </div>
+
+          {/* top nav tiles — hop to the rest of the portfolio without opening the menu */}
+          <div className="term-scroll flex items-center gap-2 overflow-x-auto border-b border-[var(--line)] bg-[var(--bg-2)]/25 px-4 py-2 md:px-6" data-lenis-prevent>
+            <span className="shrink-0 text-[0.55rem] uppercase tracking-widest text-[var(--muted)]/70">go to</span>
+            {NAV_PAGES.map((p) => (
+              <a
+                key={p.href}
+                href={asset(p.href)}
+                data-cursor-hover
+                className="shrink-0 whitespace-nowrap rounded-md border border-[var(--line)] px-2.5 py-0.5 text-[0.66rem] text-[var(--muted)] transition-colors hover:border-[color-mix(in_srgb,var(--accent)_55%,transparent)] hover:text-[var(--accent)]"
+              >
+                {p.label}
+              </a>
+            ))}
           </div>
 
           {/* output stream */}
@@ -539,7 +621,7 @@ export function ResearchIDE() {
               spellCheck={false}
               autoComplete="off"
               aria-label="terminal command input"
-              placeholder="type a command…  (help · ls · usabo · genes · volcano · neofetch)"
+              placeholder="type a command…  (help · nav · ls · genes · volcano · neofetch)"
               className="w-full bg-transparent text-[0.8rem] text-[var(--fg)] outline-none placeholder:text-[var(--muted)]/60"
               style={{ caretColor: "var(--accent)" }}
             />
@@ -569,6 +651,7 @@ function ViewBody({ token }: { token: string }) {
   const [base, arg] = token.split(":");
   switch (base) {
     case "help": return <HelpView />;
+    case "nav": return <NavView />;
     case "tree": return <TreeView />;
     case "ls": return <DirListing entries={FS[(arg as Dir) ?? "root"]} />;
     case "neofetch": return <Neofetch />;
@@ -970,6 +1053,31 @@ function Neofetch() {
   );
 }
 
+function NavView() {
+  return (
+    <div className="space-y-2">
+      <p className="text-[0.72rem] text-[var(--muted)]"># the rest of the portfolio — open any page</p>
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        {NAV_PAGES.map((p) => (
+          <a
+            key={p.href}
+            href={asset(p.href)}
+            data-cursor-hover
+            className="group flex items-baseline justify-between gap-3 rounded-md border border-[var(--line)] px-3 py-2 transition-colors hover:border-[color-mix(in_srgb,var(--accent)_55%,transparent)] hover:bg-[color-mix(in_srgb,var(--accent)_8%,transparent)]"
+          >
+            <span className="flex items-baseline gap-1.5">
+              <span className="text-[var(--accent)]">→</span>
+              <span className="text-[0.8rem] text-[var(--fg)]">{p.label}</span>
+            </span>
+            <span className="truncate text-[0.6rem] text-[var(--muted)]">{p.blurb}</span>
+          </a>
+        ))}
+      </div>
+      <p className="text-[0.66rem] text-[var(--muted)]/70"># or type e.g. `cd /leadership` · `goto built` · `exit` for home</p>
+    </div>
+  );
+}
+
 function HelpView() {
   const groups: { title: string; items: [string, string][] }[] = [
     { title: "the science-fair project", items: [
@@ -995,6 +1103,12 @@ function HelpView() {
       ["field", "all programs (or ysjc/prism/stem-pac/umass)"],
       ["stats", "the numbers (stats.json)"],
       ["resources", "tools, mentors & references"],
+    ]},
+    { title: "the rest of the portfolio", items: [
+      ["nav", "list every other page (clickable)"],
+      ["goto <page>", "jump to a page (e.g. goto built)"],
+      ["cd /<page>", "same, filesystem-style (cd /court)"],
+      ["exit", "back to the home page"],
     ]},
     { title: "filesystem", items: [
       ["ls [dir]", "list a directory"],
