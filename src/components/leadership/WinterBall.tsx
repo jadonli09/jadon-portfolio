@@ -6,11 +6,12 @@ import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { SlotPhoto } from "@/components/leadership/SlotPhoto";
 import { LEADERSHIP } from "@/lib/data";
 
-/* Ink + paper palette, local to this section (it inverts the world theme). */
-const INK = "#1a140d";
-const INK_SOFT = "rgba(26,20,13,0.62)";
-const GOLD_DEEP = "#9a7432";
-const OXBLOOD = "#6e1f2a";
+/* On the world's asphalt: gold type, white prints. */
+const INK = "var(--fg)";
+const INK_SOFT = "var(--muted)";
+const GOLD_DEEP = "var(--accent)";
+const OXBLOOD = "var(--accent)";
+const PRINT_INK = "#1a140d";
 
 const DANCE_CARD = [
   { n: "I", label: "Non-alcoholic drink bar", note: "Mocktails mixed on the spot — people were gutted when it ran out." },
@@ -45,8 +46,8 @@ function Polaroid({
       viewport={{ once: true, margin: "-60px" }}
       whileHover={{ rotate: 0, y: -8, transition: { duration: 0.35 } }}
       transition={{ duration: 0.7, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
-      className="relative w-[200px] shrink-0 bg-white p-2.5 pb-3 md:w-[240px]"
-      style={{ boxShadow: "0 14px 30px rgba(26,20,13,0.28)" }}
+      className="relative w-full max-w-[220px] shrink-0 bg-white p-2 pb-2.5"
+      style={{ boxShadow: "0 16px 34px rgba(0,0,0,0.55)" }}
       data-cursor-hover
     >
       {/* Tape strip */}
@@ -58,7 +59,7 @@ function Polaroid({
       <div className="relative aspect-square overflow-hidden bg-[#ece1c8]">
         <SlotPhoto src={src} alt={`Winter Ball — ${caption}`} monogram="WB" note="photo en route" tone="paper" />
       </div>
-      <figcaption className="font-hand mt-2 text-center text-lg leading-none" style={{ color: INK }}>
+      <figcaption className="font-hand mt-2 text-center text-lg leading-none" style={{ color: PRINT_INK }}>
         {caption}
       </figcaption>
     </motion.figure>
@@ -76,58 +77,26 @@ export function WinterBall() {
 
   return (
     <section
-      className="relative mt-20 overflow-hidden md:mt-32"
-      style={{ background: "linear-gradient(180deg, #f6eed9 0%, #efe3c8 100%)" }}
+      className="relative mt-14 overflow-hidden md:mt-20"
       aria-labelledby="winter-ball-title"
     >
-      {/* Paper grain */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.5]"
-        style={{
-          background:
-            "repeating-linear-gradient(0deg, rgba(26,20,13,0.025) 0 1px, transparent 1px 3px)",
-        }}
-      />
-      {/* Deckled top + bottom edges */}
-      <div aria-hidden className="absolute inset-x-0 top-0 h-1 bg-[var(--bg)]"
-        style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 96% 30%, 90% 90%, 84% 20%, 77% 80%, 70% 25%, 63% 95%, 55% 30%, 48% 85%, 41% 15%, 34% 75%, 27% 30%, 20% 90%, 13% 25%, 6% 80%, 0 20%)" }}
-      />
-
-      <div className="relative mx-auto max-w-7xl px-5 py-20 md:px-9 md:py-28">
-        {/* Letterhead */}
-        <Reveal>
-          <div className="flex flex-col items-center text-center">
-            <p className="font-mono text-[0.6rem] uppercase tracking-[0.4em]" style={{ color: GOLD_DEEP }}>
-              Mission San Jose High School · {winterBall.date}
-            </p>
-            <div aria-hidden className="mt-4 flex items-center gap-3" style={{ color: GOLD_DEEP }}>
-              <span className="block h-px w-16" style={{ background: GOLD_DEEP }} />
-              <span className="text-xs">❦</span>
-              <span className="block h-px w-16" style={{ background: GOLD_DEEP }} />
-            </div>
-            <p className="mt-5 font-serif-i text-lg italic" style={{ color: INK_SOFT }}>
-              You are cordially invited to
-            </p>
-            <h2
-              id="winter-ball-title"
-              className="font-display mt-2 font-semibold leading-[0.95] tracking-tight"
-              style={{ color: INK, fontSize: "clamp(3.2rem, 9vw, 7.5rem)" }}
-            >
-              Winter&nbsp;Ball
-            </h2>
-            <p className="mt-4 max-w-xl font-serif-i text-base italic leading-relaxed md:text-lg" style={{ color: INK_SOFT }}>
-              the first since before COVID — no precedent, no playbook
-            </p>
-          </div>
-        </Reveal>
-
-        {/* Body: dance card left · stamp + story right */}
-        <div className="mt-14 grid grid-cols-1 gap-12 md:mt-20 md:grid-cols-[1.1fr_1fr] md:gap-16">
+      <div className="relative mx-auto max-w-7xl px-5 py-12 md:px-9 md:py-16">
+        {/* Left: title + programme · Right: prints, from the top */}
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_1.1fr] md:items-start md:gap-12">
           {/* The dance card */}
           <div>
             <Reveal>
-              <p className="font-mono text-[0.6rem] uppercase tracking-[0.35em]" style={{ color: GOLD_DEEP }}>
+              <h2
+                id="winter-ball-title"
+                className="font-display font-semibold leading-[0.95] tracking-tight"
+                style={{ color: INK, fontSize: "clamp(2.6rem, 6vw, 4.8rem)" }}
+              >
+                Winter&nbsp;Ball
+              </h2>
+              <p className="mt-3 max-w-md font-serif-i text-base italic leading-relaxed md:text-lg" style={{ color: INK_SOFT }}>
+                {winterBall.date} — the first since before COVID; no precedent, no playbook.
+              </p>
+              <p className="mt-8 font-mono text-[0.6rem] uppercase tracking-[0.35em]" style={{ color: GOLD_DEEP }}>
                 Programme of the evening
               </p>
             </Reveal>
@@ -139,8 +108,8 @@ export function WinterBall() {
                     hidden: { opacity: 0, x: -14 },
                     show: { opacity: 1, x: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } },
                   }}
-                  className="flex items-baseline gap-5 py-3.5"
-                  style={{ borderBottom: "1px solid rgba(26,20,13,0.14)" }}
+                  className="flex items-baseline gap-5 py-2.5"
+                  style={{ borderBottom: "1px solid var(--line)" }}
                 >
                   <span className="w-8 shrink-0 text-right font-display text-base font-semibold" style={{ color: OXBLOOD }}>
                     {d.n}
@@ -156,49 +125,8 @@ export function WinterBall() {
                 </motion.div>
               ))}
             </RevealGroup>
-          </div>
-
-          {/* Foil stamp + story */}
-          <div className="flex flex-col items-center gap-10 md:items-start">
-            <Reveal delay={0.1}>
-              {/* Wax-seal attendance stamp */}
-              <div
-                className="relative flex h-44 w-44 -rotate-6 flex-col items-center justify-center rounded-full md:h-52 md:w-52"
-                style={{ border: `3px double ${OXBLOOD}`, color: OXBLOOD }}
-              >
-                <span
-                  aria-hidden
-                  className="absolute inset-2 rounded-full"
-                  style={{ border: `1px solid ${OXBLOOD}` }}
-                />
-                <p className="font-mono text-[0.55rem] uppercase tracking-[0.3em]">Attendance</p>
-                <p className="font-anton text-6xl leading-none md:text-7xl">
-                  <Counter to={350} duration={2} />
-                </p>
-                <p className="mt-1 font-mono text-[0.55rem] uppercase tracking-[0.3em]">students · admitted</p>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-
-        {/* Polaroid strip — photo slots */}
-        <div className="relative mt-16 md:mt-20">
-          <Reveal>
-            <p className="font-hand text-center text-2xl md:text-3xl" style={{ color: GOLD_DEEP }}>
-              from the night —
-            </p>
-          </Reveal>
-          <div className="mt-6 flex flex-wrap items-start justify-center gap-6 md:gap-10">
-            {POLAROIDS.map((p, i) => (
-              <div key={p.src} className="relative">
-                <Polaroid src={p.src} caption={p.caption} rotate={p.rotate} index={i} />
-              </div>
-            ))}
-          </div>
-
-          {/* The night, on film — li_locked.in reel */}
           <Reveal delay={0.2}>
-            <div className="mt-12 flex justify-center">
+            <div className="mt-6 flex justify-center md:justify-start">
               <a
                 href="https://www.instagram.com/reel/DVPv0z0ke0b/"
                 target="_blank"
@@ -207,8 +135,8 @@ export function WinterBall() {
                 className="group inline-flex items-center gap-3 px-7 py-3.5 font-mono text-[0.65rem] uppercase tracking-[0.25em] transition-all duration-300"
                 style={{ border: `2px solid ${OXBLOOD}`, color: OXBLOOD }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = OXBLOOD;
-                  e.currentTarget.style.color = "#f6eed9";
+                  e.currentTarget.style.background = "var(--accent)";
+                  e.currentTarget.style.color = "#0c0a08";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = "transparent";
@@ -220,6 +148,34 @@ export function WinterBall() {
               </a>
             </div>
           </Reveal>
+          </div>
+
+          {/* Stamp + polaroids */}
+          <div className="relative">
+            <div className="grid grid-cols-2 gap-4 sm:gap-5">
+              {POLAROIDS.map((p, i) => (
+                <div key={p.src} className="flex justify-center">
+                  <Polaroid src={p.src} caption={p.caption} rotate={p.rotate} index={i} />
+                </div>
+              ))}
+            </div>
+            {/* Wax-seal attendance stamp — pinned over the top-right print */}
+            <div className="absolute -right-3 -top-6 z-10 md:-right-6 md:-top-8">
+              <Reveal delay={0.1}>
+                <div
+                  className="relative flex h-32 w-32 -rotate-6 flex-col items-center justify-center rounded-full md:h-36 md:w-36"
+                  style={{ border: `3px double ${OXBLOOD}`, color: OXBLOOD, background: "var(--bg-2)", boxShadow: "0 10px 24px rgba(0,0,0,0.5)" }}
+                >
+                  <span aria-hidden className="absolute inset-2 rounded-full" style={{ border: `1px solid ${OXBLOOD}` }} />
+                  <p className="font-mono text-[0.5rem] uppercase tracking-[0.3em]">Attendance</p>
+                  <p className="font-anton text-4xl leading-none md:text-5xl">
+                    <Counter to={350} duration={2} />
+                  </p>
+                  <p className="mt-1 font-mono text-[0.5rem] uppercase tracking-[0.3em]">students</p>
+                </div>
+              </Reveal>
+            </div>
+          </div>
         </div>
       </div>
     </section>

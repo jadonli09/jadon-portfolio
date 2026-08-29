@@ -9,7 +9,7 @@ import { PROFILE } from "@/lib/data";
 
 export function LeadershipCTA() {
   return (
-    <section className="relative mx-auto mt-20 max-w-7xl px-5 pb-24 md:mt-32 md:px-9 md:pb-36">
+    <section className="relative mx-auto mt-14 max-w-7xl px-5 pb-20 md:mt-20 md:px-9 md:pb-24">
       {/* Top rule */}
       <motion.div
         className="mb-12 h-px bg-gradient-to-r from-[var(--accent)] to-transparent opacity-40"
@@ -23,8 +23,7 @@ export function LeadershipCTA() {
         {/* Left: closing line */}
         <Reveal>
           <div className="max-w-xl">
-            <span className="eyebrow text-[var(--muted)]">Contact</span>
-            <p className="mt-3 font-display text-3xl font-semibold leading-snug text-[var(--fg)] md:text-5xl">
+            <p className="font-display text-3xl font-semibold leading-snug text-[var(--fg)] md:text-5xl">
               Want to talk leadership,
               <br />
               <span className="italic text-[var(--accent)]">events, or ideas?</span>

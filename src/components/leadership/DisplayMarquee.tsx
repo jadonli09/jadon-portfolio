@@ -18,20 +18,20 @@ export function DisplayMarquee() {
   const row = [...ITEMS, ...ITEMS];
   return (
     <div
-      className="relative my-20 select-none overflow-hidden border-y-2 border-[rgba(212,175,106,0.3)] py-4 md:my-28 md:py-6"
+      className="relative my-10 select-none overflow-hidden border-y border-[rgba(212,175,106,0.3)] py-2.5 md:my-14 md:py-3"
       aria-hidden
     >
       <span className="marquee-track" style={{ animationDuration: "46s", animationDirection: "reverse" }}>
         {row.map((item, i) => (
           <span
             key={i}
-            className="mx-5 inline-flex items-baseline gap-10 font-anton uppercase leading-none tracking-tight md:mx-8"
-            style={{ fontSize: "clamp(2.6rem, 7vw, 5.5rem)" }}
+            className="mx-4 inline-flex items-baseline gap-6 font-anton uppercase leading-none tracking-tight md:mx-6"
+            style={{ fontSize: "clamp(1.5rem, 3.2vw, 2.4rem)" }}
           >
             <span
               style={
                 i % 2 === 0
-                  ? { color: "transparent", WebkitTextStroke: "1.5px rgba(212,175,106,0.75)" }
+                  ? { color: "transparent", WebkitTextStroke: "1px rgba(212,175,106,0.75)" }
                   : { color: "var(--accent)" }
               }
             >

@@ -79,7 +79,7 @@ function CrewCard({ crew, index }: { crew: Crew; index: number }) {
  */
 export function ClubCrews() {
   return (
-    <section className="relative mx-auto mt-20 max-w-7xl px-5 md:mt-32 md:px-9" aria-labelledby="club-crews-heading">
+    <section className="relative mx-auto mt-14 max-w-7xl px-5 md:mt-20 md:px-9" aria-labelledby="club-crews-heading">
       {/* Corkboard-ish dotted backdrop, very faint */}
       <div
         aria-hidden
@@ -95,9 +95,6 @@ export function ClubCrews() {
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="font-mono text-[0.6rem] uppercase tracking-[0.35em] text-[var(--muted)]">
-                The clubs · officer teams
-              </p>
               <h2 id="club-crews-heading" className="font-hand mt-2 text-6xl leading-none text-[var(--accent)] md:text-8xl">
                 the crews
               </h2>

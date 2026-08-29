@@ -154,7 +154,7 @@ function CourtSwish({ phase }: { phase: Phase }) {
   );
 }
 
-/** leadership — the operator: stationery unfurls and three wax seals stamp in — one per year, no words needed. */
+/** leadership — the operator: stationery unfurls and four wax seals stamp in — one per year in the class colours (blue · yellow · black · red), no words needed. */
 function LeadershipSeal({ phase }: { phase: Phase }) {
   return (
     <div className="absolute inset-0 overflow-hidden">
@@ -166,16 +166,17 @@ function LeadershipSeal({ phase }: { phase: Phase }) {
       >
         {/* laid-paper texture */}
         <div className="absolute inset-0 opacity-40 [background:repeating-linear-gradient(0deg,transparent_0_3px,rgba(140,110,50,0.05)_3px_4px)]" />
-        {/* three terms, three seals — stamped left to right, each year a little bigger; no words */}
+        {/* four terms, four seals — freshman to senior, in the class colours; each year a little bigger; no words */}
         {[
-          { left: "29%", size: 88, delay: 0.3, rotate: -10 },
-          { left: "50%", size: 106, delay: 0.44, rotate: 5 },
-          { left: "71%", size: 126, delay: 0.58, rotate: -6 },
+          { left: "20%", size: 84, delay: 0.3, rotate: -10, hi: "#4a7fd6", lo: "#1f3f8a", ring: "#1f3f8a" },
+          { left: "40%", size: 98, delay: 0.42, rotate: 5, hi: "#f2cf4a", lo: "#b78a10", ring: "#b78a10" },
+          { left: "60%", size: 112, delay: 0.54, rotate: -6, hi: "#3a3a40", lo: "#0c0c10", ring: "#0c0c10" },
+          { left: "80%", size: 126, delay: 0.66, rotate: 4, hi: "#8e3030", lo: "#5c1717", ring: "#5c1717" },
         ].map((seal, i) => (
           <span key={i} className="absolute top-1/2" style={{ left: seal.left }}>
             <motion.div
-              className="flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[radial-gradient(circle_at_38%_32%,#8e3030,#5c1717_70%)] shadow-[0_14px_36px_rgba(60,20,10,0.55),inset_0_2px_8px_rgba(255,255,255,0.18)]"
-              style={{ width: seal.size, height: seal.size }}
+              className="flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full shadow-[0_14px_36px_rgba(30,20,10,0.5),inset_0_2px_8px_rgba(255,255,255,0.18)]"
+              style={{ width: seal.size, height: seal.size, background: `radial-gradient(circle at 38% 32%, ${seal.hi}, ${seal.lo} 70%)` }}
               initial={{ scale: 2.3, opacity: 0, rotate: seal.rotate - 14 }}
               animate={phase === "enter" ? { scale: 1, opacity: 1, rotate: seal.rotate } : { opacity: 0, y: 30 }}
               transition={phase === "enter" ? { duration: 0.24, delay: seal.delay, ease: "easeIn" } : { duration: 0.35 }}
@@ -187,8 +188,8 @@ function LeadershipSeal({ phase }: { phase: Phase }) {
               </div>
             </motion.div>
             <motion.div
-              className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#5c1717]/50"
-              style={{ width: seal.size, height: seal.size }}
+              className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full border-2"
+              style={{ width: seal.size, height: seal.size, borderColor: `${seal.ring}80` }}
               initial={{ scale: 1, opacity: 0 }}
               animate={phase === "enter" ? { scale: 1.7, opacity: [0, 0.7, 0] } : { opacity: 0 }}
               transition={{ duration: 0.5, delay: seal.delay + 0.2, ease: "easeOut" }}

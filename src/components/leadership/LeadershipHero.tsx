@@ -5,7 +5,6 @@ import { motion, useScroll, useTransform, type MotionValue } from "motion/react"
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { Reveal } from "@/components/primitives/Reveal";
 import { Photo } from "@/components/primitives/Photo";
-import { LEADERSHIP } from "@/lib/data";
 
 /** Gold line that animates in from the left — reusable accent. */
 function GoldRule({ delay = 0, className = "" }: { delay?: number; className?: string }) {
@@ -45,6 +44,14 @@ const TERM_PANELS = [
     label: "Never second",
     pos: "50% 40%",
     lift: "md:translate-y-0",
+  },
+  {
+    src: "/img/gw-05.jpg",
+    alt: "The ASB officers on stage at the Green & White Assembly, Jadon on the mic",
+    year: "12th",
+    label: "ASB President",
+    pos: "50% 38%",
+    lift: "md:-translate-y-3",
   },
 ];
 
@@ -109,14 +116,14 @@ function TermFrame({
 }
 
 /**
- * The three class-officer terms as a staggered contact-sheet triptych —
- * 9th, 10th, 11th — each frame stepping up toward the present, with an
- * oxblood "3×" seal pinned over the strip.
+ * The four terms as a staggered contact-sheet triptych —
+ * 9th, 10th, 11th, 12th — each frame stepping up toward the present, with an
+ * oxblood "4×" seal pinned over the strip.
  */
 function MastheadTriptych({ parallaxY }: { parallaxY?: MotionValue<number> }) {
   return (
     <motion.div style={parallaxY ? { y: parallaxY } : undefined} className="relative">
-      <div className="grid grid-cols-3 gap-2 md:gap-3">
+      <div className="grid grid-cols-4 gap-2 md:gap-3">
         {TERM_PANELS.map((p, i) => (
           <TermFrame key={p.year} panel={p} index={i} />
         ))}
@@ -134,9 +141,9 @@ function MastheadTriptych({ parallaxY }: { parallaxY?: MotionValue<number> }) {
         }}
       >
         <span aria-hidden className="absolute inset-1.5 rounded-full border border-[rgba(245,236,216,0.5)]" />
-        <p className="font-anton text-lg leading-none text-[#f5ecd8] md:text-2xl">3×</p>
+        <p className="font-anton text-lg leading-none text-[#f5ecd8] md:text-2xl">4×</p>
         <p className="mt-0.5 px-1.5 font-mono text-[0.4rem] uppercase tracking-[0.15em] text-[rgba(245,236,216,0.85)] md:px-2 md:text-[0.5rem] md:tracking-[0.2em]">
-          class president
+          elected
         </p>
       </motion.div>
     </motion.div>
@@ -185,7 +192,7 @@ export function LeadershipHero() {
 
         {/* Term triptych — desktop: set into the right of the poster */}
         <div className="relative z-0 mt-6 md:mt-2 md:flex md:justify-end md:pr-2">
-          <div className="w-full md:w-[68%] md:max-w-[820px]">
+          <div className="w-full md:w-[76%] md:max-w-[960px]">
             <MastheadTriptych parallaxY={photoY} />
           </div>
         </div>
@@ -202,14 +209,7 @@ export function LeadershipHero() {
         </div>
       </div>
 
-      {/* Intro deck */}
-      <div className="mt-8 border-t border-[var(--line)] pt-8 md:mt-10">
-        <Reveal delay={0.3}>
-          <p className="font-serif-i max-w-2xl text-xl italic leading-snug text-[var(--fg)] opacity-90 md:text-2xl">
-            {LEADERSHIP.intro}
-          </p>
-        </Reveal>
-      </div>
+      <div className="mt-8 border-t border-[var(--line)] md:mt-10" />
     </section>
   );
 }

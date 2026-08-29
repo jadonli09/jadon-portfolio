@@ -7,7 +7,6 @@ import { EventsGrid } from "@/components/leadership/EventsGrid";
 import { WinterBall } from "@/components/leadership/WinterBall";
 import { DisplayMarquee } from "@/components/leadership/DisplayMarquee";
 import { CarMeetShowpiece } from "@/components/leadership/CarMeetShowpiece";
-import { ClubCrews } from "@/components/leadership/ClubCrews";
 import { FieldPhotoStrip } from "@/components/leadership/FieldPhotoStrip";
 import { LeadershipCTA } from "@/components/leadership/LeadershipCTA";
 
@@ -65,7 +64,6 @@ export default function LeadershipPage() {
       <CarMeetShowpiece />
 
       {/* 8. Club officer crews — scrapbook wall with photo slots */}
-      <ClubCrews />
 
       {/* 9. In-the-field photo strip — ASB / climbing / fundraising */}
       <FieldPhotoStrip />

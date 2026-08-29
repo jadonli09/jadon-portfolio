@@ -9,10 +9,12 @@ export function TiltCard({
   children,
   className,
   max = 9,
+  id,
 }: {
   children: React.ReactNode;
   className?: string;
   max?: number;
+  id?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const mx = useMotionValue(0.5);
@@ -35,6 +37,7 @@ export function TiltCard({
   return (
     <motion.div
       ref={ref}
+      id={id}
       data-cursor-hover
       onMouseMove={onMove}
       onMouseLeave={reset}

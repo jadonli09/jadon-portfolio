@@ -60,11 +60,11 @@ function LedgerRow({
         className="relative w-full cursor-pointer text-left transition-colors duration-200 focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--accent)]"
         style={{ background: inverted ? "var(--accent)" : "transparent" }}
       >
-        <div className="flex items-baseline gap-4 px-1 py-5 md:gap-8 md:px-3 md:py-6">
+        <div className="flex items-baseline gap-4 px-1 py-4 md:gap-5 md:px-2 md:py-5">
           {/* Giant ghost numeral */}
           <span
             aria-hidden
-            className="hidden w-16 shrink-0 select-none font-anton text-[2.6rem] leading-none tracking-tight sm:block md:w-24 md:text-[3.4rem]"
+            className="hidden w-14 shrink-0 select-none font-anton text-[2.4rem] leading-none tracking-tight sm:block md:w-16 md:text-[2.8rem]"
             style={{
               color: "transparent",
               WebkitTextStroke: inverted ? "1px rgba(12,10,8,0.8)" : "1px rgba(212,175,106,0.45)",
@@ -76,7 +76,7 @@ function LedgerRow({
           {/* Title + window */}
           <span className="flex-1">
             <span
-              className="block font-anton text-[1.4rem] uppercase leading-none tracking-tight md:text-[2.2rem]"
+              className="block font-anton text-[1.4rem] uppercase leading-none tracking-tight md:text-[1.7rem]"
               style={{ color: inverted ? "#0c0a08" : "var(--fg)" }}
             >
               {event.title}
@@ -91,7 +91,7 @@ function LedgerRow({
 
           {/* Metric — right edge, huge */}
           <span
-            className="shrink-0 text-right font-anton text-[1.3rem] leading-none tracking-tight md:text-[2.4rem]"
+            className="shrink-0 text-right font-anton text-[1.3rem] leading-none tracking-tight md:text-[1.7rem]"
             style={{ color: inverted ? "#0c0a08" : "var(--accent)" }}
           >
             {event.metric}
@@ -110,7 +110,7 @@ function LedgerRow({
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <div className="px-1 pb-7 pt-1 sm:pl-20 md:pl-28">
+            <div className="px-1 pb-6 pt-1 sm:pl-16 md:pl-20">
               {/* The story — bold words run gold */}
               <p className="max-w-3xl text-sm leading-relaxed text-[var(--fg)] opacity-85 md:text-base">
                 <NoteText text={event.note} />
@@ -164,15 +164,9 @@ export function EventsGrid() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="mt-20 md:mt-32" aria-labelledby="events-grid-heading">
-      {/* Solid gold header band — full bleed */}
-      <Reveal>
-        <div className="bg-[var(--accent)] px-5 py-2.5 md:px-9">
-          <span className="font-mono text-[0.6rem] font-bold uppercase tracking-[0.3em] text-[#0c0a08]">
-            Event Log — {events.length} entries
-          </span>
-        </div>
-      </Reveal>
+    <section className="mt-14 md:mt-20" aria-labelledby="events-grid-heading">
+      {/* Solid gold rule — full bleed */}
+      <div className="h-1 bg-[var(--accent)]" aria-hidden />
 
       <div className="mx-auto max-w-7xl px-5 md:px-9">
         {/* Oversized headline, hard against the band */}
@@ -188,15 +182,10 @@ export function EventsGrid() {
             The&nbsp;Range<span className="text-[var(--accent)]">.</span>
           </p>
         </Reveal>
-        <Reveal delay={0.12}>
-          <p className="mt-3 max-w-2xl font-serif-i text-base italic text-[var(--fg)] opacity-70 md:text-lg">
-            From 500-person protests to 262-player scavenger hunts — every line item, on the record.
-          </p>
-        </Reveal>
 
         {/* The ledger */}
         <RevealGroup
-          className="mt-8 border-t-2 border-[rgba(212,175,106,0.35)] md:mt-10"
+          className="mt-8 grid grid-cols-1 border-t-2 border-[rgba(212,175,106,0.35)] md:mt-10 md:grid-cols-2 md:items-start md:gap-x-10"
           stagger={0.05}
           delayChildren={0.05}
         >

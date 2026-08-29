@@ -24,14 +24,20 @@ export const metadata: Metadata = {
     template: "%s · Jadon Li",
   },
   description:
-    "Jadon Li — student leader, civic storyteller, researcher, builder, and athlete. One person, locked in — a portfolio in seven worlds.",
+    "Jadon Li — senior at Mission San Jose High School, Class of 2027. Student leader, civic storyteller, researcher, builder, and athlete. One person, locked in — a portfolio in seven worlds.",
   openGraph: {
     title: "Jadon Li — Locked In",
-    description: "One person, locked in — student leader · storyteller · researcher · builder · athlete.",
+    description:
+      "Jadon Li — senior, Class of 2027. Student leader · civic storyteller · researcher · builder · athlete. One person, locked in.",
     type: "website",
     images: [{ url: ogImage, width: 1200, height: 630 }],
   },
-  twitter: { card: "summary_large_image", images: [ogImage] },
+  twitter: {
+    card: "summary_large_image",
+    description:
+      "Jadon Li — senior, Class of 2027. Student leader · civic storyteller · researcher · builder · athlete. One person, locked in.",
+    images: [ogImage],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

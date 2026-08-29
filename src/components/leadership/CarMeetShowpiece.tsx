@@ -13,16 +13,21 @@ function PhotoTile({
   alt,
   caption,
   className = "",
+  href,
 }: {
   src: string;
   alt: string;
   caption: string;
   className?: string;
+  /** optional link — the tile becomes an anchor */
+  href?: string;
 }) {
   const [hovered, setHovered] = useState(false);
+  const Tag = href ? "a" : "div";
   return (
-    <div
-      className={`group relative overflow-hidden border border-[rgba(212,175,106,0.2)] ${className}`}
+    <Tag
+      {...(href ? { href, target: "_blank", rel: "noreferrer" } : {})}
+      className={`group relative block overflow-hidden border border-[rgba(212,175,106,0.2)] ${className}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       data-cursor-hover
@@ -65,7 +70,7 @@ function PhotoTile({
         animate={{ scaleX: hovered ? 1 : 0 }}
         transition={{ duration: 0.3 }}
       />
-    </div>
+    </Tag>
   );
 }
 
@@ -76,13 +81,14 @@ function PhotoTile({
  */
 function CarMeetCollage() {
   return (
-    <div className="relative flex h-full min-h-[380px] gap-2 md:min-h-[440px]">
+    <div className="relative flex h-full min-h-[340px] gap-2 md:min-h-[400px]">
       {/* Left: hero McLaren — tall */}
       <PhotoTile
         src="/img/carmeet1.jpg"
         alt="Yellow McLaren front-on at the MSJ Car Meet"
-        caption="MSJ Car Meet · @msjmeets"
+        caption="@msjmeets — open on Instagram ↗"
         className="w-[58%] flex-shrink-0"
+        href="https://www.instagram.com/msjmeets/"
       />
 
       {/* Right: three stacked frames */}
@@ -121,7 +127,7 @@ function CarMeetCollage() {
 function StatCard({ value, label }: { value: string; label: string }) {
   return (
     <div
-      className="group relative flex flex-col items-center justify-center rounded-md px-4 py-5 text-center transition-transform duration-300 hover:-translate-y-1 md:px-5"
+      className="group relative flex h-full flex-col items-center justify-center rounded-md px-4 py-5 text-center transition-transform duration-300 hover:-translate-y-1 md:px-5"
       style={{
         background: "linear-gradient(180deg, #1b1610 0%, #120e09 100%)",
         border: "2px solid rgba(212,175,106,0.55)",
@@ -137,10 +143,10 @@ function StatCard({ value, label }: { value: string; label: string }) {
           style={{ background: "rgba(212,175,106,0.5)", boxShadow: "inset 0 0 1px #000" }}
         />
       ))}
-      <p className="font-anton text-[1.6rem] leading-none tracking-wide text-[var(--accent)] md:text-[2.2rem]">
+      <p className="font-anton text-[2.2rem] leading-none tracking-wide text-[var(--accent)] md:text-[3rem]">
         {value}
       </p>
-      <p className="mt-1.5 font-mono text-[0.55rem] uppercase tracking-[0.22em] text-[var(--muted)]">
+      <p className="mt-2 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-[var(--muted)] md:text-[0.68rem]">
         {label}
       </p>
     </div>
@@ -170,7 +176,7 @@ export function CarMeetShowpiece() {
   const { carMeet } = LEADERSHIP;
 
   return (
-    <section className="relative mt-20 md:mt-32" aria-labelledby="car-meet-title">
+    <section className="relative mt-14 md:mt-20" aria-labelledby="car-meet-title">
       {/* Pit-board header — full-bleed oxblood band between hazard stripes */}
       <Reveal>
         <div>
@@ -201,40 +207,26 @@ export function CarMeetShowpiece() {
         />
       </div>
 
-      {/* Pitch line */}
-      <Reveal delay={0.2}>
-        <p className="mt-4 max-w-2xl font-serif-i text-base italic text-[var(--fg)] opacity-80 md:text-lg">
-          {carMeet.pitch}
-        </p>
-      </Reveal>
-
-      {/* Two-column layout: body left, collage right */}
-      <div className="mt-10 grid grid-cols-1 gap-8 md:mt-12 md:grid-cols-[1fr_1.1fr] md:gap-12">
-        {/* Left: body + stat grid + tags */}
-        <Reveal delay={0.1}>
-          <div className="space-y-6">
-            <p className="text-sm leading-relaxed text-[var(--fg)] opacity-[0.85] md:text-base">
-              {carMeet.body}
-            </p>
-
-            {/* stat grid */}
-            <div className="grid grid-cols-2 gap-px bg-[var(--line)] sm:grid-cols-5 md:grid-cols-3 lg:grid-cols-5">
-              {carMeet.stats.map((s) => (
-                <StatCard key={s.label} value={s.value} label={s.label} />
-              ))}
-            </div>
+      {/* Body + numbers left · collage right — the two columns share one height */}
+      <div className="mt-6 grid grid-cols-1 gap-6 md:mt-8 md:grid-cols-[1fr_1.15fr] md:items-stretch md:gap-10">
+        <Reveal delay={0.1} className="flex h-full flex-col gap-6">
+          <p className="text-sm leading-relaxed text-[var(--fg)] opacity-[0.85] md:text-base">
+            {carMeet.body}
+          </p>
+          <div className="grid flex-1 grid-cols-2 grid-rows-2 gap-px bg-[var(--line)]">
+            {carMeet.stats.map((s) => (
+              <StatCard key={s.label} value={s.value} label={s.label} />
+            ))}
           </div>
         </Reveal>
-
-        {/* Right: photo collage */}
-        <Reveal delay={0.2}>
+        <Reveal delay={0.2} className="h-full">
           <CarMeetCollage />
         </Reveal>
       </div>
 
       {/* Bottom gold rule */}
       <motion.div
-        className="mt-12 h-px bg-gradient-to-r from-[var(--accent)] to-transparent opacity-30 md:mt-16"
+        className="mt-8 h-px bg-gradient-to-r from-[var(--accent)] to-transparent opacity-30 md:mt-10"
         initial={{ scaleX: 0, originX: 0 }}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true }}

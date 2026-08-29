@@ -1032,8 +1032,6 @@ export const PROJECTS: Project[] = [
 
 /* ─────────────────────── LEADERSHIP & EVENTS ────────────────────── */
 export const LEADERSHIP = {
-  intro:
-    "Elected to lead, every year. Three-time Class President, now ASB President — plus President of MSJ Makes and Co-President of STEM-PAC. The office is the point; the events are the proof.",
   /** THE HEADLINE — the elected offices, front and centre. */
   roles: [
     {
@@ -1041,16 +1039,26 @@ export const LEADERSHIP = {
       window: "2026–2027",
       tag: "Student body",
       note:
-        "Leads four ASB officers and 50 Leadership II students. Ran the Leadership II selection (90+ applicants → 30), opened the year with the Green & White Assembly, heads the L2 video committee, and rebuilt msjhsasb.org.",
+        "Leads four ASB officers and 50 Leadership II students. Ran the Leadership II selection (90+ applicants → 30), opened the year with the Green & White Assembly, and heads the L2 video committee — in constant back-and-forth with admin and the parent–faculty association (MPPFA) to get events approved, funded, and run.",
       highlight: true,
+      media: [
+        { kind: "reel", src: "/img/gw-04.jpg", url: "https://www.instagram.com/reel/DcXcDnaxdt1/", label: "Green & White" },
+        { kind: "reel", src: "/img/lipdub-frame.jpg", url: "https://www.instagram.com/reel/DcNE6pzJtU-/", label: "Senior Sunrise lipdub" },
+        { kind: "photo", src: "/img/gw-06.jpg", label: "Leadership II · the class" },
+      ],
     },
     {
       title: "Class President ×3",
       window: "9th · 10th · 11th",
       tag: "Class of 2027",
       note:
-        "Elected freshman, sophomore, and junior year. Ran Homecoming all three years (153 → 235 students organized), 13 fundraisers, and two years of class merch.",
+        "Elected freshman, sophomore, and junior year. Ran Homecoming all three years (153 → 235 students organized) and raised ~$15k through 40 fundraisers and three years of class merch.",
       highlight: true,
+      media: [
+        { kind: "reel", src: "/img/winterball-1.jpg", url: "https://www.instagram.com/reel/DVPv0z0ke0b/", label: "Winter Ball" },
+        { kind: "photo", src: "/img/classofficer-junior.jpg", label: "Class officers · 11th" },
+        { kind: "photo", src: "/img/school-fundraising2.jpg", label: "A fundraiser" },
+      ],
     },
     {
       title: "MSJ Makes President",
@@ -1063,11 +1071,11 @@ export const LEADERSHIP = {
       photoCaption: "Stole season — production day",
     },
     {
-      title: "MSJ STEM-PAC Co-President",
+      title: "STEM-PAC Co-President",
       window: "Founder → Co-Pres",
       tag: "Clubs",
       note:
-        "Founded it as a 10th-grade officer, then rebuilt it around STEM Projects and Competitions: weekly deadline posts, bi-weekly workshops, and a staged pipeline into ACSEF and the olympiads. Iron Chef (23 contestants) and the egg drop (12 teams) bring people in. Co-President with Ashley Kang.",
+        "Founded it as a 10th-grade officer, then rebuilt it around STEM Projects and Competitions: weekly posts on competitions and deadlines, bi-weekly workshops, and hands-on help turning a STEM passion into a real project and taking it to competition. Iron Chef and the egg drop bring people in. Co-President with Ashley Kang.",
       photo: "/img/stempac-meeting.jpg",
       photoAlt: "A full classroom at an MSJ STEM-PAC meeting, officers presenting slides at the front",
       photoCaption: "Full room — a STEM-PAC meeting",
@@ -1077,18 +1085,29 @@ export const LEADERSHIP = {
       window: "Treasurer → VP",
       tag: "Clubs",
       note:
-        "Treasurer, then VP. Boba fundraisers past $800, the school's first Raising Cane's fundraiser at $1,300+, pre-orders automated with Google Apps Script — and a permanent climbing wall in the weight room, a first for the school.",
+        "Treasurer, then VP. Boba fundraisers past $800 and the school's first Raising Cane's fundraiser at $1,300+; pinch-block and grip-strength challenges hosted around campus — and a permanent climbing wall in the weight room, a first for the school.",
       photo: "/img/climbingclub-all1.jpg",
       photoAlt: "The full Climbing Club membership posing together",
       photoCaption: "All hands — Climbing Club",
     },
   ],
-  /** In office — the term log, senior year. */
-  term: [
-    { date: "Aug 2026", title: "Senior Sunrise lipdub", body: "First day of school. Organized and edited the lipdub to “Young Dumb & Broke” — the first drop from the L2 video committee he heads.", video: { url: "https://www.instagram.com/reel/DcNE6pzJtU-/", label: "Watch the lipdub" } },
-    { date: "Aug 2026", title: "Green & White Assembly", body: "The start-of-school rally: teacher introductions, student-engagement activities, and hype — teacher-vs-student trivia, class officers mummy-wrapped in toilet paper.", video: { url: "https://www.instagram.com/reel/DcXcDnaxdt1/", label: "Watch the assembly" } },
-    { date: "Aug 2026", title: "msjhsasb.org", body: "Rebuilt the ASB site with Kaiwei Parks — 87 clubs searchable, every form, minutes, checks, and who to email.", video: { url: "https://msjhsasb.org", label: "Open the site" } },
-  ],
+  officers: "Melody Gao · Hanna Rahmanien · Jadon Li · Ariel Duong · Kaiwei Parks",
+  /** The ASB site he rebuilt in office. */
+  site: {
+    name: "msjhsasb.org",
+    url: "https://msjhsasb.org",
+    shot: "/embeds/msjhsasb.jpg",
+    body: "The old ASB site buried what students actually need, so he rebuilt it with Kaiwei Parks: a searchable directory of 87 clubs, every form with when you need it, approved checks and meeting minutes, the leadership roster, elections, and events — ⌘K search across all of it. Replaces msjasb.org.",
+  },
+  /** Hermes — the club-schedule bot that feeds the site's clubs directory. */
+  hermes: {
+    name: "Hermes",
+    handle: "@msjclubs",
+    url: "https://www.instagram.com/msjclubs/",
+    shot: "/embeds/hermes-story-card.jpg",
+    body: "87 clubs, 87 Instagram feeds, and no one knew what was happening at lunch. Hermes scrapes every club account, has Claude pull out the meeting — room, time, what's on — and posts one clean schedule story to @msjclubs every weekday. Live since August 2026.",
+    cta: { href: "/built#hermes", label: "How it's built" },
+  },
   winterBall: {
     title: "Winter Ball — Built From Scratch",
     date: "February 2026",
@@ -1106,10 +1125,9 @@ export const LEADERSHIP = {
       { value: "60+", label: "Cars" },
       { value: "$3.5M", label: "One Pagani" },
       { value: "~200", label: "Attendees" },
-      { value: "32K", label: "FUSD families emailed" },
     ],
     body:
-      "One of five seniors leading it; Jadon ran the media side — promotion and coverage (@msjmeets) — and brought in City Council and the Mayor to speak. The team door-knocked the neighborhood so all of Fremont, not just MSJ, was invited.",
+      "The only junior on a team of five seniors leading it. Jadon ran media — promotion and coverage on @msjmeets — and brought in City Council and the Mayor to speak. The team door-knocked the neighborhood so all of Fremont was invited.",
   },
   /**
    * Club officer crews — one entry per club Jadon helps lead.
@@ -1133,8 +1151,8 @@ export const LEADERSHIP = {
       role: "Co-President",
       arc: "Founded it in 10th",
       monogram: "SP",
-      photo: "/img/stempac-officers.jpg",
-      photoAlt: "MSJ STEM-PAC officer team",
+      photo: "/img/stempac-officers-2026.jpg",
+      photoAlt: "The MSJ STEM-PAC officer team, 2026–27, under the pines on campus",
       blurb:
         "Projects and Competitions — that's the PAC. A coaching pipeline into ACSEF, biology and STEM olympiads, and external contests, with Iron Chef and the egg drop as community glue.",
       stat: { value: "50", label: "club members" },
@@ -1169,6 +1187,17 @@ export const LEADERSHIP = {
         { value: "4", label: "ASB officers led" },
       ],
       video: { url: "https://www.instagram.com/reel/DcXcDnaxdt1/", label: "Watch the assembly" },
+    },
+    {
+      title: "Iron Chef",
+      window: "2025 · 2026",
+      metric: "44 cooks",
+      note: "Started it as a 10th-grade **STEM-PAC** officer. Students get a stage for their **cooking** — a dish and the **chemistry** behind it — and **teachers get the best lunch of the year** as the judges. Cleared **liability waivers** and cooking checkpoints with admin so food could come to campus. **21 cooks** year one, **23** year two.",
+      facts: [
+        { value: "44", label: "cooks · two years" },
+        { value: "2", label: "years running" },
+        { value: "Teachers", label: "as judges — and lunch" },
+      ],
     },
     {
       title: "ICE Protest",
@@ -1227,8 +1256,8 @@ export const LEADERSHIP = {
       ],
     },
     {
-      title: "Prom @ Cal Academy of Sciences",
-      window: "2026",
+      title: "2026 Prom",
+      window: "Cal Academy of Sciences",
       metric: "600+ students",
       note: "Helped plan prom at the **California Academy of Sciences** — **600+ students** and a **$98k production** for a night in the museum. Also shot the **K-drama-style promo** in SF with the video team: the most popular MSJTV video yet.",
       facts: [

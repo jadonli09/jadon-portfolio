@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { SlotPhoto } from "@/components/leadership/SlotPhoto";
-import { Reveal } from "@/components/primitives/Reveal";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 
 /**
@@ -106,9 +105,51 @@ const PHOTOS: {
     wide: true,
   },
   {
+    src: "/img/gw-05.jpg",
+    alt: "The ASB officers on stage at the Green & White Assembly",
+    caption: "Officers on stage",
+  },
+  {
+    src: "/img/gw-03.jpg",
+    alt: "Jadon hosting the Green & White Assembly with the co-emcee",
+    caption: "Hosting the assembly",
+    wide: true,
+  },
+  {
     src: "/img/gw-02.jpg",
-    alt: "The ASB officers in front of the Let's Get Hyped mural",
-    caption: "The ASB Officers",
+    alt: "The L2 video committee in front of the Let's Get Hyped mural",
+    caption: "L2 video committee",
+  },
+  {
+    src: "/img/winterball-1.jpg",
+    alt: "The Winter Ball dance floor, mid-night",
+    caption: "Winter Ball",
+  },
+  {
+    src: "/img/winterball-2.jpg",
+    alt: "The mocktail drink bar at Winter Ball",
+    caption: "The drink bar",
+  },
+  {
+    src: "/img/carmeet1.jpg",
+    alt: "Yellow McLaren at the MSJ Car Meet",
+    caption: "MSJ Car Meet",
+    wide: true,
+  },
+  {
+    src: "/img/msjmakes-officers.jpg",
+    alt: "The MSJ Makes officer team",
+    caption: "MSJ Makes officers",
+  },
+  {
+    src: "/img/stempac-officers-2026.jpg",
+    alt: "The MSJ STEM-PAC officer team, 2026–27",
+    caption: "STEM-PAC officers",
+  },
+  {
+    src: "/img/ironchef-win.jpg",
+    alt: "Iron Chef winner's plaque",
+    caption: "Iron Chef",
   },
   {
     src: "/img/asb-officers.jpg",
@@ -215,6 +256,25 @@ const PHOTOS: {
   },
 ];
 
+/** Deterministic shuffle (seeded, so server and client agree) that also keeps
+ *  photos from the same event — gw-*, winterball-*, seniorbreakfast-* — from
+ *  landing next to each other. */
+function seededOrder<T extends { src: string }>(items: T[], seed = 7): T[] {
+  let x = seed;
+  const rand = () => { x = (x * 1103515245 + 12345) & 0x7fffffff; return x / 0x7fffffff; };
+  const pool = [...items];
+  for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+  const key = (p: T) => p.src.replace(/^\/img\//, "").replace(/[-_]?\d*\.jpg$/, "").replace(/-all|-officers|-spread|-bagels|-baskets/, "");
+  const out: T[] = [];
+  while (pool.length) {
+    const prev = out[out.length - 1];
+    const idx = pool.findIndex((p) => !prev || key(p) !== key(prev));
+    out.push(pool.splice(idx === -1 ? 0 : idx, 1)[0]);
+  }
+  return out;
+}
+const STRIP = seededOrder(PHOTOS);
+
 /** Horizontal auto-scrolling photo marquee — the "in the field" section. */
 export function FieldPhotoStrip() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -228,7 +288,7 @@ export function FieldPhotoStrip() {
   return (
     <section
       ref={trackRef}
-      className="relative mt-20 overflow-hidden md:mt-32"
+      className="relative mt-14 overflow-hidden md:mt-20"
       aria-label="In the Field — ASB, climbing club, fundraising, and panel photos"
     >
       {/* Top gold rule */}
@@ -242,14 +302,8 @@ export function FieldPhotoStrip() {
       />
 
       {/* Section header */}
-      <div className="relative z-10 mx-auto max-w-7xl px-5 pt-16 md:px-9 md:pt-20">
-        <Reveal>
-          <div className="border-b border-[var(--line)] pb-4">
-            <span className="eyebrow text-[var(--accent)]">In the Field</span>
-          </div>
-        </Reveal>
-
-        <div className="mt-5 md:mt-6" id="field-strip-heading">
+      <div className="relative z-10 mx-auto max-w-7xl px-5 pt-6 md:px-9 md:pt-8">
+        <div className="border-t border-[var(--line)] pt-5 md:pt-6" id="field-strip-heading">
           <KineticHeadline
             as="h2"
             text="In the Field."
@@ -270,7 +324,7 @@ export function FieldPhotoStrip() {
           style={{ animationDuration: "100s" }}
           aria-label="Photo strip — ASB, climbing club, fundraising, panels"
         >
-          {[...PHOTOS, ...PHOTOS].map((p, i) => (
+          {[...STRIP, ...STRIP].map((p, i) => (
             <span key={i} className="mx-1.5 inline-flex md:mx-2">
               <FieldPhoto
                 src={p.src}

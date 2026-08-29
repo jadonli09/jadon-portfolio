@@ -144,7 +144,7 @@ function DesignedCard({ project, no }: { project: Project; no: string }) {
   const Icon = PROJECT_ICONS[project.name] ?? GitBranch;
 
   return (
-    <TiltCard max={6} className="h-full">
+    <TiltCard max={6} className="h-full scroll-mt-28" id={project.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}>
       <motion.div
         data-cursor-hover
         className="group relative flex h-full flex-col overflow-hidden border border-[var(--line)] bg-[var(--bg-2)] transition-colors duration-300 hover:border-[var(--accent)]"
