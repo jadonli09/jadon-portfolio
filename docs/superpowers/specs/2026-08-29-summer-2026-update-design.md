@@ -27,3 +27,13 @@
 ## Open
 - Photos: UMass lab / poster session, FIRE, DC·Boston·NY, Green & White Assembly, YBVC — slots exist (travel polaroids, albums, IDE `photo` on the branch). Drop files in `public/img` and register them.
 - Hermes status is unchanged from June ("in build") — unverified.
+
+## Addendum — photos, match cut, Hermes, ASB site (same day)
+- **Photos** arrived in `~/Downloads/new photos` (umass · FIRE · green and white assembly · selfies from the summer · travel/{boston,DC,NY} · YBVC). Resized with PIL (`exif_transpose`, long side 1800 / selfies 1400) into `public/img/{umass,fire,gw,selfie,boston,dc,ny,ybvc}-NN.jpg`.
+- **Selfie match cut** (`albums/SelfieMatchCut.tsx`): the 45 selfies play as hard cuts (560 ms beat) with the face locked to one anchor. Face boxes came from Apple Vision (`VNDetectFaceRectanglesRequest` via a throwaway Swift script) and live in `src/lib/selfies.ts` as `{cx, cy, fw}`; each frame is scaled so the face is 30% of frame width and translated so its centre sits at (50%, 42%). Reticle marks the match point; hover pauses, click/arrows step, reduced motion disables autoplay. Next 4 frames stay mounted invisibly so cuts never pop.
+- **Albums**: new *The Summer* album (06) — UMass, YBVC, FIRE, DC/Boston/NY; Green & White Assembly frames lead *The Podium*; Portraits → 07.
+- **Slots filled**: travel polaroids (Amherst · DC · Boston · NY); research `umass-2026` branch gets `photo` (poster day), `bench`, `session`, and the ice-rink image on `field/umass.md`; leadership field strip opens with Leadership II + G&W (replacing the never-delivered `asb-leadership-2026.jpg` slot); FIRE cohort photo on its CivicNational card; YBVC pinboard pin is now a polaroid.
+- **Hermes is live** on @msjclubs (weekday club-schedule stories). Card shows a real story frame; flight log status is LIVE for every mission.
+- **msjhsasb.org** (built with Kaiwei Parks, replaces msjasb.org) — new built card + term-log entry + trophy.
+- **Green & White Assembly** copy per Jadon: start-of-school rally — teacher introductions, student-engagement activities, hype activities.
+- Still open: nothing from Jadon's list. Hermes stack chips (Node.js · Claude API · Google Sheets) read from the repo's package.json.
