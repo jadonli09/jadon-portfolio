@@ -17,6 +17,9 @@ const FACTOIDS: { key: string; text: string; tone: ToastTone }[] = [
   { key: "gout", text: "🧫 gout = monosodium urate crystals firing the NLRP3 inflammasome", tone: "hot" },
   { key: "pcr", text: "🔬 PCR doubles your DNA each cycle — 30 cycles ≈ a billion-fold", tone: "cyan" },
   { key: "deseq", text: "📊 DESeq2 models read counts with a negative-binomial fit", tone: "lime" },
+  { key: "fusarium", text: "🍄 Fusarium oxysporum infects bananas AND corneas — a cross-kingdom pathogen", tone: "hot" },
+  { key: "rfp", text: "🔴 mRFP glows red at ~607 nm — the handle for watching fungus meet macrophage", tone: "hot" },
+  { key: "plasmid", text: "🧫 a plasmid is a tiny DNA ring — pCT74-mRFP carries the glow + the hygromycin handle", tone: "cyan" },
   { key: "jadon", text: "👋 you found me. thanks for poking around.", tone: "lime" },
 ];
 

@@ -6,9 +6,11 @@ import { ArrowUpRight, ChevronRight, Folder, FileText, Terminal as TermIcon } fr
 import { VolcanoPlot } from "@/components/research/VolcanoPlot";
 import { asset } from "@/lib/base";
 import { cn } from "@/lib/cn";
-import { fireToast, toggleMutate } from "./bus";
+import { fireToast, setRfp, toggleMutate } from "./bus";
 import { AWARDS, AWARD_VIZ, CITATION, DEG_COUNTS, HEATMAP, IMAGES, PAIN_MEDIATORS, PATHWAYS, PCA, PIPELINE, PROFILE, PROGRAMS, PROJECT, RESOURCES, RESULTS, STATS, STAT_BARS, USABO_MEDAL, USABO_MEDAL_INFO, type Award, type Program } from "./content";
 import { AsciiArt, AsciiMeter, AsciiPanel, CodeBlock, DirListing, Heatmap, ImagePreview, JsonView, KeyVals, MdHeading, Prose, ScatterPlot, TermTable } from "./term";
+import { BranchListView, FusCitationView, FusFigureView, FusPosterView, FusProjectView, FusResourcesView, FusResultsView, GitLogView, MicroscopeView, PlasmidRing, ProtocolView, StrainsView } from "./fusarium";
+import { FUS_IMAGES } from "./content";
 
 // ── model ─────────────────────────────────────────────────────────────────────
 
@@ -19,7 +21,9 @@ type Entry =
   | { id: number; kind: "out"; lines: { text: string; tone?: Tone }[] }
   | { id: number; kind: "view"; token: string };
 
-type Dir = "root" | "project" | "awards" | "field";
+type Dir = "root" | "project" | "fusarium" | "awards" | "field";
+type Branch = "main" | "umass-2026";
+const BRANCH_SLUG: Record<Branch, string> = { main: "gout-model", "umass-2026": "fusarium-rfp" };
 
 const TONE_CLASS: Record<Tone, string> = {
   fg: "text-[var(--fg)]",
@@ -60,15 +64,45 @@ const TOKEN_FOR: Record<string, string> = {
   prism: "program:prism", "prism.md": "program:prism",
   stempac: "program:stempac", "stem-pac": "program:stempac", "stem-pac.md": "program:stempac",
   umass: "program:umass", "umass.md": "program:umass",
+  // ── branch umass-2026 — fusarium/ ──
+  fusarium: "fus:project", "fusarium.md": "fus:project", fus: "fus:project", rfp: "fus:project", "fusarium-rfp": "fus:project",
+  protocol: "fus:protocol", "protocol.sh": "fus:protocol", transform: "fus:protocol", transformation: "fus:transformation",
+  plasmid: "fus:plasmid", "plasmid.map": "fus:plasmid", "pct74": "fus:plasmid", "pct74-mrfp": "fus:plasmid",
+  strains: "fus:strains", "strains.tsv": "fus:strains", strain: "fus:strains",
+  confocal: "fus:confocal", "confocal.png": "fus:confocal", glow: "fus:confocal",
+  gel: "fus:gel", "gel.png": "fus:gel", pcr: "fus:pcr", "pcr-gel.png": "fus:pcr",
+  protoplast: "fus:protoplast", "protoplast.png": "fus:protoplast", protoplasts: "fus:protoplast",
+  "transformation.png": "fus:transformation", macrophage: "fus:future", macrophages: "fus:future", future: "fus:future", "future.png": "fus:future",
+  "umass-poster.jpg": "fus:poster", "umass-poster": "fus:poster",
+  "git-log": "fus:log", commits: "fus:log", "citation2": "fus:citation",
+};
+
+/** On branch umass-2026, the generic names resolve to the Fusarium files instead. */
+const BRANCH_ALIAS: Record<string, string> = {
+  project: "fus:project", abstract: "fus:project", question: "fus:project", hypothesis: "fus:project", purpose: "fus:project",
+  results: "fus:results", "results.md": "fus:results", findings: "fus:results", conclusion: "fus:results",
+  methodology: "fus:protocol", method: "fus:protocol", "methodology.sh": "fus:protocol", pipeline: "fus:protocol",
+  poster: "fus:poster", board: "fus:poster",
+  resources: "fus:resources", "resources.md": "fus:resources", links: "fus:resources", refs: "fus:resources", tools: "fus:resources",
+  citation: "fus:citation", "citation.bib": "fus:citation", cite: "fus:citation", bib: "fus:citation", bibtex: "fus:citation",
+  design: "fus:strains", samples: "fus:strains",
+  photo: "fus:confocal", selfie: "fus:confocal", me: "fus:confocal",
 };
 
 const FILE_TOKENS = new Set(["readme", "stats", "project", "methodology", "genes", "degcounts", "abstract", "volcano", "results", "pathways", "heatmap", "pca", "citation", "resources", "poster", "photo", "design"]);
-const isFileToken = (t: string) => FILE_TOKENS.has(t) || t.startsWith("award:") || t.startsWith("program:");
+const FUS_FILES = new Set(["project", "protocol", "plasmid", "strains", "results", "confocal", "gel", "pcr", "protoplast", "transformation", "future", "poster", "resources", "citation", "log"]);
+const isFileToken = (t: string) => FILE_TOKENS.has(t) || t.startsWith("award:") || t.startsWith("program:") || (t.startsWith("fus:") && FUS_FILES.has(t.split(":")[1]));
+const FUS_LABEL: Record<string, string> = {
+  project: "fusarium.md", protocol: "protocol.sh", plasmid: "plasmid.map", strains: "strains.tsv", results: "results.md",
+  confocal: "confocal.png", gel: "gel.png", pcr: "pcr-gel.png", protoplast: "protoplast.png", transformation: "transformation.png",
+  future: "future.png", poster: "umass-poster.jpg", resources: "resources.md", citation: "citation.bib", log: "git log", microscope: "microscope", branches: "git branch",
+};
 
 function frameLabel(token: string): string {
   const [base, arg] = token.split(":");
   if (base === "award") return `awards/${AWARDS.find((a) => a.id === arg)?.file ?? "?.json"}`;
   if (base === "program") return `field/${PROGRAMS.find((p) => p.id === arg)?.file ?? "?.md"}`;
+  if (base === "fus") return arg === "log" || arg === "branches" || arg === "microscope" ? FUS_LABEL[arg] : `fusarium/${FUS_LABEL[arg] ?? arg}`;
   if (base === "ls") return `ls ${arg === "root" ? "~/research" : `${arg}/`}`;
   return {
     help: "help", tree: "tree ~/research", neofetch: "neofetch", whoami: "whoami",
@@ -87,7 +121,8 @@ function frameTag(label: string): string {
   if (label.endsWith(".md")) return "markdown";
   if (label.endsWith(".tsv")) return "tsv";
   if (label.endsWith(".sh")) return "shell";
-  if (label.endsWith(".plot")) return "figure";
+  if (label.endsWith(".plot") || label.endsWith(".map")) return "figure";
+  if (label.startsWith("git")) return "git";
   if (label.endsWith(".txt")) return "text";
   if (label.startsWith("ls") || label.startsWith("tree")) return "dir";
   return "stdout";
@@ -121,6 +156,23 @@ const SUGGEST: Record<string, string[]> = {
   readme: ["volcano", "project", "awards", "field"],
   whoami: ["neofetch", "project", "awards", "field"],
   neofetch: ["whoami", "project", "awards", "stats"],
+  "fus:project": ["protocol", "plasmid", "strains", "results", "microscope"],
+  "fus:protocol": ["plasmid", "protoplast", "transformation", "results"],
+  "fus:plasmid": ["protocol", "gel", "pcr", "strains"],
+  "fus:strains": ["confocal", "protocol", "results"],
+  "fus:results": ["confocal", "gel", "microscope", "future", "poster"],
+  "fus:confocal": ["microscope", "gel", "results", "future"],
+  "fus:gel": ["pcr", "confocal", "plasmid", "results"],
+  "fus:pcr": ["gel", "plasmid", "protocol"],
+  "fus:protoplast": ["transformation", "protocol", "strains"],
+  "fus:transformation": ["protocol", "results", "confocal"],
+  "fus:future": ["results", "confocal", "poster", "git log"],
+  "fus:poster": ["confocal", "gel", "plasmid", "protocol", "results"],
+  "fus:log": ["fusarium", "results", "poster", "git checkout main"],
+  "fus:microscope": ["results", "gel", "plasmid", "git checkout main"],
+  "fus:branches": ["git checkout umass-2026", "git checkout main", "git log"],
+  "fus:resources": ["citation", "fusarium", "results"],
+  "fus:citation": ["resources", "results", "poster"],
 };
 
 const HINT: Record<string, { text: string; tone?: Tone }> = {
@@ -138,14 +190,48 @@ const HINT: Record<string, { text: string; tone?: Tone }> = {
   pathways: { text: "→ `heatmap` for the gene-level view · `genes` for the hit list" },
   heatmap: { text: "→ note gout·spine mirrors gout·joint — the spinal-cord signal. `pca` next" },
   pca: { text: "→ gout samples cluster apart from controls. `heatmap` for gene detail" },
+  "fus:project": { text: "→ the method: `protocol` · the vector: `plasmid` · the payoff: `results` · `microscope`" },
+  "fus:protocol": { text: "→ figures per step: `pcr` (I) · `protoplast` (II) · `transformation` (III) · `confocal` (IV)" },
+  "fus:plasmid": { text: "→ mRFP is the glow, HygR is the handle. `gel` + `pcr` confirm both are there" },
+  "fus:strains": { text: "→ MRL8996 (the keratitis isolate) is the one that lit up. `confocal`" },
+  "fus:results": { text: "→ see it: `microscope` · where it goes next: `future`" },
+  "fus:confocal": { text: "→ row 3 is the transformed strain. `microscope` for the darkfield view, `gel` for the DNA proof" },
+  "fus:gel": { text: "→ HygR + RFP bands at the expected sizes — the plasmid made it in. `confocal`" },
+  "fus:log": { text: "→ every commit is a bench day. `git checkout main` for the RNA-seq project" },
+  "fus:microscope": { text: "→ laser on: red = mRFP fungus. `git checkout main` switches it off" },
+  "fus:poster": { text: "→ open specific figures: `confocal` · `gel` · `plasmid` · `protoplast` · `transformation`" },
 };
 
-// explorer tree
-const EXPLORER: { label: string; cmd: string; depth: number; folder?: boolean }[] = [
+// explorer tree — the working tree depends on the checked-out branch
+type ExplorerItem = { label: string; cmd: string; depth: number; folder?: boolean };
+const EXPLORER_ROOT: ExplorerItem[] = [
   { label: "README.md", cmd: "readme", depth: 0 },
   { label: "whoami", cmd: "whoami", depth: 0 },
   { label: "neofetch", cmd: "neofetch", depth: 0 },
   { label: "stats.json", cmd: "stats", depth: 0 },
+];
+const EXPLORER_UMASS: ExplorerItem[] = [
+  ...EXPLORER_ROOT,
+  { label: "resources.md", cmd: "resources", depth: 0 },
+  { label: "umass-poster.jpg", cmd: "poster", depth: 0 },
+  { label: "fusarium", cmd: "fusarium", depth: 0, folder: true },
+  { label: "fusarium.md", cmd: "fusarium", depth: 1 },
+  { label: "protocol.sh", cmd: "protocol", depth: 1 },
+  { label: "plasmid.map", cmd: "plasmid", depth: 1 },
+  { label: "strains.tsv", cmd: "strains", depth: 1 },
+  { label: "results.md", cmd: "results", depth: 1 },
+  { label: "confocal.png", cmd: "confocal", depth: 1 },
+  { label: "gel.png", cmd: "gel", depth: 1 },
+  { label: "pcr-gel.png", cmd: "pcr", depth: 1 },
+  { label: "protoplast.png", cmd: "protoplast", depth: 1 },
+  { label: "transformation.png", cmd: "transformation", depth: 1 },
+  { label: "future.png", cmd: "future", depth: 1 },
+  { label: "citation.bib", cmd: "citation", depth: 1 },
+  { label: "git log", cmd: "git log", depth: 0 },
+  { label: "microscope", cmd: "microscope", depth: 0 },
+];
+const EXPLORER: ExplorerItem[] = [
+  ...EXPLORER_ROOT,
   { label: "resources.md", cmd: "resources", depth: 0 },
   { label: "science-fair-poster.png", cmd: "poster", depth: 0 },
   { label: "me-at-poster.jpg", cmd: "photo", depth: 0 },
@@ -171,10 +257,13 @@ const EXPLORER: { label: string; cmd: string; depth: number; folder?: boolean }[
   { label: "stem-pac.md", cmd: "stempac", depth: 1 },
   { label: "umass.md", cmd: "umass", depth: 1 },
 ];
+const EXPLORER_UMASS_TAIL: ExplorerItem[] = EXPLORER.filter((it) => ["awards", "field"].includes(it.cmd) || ["usabo", "bbo", "acsef", "ysjc", "prism", "stempac", "umass"].includes(it.cmd));
+const explorerFor = (b: Branch) => (b === "umass-2026" ? [...EXPLORER_UMASS, ...EXPLORER_UMASS_TAIL] : EXPLORER);
 
 const FS: Record<Dir, { perms: string; size: string; name: string; kind: "dir" | "exec" | "file" }[]> = {
   root: [
     { perms: "drwxr-xr-x", size: "4.0K", name: "project", kind: "dir" },
+    { perms: "drwxr-xr-x", size: "4.0K", name: "fusarium", kind: "dir" },
     { perms: "drwxr-xr-x", size: "4.0K", name: "awards", kind: "dir" },
     { perms: "drwxr-xr-x", size: "4.0K", name: "field", kind: "dir" },
     { perms: "-rw-r--r--", size: "2.1K", name: "README.md", kind: "file" },
@@ -182,6 +271,7 @@ const FS: Record<Dir, { perms: string; size: string; name: string; kind: "dir" |
     { perms: "-rw-r--r--", size: "1.3K", name: "resources.md", kind: "file" },
     { perms: "-rw-r--r--", size: "2.4M", name: "science-fair-poster.png", kind: "file" },
     { perms: "-rw-r--r--", size: "1.1M", name: "me-at-poster.jpg", kind: "file" },
+    { perms: "-rw-r--r--", size: "0.7M", name: "umass-poster.jpg", kind: "file" },
     { perms: "-rwxr-xr-x", size: "1.2K", name: "whoami", kind: "exec" },
     { perms: "-rwxr-xr-x", size: "1.8K", name: "neofetch", kind: "exec" },
   ],
@@ -199,6 +289,20 @@ const FS: Record<Dir, { perms: string; size: string; name: string; kind: "dir" |
     { perms: "-rwxr-xr-x", size: "12K", name: "pca.plot", kind: "exec" },
     { perms: "-rw-r--r--", size: "0.5K", name: "citation.bib", kind: "file" },
   ],
+  fusarium: [
+    { perms: "-rw-r--r--", size: "2.9K", name: "fusarium.md", kind: "file" },
+    { perms: "-rwxr-xr-x", size: "1.4K", name: "protocol.sh", kind: "exec" },
+    { perms: "-rwxr-xr-x", size: "5.8K", name: "plasmid.map", kind: "exec" },
+    { perms: "-rw-r--r--", size: "0.3K", name: "strains.tsv", kind: "file" },
+    { perms: "-rw-r--r--", size: "1.7K", name: "results.md", kind: "file" },
+    { perms: "-rw-r--r--", size: "61K", name: "confocal.png", kind: "file" },
+    { perms: "-rw-r--r--", size: "50K", name: "gel.png", kind: "file" },
+    { perms: "-rw-r--r--", size: "87K", name: "pcr-gel.png", kind: "file" },
+    { perms: "-rw-r--r--", size: "122K", name: "protoplast.png", kind: "file" },
+    { perms: "-rw-r--r--", size: "71K", name: "transformation.png", kind: "file" },
+    { perms: "-rw-r--r--", size: "33K", name: "future.png", kind: "file" },
+    { perms: "-rw-r--r--", size: "0.5K", name: "citation.bib", kind: "file" },
+  ],
   awards: AWARDS.map((a) => ({ perms: "-rw-r--r--", size: "0.8K", name: a.file, kind: "file" as const })),
   field: PROGRAMS.map((p) => ({ perms: "-rw-r--r--", size: "1.0K", name: p.file, kind: "file" as const })),
 };
@@ -209,6 +313,7 @@ function resolveDir(a: string): Dir | null {
   if (x === "awards" || x === "competitions") return "awards";
   if (x === "field" || x === "programs") return "field";
   if (x === "project") return "project";
+  if (x === "fusarium" || x === "umass" || x === "umass-2026" || x === "fus") return "fusarium";
   return null;
 }
 
@@ -260,6 +365,8 @@ export function ResearchIDE() {
   const [suggest, setSuggest] = useState<string[]>(SUGGEST.default);
   const [cwd, setCwd] = useState<Dir>("root");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [branch, setBranch] = useState<Branch>("main");
+  const explorer = explorerFor(branch);
 
   const idRef = useRef(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -273,20 +380,29 @@ export function ResearchIDE() {
       { text: "deg-console v3.1 · research IDE", tone: "accent", at: 100 },
       { text: "booting kernel ............ ok", tone: "muted", at: 230 },
       { text: "mounting /research ........ ok", tone: "muted", at: 360 },
-      { text: "indexed: 1 poster · GSE190138 · 3 tissues · 9 pain mediators · 3 awards · 4 programs", tone: "muted", at: 520 },
+      { text: "indexed: 2 branches · 2 posters · GSE190138 · 3 tissues · 9 pain mediators · 3 Fusarium strains · 1 plasmid · 3 awards · 4 programs", tone: "muted", at: 520 },
       { text: " ", at: 580 },
       { text: "This page is a terminal. Nothing is shown until you ask for it.", tone: "fg", at: 700 },
       { text: "Try a command — file outputs render like a real IDE.", tone: "fg", at: 700 },
       { text: " ", at: 740 },
-      { text: "→ start with  poster  ·  results  ·  volcano  ·  help  — or  nav  to hop to another page", tone: "accent", at: 880 },
+      { text: "→ start with  poster  ·  results  ·  volcano  ·  help  — or  git checkout umass-2026  for the summer's wet-lab project", tone: "accent", at: 880 },
     ];
+    // deep link: /research?branch=umass-2026 lands on the Fusarium branch, glow on
+    const wantsUmass = new URLSearchParams(window.location.search).get("branch") === "umass-2026";
+    if (wantsUmass) {
+      boot.push({ text: "Switched to branch 'umass-2026' — fusarium-rfp · Ma Lab, UMass Amherst. Try  fusarium  ·  protocol  ·  microscope", tone: "cyan", at: 1000 });
+    }
     const timers = boot.map((b) =>
       window.setTimeout(() => setLog((l) => [...l, { id: nextId(), kind: "out", lines: [{ text: b.text, tone: b.tone }] }]), b.at),
     );
+    if (wantsUmass) {
+      timers.push(window.setTimeout(() => { setBranch("umass-2026"); setRfp(true); setSuggest(["fusarium", "protocol", "plasmid", "microscope", "git log"]); }, 0));
+    }
     const focus = window.setTimeout(() => inputRef.current?.focus(), 920);
     return () => {
       timers.forEach(clearTimeout);
       clearTimeout(focus);
+      setRfp(false);
     };
   }, []);
 
@@ -310,15 +426,42 @@ export function ResearchIDE() {
     out([{ text: `opening ${label} → ${route} …`, tone: "cyan" }]);
     window.setTimeout(() => { window.location.href = asset(route); }, 320);
   };
+  const checkout = (b: Branch, quiet = false) => {
+    if (b === branch) { if (!quiet) out([{ text: `Already on '${b}'`, tone: "muted" }]); return; }
+    setBranch(b);
+    setRfp(b === "umass-2026");
+    setCwd("root");
+    out([{ text: `Switched to branch '${b}' — ${BRANCH_SLUG[b]}`, tone: "cyan" }]);
+    if (b === "umass-2026") {
+      out([{ text: "  laser on · red = mRFP. try  fusarium  ·  protocol  ·  plasmid  ·  microscope  ·  git log", tone: "muted" }]);
+      fireToast("🔴 branch umass-2026 — the glow is on", "hot");
+      setSuggest(["fusarium", "protocol", "plasmid", "microscope", "git log"]);
+    } else {
+      out([{ text: "  back to the RNA-seq project. try  volcano  ·  results  ·  genes", tone: "muted" }]);
+      fireToast("⎇ main — gout-model", "lime");
+      setSuggest(SUGGEST.default);
+    }
+  };
   const show = (token: string) => {
+    if (token.startsWith("fus:") && branch !== "umass-2026") {
+      setBranch("umass-2026");
+      setRfp(true);
+      out([{ text: "auto-checkout → branch 'umass-2026' (fusarium-rfp)", tone: "cyan" }]);
+    }
     setLog((l) => [...l, { id: nextId(), kind: "view", token }]);
     if (isFileToken(token)) {
       setActive(token);
       setTabs((t) => (t.includes(token) ? t : [...t, token].slice(-8)));
     }
     const base = token.split(":")[0];
-    if (HINT[base]) out([{ text: HINT[base].text, tone: HINT[base].tone ?? "muted" }]);
-    setSuggest(SUGGEST[base] ?? SUGGEST.default);
+    const key = base === "fus" ? token : base;
+    if (HINT[key]) out([{ text: HINT[key].text, tone: HINT[key].tone ?? "muted" }]);
+    setSuggest(SUGGEST[key] ?? SUGGEST.default);
+  };
+  /** Resolve a bare name to a render token — on umass-2026 the generic names point at fusarium/. */
+  const tokenFor = (name: string): string | undefined => {
+    if (branch === "umass-2026" && BRANCH_ALIAS[name]) return BRANCH_ALIAS[name];
+    return TOKEN_FOR[name];
   };
 
   const exec = (raw: string) => {
@@ -346,6 +489,28 @@ export function ResearchIDE() {
         show(`ls:${d}`); setSuggest(SUGGEST.ls); return;
       }
       case "tree": show("tree"); setSuggest(SUGGEST.tree); return;
+      case "git": {
+        const sub = parts[1];
+        const target = parts[2];
+        if (sub === "checkout" || sub === "switch") {
+          if (target === "main" || target === "master" || target === "gout" || target === "gout-model") { checkout("main"); return; }
+          if (target === "umass-2026" || target === "umass" || target === "fusarium" || target === "fusarium-rfp" || target === "summer") { checkout("umass-2026"); return; }
+          out([{ text: `error: pathspec '${target ?? ""}' did not match any branch. try: git checkout umass-2026`, tone: "err" }]); return;
+        }
+        if (sub === "branch" || sub === "branches") { show("fus:branches"); return; }
+        if (sub === "log") { show("fus:log"); return; }
+        if (sub === "status") { out([{ text: `On branch ${branch}`, tone: "fg" }, { text: "nothing to commit, working tree clean (the lab notebook is the source of truth)", tone: "muted" }]); return; }
+        out([{ text: "usage: git checkout <main|umass-2026> · git branch · git log · git status", tone: "muted" }]); return;
+      }
+      case "checkout": case "switch": {
+        if (arg === "main" || arg === "gout") { checkout("main"); return; }
+        if (arg.startsWith("umass") || arg.startsWith("fus")) { checkout("umass-2026"); return; }
+        show("fus:branches"); return;
+      }
+      case "branch": case "branches": show("fus:branches"); return;
+      case "log": case "commits": show("fus:log"); return;
+      case "main": checkout("main"); return;
+      case "microscope": case "scope": case "laser": case "confocal-view": show("fus:microscope"); return;
       case "pwd": out([{ text: promptPath(cwd), tone: "fg" }]); return;
       case "cd": {
         const d = resolveDir(arg || "~");
@@ -363,7 +528,7 @@ export function ResearchIDE() {
         show("nav"); return;
       }
       case "cat": case "open": case "less": case "more": case "view": case "vim": case "nano": case "run": case "./": {
-        const tok = TOKEN_FOR[basename(arg)];
+        const tok = arg.startsWith("fusarium/") ? TOKEN_FOR[basename(arg)] ?? BRANCH_ALIAS[basename(arg)] : tokenFor(basename(arg));
         if (tok) { show(tok); return; }
         out([{ text: `${head}: ${arg || "?"}: No such file`, tone: "err" }]); return;
       }
@@ -383,7 +548,7 @@ export function ResearchIDE() {
         window.setTimeout(() => { window.location.href = asset("/"); }, 350);
         return;
       default: {
-        const tok = TOKEN_FOR[basename(head)] ?? TOKEN_FOR[head];
+        const tok = head.startsWith("fusarium/") ? TOKEN_FOR[basename(head)] ?? BRANCH_ALIAS[basename(head)] : tokenFor(basename(head)) ?? tokenFor(head);
         if (tok) { show(tok); return; }
         // bare page name (e.g. `leadership`, `court`) → navigate
         const pg = pageRouteFromArg(head);
@@ -409,7 +574,7 @@ export function ResearchIDE() {
       e.preventDefault();
       const tok = value.trim().toLowerCase();
       if (tok) {
-        const pool = ["help", "ls", "tree", "clear", "neofetch", "whoami", "readme", "resources", "stats", "poster", "photo", "project", "results", "methodology", "design", "degs", "genes", "pathways", "heatmap", "volcano", "pca", "citation", "abstract", "awards", "usabo", "bbo", "acsef", "field", "ysjc", "prism", "stem-pac", "umass", "mutate", "exit", "nav", "goto", "leadership", "civic", "built", "court", "locked-in", "about", "achievements", "albums", "contact", "home"];
+        const pool = ["help", "ls", "tree", "clear", "neofetch", "whoami", "readme", "resources", "stats", "poster", "photo", "project", "results", "methodology", "design", "degs", "genes", "pathways", "heatmap", "volcano", "pca", "citation", "abstract", "awards", "usabo", "bbo", "acsef", "field", "ysjc", "prism", "stem-pac", "umass", "git checkout umass-2026", "git checkout main", "git log", "git branch", "fusarium", "protocol", "plasmid", "strains", "confocal", "gel", "pcr", "protoplast", "transformation", "future", "microscope", "mutate", "exit", "nav", "goto", "leadership", "civic", "built", "court", "locked-in", "about", "achievements", "albums", "contact", "home"];
         const hit = pool.find((c) => c.startsWith(tok));
         if (hit) setValue(hit);
       }
@@ -477,12 +642,20 @@ export function ResearchIDE() {
             ))}
 
             {/* the research filesystem */}
-            <div className="mt-2 flex items-center gap-1.5 border-t border-[var(--line)] px-3 pb-1 pt-2 text-[0.62rem] text-[var(--muted)]">
-              <ChevronRight className="size-3" /> ~/research
-            </div>
-            {EXPLORER.map((it, i) => (
+            <div className="mt-2 flex items-center justify-between gap-1.5 border-t border-[var(--line)] px-3 pb-1 pt-2 text-[0.62rem] text-[var(--muted)]">
+              <span className="flex items-center gap-1.5"><ChevronRight className="size-3" /> ~/research</span>
               <button
-                key={i}
+                data-cursor-hover
+                onClick={() => run(branch === "main" ? "git checkout umass-2026" : "git checkout main")}
+                title="switch branch"
+                className="rounded border border-[var(--line)] px-1.5 py-px text-[0.52rem] uppercase tracking-widest text-[var(--accent)] transition-colors hover:border-[color-mix(in_srgb,var(--accent)_55%,transparent)]"
+              >
+                ⎇ {branch}
+              </button>
+            </div>
+            {explorer.map((it, i) => (
+              <button
+                key={`${branch}-${i}`}
                 data-cursor-hover
                 onClick={() => { run(it.cmd); setSidebarOpen(false); }}
                 className="group flex w-full items-center gap-1.5 py-1 pr-2 text-left text-[0.7rem] text-[var(--muted)] transition-colors hover:bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] hover:text-[var(--fg)]"
@@ -552,13 +725,44 @@ export function ResearchIDE() {
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="mb-4 border-b border-[var(--line)] pb-4"
             >
-              <p className="font-mono text-[0.62rem] uppercase tracking-[0.35em] text-[var(--muted)]">03 — The Scientist</p>
-              <p className="font-display mt-2 text-5xl leading-[0.95] text-[var(--fg)] md:text-7xl">
-                PAIN, DECODED<span className="text-[var(--accent)]">.</span>
-              </p>
-              <p className="mt-3 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[var(--muted)]">
-                Gout in the genome — RNA-seq · DEG console
-              </p>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="font-mono text-[0.62rem] uppercase tracking-[0.35em] text-[var(--muted)]">03 — The Scientist</p>
+                <div className="flex items-center gap-1 font-mono text-[0.58rem] uppercase tracking-[0.2em]">
+                  {(["main", "umass-2026"] as Branch[]).map((b) => (
+                    <button
+                      key={b}
+                      data-cursor-hover
+                      onClick={() => run(`git checkout ${b}`)}
+                      aria-pressed={branch === b}
+                      className={cn(
+                        "rounded border px-2 py-0.5 transition-colors",
+                        branch === b ? "border-[color-mix(in_srgb,var(--accent)_70%,transparent)] bg-[color-mix(in_srgb,var(--accent)_14%,transparent)] text-[var(--accent)]" : "border-[var(--line)] text-[var(--muted)] hover:text-[var(--fg)]",
+                      )}
+                    >
+                      ⎇ {b}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {branch === "umass-2026" ? (
+                <>
+                  <p className="font-display mt-2 text-5xl leading-[0.95] text-[var(--fg)] md:text-7xl">
+                    GLOW, ENGINEERED<span className="text-[var(--accent)]" style={{ textShadow: "0 0 18px var(--accent)" }}>.</span>
+                  </p>
+                  <p className="mt-3 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[var(--muted)]">
+                    Fusarium in the lab — RFP transformation · Ma Lab, UMass Amherst · Summer 2026
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="font-display mt-2 text-5xl leading-[0.95] text-[var(--fg)] md:text-7xl">
+                    PAIN, DECODED<span className="text-[var(--accent)]">.</span>
+                  </p>
+                  <p className="mt-3 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[var(--muted)]">
+                    Gout in the genome — RNA-seq · DEG console
+                  </p>
+                </>
+              )}
             </motion.div>
             {log.map((e) => (
               <div key={e.id} className="mb-1">
@@ -589,7 +793,7 @@ export function ResearchIDE() {
                       <span className="text-[0.55rem] uppercase tracking-widest text-[var(--muted)]">{frameTag(frameLabel(e.token))}</span>
                     </div>
                     <div className="p-4 md:p-5">
-                      <ViewBody token={e.token} />
+                      <ViewBody token={e.token} branch={branch} />
                     </div>
                   </motion.div>
                 )}
@@ -632,7 +836,14 @@ export function ResearchIDE() {
       {/* status bar */}
       <div className="flex items-center justify-between gap-3 border-t border-[var(--line)] bg-[var(--bg-2)]/70 px-3 py-1 text-[0.58rem] uppercase tracking-widest text-[var(--muted)] backdrop-blur">
         <div className="flex items-center gap-3">
-          <span className="text-[var(--accent)]">⎇ research/gout-model</span>
+          <button
+            data-cursor-hover
+            onClick={() => run(branch === "main" ? "git checkout umass-2026" : "git checkout main")}
+            title="switch branch"
+            className="text-[var(--accent)] transition-opacity hover:opacity-75"
+          >
+            ⎇ {branch} · {BRANCH_SLUG[branch]}
+          </button>
           <span className="hidden sm:inline">deg-sh</span>
           <span className="hidden md:inline">UTF-8</span>
         </div>
@@ -647,14 +858,15 @@ export function ResearchIDE() {
 
 // ── content views ─────────────────────────────────────────────────────────────
 
-function ViewBody({ token }: { token: string }) {
+function ViewBody({ token, branch }: { token: string; branch: Branch }) {
   const [base, arg] = token.split(":");
   switch (base) {
     case "help": return <HelpView />;
     case "nav": return <NavView />;
-    case "tree": return <TreeView />;
+    case "tree": return <TreeView explorer={explorerFor(branch)} />;
+    case "fus": return <FusView arg={arg} branch={branch} />;
     case "ls": return <DirListing entries={FS[(arg as Dir) ?? "root"]} />;
-    case "neofetch": return <Neofetch />;
+    case "neofetch": return <Neofetch branch={branch} />;
     case "whoami": return <WhoamiView />;
     case "readme": return <ReadmeView />;
     case "awards": return <AwardsIndex />;
@@ -678,6 +890,27 @@ function ViewBody({ token }: { token: string }) {
     case "stats": return <StatsView />;
     case "volcano": return <VolcanoView />;
     default: return <HelpView />;
+  }
+}
+
+function FusView({ arg, branch }: { arg: string; branch: Branch }) {
+  switch (arg) {
+    case "project": return <FusProjectView />;
+    case "protocol": return <ProtocolView />;
+    case "plasmid": return <PlasmidRing />;
+    case "strains": return <StrainsView />;
+    case "results": return <FusResultsView />;
+    case "log": return <GitLogView />;
+    case "branches": return <BranchListView branch={branch} />;
+    case "microscope": return <MicroscopeView />;
+    case "poster": return <FusPosterView />;
+    case "resources": return <FusResourcesView />;
+    case "citation": return <FusCitationView />;
+    case "pcr": return <FusFigureView id="pcrGel" />;
+    case "future": return <FusFigureView id="macrophage" />;
+    case "confocal": case "gel": case "protoplast": case "transformation":
+      return <FusFigureView id={arg as keyof typeof FUS_IMAGES} />;
+    default: return <FusProjectView />;
   }
 }
 
@@ -965,6 +1198,11 @@ function ReadmeView() {
         This console holds Jadon&apos;s STEM work — a self-built RNA-seq pipeline, biology-olympiad results, and the
         programs he runs. It is a terminal: nothing shows until you summon it.
       </Prose>
+      <Prose>
+        It has two branches. <span className="text-[var(--fg)]">main</span> is the gout RNA-seq project (ACSEF 2025).{" "}
+        <span className="text-[var(--fg)]">umass-2026</span> is the summer at the bench: six weeks in the Ma Lab at UMass Amherst
+        engineering a red-fluorescent human strain of <em>Fusarium oxysporum</em> — plasmid, protoplast, transformation, selection, glow.
+      </Prose>
       <p className="text-[0.74rem] text-[var(--muted)]">
         <span className="text-[var(--accent)]">## </span>quick start
       </p>
@@ -975,6 +1213,8 @@ function ReadmeView() {
           ["volcano", "render the DEG plot"],
           ["genes", "the DESeq2 results table"],
           ["usabo", "one award (or `awards` for all)"],
+          ["git checkout umass-2026", "switch to the wet-lab branch"],
+          ["microscope", "the confocal, laser on"],
           ["neofetch", "system readout"],
         ]}
       />
@@ -998,11 +1238,11 @@ function WhoamiView() {
   );
 }
 
-function TreeView() {
+function TreeView({ explorer }: { explorer: ExplorerItem[] }) {
   return (
     <div className="text-[0.78rem]">
       <p className="text-[var(--accent-2)]">~/research</p>
-      {EXPLORER.map((it, i) => (
+      {explorer.map((it, i) => (
         <p key={i} className="flex gap-2" style={{ paddingLeft: `${it.depth * 1.4}rem` }}>
           <span className="text-[var(--muted)]/60">{it.depth === 0 ? "├──" : "│   └──"}</span>
           <span className={it.folder ? "text-[var(--accent-2)]" : "text-[var(--muted)]"}>{it.label}{it.folder ? "/" : ""}</span>
@@ -1012,8 +1252,19 @@ function TreeView() {
   );
 }
 
-function Neofetch() {
-  const dna = [
+function Neofetch({ branch }: { branch: Branch }) {
+  const umass = branch === "umass-2026";
+  const dna = umass ? [
+    "   .-\"\"-.   ",
+    "  /  ()  \\  ",
+    " |  (RFP) |  ",
+    "  \\  ()  /  ",
+    "   '-..-'    ",
+    "    |  |     ",
+    "   ~|  |~    ",
+    "  ~ |  | ~   ",
+    "    '--'     ",
+  ] : [
     "    ___    ",
     "  ╭┴─┴╮  ",
     "  │A═T│  ",
@@ -1024,9 +1275,21 @@ function Neofetch() {
     "  │T═A│  ",
     "  ╰───╯  ",
   ];
-  const specs: [string, string][] = [
+  const specs: [string, string][] = umass ? [
+    ["host", "jadon.li · Ma Lab, UMass Amherst"],
+    ["os", "research-os (fusarium-rfp)"],
+    ["branch", "umass-2026"],
+    ["kernel", "lab-sh · 6 weeks · 9-to-4"],
+    ["uptime", "class of 2027"],
+    ["organism", "Fusarium oxysporum · 3 strains"],
+    ["vector", "pCT74-mRFP · 5774 bp"],
+    ["packages", "miniprep · PCR · protoplast · PEG · hygromycin"],
+    ["readout", "confocal · RFP in transformed MRL8996"],
+    ["theme", "mRFP red on black · GFP green"],
+  ] : [
     ["host", "jadon.li · Mission San Jose HS"],
     ["os", "research-os (gout-model)"],
+    ["branch", "main"],
     ["kernel", "deg-sh 3.1"],
     ["uptime", "class of 2027"],
     ["shell", "R 4.x"],
@@ -1097,6 +1360,19 @@ function HelpView() {
       ["genes", "the key pain mediators (Ccl9, Ngf, …)"],
       ["pathways", "GO enrichment categories"],
     ]},
+    { title: "branch umass-2026 — the Fusarium project", items: [
+      ["git checkout umass-2026", "⎇ switch to the summer's wet-lab branch (git checkout main to return)"],
+      ["fusarium", "the project — RFP transformation of human Fusarium strains"],
+      ["protocol", "the four steps as a script (protocol.sh)"],
+      ["plasmid", "pCT74-mRFP drawn as a ring (plasmid.map)"],
+      ["strains", "NRRL32931 · MRL8996 · II5 (strains.tsv)"],
+      ["results", "what worked, and the figures behind it"],
+      ["confocal · gel · pcr", "🖼 the figures — the glow, and the DNA proof"],
+      ["protoplast · transformation", "🖼 steps II and III, illustrated"],
+      ["microscope", "🔴 the confocal view, laser on"],
+      ["git log", "six weeks of bench work as commits"],
+      ["poster", "🖼 the UMass poster (on this branch)"],
+    ]},
     { title: "achievements", items: [
       ["awards", "all three olympiad/fair results"],
       ["usabo · bbo · acsef", "open one award as JSON"],
@@ -1112,7 +1388,7 @@ function HelpView() {
     ]},
     { title: "filesystem", items: [
       ["ls [dir]", "list a directory"],
-      ["cd <dir>", "change directory (awards/field/project)"],
+      ["cd <dir>", "change directory (project/fusarium/awards/field)"],
       ["cat <file>", "print a file (e.g. cat awards/usabo.json)"],
       ["tree", "the whole file tree"],
       ["pwd", "print working directory"],

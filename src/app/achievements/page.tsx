@@ -9,7 +9,7 @@ import { TrophyCase } from "@/components/achievements/TrophyCase";
 export const metadata: Metadata = {
   title: "Experiences & Achievements",
   description:
-    "Every experience and achievement in one place — SAT 1530, six AP fives, NCS Champions, USABO, UK Biology Olympiad, and more.",
+    "Every experience and achievement in one place — ACT 35, SAT 1540, eleven AP fives, NCS Champions, a UMass research summer, USABO, UK Biology Olympiad, and more.",
 };
 
 /**

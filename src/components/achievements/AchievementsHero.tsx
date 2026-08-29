@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { Reveal } from "@/components/primitives/Reveal";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
-import { TROPHIES, AP_FIVES, CAT_META } from "@/lib/data";
+import { TROPHIES, AP_FIVES, CAT_META, SCORES } from "@/lib/data";
 
 /* ── Domain Spectrum Band ─────────────────────────────────────
    A single horizontal bar showing proportion of entries per
@@ -180,8 +180,8 @@ export function AchievementsHero() {
           {[
             { value: totalAwards.toString(), label: "Total entries" },
             { value: totalFives.toString(), label: "AP fives" },
-            { value: "1530", label: "SAT score" },
-            { value: "29", label: "ACT — 8th grade" },
+            { value: SCORES.find((s) => s.label === "ACT")!.value, label: "ACT composite" },
+            { value: SCORES.find((s) => s.label === "SAT")!.value, label: "SAT score" },
           ].map((stat) => (
             <div
               key={stat.label}

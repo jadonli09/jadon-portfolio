@@ -218,6 +218,43 @@ function SophomoreArcCallout() {
   );
 }
 
+/**
+ * In office — the term log. The first acts of the ASB presidency, as a gold
+ * ledger: date · act · what actually happened.
+ */
+function TermLog() {
+  return (
+    <Reveal>
+      <div className="border border-[rgba(212,175,106,0.35)] bg-[var(--bg-2)]">
+        <div className="flex items-baseline justify-between border-b border-[rgba(212,175,106,0.35)] px-7 py-4 md:px-10">
+          <p className="eyebrow text-[var(--accent)]">In office — the term log</p>
+          <p className="font-mono text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">Senior year · 2026–27</p>
+        </div>
+        <RevealGroup className="divide-y divide-[rgba(212,175,106,0.2)]" stagger={0.08} delayChildren={0.05}>
+          {LEADERSHIP.term.map((t, i) => (
+            <motion.div
+              key={t.title}
+              variants={{
+                hidden: { opacity: 0, x: -12 },
+                show: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+              }}
+              className="grid grid-cols-1 gap-2 px-7 py-5 md:grid-cols-[6rem_14rem_1fr] md:gap-8 md:px-10"
+            >
+              <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
+                {String(i + 1).padStart(2, "0")} · {t.date}
+              </span>
+              <span className="font-anton text-[1.3rem] uppercase leading-none tracking-tight text-[var(--accent)] md:text-[1.6rem]">
+                {t.title}
+              </span>
+              <p className="text-sm leading-relaxed text-[var(--fg)] opacity-75">{t.body}</p>
+            </motion.div>
+          ))}
+        </RevealGroup>
+      </div>
+    </Reveal>
+  );
+}
+
 /** Animated stat pill used in the counters strip. */
 function StatPill({
   value,
@@ -308,6 +345,11 @@ export function ElectedOffices() {
       {/* The sophomore-loss arc callout — editorial beat between the cards and VP roles */}
       <div className="mt-8 md:mt-10">
         <SophomoreArcCallout />
+      </div>
+
+      {/* In office — what the presidency has done so far */}
+      <div className="mt-4 md:mt-6">
+        <TermLog />
       </div>
 
       {/* Numbers + the team — fundraising scale on the left, the ASB officers on the right */}

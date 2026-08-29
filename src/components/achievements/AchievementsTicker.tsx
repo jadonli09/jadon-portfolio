@@ -4,9 +4,7 @@ import { TROPHIES, AP_FIVES, SCORES } from "@/lib/data";
 /** Build a ticker from factual achievements data. */
 const TICKER_ITEMS = [
   ...TROPHIES.map((t) => `${t.year} · ${t.title}`),
-  `SAT ${SCORES[0].value}`,
-  `PSAT ${SCORES[1].value}`,
-  `ACT ${SCORES[2].value} — 8th grade`,
+  ...SCORES.map((s) => `${s.label} ${s.value}`),
   ...AP_FIVES.map((e) => `${e} · 5`),
 ];
 

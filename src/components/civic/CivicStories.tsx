@@ -32,7 +32,7 @@ const STORY_DETAIL: Record<
 > = {
   "The Mayor's Videographer": {
     byline: "Jadon Li · @li_locked.in",
-    dateline: "Jun 2025 – Oct 2025 · Fremont, CA",
+    dateline: "Jun 2025 – present · Fremont, CA",
     pullQuote:
       "The Mayor saw his @li_locked.in channel and called. Now Jadon edits every event for the Mayor's Instagram.",
     whoWhat: [

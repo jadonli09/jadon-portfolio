@@ -5,6 +5,7 @@ import { LockedHero } from "@/components/lockedin/LockedHero";
 import { LockedMarquee } from "@/components/lockedin/LockedMarquee";
 import { PursuitTimeline } from "@/components/lockedin/PursuitTimeline";
 import { LockedFollowCTA } from "@/components/lockedin/LockedFollowCTA";
+import { LockedYearTwo } from "@/components/lockedin/LockedYearTwo";
 
 export const metadata: Metadata = {
   title: "The Pursuit",
@@ -39,6 +40,7 @@ export default function LockedInPage() {
 
       {/* 3. The year, in order */}
       <PursuitTimeline />
+      <LockedYearTwo />
 
       {/* 4. Follow CTA section */}
       <LockedFollowCTA />

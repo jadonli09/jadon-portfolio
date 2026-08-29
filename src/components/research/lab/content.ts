@@ -11,8 +11,8 @@ export const PROFILE = {
   role: "bio researcher · builder · student leader",
   school: "Mission San Jose HS, Fremont",
   class_of: 2027,
-  focus: "RNA-seq · differential expression · pain biology",
-  stack: ["R", "edgeR", "ggplot2", "clusterProfiler", "GO enrichment"],
+  focus: "RNA-seq · differential expression · fungal transformation · host–pathogen",
+  stack: ["R", "edgeR", "ggplot2", "clusterProfiler", "PCR", "miniprep", "protoplasting", "confocal"],
   olympiads: ["USABO Honorable Mention", "UK BBO Silver", "ACSEF 3rd"],
 };
 
@@ -150,9 +150,10 @@ export const PROGRAMS: Program[] = [
     file: "ysjc.md",
     name: "Youth STEM Journal Club",
     role: "Founder — Biology Department",
-    meta: { venue: "Fremont Library · 4 weeks", students: "8 (hands-on) · 30 total", site: "youthstemjournal.org" },
+    meta: { "2025": "30 students · 8 hands-on · Fremont Library", "2026": "60 students · 6 cohorts · led 4 mentors", site: "youthstemjournal.org" },
     body: [
       "A summer program teaching middle-schoolers to read research papers — what to read first, what to skip, how to annotate and discuss. Two hour-long classes a week, ending in a capstone presented to parents.",
+      "2026 season: led a team of four mentors (recruited and interviewed underclassmen to replace the graduating ones), publicized over WhatsApp/WeChat and through Hopkins Junior High. One general meeting on Mondays, one cohort meeting on another weekday. Taught the 20-student biology cohort on the tardigrade's DNA-repair mechanism — debates, role-plays, research activities, Kahoots.",
     ],
     list: [
       { label: "Fig. A — Ecosystem Resilience", text: "keystone species, trophic cascades, biodiversity buffers." },
@@ -170,10 +171,10 @@ export const PROGRAMS: Program[] = [
     file: "prism.md",
     name: "PRISM",
     role: "Promoting Representation in Science & Medicine",
-    meta: { partner: "Arav Bhise", approach: "outreach + trial matching + education" },
+    meta: { partner: "Arav Bhise", site: "theprismproject.blog", cadence: "weekly posts · site + Instagram" },
     body: [
       "Problem: many clinical trials underrepresent Asian, Hispanic, and Black populations — skewing safety/efficacy data and hiding side-effect profiles in those groups.",
-      "Mission: raise awareness of the representation gap and connect underrepresented community members to open clinical trials seeking participants.",
+      "Mission: raise awareness of the representation gap and connect underrepresented community members to open clinical trials seeking participants. Field work: interviews at the Ohlone Flea Market on how residents see clinical research (theprismproject.blog/articles/ohlone-flea-market).",
     ],
     image: {
       src: "/img/prism-project-with-mayor.jpg",
@@ -210,11 +211,12 @@ export const PROGRAMS: Program[] = [
   {
     id: "umass",
     file: "umass.md",
-    name: "UMass Research Intensive",
-    role: "Incoming · 6-week residential",
-    meta: { program: "UMass Amherst pre-college", when: "Summer 2026", track: "scientific research methods" },
+    name: "UMass Amherst — Ma Lab",
+    role: "Research intensive · 6-week residential · Summer 2026",
+    meta: { lab: "Ma Lab · Biochemistry & Molecular Biology", mentors: "Siyuan Wu (PhD) · Will Truncer · Dr. Li-Jun Ma", partner: "Jerry Zhang", branch: "umass-2026" },
     body: [
-      "Selected for the UMass pre-college research intensive — a 6-week residential program. The pipeline from ACSEF and club-level STEM work feeds directly into this: the next level of formal bench research.",
+      "Six weeks at the bench, 9 to 4 every weekday, under a PhD mentor: host–pathogen interactions between Fusarium oxysporum and mammals (keratitis, blood infections). The project — engineering a red-fluorescent human clinical strain — lives on its own branch of this console: run `git checkout umass-2026`, or open fusarium/.",
+      "Also: read six papers on Fusarium as a plant and animal pathogen (and built NotebookLI to get through them), kept the lab notebook, organized the lab's ice-rink team bonding, and co-planned a Lab Olympics.",
     ],
   },
 ];
@@ -268,7 +270,10 @@ export const STATS = {
   usabo_score: "26/50 · top ~15% national",
   uk_bbo: "Silver · top 10% intl",
   acsef: "3rd · BCOM",
-  ysjc_students: 30,
+  ysjc_students: "30 (2025) · 60 (2026)",
+  fusarium_strains: 3,
+  plasmid: "pCT74-mRFP · 5774 bp",
+  transformants: "putative RFP+ · hygromycin-selected",
 };
 
 // ── project deep-dive: results, graphs, resources ─────────────────────────────
@@ -392,4 +397,132 @@ export const IMAGES = {
     caption: "Methods — sample design: 3 tissues × PBS/MSU.",
     dims: "502×96",
   },
+};
+
+/* ═══════════════════ branch: umass-2026 — Fusarium RFP ═══════════════════ */
+// Every fact below is from the poster "RFP Transformation of Human Strains of
+// Fusarium Oxysporum" (Li, Zhang, Wu, Truncer, Ma · UMass Pre-College 2026).
+
+export const FUS = {
+  id: "UMASS-PC-2026",
+  title: "RFP Transformation of Human Strains of Fusarium oxysporum",
+  authors: "Jadon Li¹, Jerry Zhang¹, Siyuan Wu², Will Truncer², Li-Jun Ma²",
+  affiliations: "¹UMass Pre-College · ²Biochemistry & Molecular Biology, UMass Amherst",
+  organism: "Fusarium oxysporum — cross-kingdom fungal pathogen",
+  disease: "keratitis (eye) · bloodstream infection · Panama wilt (banana)",
+  plasmid: "pCT74-mRFP · 5774 bp · mRFP + HygR",
+  method: "protoplast-mediated, PEG transformation · hygromycin selection",
+  question:
+    "Human clinical strains of F. oxysporum evade the mammalian immune system better than plant strains. To watch that interaction live, the fungus needs to glow — so: can we put a red fluorescent protein into three human strains?",
+  abstract:
+    "Fusarium oxysporum is a cross-kingdom fungal pathogen capable of opportunistic infection in both humans and plants — invasive keratitis on one side, Panama wilt on the other. Its human clinical strains are more efficient at evading the mammalian host immune system than the plant strains. To study the interaction of human pathogenic strains with our immune system, we engineered an mRFP fluorescent protein into these strains using the pCT74 plasmid and protoplast-mediated fungal transformation.",
+  result:
+    "Linearized the plasmid and transformed it into F. oxysporum; hygromycin selection suggests putative RFP-positive transformants. Confocal microscopy shows red fluorescence in the transformed MRL8996 strain alongside the Fo47-RFP positive control; gel electrophoresis confirms HygR and mRFP bands at the expected sizes.",
+  mentor: "Siyuan (Melanie) Wu, PhD student · Will Truncer · Dr. Li-Jun Ma",
+};
+
+export const FUS_PROTOCOL: { n: string; step: string; title: string; detail: string[] }[] = [
+  { n: "I", step: "plasmid_extraction", title: "Plasmid extraction", detail: [
+    "miniprep CT74-mRFP plasmids from RFP E. coli (Zymopure MiniPrep kit)",
+    "PCR: confirm HygR-resistance + mRFP genes are present",
+    "gel: Hygromycin 563 bp · RFP 372 bp — expected bands, extraction confirmed",
+    "linearize the plasmid with the Psp-OMI restriction enzyme",
+  ]},
+  { n: "II", step: "protoplast_generation", title: "Protoplast generation", detail: [
+    "germinate spores at 28 °C, 140 rpm, 6–7 h until germ tubes form",
+    "enzyme-digestion solution degrades the cell wall",
+    "filter digested mycelia to separate protoplasts from hyphae",
+    "wash in 1.2 M KCl, centrifuge, resuspend in STC buffer + DMSO, store < −80 °C",
+  ]},
+  { n: "III", step: "peg_transformation", title: "PEG-mediated transformation", detail: [
+    "combine linearized plasmid with thawed protoplasts, on ice",
+    "add STC/PEG solution, incubate at room temperature",
+    "transfer to TB3 media, shake 12–16 h",
+    "embed in molten TB3 + 0.7 % LMP agarose plates",
+  ]},
+  { n: "IV", step: "selection", title: "Selection of transformants", detail: [
+    "apply hygromycin (150 µg/mL) to the TB3 agarose culture",
+    "incubate at 28 °C for 4–5 days",
+    "multi-round selection: replate resistant colonies on PDA + Hygr (250 µg/mL)",
+    "confocal microscope → check for RFP expression",
+  ]},
+];
+
+export const FUS_STRAINS: { id: string; source: string; note: string }[] = [
+  { id: "NRRL32931", source: "blood isolate · leukemia patient", note: "human clinical strain" },
+  { id: "MRL8996", source: "keratitis isolate (infectious eye disease)", note: "human clinical strain · the transformed RFP strain" },
+  { id: "II5", source: "plant pathogen · Panama wilt (banana)", note: "plant strain, for comparison" },
+];
+
+/** pCT74-mRFP feature map (5774 bp) — positions from the poster's plasmid diagram. */
+export const FUS_PLASMID = {
+  name: "pCT74-mRFP",
+  bp: 5774,
+  features: [
+    { name: "mRFP", start: 4150, end: 4850, kind: "reporter" as const, note: "red fluorescent protein — the glow" },
+    { name: "HygR (hph)", start: 3050, end: 3900, kind: "marker" as const, note: "hygromycin resistance — the selection handle" },
+    { name: "AmpR", start: 300, end: 1150, kind: "marker" as const, note: "ampicillin resistance (E. coli)" },
+    { name: "ori", start: 1250, end: 1900, kind: "backbone" as const, note: "origin of replication" },
+    { name: "trpC promoter", start: 3950, end: 4150, kind: "backbone" as const, note: "drives expression in Fusarium" },
+    { name: "lacZα (fragment)", start: 2100, end: 2350, kind: "backbone" as const, note: "" },
+    { name: "GFP (fragment)", start: 5100, end: 5500, kind: "backbone" as const, note: "" },
+  ],
+  cut: { name: "Psp-OMI", pos: 5560, note: "linearization site" },
+};
+
+export const FUS_RESULTS: { heading: string; body: string }[] = [
+  { heading: "Plasmid extracted, verified", body: "PCR on the miniprepped CT74-mRFP plasmid produced single bands at the predicted sizes — Hygromycin 563 bp, RFP 372 bp — against a 100 bp ladder and controls (Figure 1). The plasmid was then linearized with Psp-OMI." },
+  { heading: "Transformation → selection", body: "Protoplasts of the three strains were transformed with the linearized plasmid via PEG, embedded in TB3 agarose, and put under hygromycin. Two rounds of selection grew pure, resistant colonies without bacterial contamination." },
+  { heading: "The glow", body: "Under the confocal microscope, the transformed MRL8996 strain fluoresces red — alongside the Fo47-RFP positive control and a dark NRRL32931 negative control (Figure 2a). Gel electrophoresis of plasmid and fungal DNA shows HygR and RFP bands at the expected sizes against a 1 kb ladder (Figure 2b)." },
+  { heading: "What it establishes", body: "Feasibility of the whole pipeline in a human clinical strain: plasmid extraction → digestion/linearization → PCR verification → transformation → selection." },
+  { heading: "Future applications", body: "Use the mRFP-tagged strains to track real-time engulfment by GFP macrophages under confocal imaging — how the interaction changes with temperature and pH — and, downstream, to test RNA (hpRNA/siRNA) delivered into protoplasts to block infection." },
+];
+
+export const FUS_LOG: { hash: string; date: string; msg: string; tag?: string }[] = [
+  { hash: "a1c0de", date: "Jun 29", msg: "init: join the Ma Lab — Fusarium host–pathogen interactions", tag: "umass-2026" },
+  { hash: "b2f7e1", date: "Jul 01", msg: "feat: NCBI BLAST primers for HygR + mRFP on the plasmid" },
+  { hash: "c3d9a4", date: "Jul 03", msg: "feat: PCR + gel — both genes present in the E. coli culture" },
+  { hash: "d4e2b8", date: "Jul 08", msg: "feat: miniprep CT74-mRFP; linearize with Psp-OMI" },
+  { hash: "e5f6c2", date: "Jul 10", msg: "feat: protoplast F. oxysporum — germ tubes at 6–7 h, enzyme digest, KCl wash" },
+  { hash: "f6a1d7", date: "Jul 12", msg: "docs: six Fusarium papers read (built NotebookLI to survive them)" },
+  { hash: "0717ab", date: "Jul 15", msg: "feat: PEG-mediated transformation, embed in TB3 + 0.7% LMP agarose" },
+  { hash: "18b3cc", date: "Jul 20", msg: "chore: organize the lab's ice-rink team bonding (5 lab members + 7 pre-college)" },
+  { hash: "29c4dd", date: "Jul 22", msg: "feat: hygromycin selection, round 1 → round 2 on PDA + Hygr" },
+  { hash: "3ad5ee", date: "Jul 29", msg: "result: RFP fluorescence in transformed MRL8996 under confocal ✓" },
+  { hash: "4be6ff", date: "Aug 04", msg: "docs: poster — RFP Transformation of Human Strains of Fusarium oxysporum", tag: "poster" },
+];
+
+export const FUS_RESOURCES: { label: string; kind: string; detail: string }[] = [
+  { label: "Ma Lab", kind: "lab", detail: "umassfusariumlab.wixsite.com/ma-lab — Fusarium biology, UMass Amherst" },
+  { label: "pCT74-mRFP", kind: "data", detail: "5774 bp plasmid · mRFP reporter + hph (hygromycin) marker" },
+  { label: "Zymopure MiniPrep", kind: "tool", detail: "plasmid extraction from RFP E. coli" },
+  { label: "Psp-OMI", kind: "tool", detail: "restriction enzyme — linearizes the plasmid" },
+  { label: "confocal microscope", kind: "tool", detail: "RFP detection in transformed strains" },
+  { label: "NotebookLI", kind: "tool", detail: "notebookli.vercel.app — the paper reader built during the program" },
+  { label: "Siyuan (Melanie) Wu", kind: "mentor", detail: "4th-year PhD student — daily mentor" },
+  { label: "Will Truncer · Dr. Li-Jun Ma", kind: "mentor", detail: "undergrad researcher · principal investigator" },
+  { label: "Xie L. et al. 2022", kind: "text", detail: "Micromorphology of Fusarium keratitis — BMC Ophthalmology 22:194" },
+];
+
+export const FUS_CITATION = `@misc{li2026fusarium,
+  author   = {Li, Jadon and Zhang, Jerry and Wu, Siyuan and Truncer, Will and Ma, Li-Jun},
+  title    = {RFP Transformation of Human Strains of Fusarium oxysporum},
+  year     = {2026},
+  venue    = {UMass Amherst Pre-College Programs — research poster session},
+  lab      = {Ma Lab, Biochemistry and Molecular Biology, UMass Amherst},
+  plasmid  = {pCT74-mRFP (5774 bp)},
+  methods  = {miniprep, PCR, protoplasting, PEG transformation, hygromycin selection, confocal},
+  finding  = {RFP fluorescence in transformed MRL8996 -> visualize host-pathogen interactions}
+}`;
+
+export const FUS_IMAGES = {
+  poster: { src: "/img/umass-poster.jpg", alt: "UMass Amherst research poster: RFP Transformation of Human Strains of Fusarium oxysporum", caption: "The full poster — UMass Pre-College research session, August 2026.", dims: "2400×1800" },
+  confocal: { src: "/img/umass-confocal.jpg", alt: "Confocal microscopy panels: NRRL32931 negative control (dark), Fo47-RFP positive control (red), transformed MRL8996 RFP strain (red)", caption: "Figure 2a — confocal: negative control · Fo47-RFP positive control · the transformed 8996 RFP strain, glowing.", dims: "828×643" },
+  gel: { src: "/img/umass-gel-confirm.jpg", alt: "Agarose gel confirming hygromycin-resistance and RFP bands in plasmid and fungal DNA", caption: "Figure 2b — gel confirmation: HygR + RFP bands in plasmid and fungal DNA vs the 1 kb ladder.", dims: "880×643" },
+  pcrGel: { src: "/img/umass-pcr-gel.jpg", alt: "Figure 1: agarose gel of PCR products — 100 bp ladder, HygR, positive control, mRFP", caption: "Figure 1 — PCR products: Hygromycin 563 bp · RFP 372 bp. The plasmid is real.", dims: "965×441" },
+  plasmid: { src: "/img/umass-plasmid.jpg", alt: "pCT74-mRFP plasmid map, 5774 bp, with restriction sites, mRFP, HygR and AmpR features", caption: "pCT74-mRFP (5774 bp) — the plasmid, from E. coli.", dims: "1032×936" },
+  strains: { src: "/img/umass-strains.jpg", alt: "Plated Fusarium oxysporum and the three strains used: NRRL32931, MRL8996, II5", caption: "The strains — a blood isolate, a keratitis isolate, and a banana pathogen.", dims: "1032×528" },
+  protoplast: { src: "/img/umass-protoplast.jpg", alt: "Protoplast generation: germ tubes, enzyme digestion, filtering, washing", caption: "II — protoplast generation: germ tube → digested cell wall → protoplast.", dims: "1600×574" },
+  transformation: { src: "/img/umass-transformation.jpg", alt: "PEG-mediated transformation steps: plasmid + protoplasts, STC/PEG, TB3, agarose plates", caption: "III — PEG-mediated transformation, step by step.", dims: "1600×452" },
+  macrophage: { src: "/img/umass-macrophage.jpg", alt: "Time-lapse frames of a macrophage engulfing Fusarium (Schäfer et al. 2014)", caption: "Where it goes next — macrophage (red) meets Fusarium (green), 99 → 103 min (Schäfer et al. 2014).", dims: "1017×321" },
 };

@@ -10,6 +10,7 @@ import { CivicStories } from "@/components/civic/CivicStories";
 import { CivicSBAIFlow } from "@/components/civic/CivicSBAIFlow";
 import { CivicCommission } from "@/components/civic/CivicCommission";
 import { CivicInstagramCTA } from "@/components/civic/CivicInstagramCTA";
+import { CivicNational } from "@/components/civic/CivicNational";
 
 export const metadata: Metadata = {
   title: "Civic & Storytelling",
@@ -48,6 +49,7 @@ export default function CivicPage() {
 
       {/* 7. Commission pull-quote callout */}
       <CivicCommission />
+      <CivicNational />
 
       {/* 8. Instagram CTA — magnetic interaction */}
       <CivicInstagramCTA />

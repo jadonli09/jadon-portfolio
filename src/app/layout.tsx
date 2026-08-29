@@ -18,7 +18,7 @@ const caveat = Caveat({ subsets: ["latin"], variable: "--font-caveat", display: 
 const ogImage = `${BASE}/og.png`;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_ORIGIN || "https://jadonli09.github.io"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_ORIGIN || "https://jadonli.com"),
   title: {
     default: "Jadon Li — Locked In",
     template: "%s · Jadon Li",

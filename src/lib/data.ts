@@ -1,6 +1,7 @@
 /**
- * Single source of truth. Every fact here is drawn from the two reference
- * documents (SpringLight student profile + List of Achievements ledger).
+ * Single source of truth. Every fact here is drawn from the reference
+ * documents (SpringLight student profile + List of Achievements ledger, both
+ * updated Aug 2026; the UMass research poster; the summer activity reflections).
  * No invented or inflated numbers.
  */
 
@@ -25,6 +26,7 @@ export const PROFILE = {
   gradeNote: "Class of 2027",
   ethos: "li_locked.in",
   email: "jadonli2020@gmail.com",
+  site: "https://jadonli.com",
   links: {
     instagram: "https://instagram.com/li_locked.in",
     instagramHandle: "@li_locked.in",
@@ -61,7 +63,7 @@ export const WORLDS: WorldMeta[] = [
     title: "Research & STEM",
     href: "/research",
     kicker: "Wet lab to RNA-seq",
-    blurb: "Hunting pain mediators in a gout model — and the awards that followed.",
+    blurb: "Hunting pain mediators in a gout model — then a summer at UMass making a fungus glow red.",
     art: "scientific / data-as-art",
   },
   {
@@ -70,7 +72,7 @@ export const WORLDS: WorldMeta[] = [
     title: "Things I've Built",
     href: "/built",
     kicker: "Ship it",
-    blurb: "AcornPrep, CueSheet, Hermes — real products with real users.",
+    blurb: "AcornPrep, NotebookLI, CueSheet — real products with real users.",
     art: "product launch / tech",
   },
   {
@@ -140,16 +142,16 @@ export type SentenceDoor = {
 };
 
 export const SENTENCE_DOORS = {
-  leads: { id: "leadership", num: "01", kicker: "The Operator", word: "leads", href: "/leadership", color: "#d9a83f", accent: "#b07c1e", photo: "/img/asb-officers.jpg", peek: "3× Class President → ASB President", desc: "Elected class president three years running, now ASB President — the operator behind the rallies, Winter Ball, and $15k raised for the Class of 2027.", title: "Elected to lead, every year.", lede: "That discipline found a stage. Three-time Class President, now ASB President — he lost his way into winning, and runs events at the scale of a city.", cta: "Into leadership & events" },
+  leads: { id: "leadership", num: "01", kicker: "The Operator", word: "leads", href: "/leadership", color: "#d9a83f", accent: "#b07c1e", photo: "/img/asb-officers.jpg", peek: "3× Class President → ASB President, in office", desc: "Elected class president three years running, now ASB President in office — the operator behind the rallies, Winter Ball, and $15k raised for the Class of 2027.", title: "Elected to lead, every year.", lede: "That discipline found a stage. Three-time Class President, now ASB President — he lost his way into winning, and runs events at the scale of a city.", cta: "Into leadership & events" },
   films: { id: "civic", num: "02", kicker: "The Storyteller", word: "films", href: "/civic", color: "#e0644e", accent: "#c2402c", photo: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg", peek: "The Mayor's videographer · Voices of Fremont", desc: "Films for the Mayor of Fremont — civic stories like Voices of Fremont that pull 10k+ views a video.", title: "Documenting a city, and himself.", lede: "Then he picked up a camera. He tells a city's stories — directing the Voices of Fremont podcast with the Mayor, a viral push to revive a beloved restaurant, and a paid role as the Mayor's videographer.", cta: "Into civic & storytelling" },
-  researches: { id: "research", num: "03", kicker: "The Scientist", word: "researches", href: "/research", color: "#2fc4ad", accent: "#0c9c86", photo: "/img/acsef-science-fair.jpg", peek: "Gout pain in the genome · 3rd at ACSEF", desc: "Computational biology: traced gout pain through the genome and took 3rd in comp bio at ACSEF.", title: "Reading the genome of pain.", lede: "Curiosity pulled him into the lab. Trained in R by a Stanford professor, he hunted the mediators of gout pain in a mouse model — and traced them to the spinal cord.", cta: "Into research & STEM" },
-  builds: { id: "built", num: "04", kicker: "The Builder", word: "builds", href: "/built", color: "#7c89e8", accent: "#4f5fd6", photo: "/img/presenting-acornprep-at-gemini-meetup.jpg", peek: "AcornPrep · 500+ students · #1 on Google", desc: "Built AcornPrep, an AP study app 500+ students use — ranked #1 on Google for its exams.", title: "Ship it. Then ship the next.", lede: "What he learned, he shipped. AcornPrep turned six AP exams into a study tool 500+ students actually use — the #1 Google result, built on a real pipeline.", cta: "Into the things he's built" },
+  researches: { id: "research", num: "03", kicker: "The Scientist", word: "researches", href: "/research", color: "#2fc4ad", accent: "#0c9c86", photo: "/img/acsef-science-fair.jpg", peek: "ACSEF 3rd · a glowing fungus at UMass", desc: "Computational biology on gout pain (3rd in comp bio at ACSEF) — then a summer in a UMass Amherst lab engineering a red-fluorescent Fusarium.", title: "Reading the genome of pain.", lede: "Curiosity pulled him into the lab. Trained in R by a Stanford professor, he hunted the mediators of gout pain in a mouse model — then spent six weeks at UMass Amherst making a human-pathogenic fungus glow red.", cta: "Into research & STEM" },
+  builds: { id: "built", num: "04", kicker: "The Builder", word: "builds", href: "/built", color: "#7c89e8", accent: "#4f5fd6", photo: "/img/presenting-acornprep-at-gemini-meetup.jpg", peek: "AcornPrep · 500+ students · NotebookLI", desc: "Built AcornPrep, an AP study app 500+ students use (#1 on Google), and NotebookLI, a reader that makes dense research papers legible.", title: "Ship it. Then ship the next.", lede: "What he learned, he shipped. AcornPrep turned six AP exams into a study tool 500+ students actually use — the #1 Google result, pitched at Stanford. Then NotebookLI, built mid-research so dense papers read like conversations.", cta: "Into the things he's built" },
   competes: { id: "court", num: "05", kicker: "The Competitor", word: "competes", href: "/court", color: "#f0703a", accent: "#e04e12", photo: "/img/ncs-champions.jpg", peek: "First NCS title in school history", desc: "Varsity basketball — started on the team that won the first NCS title in school history.", title: "First in school history.", lede: "And through all of it, the court. He started in the first five the year Mission San Jose won its first NCS title in school and district history.", cta: "Into the court" },
   documents: { id: "lockedin", num: "06", kicker: "The Pursuit", word: "documents all of it", href: "/locked-in", color: "#e8689c", accent: "#d23f7c", photo: "/img/headshot1.jpg", peek: "@li_locked.in · 1.39M plays in year one", desc: "Posts the whole journey on @li_locked.in — 83 reels and 1.39M plays in year one.", title: "The pursuit of happiness.", lede: "And the whole thing is documented. @li_locked.in is the public journal — one year, 83 reels, 1.39 million plays — all pointing one direction: the pursuit of happiness.", cta: "Into Locked In" },
   person: { id: "about", num: "07", kicker: "The Person", word: "person", href: "/about", color: "#c98a5d", accent: "#a9683f", photo: "/img/missionpeak2026-1.jpg", peek: "Mission Peak every birthday · journaling since 8th grade", desc: "The person underneath it all: Mission Peak every birthday, journaling since 8th grade.", title: "A stopwatch, a journal, a kitchen.", lede: "Start with the person. Every birthday since he was twelve, Jadon runs Mission Peak alone. He's journaled since eighth grade, cooks feasts with designed menus for his friends — and recommends a good nap.", cta: "Into the person" },
 } satisfies Record<string, SentenceDoor>;
 
-export const SENTENCE_TICKER = ["3× president", "10k views / video", "ACSEF 3rd", "500+ users", "NCS champions", "1.39M plays"] as const;
+export const SENTENCE_TICKER = ["3× president", "ACT 35", "10k views / video", "ACSEF 3rd", "500+ users", "11 AP 5s", "NCS champions", "1 of 20 · CommonApp", "1.39M plays"] as const;
 
 /* ─────────────────── THE PINBOARD (landing record) ─────────────────── */
 export type PinKind = "letter" | "polaroid" | "plaque" | "seal" | "ticket" | "note" | "news" | "receipt" | "ribbon" | "index";
@@ -168,6 +170,8 @@ export type PinItem = {
   src?: string;
   lines?: string[];
   accent?: string;
+  /** optional fluorescence halo colour (the RFP glow) */
+  glow?: string;
   /** SENTENCE_DOORS id this pin anchors — the red thread from that word ends here */
   world?: string;
   /** desktop board placement */
@@ -180,7 +184,7 @@ export type PinItem = {
 
 /** Sixty-word intro, pinned on the board as a letter. */
 export const PIN_LETTER_TEXT =
-  "Jadon Li is a junior at Mission San Jose. Elected president every year since freshman year, films for the Mayor of Fremont, traced gout pain through the genome, built a study app 500+ students use, started on the first championship team in school history — and posted the whole journey.";
+  "Jadon Li is a senior at Mission San Jose. Elected president every year since freshman year — now ASB President — he films for the Mayor of Fremont, traced gout pain through the genome, spent a summer making a fungus glow red at UMass, built a study app 500+ students use, started on the first championship team in school history — and posted the whole journey.";
 
 export const PINBOARD: PinItem[] = [
   { kind: "letter", left: "1%", top: 26, rot: -2, z: 7, w: 300 },
@@ -204,6 +208,10 @@ export const PINBOARD: PinItem[] = [
   { kind: "ticket", href: "/civic", go: "→ civic", text: "★ 10K VIEWS", label: "per Mayor video", accent: "#e0644e", left: "41%", top: 350, rot: 4, z: 5, w: 126 },
   { kind: "note", href: "/civic", go: "→ civic", text: "rallying Fremont to bring Sweet Tomatoes back — to be continued…", accent: "#ffd0e2", left: "50%", top: 388, rot: -6, z: 4, w: 132 },
   { kind: "polaroid", href: "/leadership#winter-ball-title", go: "→ leadership · events", img: "/img/winterball-1.jpg", caption: "Winter Ball — sold out", left: "61%", top: 358, rot: 6, z: 4, w: 152 },
+  // ── summer 2026 ──
+  { kind: "polaroid", glow: "#ff3d5e", href: "/research?branch=umass-2026", go: "→ research · umass-2026", img: "/img/umass-confocal.jpg", caption: "made a fungus glow red — UMass '26", left: "74%", top: 404, rot: 3, z: 6, w: 170 },
+  { kind: "seal", href: "/civic#national", go: "→ civic · national", text: "COMMONAPP · STUDENT ADVISORY · 1 OF 20", left: "89%", top: 336, rot: -7, z: 6, w: 92 },
+  { kind: "ticket", href: "/built", go: "→ built · the pitch", text: "YBVC · STANFORD · TOP 15", label: "AcornPrep, pitched · Aug 2026", accent: "#7c89e8", left: "33%", top: 478, rot: 4, z: 6, w: 150 },
 ];
 
 /* ─────────────────────────── LOCKED IN ──────────────────────────── */
@@ -236,6 +244,11 @@ export const LOCKED = {
     { src: "/vid/cooking-feast1.mp4", poster: "/vid/cooking-feast1.jpg", label: "Feast night" },
     { src: "/vid/cookingfeasts-3.mp4", poster: "/vid/cookingfeasts-3.jpg", label: "Plating up" },
   ],
+  /** Year two, summer 2026 — real reels, embedded live (dates + counts render from Instagram). */
+  yearTwo: [
+    { code: "Dag2u2ixRms", label: "The AP score reaction — the reel that went viral" },
+    { code: "DcAIukQNv69", label: "A music video with the UMass pre-college crew" },
+  ].map((r) => ({ ...r, url: `https://www.instagram.com/reel/${r.code}/` })),
   douyin: {
     url: "https://www.iesdouyin.com/share/video/7247003661631622458/",
     likes: "569k",
@@ -729,9 +742,9 @@ export const CIVIC = {
     {
       title: "The Mayor's Videographer",
       handle: "Mayor Salwan Intern Program · paid videographer",
-      window: "Jun 2025 – Oct 2025",
+      window: "Jun 2025 – present",
       body:
-        "Surveyed Fremont residents (50 calls/week from the mayor's call sheet), drafted policy, and produced ~1-minute civic videos. Grew the mayor's per-video reach from roughly 1k to 10k. Paid at $50/video; first invoice $600.",
+        "Surveyed Fremont residents (50 calls/week from the mayor's call sheet), drafted policy, and produced ~1-minute civic videos. Grew the mayor's per-video reach from roughly 1k to 10k. Paid at $50/video; first invoice $600. Still filming in summer 2026: met Rep. Ro Khanna at Fremont Street Eats and shot a li_locked.in reel with him on youth civic engagement — then, before leaving for the East Coast, trained his brother Carter to take over as the Mayor's primary videographer.",
     },
     {
       title: "Voices of Fremont",
@@ -785,6 +798,29 @@ export const CIVIC = {
       poster: "/embeds/yac-reel.jpg",
     },
   },
+  /** Beyond Fremont — the national-stage seats, summer 2026. */
+  national: [
+    {
+      id: "commonapp",
+      title: "CommonApp Student Advisory Commission",
+      org: "Common App",
+      window: "Jul 2026 – present",
+      stat: { value: "1", of: "of 20", label: "students nationwide" },
+      body:
+        "One of twenty students in the country advising the Common App — the application 1,000+ colleges run on. A two-hour session every month plus work between meetings, feeding the student view back into the product high-schoolers actually use.",
+      tags: ["national", "advisory", "monthly"],
+    },
+    {
+      id: "fire",
+      title: "FIRE Free Speech Forum",
+      org: "Foundation for Individual Rights and Expression",
+      window: "Summer 2026 · Washington, DC",
+      stat: { value: "DC", of: "", label: "a week on the First Amendment" },
+      body:
+        "A selective summer forum on free speech in modern America — hot-take exercises, guest lectures, debate practice, and a capstone presentation, with students from Iowa farms to New York. The takeaway: free speech is the radical idea that gives those without power a seat at the table. And the internet is double-edged — anyone can post, but an algorithm decides who gets heard.",
+      tags: ["free speech", "debate", "east coast"],
+    },
+  ],
   /** The SBAI op-ed as published — real article metadata (San Mateo Daily Journal). */
   opEd: {
     url: "https://www.smdailyjournal.com/opinion/guest_perspectives/pragmatic-win-for-accessibility-small-businesses/article_7acc77ef-4f78-40c5-bb45-fa4218094077.html",
@@ -804,7 +840,7 @@ export const CIVIC = {
 /* ──────────────────────────── RESEARCH ──────────────────────────── */
 export const RESEARCH = {
   intro:
-    "Trained in R and bioinformatics, then put to work on a question with a real clinical edge: what drives the pain of gout?",
+    "Trained in R and bioinformatics, then put to work on a question with a real clinical edge: what drives the pain of gout? Then, summer 2026: six weeks at the bench in a UMass Amherst lab, engineering a red-fluorescent Fusarium.",
   project: {
     title: "Pain Mediators in a Mouse Gout Model",
     method: "RNA-seq · differential expression in R",
@@ -820,16 +856,16 @@ export const RESEARCH = {
   programs: [
     {
       title: "Youth STEM Journal Club",
-      role: "Founder — Biology Department",
+      role: "Founder — Biology Department · led the 2026 team",
       site: "youthstemjournal.org",
       detail:
-        "A summer program teaching middle-schoolers to read research papers — what to read first, what to skip, how to annotate and discuss. 30 students total; worked hands-on with a group of 8, two hour-long classes a week, ending in a capstone presented to parents.",
+        "A summer program teaching middle-schoolers to read research papers — what to read first, what to skip, how to annotate and discuss. 2025: 30 students, 8 hands-on, capstones presented to parents. 2026: led a team of 4 mentors, 60 students across 6 cohorts; taught a 20-student biology cohort on the tardigrade's DNA-repair mechanism with debates, role-plays, and research activities.",
     },
     {
       title: "PRISM",
       role: "Promoting Representation in Science & Medicine",
-      site: "with Arav",
-      detail: "A project focused on representation in science and medicine, scoping one treatment/disease in depth.",
+      site: "theprismproject.blog",
+      detail: "Working to increase Hispanic and Asian representation in clinical trials so treatments are backed by better data. Weekly posts on the site and Instagram; field interviews at the Ohlone Flea Market on how community members see clinical research.",
     },
     {
       title: "MSJ STEM-PAC",
@@ -839,14 +875,22 @@ export const RESEARCH = {
         "Built MSJ STEM-PAC — Projects and Competitions — from the club Jadon founded as a 10th-grade officer into a pipeline that guides students toward real competitions: the Alameda County Science Fair (ACSEF), biology and broader STEM olympiads, and other external contests, not just in-house events. Iron Chef (23 contestants) and the egg drop (12 teams) are the community glue; the science-fair and olympiad pipeline is the point.",
     },
     {
-      title: "UMass Research Intensive",
-      role: "Incoming · 6-week residential",
-      site: "pre-college",
-      detail: "Selected for an upcoming residential research intensive.",
+      title: "UMass Amherst — Ma Lab",
+      role: "Research intensive · 6-week residential · Summer 2026",
+      site: "umassfusariumlab.wixsite.com/ma-lab",
+      detail: "Bench research on host–pathogen interactions with Fusarium oxysporum: engineered a red-fluorescent (mRFP) human clinical strain — plasmid extraction, protoplasting, PEG-mediated transformation, hygromycin selection — and presented the poster.",
     },
   ],
-  /** Stylized volcano-plot points (illustrative of the RNA-seq motif, not real expression values). */
-  classes: ["AP Biology · 5", "AP Chemistry", "AP Statistics · 5", "USABO Semifinal track"],
+  /** Summer 2026 — the wet-lab project (poster: "RFP Transformation of Human Strains of Fusarium Oxysporum"). */
+  umass: {
+    title: "RFP Transformation of Human Strains of Fusarium oxysporum",
+    lab: "Ma Lab · Biochemistry & Molecular Biology, UMass Amherst",
+    program: "UMass Pre-College research intensive · 6 weeks · Summer 2026",
+    authors: "Jadon Li, Jerry Zhang (Pre-College) · Siyuan Wu, Will Truncer, Li-Jun Ma (UMass)",
+    poster: "/img/umass-poster.jpg",
+    result: "RFP fluorescence confirmed by confocal microscopy in a transformed clinical strain (MRL8996); hygromycin-resistance and mRFP genes confirmed by PCR + gel.",
+  },
+  classes: ["AP Biology · 5", "AP Chemistry · 5", "AP Statistics · 5", "AP Physics 1 · 5", "USABO Semifinal track"],
 } as const;
 
 /* ───────────────────────────── BUILT ───────────────────────────── */
@@ -878,8 +922,23 @@ export const PROJECTS: Project[] = [
       { value: "#1", label: "Google result" },
     ],
     body:
-      "Built by a 6-AP veteran for a high-stress school with no centralized study materials. AcornPrep packages AP prep into modes that fit how people actually study — unlimited MCQ practice, graded FRQ practice, flashcards, podcasts, mind maps, and study guides, with AI tutor guidance. Released to Mission San Jose on 04/11/2026; 100 users in the first 24 hours, 500+ across the season, 13,000 MCQs practiced. Endorsed by 4 AP teachers, #1 Google result, and rebuilt from scratch with Claude Code on a real dev pipeline. Next: SAT prep. Partner: Pradyun Kanuparthi.",
+      "Built by a 6-AP veteran for a high-stress school with no centralized study materials. AcornPrep packages AP prep into modes that fit how people actually study — unlimited MCQ practice, graded FRQ practice, flashcards, podcasts, mind maps, and study guides, with AI tutor guidance. Released to Mission San Jose on 04/11/2026; 100 users in the first 24 hours, 500+ across the season, 13,000 MCQs practiced. Endorsed by 4 AP teachers, #1 Google result, and rebuilt from scratch with Claude Code on a real dev pipeline. Pitched at Stanford's Youth Business Venture Competition (Aug 15, 2026) as a top-15 finalist of 300+ entries — the judges' verdict: strong pitch, crowded market. Next: SAT prep. Partner: Pradyun Kanuparthi.",
     stack: ["React", "TypeScript", "AI grading"],
+  },
+  {
+    name: "NotebookLI",
+    url: "https://notebookli.vercel.app",
+    domain: "notebookli.vercel.app",
+    embeddable: true,
+    shot: "/embeds/notebookli.jpg",
+    tagline: "Actually understand the research paper.",
+    stats: [
+      { value: "Live", label: "notebookli.vercel.app" },
+      { value: "6", label: "Papers read with it at UMass" },
+    ],
+    body:
+      "Built mid-research at UMass, when six dense Fusarium papers were the reading list. Search PubMed or upload a PDF, then read it in a structured reader: define any term in place, highlight and annotate, ask a chatbot that scrolls to the exact paragraph it cites, and fill a journal-club worksheet as you go. Named after NotebookLM — but LI. Friends in the lab used it too.",
+    stack: ["Next.js", "Claude API", "Supabase"],
   },
   {
     name: "Youth STEM Journal",
@@ -890,9 +949,9 @@ export const PROJECTS: Project[] = [
     tagline: "Reading research, made teachable.",
     stats: [
       { value: "Live", label: "youthstemjournal.org" },
-      { value: "30", label: "Students served" },
+      { value: "60", label: "Students · 2026 season" },
     ],
-    body: "The home for the Youth STEM Journal Club — curriculum, literature reviews, and the program Jadon founded.",
+    body: "The home for the Youth STEM Journal Club — curriculum, literature reviews, and the program Jadon founded. 2026: 60 students, 6 cohorts, a team of 4 mentors.",
     stack: ["Web", "Education"],
   },
   {
@@ -901,13 +960,13 @@ export const PROJECTS: Project[] = [
     domain: "cuesheet.xyz",
     embeddable: true,
     shot: "/embeds/cuesheet.jpg",
-    tagline: "Music supervision, organized.",
+    tagline: "The right song for the cut.",
     stats: [
       { value: "Live", label: "cuesheet.xyz" },
-      { value: "Tool", label: "Music supervision" },
+      { value: "AI", label: "Picks a song from a clip" },
     ],
-    body: "A tool for music supervision workflows — built and shipped live.",
-    stack: ["TypeScript", "Web"],
+    body: "Not a big music listener, but constantly cutting reels — for li_locked.in, the Mayor, the school — and always stuck on the soundtrack. CueSheet filters songs by mood, genre, event, location, and energy, and a Claude-powered feature picks a track from a clip or a description. It's now a fixed step in the editing pipeline.",
+    stack: ["React", "TypeScript", "Claude API"],
   },
   {
     name: "MSJ Makes",
@@ -937,6 +996,20 @@ export const PROJECTS: Project[] = [
       "A scraper that pulls club info from Instagram for the 2026–2027 school year. 90% of the system finished by March 2026, with the remainder and polish coming over the summer.",
     stack: ["Automation", "Scraping"],
   },
+  {
+    name: "jadonli.com",
+    url: "https://jadonli.com",
+    domain: "jadonli.com",
+    embeddable: false,
+    tagline: "Websites are the new résumés.",
+    stats: [
+      { value: "7", label: "Doors, one person" },
+      { value: "Live", label: "jadonli.com" },
+    ],
+    body:
+      "This site. One hero that opens seven doors — the person, Locked In, the court, civic storytelling, leadership, research, and building — each with its own design language, built with Claude Code and inspiration from 21st.dev and Dribbble. Every number on it comes from the record.",
+    stack: ["Next.js 16", "React 19", "Tailwind v4", "Three.js"],
+  },
 ];
 
 /* ─────────────────────── LEADERSHIP & EVENTS ────────────────────── */
@@ -950,7 +1023,7 @@ export const LEADERSHIP = {
       window: "2026–2027",
       tag: "Student body",
       note:
-        "Beat Jane Huang (who'd run against him — and lost — every year). Lost the race as a sophomore by ~10 votes, ran back, and won. Led the Leadership II selection: 90+ applicants → 60 (written) → 30 (interviews).",
+        "Beat Jane Huang (who'd run against him — and lost — every year). Lost the race as a sophomore by ~10 votes, ran back, and won. Led the Leadership II selection: 90+ applicants → 60 (written) → 30 (interviews). Now in office: leads the four other ASB officers and 50 Leadership II students, opened the year with the Green & White Assembly, and heads the L2 video committee.",
       highlight: true,
     },
     {
@@ -991,6 +1064,12 @@ export const LEADERSHIP = {
       photoAlt: "The full Climbing Club membership posing together",
       photoCaption: "All hands — Climbing Club",
     },
+  ],
+  /** In office — the term log, senior year. */
+  term: [
+    { date: "Aug 2026", title: "Senior Sunrise lipdub", body: "First day of school: organized and edited the lipdub to “Young Dumb & Broke” — the first drop from the L2 video committee he heads with Danny Lou." },
+    { date: "Aug 2026", title: "Green & White Assembly", body: "Led the planning for the first rally of the year: Activities and Sports committees on hype, teacher-vs-student trivia, class officers mummy-wrapped in toilet paper — schedule and timeline negotiated with admin, new staff introduced to the school." },
+    { date: "Aug 2026", title: "The assembly promo", body: "A promo video riffing on Spider-Man: Brand New Day's Jean Grey possession effect. MSJTV continues." },
   ],
   winterBall: {
     title: "Winter Ball — Built From Scratch",
@@ -1060,6 +1139,17 @@ export const LEADERSHIP = {
    * in the In the Field strip.
    */
   events: [
+    {
+      title: "Green & White Assembly",
+      window: "Aug 2026",
+      metric: "Rally 01",
+      note: "The first rally of senior year, and the first as **ASB President**. Organized the **Activities and Sports committees** around hype — **teacher-vs-student trivia**, class officers **mummy-wrapped** in toilet paper — went back and forth with admin on the **schedule and timeline**, and emailed new staff to stage their introductions to the school.",
+      facts: [
+        { value: "01", label: "first rally of the year" },
+        { value: "50", label: "Leadership II students" },
+        { value: "4", label: "ASB officers led" },
+      ],
+    },
     {
       title: "ICE Protest",
       window: "2026",
@@ -1231,6 +1321,10 @@ const TRAVEL_STOPS: TravelStop[] = [
   { place: "Quebec City", region: "Canada", lon: -71.21, lat: 46.81 },
   { place: "Cabo San Lucas", region: "Mexico", lon: -109.91, lat: 22.89 },
   { place: "London", region: "United Kingdom", lon: -0.13, lat: 51.51 },
+  { place: "Amherst, MA", region: "UMass · Summer 2026", lon: -72.52, lat: 42.37, note: "Six weeks in the Ma Lab making a fungus glow red — lab 9-to-4, the gym every day, and a 3-mile run across campus every night." },
+  { place: "Washington, DC", region: "FIRE forum · 2026", lon: -77.04, lat: 38.91, note: "A red-eye in, then the monuments and the Smithsonian by Lime bike before the forum. Grand, and a little too quiet — not the college city for him." },
+  { place: "Boston", region: "Massachusetts", lon: -71.06, lat: 42.36, note: "After week three at UMass, the family came east. A neat, walkable city — the one he'd happily spend four years in." },
+  { place: "New York", region: "New York", lon: -74.01, lat: 40.71, note: "Citi Bikes across the city: contagious energy, busy by day, peaceful at night. The plan for his twenties." },
   { place: "Las Vegas", region: "Nevada", lon: -115.14, lat: 36.17 },
   { place: "Reno", region: "Nevada", lon: -119.81, lat: 39.53 },
 ];
@@ -1274,9 +1368,9 @@ export const ABOUT = {
 
 /* ─────────────────────── ACHIEVEMENTS / SCORES ──────────────────── */
 export const SCORES = [
-  { label: "SAT", value: "1530", note: "EBRW 740 · Math 790 · Aug 2025" },
+  { label: "SAT", value: "1540", note: "EBRW 750 · Math 790 · Jun 2026 (1530 in Aug 2025)", subs: [{ label: "EBRW", value: 750, max: 800 }, { label: "Math", value: 790, max: 800 }] },
+  { label: "ACT", value: "35", note: "Composite · Jun 2026", subs: [{ label: "Math", value: 36, max: 36 }, { label: "Reading", value: 36, max: 36 }, { label: "Science", value: 35, max: 36 }, { label: "English", value: 34, max: 36 }] },
   { label: "PSAT", value: "1490", note: "Math 760 · ERW 730" },
-  { label: "ACT", value: "29", note: "taken in 8th grade" },
 ];
 
 export const AP_FIVES = [
@@ -1286,6 +1380,11 @@ export const AP_FIVES = [
   "AP World History",
   "AP Statistics",
   "AP Computer Science A",
+  "AP English Language",
+  "AP Chemistry",
+  "AP Calculus BC",
+  "AP U.S. History",
+  "AP Physics 1",
 ];
 
 export type TrophyCat = "academic" | "research" | "civic" | "built" | "leadership" | "court" | "personal";
@@ -1382,6 +1481,20 @@ export const TROPHIES: Trophy[] = [
   { year: "2025", title: "The kitchen — feasts by design", cat: "personal", w: 2, detail: "Biweekly cooking with Samay; macarons, Beef Ragu and grilled chicken — designed-menu feasts for friends at Thanksgiving, New Year's and Lunar New Year." },
   { year: "2026", title: "Vancouver over the APs", cat: "personal", w: 2, detail: "Spring break — chose the travel vlog over grinding for AP exams, and came back energized." },
   { year: "2026", title: "Mission Peak — the sunrise climb", cat: "personal", w: 3, detail: "Stopped chasing the PR at 54:00; filmed the 7AM sunrise for li_locked.in and finally just noticed the view." },
+  // ── Summer 2026 → senior year ──
+  { year: "2026", title: "Five more AP 5s — eleven total", cat: "academic", w: 4, detail: "English Language, Chemistry, Calculus BC, U.S. History, Physics 1 — every junior-year exam a 5." },
+  { year: "2026", title: "ACT 35", cat: "academic", w: 4, detail: "36 Math · 36 Reading · 35 Science · 34 English — June 2026." },
+  { year: "2026", title: "SAT 1540", cat: "academic", w: 3, detail: "750 EBRW · 790 Math — June 2026, up from 1530." },
+  { year: "2026", title: "UMass Amherst — the Ma Lab", cat: "research", w: 5, detail: "Six weeks of bench research: engineered a red-fluorescent (mRFP) human clinical strain of Fusarium oxysporum — miniprep, protoplasting, PEG transformation, hygromycin selection — and presented the poster." },
+  { year: "2026", title: "NotebookLI — shipped", cat: "built", w: 3, detail: "A research-paper reader built mid-research at UMass: inline definitions, highlights, a chatbot that cites the exact paragraph. Live at notebookli.vercel.app." },
+  { year: "2026", title: "YBVC finalist — pitched at Stanford", cat: "built", w: 4, detail: "Top 15 of 300+ entries at the Youth Business Venture Competition; pitched AcornPrep with Pradyun on Aug 15, 2026." },
+  { year: "2026", title: "CommonApp Student Advisory Commission", cat: "civic", w: 5, detail: "One of 20 students nationwide advising the Common App — monthly sessions from July 2026." },
+  { year: "2026", title: "FIRE Free Speech Forum — DC", cat: "civic", w: 3, detail: "A selective summer forum on the First Amendment: guest lectures, debate practice, a capstone presentation." },
+  { year: "2026", title: "Ro Khanna on @li_locked.in", cat: "civic", w: 3, detail: "Met the Congressman at Fremont Street Eats while filming for the Mayor; shot a reel on youth civic engagement." },
+  { year: "2026", title: "YSJC 2026 — led a team of 4 mentors", cat: "research", w: 4, detail: "Scaled the Youth STEM Journal Club to 60 students in 6 cohorts; taught a 20-student biology cohort on tardigrade DNA repair." },
+  { year: "2026", title: "Green & White Assembly", cat: "leadership", w: 3, detail: "First rally as ASB President: teacher-vs-student trivia, mummy-wrapped class officers, the schedule negotiated with admin." },
+  { year: "2026", title: "Head of L2 Video", cat: "leadership", w: 2, detail: "Runs the Leadership videography committee with Danny Lou — the senior-sunrise lipdub, the assembly promo, MSJTV." },
+  { year: "2026", title: "East Coast — DC, Boston, New York", cat: "personal", w: 2, detail: "Monuments by Lime bike, a walkable Boston, a Citi Bike tour of New York — three cities, three verdicts." },
 ];
 
 /* ───────────────────────────── ALBUMS ───────────────────────────── */
@@ -1472,6 +1585,7 @@ export const ALBUMS: Album[] = [
     kicker: "Research, fairs, AcornPrep",
     blurb: "Science-fair boards, contest wins, and shipping AcornPrep with a co-founder.",
     photos: [
+      { src: "/img/umass-poster.jpg", caption: "UMass Amherst — the Fusarium RFP poster, Summer 2026", fit: "contain" },
       { src: "/img/acsef-science-fair.jpg", caption: "ACSEF science fair", fit: "contain" },
       { src: "/img/presenting-acornprep-at-gemini-meetup.jpg", caption: "Presenting AcornPrep at a Gemini meetup", fit: "contain" },
       { src: "/img/acornprep-cofounders.jpg", caption: "AcornPrep co-founders" },

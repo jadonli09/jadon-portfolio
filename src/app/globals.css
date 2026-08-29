@@ -92,6 +92,21 @@
   --selection: rgba(255, 92, 240, 0.25);
 }
 
+/* branch umass-2026 — the RFP colourway: red fluorescence on black, GFP green second */
+:root.rfp [data-world="research"] {
+  --accent: #ff3d5e; /* mRFP — the glow */
+  --accent-2: #7dff8a; /* GFP macrophages */
+  --hot: #ffd23c;
+  --selection: rgba(255, 61, 94, 0.28);
+  background-image:
+    radial-gradient(120% 80% at 50% -10%, rgba(255, 61, 94, 0.1), transparent 60%),
+    radial-gradient(100% 70% at 100% 110%, rgba(125, 255, 138, 0.06), transparent 60%);
+}
+:root.rfp [data-world="research"] .dot-live {
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
 /* ── DEG CONSOLE (research world) — dark lab terminal ─────────── */
 
 [data-world="research"] {

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ArrowUpRight, GitBranch, Music, Globe, Shirt } from "lucide-react";
+import { ArrowUpRight, GitBranch, Music, Globe, Shirt, BookOpen, Compass } from "lucide-react";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { TiltCard } from "@/components/primitives/TiltCard";
 import { Magnetic } from "@/components/primitives/Magnetic";
@@ -18,6 +18,8 @@ const OTHER_PROJECTS = PROJECTS.filter((p) => p.name !== "AcornPrep");
 const PROJECT_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   CueSheet: Music,
   Hermes: GitBranch,
+  NotebookLI: BookOpen,
+  "jadonli.com": Compass,
   "Youth STEM Journal": Globe,
   "MSJ Makes": Shirt,
 };
@@ -235,7 +237,7 @@ export function ProductsGrid() {
         {/* Header */}
         <div className="mb-14">
           <Reveal>
-            <p className="eyebrow mb-4">Missions 02 — 05</p>
+            <p className="eyebrow mb-4">Missions 02 — {String(OTHER_PROJECTS.length + 1).padStart(2, "0")}</p>
           </Reveal>
           <Reveal delay={0.05}>
             <h2 className="mission-display text-[2.2rem] md:text-[3.6rem]">
@@ -247,15 +249,16 @@ export function ProductsGrid() {
           </Reveal>
           <Reveal delay={0.2}>
             <p className="mt-5 max-w-xl text-sm leading-relaxed text-[var(--muted)] md:text-base">
-              Four more products at various stages — from live tools with active users to
-              something building in the background.
+              Six more products at various stages — a research-paper reader built mid-lab, live
+              tools with active users, something building in the background, and the site you&apos;re
+              reading.
             </p>
           </Reveal>
         </div>
 
         {/* Grid */}
         <RevealGroup
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4"
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3"
           stagger={0.08}
           delayChildren={0.1}
         >

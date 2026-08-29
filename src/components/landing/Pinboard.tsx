@@ -38,7 +38,7 @@ export function Pinboard() {
         </div>
 
         {/* desktop wall — no frame; the board surface IS the background */}
-        <div className="relative hidden md:block" style={{ height: 530 }}>
+        <div className="relative hidden md:block" style={{ height: 600 }}>
           {PINBOARD.map((it, i) => (
             <Pinned key={i} item={it} index={i} />
           ))}
@@ -166,9 +166,12 @@ function PinBody({ item }: { item: PinItem }) {
       );
     case "polaroid":
       return (
-        <div className="bg-[#f4f1ea] p-1.5 pb-4 text-[#1a1a20] shadow-[0_10px_26px_rgba(0,0,0,0.66)]">
+        <div
+          className="bg-[#f4f1ea] p-1.5 pb-4 text-[#1a1a20] shadow-[0_10px_26px_rgba(0,0,0,0.66)]"
+          style={item.glow ? { boxShadow: `0 0 26px ${item.glow}99, 0 0 6px ${item.glow}66, 0 10px 26px rgba(0,0,0,0.66)` } : undefined}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={asset(item.img!)} alt={item.caption ?? ""} loading="lazy" className="aspect-[3/2] w-full object-cover" />
+          <img src={asset(item.img!)} alt={item.caption ?? ""} loading="lazy" className="aspect-[3/2] w-full object-cover" style={item.glow ? { background: "#000" } : undefined} />
           <p className="font-hand mt-1.5 text-center text-sm leading-tight">{item.caption}</p>
         </div>
       );

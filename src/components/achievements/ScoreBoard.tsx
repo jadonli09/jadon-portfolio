@@ -181,11 +181,12 @@ function ScoreCard({
           {score.note}
         </p>
 
-        {/* SAT sub-score bars */}
-        {score.label === "SAT" && (
+        {/* section sub-score bars (SAT: /800 · ACT: /36) */}
+        {"subs" in score && score.subs && (
           <div className="mt-6 flex flex-col gap-3">
-            <SubScoreBar label="EBRW" value={740} />
-            <SubScoreBar label="Math" value={790} />
+            {score.subs.map((sub) => (
+              <SubScoreBar key={sub.label} label={sub.label} value={sub.value} max={sub.max} />
+            ))}
           </div>
         )}
       </div>
@@ -212,7 +213,7 @@ export function ScoreBoard() {
         </RevealGroup>
 
         {/* Scores + AP medallions, all in one place: SAT anchors the left and
-            spans both rows; PSAT/ACT sit top-right; the six AP fives tuck into
+            spans both rows; ACT/PSAT sit top-right; the eleven AP fives tuck into
             a panel directly underneath them. */}
         <div className="grid gap-4 md:grid-cols-3">
           {/* SAT — primary, left column, full height */}
@@ -236,7 +237,7 @@ export function ScoreBoard() {
               <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                 <p className="eyebrow">AP Exam Scores</p>
                 <p className="font-mono text-[0.56rem] uppercase tracking-[0.22em] text-[var(--muted)]">
-                  six fives · 5/5 · hover for subject
+                  {AP_FIVES.length === 11 ? "eleven" : AP_FIVES.length} fives · 5/5 · hover for subject
                 </p>
               </div>
               <div className="flex flex-1 flex-wrap items-center gap-x-5 gap-y-4 md:gap-x-7">
