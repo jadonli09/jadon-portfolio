@@ -3,7 +3,6 @@ import { World } from "@/components/chrome/World";
 import { Footer } from "@/components/chrome/Footer";
 import { LeadershipHero } from "@/components/leadership/LeadershipHero";
 import { ElectedOffices } from "@/components/leadership/ElectedOffices";
-import { EventsTicker } from "@/components/leadership/EventsTicker";
 import { EventsGrid } from "@/components/leadership/EventsGrid";
 import { WinterBall } from "@/components/leadership/WinterBall";
 import { DisplayMarquee } from "@/components/leadership/DisplayMarquee";
@@ -52,7 +51,6 @@ export default function LeadershipPage() {
       <ElectedOffices />
 
       {/* 3. Gold mono ticker — transitions from offices to the ledger */}
-      <EventsTicker />
 
       {/* 4. Event ledger — brutalist full-bleed table */}
       <EventsGrid />

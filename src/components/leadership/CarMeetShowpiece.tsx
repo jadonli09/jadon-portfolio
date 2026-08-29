@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
-import { Counter } from "@/components/primitives/Counter";
-import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
+import { Reveal } from "@/components/primitives/Reveal";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { Photo } from "@/components/primitives/Photo";
 import { LEADERSHIP } from "@/lib/data";
@@ -184,7 +183,7 @@ export function CarMeetShowpiece() {
               Notable event · {carMeet.date}
             </span>
             <span className="font-mono text-[0.6rem] font-bold uppercase tracking-[0.3em] text-[#f5ecd8]">
-              @msjmeets · pit lane open
+              @msjmeets
             </span>
           </div>
           <HazardStripe />
@@ -218,38 +217,10 @@ export function CarMeetShowpiece() {
               {carMeet.body}
             </p>
 
-            {/* 4-stat grid */}
-            <div className="grid grid-cols-2 gap-px bg-[var(--line)] sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4">
+            {/* stat grid */}
+            <div className="grid grid-cols-2 gap-px bg-[var(--line)] sm:grid-cols-5 md:grid-cols-3 lg:grid-cols-5">
               {carMeet.stats.map((s) => (
                 <StatCard key={s.label} value={s.value} label={s.label} />
-              ))}
-            </div>
-
-            {/* Pagani callout — pull-quote */}
-            <div className="border-l-2 border-[var(--accent)] py-2 pl-5">
-              <p className="font-anton text-[1.8rem] uppercase leading-tight text-[var(--fg)] md:text-[2.6rem]">
-                One Pagani.
-              </p>
-              <p className="mt-0.5 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--accent)]">
-                $3.5M — the centrepiece
-              </p>
-            </div>
-
-            {/* Tag badges */}
-            <div className="flex flex-wrap gap-2">
-              {[
-                "Media lead",
-                "City Council + Mayor",
-                "6-person core team",
-                "@msjmeets",
-                "Door-knocked the neighborhood",
-              ].map((tag) => (
-                <span
-                  key={tag}
-                  className="border border-[var(--line)] px-3 py-1 font-mono text-[0.58rem] uppercase tracking-widest text-[var(--muted)] transition-colors duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)]"
-                >
-                  {tag}
-                </span>
               ))}
             </div>
           </div>
@@ -259,70 +230,6 @@ export function CarMeetShowpiece() {
         <Reveal delay={0.2}>
           <CarMeetCollage />
         </Reveal>
-      </div>
-
-      {/* Animated counters strip */}
-      <div className="mt-10 border-t border-[var(--line)] pt-8 md:mt-14 md:pt-10">
-        <Reveal>
-          <p className="eyebrow mb-6 text-[var(--accent)]">By the numbers</p>
-        </Reveal>
-
-        <RevealGroup
-          className="grid grid-cols-2 divide-x divide-[var(--line)] border border-[var(--line)] sm:grid-cols-3 md:grid-cols-5"
-          stagger={0.05}
-          delayChildren={0.05}
-        >
-          {/* $35M+ */}
-          <div className="group relative px-4 py-6 transition-colors hover:bg-[var(--bg-2)] md:px-6 md:py-8">
-            <span className="pointer-events-none absolute left-0 top-0 h-0.5 w-8 bg-[var(--accent)] opacity-0 transition-opacity group-hover:opacity-100" />
-            <p className="font-anton text-[1.8rem] leading-none text-[var(--accent)] md:text-[2.5rem]">
-              <Counter to={35} prefix="$" suffix="M+" duration={2} />
-            </p>
-            <p className="mt-2 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-              Cars on lot
-            </p>
-          </div>
-          {/* 60+ Cars */}
-          <div className="group relative px-4 py-6 transition-colors hover:bg-[var(--bg-2)] md:px-6 md:py-8">
-            <span className="pointer-events-none absolute left-0 top-0 h-0.5 w-8 bg-[var(--accent)] opacity-0 transition-opacity group-hover:opacity-100" />
-            <p className="font-anton text-[1.8rem] leading-none text-[var(--fg)] md:text-[2.5rem]">
-              <Counter to={60} suffix="+" duration={1.6} />
-            </p>
-            <p className="mt-2 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-              Cars
-            </p>
-          </div>
-          {/* $3.5M Pagani */}
-          <div className="group relative px-4 py-6 transition-colors hover:bg-[var(--bg-2)] md:px-6 md:py-8">
-            <span className="pointer-events-none absolute left-0 top-0 h-0.5 w-8 bg-[var(--accent)] opacity-0 transition-opacity group-hover:opacity-100" />
-            <p className="font-anton text-[1.8rem] leading-none text-[var(--accent)] md:text-[2.5rem]">
-              $3.5M
-            </p>
-            <p className="mt-2 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-              One Pagani
-            </p>
-          </div>
-          {/* ~200 Attendees */}
-          <div className="group relative px-4 py-6 transition-colors hover:bg-[var(--bg-2)] md:px-6 md:py-8">
-            <span className="pointer-events-none absolute left-0 top-0 h-0.5 w-8 bg-[var(--accent)] opacity-0 transition-opacity group-hover:opacity-100" />
-            <p className="font-anton text-[1.8rem] leading-none text-[var(--fg)] md:text-[2.5rem]">
-              <Counter to={200} prefix="~" duration={1.8} />
-            </p>
-            <p className="mt-2 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-              Attendees
-            </p>
-          </div>
-          {/* 32K families */}
-          <div className="group relative px-4 py-6 transition-colors hover:bg-[var(--bg-2)] md:px-6 md:py-8">
-            <span className="pointer-events-none absolute left-0 top-0 h-0.5 w-8 bg-[var(--accent)] opacity-0 transition-opacity group-hover:opacity-100" />
-            <p className="font-anton text-[1.8rem] leading-none text-[var(--fg)] md:text-[2.5rem]">
-              <Counter to={32} suffix="K" duration={1.5} />
-            </p>
-            <p className="mt-2 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-              FUSD families emailed
-            </p>
-          </div>
-        </RevealGroup>
       </div>
 
       {/* Bottom gold rule */}

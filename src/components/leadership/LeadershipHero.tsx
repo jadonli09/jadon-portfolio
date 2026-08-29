@@ -122,19 +122,6 @@ function MastheadTriptych({ parallaxY }: { parallaxY?: MotionValue<number> }) {
         ))}
       </div>
 
-      {/* Film caption — under the strip */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1.0 }}
-        className="mt-2.5 flex items-baseline justify-end gap-4 pr-1 md:mt-4"
-      >
-        <p className="text-right font-mono text-[0.55rem] uppercase tracking-[0.25em] text-[var(--muted)]">
-          <span className="text-[var(--accent)]">Fig. 01 — Class Officers</span>
-          &nbsp;·&nbsp;2023 → 2026 · elected every year
-        </p>
-      </motion.div>
-
       {/* Oxblood seal — pinned over the strip's top-right corner */}
       <motion.div
         initial={{ opacity: 0, scale: 0.7, rotate: 24 }}
@@ -215,49 +202,13 @@ export function LeadershipHero() {
         </div>
       </div>
 
-      {/* Intro deck + accent block */}
-      <div className="mt-8 grid grid-cols-1 gap-8 border-t border-[var(--line)] pt-8 md:mt-10 md:grid-cols-[1fr_auto] md:gap-16">
+      {/* Intro deck */}
+      <div className="mt-8 border-t border-[var(--line)] pt-8 md:mt-10">
         <Reveal delay={0.3}>
           <p className="font-serif-i max-w-2xl text-xl italic leading-snug text-[var(--fg)] opacity-90 md:text-2xl">
             {LEADERSHIP.intro}
           </p>
         </Reveal>
-
-        {/* Poster accent block — roman numeral / index */}
-        <Reveal delay={0.4}>
-          <div className="hidden md:flex md:flex-col md:items-end md:justify-end">
-            <div className="border border-[rgba(212,175,106,0.4)] px-6 py-4 text-right">
-              <p className="font-anton text-5xl uppercase leading-none tracking-widest text-[var(--accent)]">
-                IV
-              </p>
-              <p className="mt-1 font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--muted)]">
-                World&nbsp;Four
-              </p>
-            </div>
-          </div>
-        </Reveal>
-      </div>
-
-      {/* Bottom ornament row — elected-office stats */}
-      <Reveal delay={0.5}>
-        <div className="mt-6 flex items-center justify-between border-t border-[var(--line)] pt-4 md:mt-8">
-          <span className="eyebrow text-[var(--muted)]">
-            Class of 2027&nbsp;·&nbsp;Mission San Jose H.S.&nbsp;·&nbsp;Fremont, CA
-          </span>
-          <span className="eyebrow hidden text-[var(--accent)] sm:block">
-            3× Class President&nbsp;·&nbsp;ASB President&nbsp;·&nbsp;2 Club Presidencies
-          </span>
-        </div>
-      </Reveal>
-
-      {/* Subtle decorative corner marks */}
-      <div aria-hidden className="pointer-events-none">
-        <span className="absolute left-5 top-36 font-mono text-[0.5rem] text-[var(--accent)] opacity-30 md:left-9 md:top-44">
-          ◈
-        </span>
-        <span className="absolute right-5 top-36 font-mono text-[0.5rem] text-[var(--accent)] opacity-30 md:right-9 md:top-44">
-          ◈
-        </span>
       </div>
     </section>
   );

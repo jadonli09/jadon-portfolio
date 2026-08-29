@@ -102,9 +102,6 @@ export function ClubCrews() {
                 the crews
               </h2>
             </div>
-            <p className="max-w-xs font-serif-i text-sm italic leading-relaxed text-[var(--fg)] opacity-70 md:text-base">
-              titles are one line on a slate — these are the people he runs things with.
-            </p>
           </div>
         </Reveal>
 
@@ -115,12 +112,6 @@ export function ClubCrews() {
           ))}
         </div>
 
-        {/* Hand-scrawled footnote */}
-        <Reveal delay={0.2}>
-          <p className="font-hand mt-12 text-center text-2xl text-[var(--muted)] md:text-3xl">
-            president ×2, vice president ×1 — and counting
-          </p>
-        </Reveal>
       </div>
     </section>
   );

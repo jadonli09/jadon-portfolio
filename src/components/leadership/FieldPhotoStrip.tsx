@@ -14,13 +14,11 @@ function FieldPhoto({
   src,
   alt,
   caption,
-  sub,
   wide = false,
 }: {
   src: string;
   alt: string;
   caption: string;
-  sub?: string;
   wide?: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
@@ -63,11 +61,6 @@ function FieldPhoto({
         <p className="font-grotesk text-sm font-semibold leading-tight text-[var(--fg)]">
           {caption}
         </p>
-        {sub && (
-          <p className="mt-0.5 font-mono text-[0.58rem] uppercase tracking-widest text-[var(--accent)]">
-            {sub}
-          </p>
-        )}
       </motion.div>
 
       {/* Gold top-left corner accent on hover */}
@@ -93,156 +86,132 @@ const PHOTOS: {
   src: string;
   alt: string;
   caption: string;
-  sub?: string;
   wide?: boolean;
 }[] = [
   {
     src: "/img/gw-06.jpg",
     alt: "Leadership II 2026–2027 — the whole class in green at the Green & White Assembly",
     caption: "Leadership II",
-    sub: "2026–2027 · the whole class",
     wide: true,
   },
   {
     src: "/img/gw-01.jpg",
     alt: "Jadon on the mic at the Green & White Assembly in front of the Warrior Spirit mural",
     caption: "Green & White Assembly",
-    sub: "First rally as ASB President",
   },
   {
     src: "/img/gw-04.jpg",
     alt: "Jadon running the Green & White Assembly with a microphone",
     caption: "Running the rally",
-    sub: "Teacher intros · engagement · hype",
     wide: true,
   },
   {
     src: "/img/gw-02.jpg",
     alt: "The ASB officers in front of the Let's Get Hyped mural",
     caption: "The ASB Officers",
-    sub: "Let's get hyped",
   },
   {
     src: "/img/asb-officers.jpg",
     alt: "ASB Officers — Mission San Jose High School",
     caption: "ASB Officers",
-    sub: "Associated Student Body",
     wide: true,
   },
   {
     src: "/img/seniorbreakfast-spread.jpg",
     alt: "Seniors serving themselves at the catered Senior Breakfast buffet",
     caption: "Senior Breakfast",
-    sub: "$4.8k · 500 servings",
   },
   {
     src: "/img/speaking-at-rally.jpg",
     alt: "Jadon speaking at the school rally",
-    caption: "At the Rally",
-    sub: "On the mic",
+    caption: "On the mic",
     wide: true,
   },
   {
     src: "/img/classofficer-junior.jpg",
     alt: "Junior class officers with the Never Second 2027 sign",
     caption: "Class Officers · 11th",
-    sub: "Never second",
     wide: true,
   },
   {
     src: "/img/prom-calacademy.jpg",
     alt: "Students at prom inside the California Academy of Sciences",
     caption: "Prom @ Cal Academy",
-    sub: "600+ students",
     wide: true,
   },
   {
     src: "/img/seniorbreakfast-bagels.jpg",
     alt: "Bagel towers and parfaits at the Senior Breakfast",
-    caption: "The Bagel Towers",
-    sub: "Senior Breakfast",
+    caption: "Senior Breakfast",
   },
   {
     src: "/img/freshmenyear-speech.jpg",
     alt: "Jadon giving his freshman-year speech in the gym",
-    caption: "The First Speech",
-    sub: "Freshman year",
+    caption: "Freshman year — the first speech",
     wide: true,
   },
   {
     src: "/img/classofficer-freshman.jpg",
     alt: "Freshman class officers in Santa hats",
     caption: "Class Officers · 9th",
-    sub: "The freshman slate",
     wide: true,
   },
   {
     src: "/img/seniorbreakfast-baskets.jpg",
     alt: "Pastry baskets at the Senior Breakfast",
-    caption: "Pastry Baskets",
-    sub: "Senior Breakfast",
+    caption: "Senior Breakfast",
   },
   {
     src: "/img/classofficer-sophomore.jpg",
     alt: "Sophomore class officers on the rally stage",
     caption: "Class Officers · 10th",
-    sub: "On the rally stage",
     wide: true,
   },
   {
     src: "/img/highschoolpanel-wide.jpg",
     alt: "High school student leadership panel — wide view",
-    caption: "Student Leadership Panel",
-    sub: "Interdistrict conference",
+    caption: "Student leadership panel",
   },
   {
     src: "/img/school-fundraising1.jpg",
     alt: "School fundraising event",
-    caption: "Fundraising Drive",
-    sub: "Community giving",
+    caption: "Class fundraiser",
   },
   {
     src: "/img/asb-with-other-schools.jpg",
     alt: "ASB leaders with delegates from other schools",
-    caption: "ASB Inter-School Summit",
-    sub: "Fremont Unified",
+    caption: "ASB, with other schools",
     wide: true,
   },
   {
     src: "/img/climbingclub-all1.jpg",
     alt: "Climbing Club — all members",
     caption: "Climbing Club",
-    sub: "Co-founded",
   },
   {
     src: "/img/school-fundraising2.jpg",
     alt: "School fundraising — students volunteering",
-    caption: "Community Fundraiser",
-    sub: "Student-led",
+    caption: "Class fundraiser",
   },
   {
     src: "/img/highschoolpanel-close.jpg",
     alt: "High school leadership panel — close view",
-    caption: "Panel Discussion",
-    sub: "Student voice",
+    caption: "Student leadership panel",
   },
   {
     src: "/img/climbingclub-officers.jpg",
     alt: "Climbing Club officers",
-    caption: "Climbing Club Officers",
-    sub: "Founder",
+    caption: "Climbing Club officers",
   },
   {
     src: "/img/school-fundraising3.jpg",
     alt: "School fundraising — event day",
-    caption: "Fundraiser Drive",
-    sub: "MSJ Community",
+    caption: "Class fundraiser",
   },
   {
     src: "/img/climbingclub-all2.jpg",
     alt: "Climbing Club full group photo",
     caption: "Climbing Club",
-    sub: "2024–2025",
   },
 ];
 
@@ -275,11 +244,8 @@ export function FieldPhotoStrip() {
       {/* Section header */}
       <div className="relative z-10 mx-auto max-w-7xl px-5 pt-16 md:px-9 md:pt-20">
         <Reveal>
-          <div className="flex items-baseline gap-6 border-b border-[var(--line)] pb-4">
+          <div className="border-b border-[var(--line)] pb-4">
             <span className="eyebrow text-[var(--accent)]">In the Field</span>
-            <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-              ASB · Green & White · Events · Class Officers · Climbing · Fundraising
-            </span>
           </div>
         </Reveal>
 
@@ -310,7 +276,6 @@ export function FieldPhotoStrip() {
                 src={p.src}
                 alt={p.alt}
                 caption={p.caption}
-                sub={p.sub}
                 wide={p.wide}
               />
             </span>
@@ -330,12 +295,7 @@ export function FieldPhotoStrip() {
         aria-hidden
       />
 
-      {/* Bottom hint */}
-      <Reveal delay={0.2}>
-        <p className="mx-auto mt-6 max-w-7xl px-5 pb-10 font-mono text-[0.6rem] uppercase tracking-[0.28em] text-[var(--muted)] md:px-9 md:pb-14">
-          Class President three years running · ASB President 2026–2027 · Climbing Club Founder
-        </p>
-      </Reveal>
+
 
       {/* Bottom gold rule */}
       <motion.div

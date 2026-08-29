@@ -29,9 +29,6 @@ export function LeadershipCTA() {
               <br />
               <span className="italic text-[var(--accent)]">events, or ideas?</span>
             </p>
-            <p className="mt-4 font-grotesk text-base text-[var(--muted)] md:text-lg">
-              Reach out — always building something.
-            </p>
           </div>
         </Reveal>
 

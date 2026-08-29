@@ -167,12 +167,9 @@ export function EventsGrid() {
     <section className="mt-20 md:mt-32" aria-labelledby="events-grid-heading">
       {/* Solid gold header band — full bleed */}
       <Reveal>
-        <div className="flex items-center justify-between gap-4 bg-[var(--accent)] px-5 py-2.5 md:px-9">
+        <div className="bg-[var(--accent)] px-5 py-2.5 md:px-9">
           <span className="font-mono text-[0.6rem] font-bold uppercase tracking-[0.3em] text-[#0c0a08]">
             Event Log — {events.length} entries
-          </span>
-          <span className="hidden font-mono text-[0.6rem] font-bold uppercase tracking-[0.3em] text-[#0c0a08] sm:block">
-            FY 2023 → 2027 · audited
           </span>
         </div>
       </Reveal>
@@ -214,17 +211,6 @@ export function EventsGrid() {
           ))}
         </RevealGroup>
 
-        {/* Ledger footer — running totals */}
-        <Reveal delay={0.15}>
-          <div className="flex flex-wrap items-baseline justify-between gap-3 py-4">
-            <p className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-[var(--muted)]">
-              Σ — 13 fundraisers · $5,520.40 raised · 3 Homecomings · 1 graduation
-            </p>
-            <p className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-[var(--accent)]">
-              balance: in his favor
-            </p>
-          </div>
-        </Reveal>
       </div>
     </section>
   );

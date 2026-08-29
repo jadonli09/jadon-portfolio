@@ -178,12 +178,6 @@ export function WinterBall() {
                 <p className="mt-1 font-mono text-[0.55rem] uppercase tracking-[0.3em]">students · admitted</p>
               </div>
             </Reveal>
-
-            <Reveal delay={0.2}>
-              <p className="max-w-md text-base leading-relaxed md:text-[1.05rem]" style={{ color: "rgba(26,20,13,0.8)" }}>
-                {winterBall.body}
-              </p>
-            </Reveal>
           </div>
         </div>
 

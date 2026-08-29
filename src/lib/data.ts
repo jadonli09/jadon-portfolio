@@ -1041,7 +1041,7 @@ export const LEADERSHIP = {
       window: "2026–2027",
       tag: "Student body",
       note:
-        "Beat Jane Huang (who'd run against him — and lost — every year). Lost the race as a sophomore by ~10 votes, ran back, and won. Led the Leadership II selection: 90+ applicants → 60 (written) → 30 (interviews). Now in office: leads the four other ASB officers and 50 Leadership II students, opened the year with the Green & White Assembly, and heads the L2 video committee.",
+        "Leads four ASB officers and 50 Leadership II students. Ran the Leadership II selection (90+ applicants → 30), opened the year with the Green & White Assembly, heads the L2 video committee, and rebuilt msjhsasb.org.",
       highlight: true,
     },
     {
@@ -1049,7 +1049,7 @@ export const LEADERSHIP = {
       window: "9th · 10th · 11th",
       tag: "Class of 2027",
       note:
-        "Won the freshman race (vs. Oscar Zhang), the sophomore race (vs. Kaylin Teo), and re-election as a junior. Ran Homecoming three years straight (153 → 235 students organized) and 22 fundraisers + two years of merch — ~$11k revenue over three semesters.",
+        "Elected freshman, sophomore, and junior year. Ran Homecoming all three years (153 → 235 students organized), 13 fundraisers, and two years of class merch.",
       highlight: true,
     },
     {
@@ -1057,7 +1057,7 @@ export const LEADERSHIP = {
       window: "VP → President",
       tag: "Clubs",
       note:
-        "The school's maker-and-merch club: a real design studio servicing clubs and sports teams across campus — MSJ badminton hoodies, volleyball hoodies, basketball merch, glass awards for DECA's minicons and the STEM clubs, stickers, tees. The headline job: 40 custom senior stoles, cut and pressed in-house ($700 revenue and $400 profit from that one commission alone). Across all jobs, the club has cleared around $4,000 in profit. Now, as President, he runs the whole operation — client intake, design pipeline, production days, and the books.",
+        "The school's maker-and-merch studio — hoodies and merch for badminton, volleyball, and basketball, glass awards for DECA and the STEM clubs, and 40 custom senior stoles pressed in-house. ~$4,000 profit across jobs. As President he runs intake, design, production days, and the books.",
       photo: "/img/msjmakes-stoles.jpg",
       photoAlt: "MSJ Makes officers at a work table covered in stole fabrics, vinyl lettering, and pressed designs",
       photoCaption: "Stole season — production day",
@@ -1067,7 +1067,7 @@ export const LEADERSHIP = {
       window: "Founder → Co-Pres",
       tag: "Clubs",
       note:
-        "The club he founded as a 10th-grade officer, rebuilt around what members actually do: STEM Projects and Competitions — that's the PAC. Weekly posts surface upcoming competitions and deadlines; bi-weekly workshops help students start and develop projects; a staged-entry pipeline coaches them from smaller contests into ACSEF, biology and STEM olympiads, and regional research fairs. Iron Chef (23 contestants) and the egg drop (12 teams) keep students walking through the door — the competition pipeline is what they stay for. Co-President with Ashley Kang, plus 3 officers.",
+        "Founded it as a 10th-grade officer, then rebuilt it around STEM Projects and Competitions: weekly deadline posts, bi-weekly workshops, and a staged pipeline into ACSEF and the olympiads. Iron Chef (23 contestants) and the egg drop (12 teams) bring people in. Co-President with Ashley Kang.",
       photo: "/img/stempac-meeting.jpg",
       photoAlt: "A full classroom at an MSJ STEM-PAC meeting, officers presenting slides at the front",
       photoCaption: "Full room — a STEM-PAC meeting",
@@ -1077,7 +1077,7 @@ export const LEADERSHIP = {
       window: "Treasurer → VP",
       tag: "Clubs",
       note:
-        "Started as Treasurer running the (notoriously fiddly) fundraising and reimbursement forms, then stepped up to VP. Built the club's money engine: boba fundraisers past $800, the school's first Raising Cane's fundraiser at $1,300+ revenue, and a Google Apps Script system that automated pre-orders. The capstone: a permanent climbing wall in the weight room — a first for the school, pitched, funded, and built.",
+        "Treasurer, then VP. Boba fundraisers past $800, the school's first Raising Cane's fundraiser at $1,300+, pre-orders automated with Google Apps Script — and a permanent climbing wall in the weight room, a first for the school.",
       photo: "/img/climbingclub-all1.jpg",
       photoAlt: "The full Climbing Club membership posing together",
       photoCaption: "All hands — Climbing Club",
@@ -1085,10 +1085,9 @@ export const LEADERSHIP = {
   ],
   /** In office — the term log, senior year. */
   term: [
-    { date: "Aug 2026", title: "Senior Sunrise lipdub", body: "First day of school: organized and edited the lipdub to “Young Dumb & Broke” — the first drop from the L2 video committee he heads with Danny Lou." },
-    { date: "Aug 2026", title: "Green & White Assembly", body: "Led the planning for the start-of-school rally: teacher introductions for new staff, student-engagement activities, and hype — teacher-vs-student trivia, class officers mummy-wrapped in toilet paper. Activities and Sports committees organized, schedule and timeline negotiated with admin.", photo: "/img/gw-01.jpg", photoAlt: "Jadon on the mic at the Green & White Assembly, in front of the Warrior Spirit mural" },
-    { date: "Aug 2026", title: "The assembly promo", body: "A promo video riffing on Spider-Man: Brand New Day's Jean Grey possession effect. MSJTV continues." },
-    { date: "Aug 2026", title: "msjhsasb.org", body: "Rebuilt the ASB website with Kaiwei Parks because the old one buried the information students actually need — 87 clubs searchable, every form, minutes, checks, and who to email about what." },
+    { date: "Aug 2026", title: "Senior Sunrise lipdub", body: "First day of school. Organized and edited the lipdub to “Young Dumb & Broke” — the first drop from the L2 video committee he heads.", video: { url: "https://www.instagram.com/reel/DcNE6pzJtU-/", label: "Watch the lipdub" } },
+    { date: "Aug 2026", title: "Green & White Assembly", body: "The start-of-school rally: teacher introductions, student-engagement activities, and hype — teacher-vs-student trivia, class officers mummy-wrapped in toilet paper.", video: { url: "https://www.instagram.com/reel/DcXcDnaxdt1/", label: "Watch the assembly" } },
+    { date: "Aug 2026", title: "msjhsasb.org", body: "Rebuilt the ASB site with Kaiwei Parks — 87 clubs searchable, every form, minutes, checks, and who to email.", video: { url: "https://msjhsasb.org", label: "Open the site" } },
   ],
   winterBall: {
     title: "Winter Ball — Built From Scratch",
@@ -1107,6 +1106,7 @@ export const LEADERSHIP = {
       { value: "60+", label: "Cars" },
       { value: "$3.5M", label: "One Pagani" },
       { value: "~200", label: "Attendees" },
+      { value: "32K", label: "FUSD families emailed" },
     ],
     body:
       "One of five seniors leading it; Jadon ran the media side — promotion and coverage (@msjmeets) — and brought in City Council and the Mayor to speak. The team door-knocked the neighborhood so all of Fremont, not just MSJ, was invited.",
@@ -1162,12 +1162,13 @@ export const LEADERSHIP = {
       title: "Green & White Assembly",
       window: "Aug 2026",
       metric: "Rally 01",
-      note: "The start-of-school rally, and the first as **ASB President** — **teacher introductions** for the new staff, **student-engagement activities**, and hype: **teacher-vs-student trivia**, class officers **mummy-wrapped** in toilet paper. Organized the **Activities and Sports committees**, went back and forth with admin on the **schedule and timeline**, and emailed every new teacher to stage their introduction to the school.",
+      note: "The start-of-school rally, first as **ASB President** — **teacher introductions**, **student-engagement activities**, and hype: **teacher-vs-student trivia**, class officers **mummy-wrapped** in toilet paper. Organized the **Activities and Sports committees** and set the **schedule** with admin.",
       facts: [
         { value: "01", label: "first rally of the year" },
         { value: "50", label: "Leadership II students" },
         { value: "4", label: "ASB officers led" },
       ],
+      video: { url: "https://www.instagram.com/reel/DcXcDnaxdt1/", label: "Watch the assembly" },
     },
     {
       title: "ICE Protest",

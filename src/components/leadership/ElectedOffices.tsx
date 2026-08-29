@@ -22,8 +22,6 @@ function HighlightRoleCard({
   role: Role;
   index: number;
 }) {
-  const [open, setOpen] = useState(false);
-
   return (
     <TiltCard max={5} className="h-full">
       <motion.div
@@ -82,28 +80,7 @@ function HighlightRoleCard({
             transition={{ duration: 0.7, delay: 0.2 }}
           />
 
-          <AnimatePresence initial={false}>
-            {open && (
-              <motion.p
-                key="note"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-4 overflow-hidden text-sm leading-relaxed text-[var(--fg)] opacity-80 md:text-base"
-              >
-                {role.note}
-              </motion.p>
-            )}
-          </AnimatePresence>
-
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            className="mt-4 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--accent)] underline-offset-2 transition-opacity duration-200 hover:opacity-70 focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--accent)]"
-          >
-            {open ? "— less" : "+ the story"}
-          </button>
+          <p className="mt-4 text-sm leading-relaxed text-[var(--fg)] opacity-80 md:text-base">{role.note}</p>
         </div>
 
         {/* Bottom-right corner accent */}
@@ -210,9 +187,6 @@ function SophomoreArcCallout() {
           <br />
           <span className="text-[var(--accent)]">Ran back. Won.</span>
         </p>
-        <p className="mt-4 pl-4 max-w-2xl text-sm leading-relaxed text-[var(--fg)] opacity-70 md:text-base">
-          Leadership II selection: 90+ applicants → written round → 60 → interviews → 30. Every step owned.
-        </p>
       </div>
     </Reveal>
   );
@@ -226,27 +200,37 @@ function TermLog() {
   return (
     <Reveal>
       <div className="border border-[rgba(212,175,106,0.35)] bg-[var(--bg-2)]">
-        <div className="flex items-baseline justify-between border-b border-[rgba(212,175,106,0.35)] px-7 py-4 md:px-10">
-          <p className="eyebrow text-[var(--accent)]">In office — the term log</p>
-          <p className="font-mono text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">Senior year · 2026–27</p>
+        <div className="border-b border-[rgba(212,175,106,0.35)] px-7 py-4 md:px-10">
+          <p className="eyebrow text-[var(--accent)]">In office</p>
         </div>
         <RevealGroup className="divide-y divide-[rgba(212,175,106,0.2)]" stagger={0.08} delayChildren={0.05}>
-          {LEADERSHIP.term.map((t, i) => (
+          {LEADERSHIP.term.map((t) => (
             <motion.div
               key={t.title}
               variants={{
                 hidden: { opacity: 0, x: -12 },
                 show: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
               }}
-              className="grid grid-cols-1 gap-2 px-7 py-5 md:grid-cols-[6rem_14rem_1fr] md:gap-8 md:px-10"
+              className="grid grid-cols-1 gap-2 px-7 py-5 md:grid-cols-[5rem_14rem_1fr] md:gap-8 md:px-10"
             >
-              <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-                {String(i + 1).padStart(2, "0")} · {t.date}
-              </span>
+              <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">{t.date}</span>
               <span className="font-anton text-[1.3rem] uppercase leading-none tracking-tight text-[var(--accent)] md:text-[1.6rem]">
                 {t.title}
               </span>
-              <p className="text-sm leading-relaxed text-[var(--fg)] opacity-75">{t.body}</p>
+              <div>
+                <p className="text-sm leading-relaxed text-[var(--fg)] opacity-75">{t.body}</p>
+                {"video" in t && t.video && (
+                  <a
+                    href={t.video.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-cursor-hover
+                    className="mt-2 inline-flex items-center gap-1.5 font-mono text-[0.62rem] uppercase tracking-widest text-[var(--accent)] transition-opacity hover:opacity-70"
+                  >
+                    ▶ {t.video.label}
+                  </a>
+                )}
+              </div>
             </motion.div>
           ))}
         </RevealGroup>
@@ -308,16 +292,8 @@ export function ElectedOffices() {
     >
       {/* Section header */}
       <Reveal>
-        <div className="flex items-baseline justify-between border-b border-[var(--fg)] pb-4">
-          <div className="flex items-baseline gap-6">
-            <span className="eyebrow text-[var(--accent)]">The Offices</span>
-            <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-              Elected&nbsp;·&nbsp;Every&nbsp;Year
-            </span>
-          </div>
-          <span className="eyebrow hidden text-[var(--muted)] sm:block">
-            Mission San Jose H.S.
-          </span>
+        <div className="border-b border-[var(--fg)] pb-4">
+          <span className="eyebrow text-[var(--accent)]">The Offices</span>
         </div>
       </Reveal>
 
