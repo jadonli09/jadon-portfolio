@@ -75,6 +75,7 @@ const TOKEN_FOR: Record<string, string> = {
   "transformation.png": "fus:transformation", macrophage: "fus:future", macrophages: "fus:future", future: "fus:future", "future.png": "fus:future",
   "umass-poster.jpg": "fus:poster", "umass-poster": "fus:poster",
   "git-log": "fus:log", commits: "fus:log", "citation2": "fus:citation",
+  bench: "fus:bench", "bench.jpg": "fus:bench", pipette: "fus:bench", team: "fus:photo", "poster-day.jpg": "fus:photo", session: "fus:session", "poster-session.jpg": "fus:session",
 };
 
 /** On branch umass-2026, the generic names resolve to the Fusarium files instead. */
@@ -86,16 +87,17 @@ const BRANCH_ALIAS: Record<string, string> = {
   resources: "fus:resources", "resources.md": "fus:resources", links: "fus:resources", refs: "fus:resources", tools: "fus:resources",
   citation: "fus:citation", "citation.bib": "fus:citation", cite: "fus:citation", bib: "fus:citation", bibtex: "fus:citation",
   design: "fus:strains", samples: "fus:strains",
-  photo: "fus:confocal", selfie: "fus:confocal", me: "fus:confocal",
+  photo: "fus:photo", selfie: "fus:photo", me: "fus:photo", "me.jpg": "fus:photo",
 };
 
 const FILE_TOKENS = new Set(["readme", "stats", "project", "methodology", "genes", "degcounts", "abstract", "volcano", "results", "pathways", "heatmap", "pca", "citation", "resources", "poster", "photo", "design"]);
-const FUS_FILES = new Set(["project", "protocol", "plasmid", "strains", "results", "confocal", "gel", "pcr", "protoplast", "transformation", "future", "poster", "resources", "citation", "log"]);
+const FUS_FILES = new Set(["project", "protocol", "plasmid", "strains", "results", "confocal", "gel", "pcr", "protoplast", "transformation", "future", "poster", "resources", "citation", "log", "photo", "bench", "session"]);
 const isFileToken = (t: string) => FILE_TOKENS.has(t) || t.startsWith("award:") || t.startsWith("program:") || (t.startsWith("fus:") && FUS_FILES.has(t.split(":")[1]));
 const FUS_LABEL: Record<string, string> = {
   project: "fusarium.md", protocol: "protocol.sh", plasmid: "plasmid.map", strains: "strains.tsv", results: "results.md",
   confocal: "confocal.png", gel: "gel.png", pcr: "pcr-gel.png", protoplast: "protoplast.png", transformation: "transformation.png",
   future: "future.png", poster: "umass-poster.jpg", resources: "resources.md", citation: "citation.bib", log: "git log", microscope: "microscope", branches: "git branch",
+  photo: "poster-day.jpg", bench: "bench.jpg", session: "poster-session.jpg",
 };
 
 function frameLabel(token: string): string {
@@ -172,6 +174,9 @@ const SUGGEST: Record<string, string[]> = {
   "fus:microscope": ["results", "gel", "plasmid", "git checkout main"],
   "fus:branches": ["git checkout umass-2026", "git checkout main", "git log"],
   "fus:resources": ["citation", "fusarium", "results"],
+  "fus:photo": ["bench", "session", "poster", "umass"],
+  "fus:bench": ["protocol", "plasmid", "photo"],
+  "fus:session": ["photo", "poster", "results"],
   "fus:citation": ["resources", "results", "poster"],
 };
 
@@ -200,6 +205,8 @@ const HINT: Record<string, { text: string; tone?: Tone }> = {
   "fus:log": { text: "→ every commit is a bench day. `git checkout main` for the RNA-seq project" },
   "fus:microscope": { text: "→ laser on: red = mRFP fungus. `git checkout main` switches it off" },
   "fus:poster": { text: "→ open specific figures: `confocal` · `gel` · `plasmid` · `protoplast` · `transformation`" },
+  "fus:photo": { text: "→ `bench` for the day job · `session` for the poster session · `poster` for the board itself" },
+  "fus:bench": { text: "→ what the pipetting was for: `protocol` · `plasmid`" },
 };
 
 // explorer tree — the working tree depends on the checked-out branch
@@ -214,6 +221,7 @@ const EXPLORER_UMASS: ExplorerItem[] = [
   ...EXPLORER_ROOT,
   { label: "resources.md", cmd: "resources", depth: 0 },
   { label: "umass-poster.jpg", cmd: "poster", depth: 0 },
+  { label: "poster-day.jpg", cmd: "photo", depth: 0 },
   { label: "fusarium", cmd: "fusarium", depth: 0, folder: true },
   { label: "fusarium.md", cmd: "fusarium", depth: 1 },
   { label: "protocol.sh", cmd: "protocol", depth: 1 },
@@ -226,6 +234,8 @@ const EXPLORER_UMASS: ExplorerItem[] = [
   { label: "protoplast.png", cmd: "protoplast", depth: 1 },
   { label: "transformation.png", cmd: "transformation", depth: 1 },
   { label: "future.png", cmd: "future", depth: 1 },
+  { label: "bench.jpg", cmd: "bench", depth: 1 },
+  { label: "poster-session.jpg", cmd: "session", depth: 1 },
   { label: "citation.bib", cmd: "citation", depth: 1 },
   { label: "git log", cmd: "git log", depth: 0 },
   { label: "microscope", cmd: "microscope", depth: 0 },
@@ -301,6 +311,8 @@ const FS: Record<Dir, { perms: string; size: string; name: string; kind: "dir" |
     { perms: "-rw-r--r--", size: "122K", name: "protoplast.png", kind: "file" },
     { perms: "-rw-r--r--", size: "71K", name: "transformation.png", kind: "file" },
     { perms: "-rw-r--r--", size: "33K", name: "future.png", kind: "file" },
+    { perms: "-rw-r--r--", size: "410K", name: "bench.jpg", kind: "file" },
+    { perms: "-rw-r--r--", size: "198K", name: "poster-session.jpg", kind: "file" },
     { perms: "-rw-r--r--", size: "0.5K", name: "citation.bib", kind: "file" },
   ],
   awards: AWARDS.map((a) => ({ perms: "-rw-r--r--", size: "0.8K", name: a.file, kind: "file" as const })),
@@ -574,7 +586,7 @@ export function ResearchIDE() {
       e.preventDefault();
       const tok = value.trim().toLowerCase();
       if (tok) {
-        const pool = ["help", "ls", "tree", "clear", "neofetch", "whoami", "readme", "resources", "stats", "poster", "photo", "project", "results", "methodology", "design", "degs", "genes", "pathways", "heatmap", "volcano", "pca", "citation", "abstract", "awards", "usabo", "bbo", "acsef", "field", "ysjc", "prism", "stem-pac", "umass", "git checkout umass-2026", "git checkout main", "git log", "git branch", "fusarium", "protocol", "plasmid", "strains", "confocal", "gel", "pcr", "protoplast", "transformation", "future", "microscope", "mutate", "exit", "nav", "goto", "leadership", "civic", "built", "court", "locked-in", "about", "achievements", "albums", "contact", "home"];
+        const pool = ["help", "ls", "tree", "clear", "neofetch", "whoami", "readme", "resources", "stats", "poster", "photo", "project", "results", "methodology", "design", "degs", "genes", "pathways", "heatmap", "volcano", "pca", "citation", "abstract", "awards", "usabo", "bbo", "acsef", "field", "ysjc", "prism", "stem-pac", "umass", "git checkout umass-2026", "git checkout main", "git log", "git branch", "fusarium", "protocol", "plasmid", "strains", "confocal", "gel", "pcr", "protoplast", "transformation", "future", "microscope", "bench", "session", "mutate", "exit", "nav", "goto", "leadership", "civic", "built", "court", "locked-in", "about", "achievements", "albums", "contact", "home"];
         const hit = pool.find((c) => c.startsWith(tok));
         if (hit) setValue(hit);
       }
@@ -908,7 +920,7 @@ function FusView({ arg, branch }: { arg: string; branch: Branch }) {
     case "citation": return <FusCitationView />;
     case "pcr": return <FusFigureView id="pcrGel" />;
     case "future": return <FusFigureView id="macrophage" />;
-    case "confocal": case "gel": case "protoplast": case "transformation":
+    case "confocal": case "gel": case "protoplast": case "transformation": case "photo": case "bench": case "session":
       return <FusFigureView id={arg as keyof typeof FUS_IMAGES} />;
     default: return <FusProjectView />;
   }
@@ -1370,6 +1382,7 @@ function HelpView() {
       ["confocal · gel · pcr", "🖼 the figures — the glow, and the DNA proof"],
       ["protoplast · transformation", "🖼 steps II and III, illustrated"],
       ["microscope", "🔴 the confocal view, laser on"],
+      ["photo · bench · session", "🖼 poster day with the team · at the bench · the poster session"],
       ["git log", "six weeks of bench work as commits"],
       ["poster", "🖼 the UMass poster (on this branch)"],
     ]},

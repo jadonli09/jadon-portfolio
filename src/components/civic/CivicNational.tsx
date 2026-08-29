@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
+import { Photo } from "@/components/primitives/Photo";
 import { CIVIC } from "@/lib/data";
 import { EASE } from "@/lib/motion";
 
@@ -42,6 +43,15 @@ function SeatCard({ seat, index }: { seat: Seat; index: number }) {
       </h3>
 
       <p className="mt-4 text-sm leading-relaxed text-[var(--muted)] md:text-[0.95rem]">{seat.body}</p>
+
+      {seat.photo && (
+        <figure className="mt-6 border border-[var(--line)] bg-[var(--bg-2)] p-1">
+          <div className="relative aspect-[16/9] overflow-hidden">
+            <Photo src={seat.photo.src} alt={seat.photo.alt} className="object-cover [filter:grayscale(35%)] transition-[filter] duration-500 group-hover:[filter:grayscale(0%)]" style={{ objectPosition: "50% 35%" }} />
+          </div>
+          <figcaption className="px-1 pb-0.5 pt-1.5 font-mono text-[0.52rem] uppercase tracking-[0.22em] text-[var(--muted)]">{seat.photo.caption}</figcaption>
+        </figure>
+      )}
 
       <div className="mt-auto flex flex-wrap gap-2 pt-6">
         {seat.tags.map((t) => (

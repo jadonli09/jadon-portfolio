@@ -211,7 +211,7 @@ export const PINBOARD: PinItem[] = [
   // ── summer 2026 ──
   { kind: "polaroid", glow: "#ff3d5e", href: "/research?branch=umass-2026", go: "→ research · umass-2026", img: "/img/umass-confocal.jpg", caption: "made a fungus glow red — UMass '26", left: "74%", top: 404, rot: 3, z: 6, w: 170 },
   { kind: "seal", href: "/civic#national", go: "→ civic · national", text: "COMMONAPP · STUDENT ADVISORY · 1 OF 20", left: "89%", top: 336, rot: -7, z: 6, w: 92 },
-  { kind: "ticket", href: "/built", go: "→ built · the pitch", text: "YBVC · STANFORD · TOP 15", label: "AcornPrep, pitched · Aug 2026", accent: "#7c89e8", left: "33%", top: 478, rot: 4, z: 6, w: 150 },
+  { kind: "polaroid", href: "/built", go: "→ built · the pitch", img: "/img/ybvc-02.jpg", caption: "pitching AcornPrep at Stanford — top 15", left: "31%", top: 468, rot: 4, z: 6, w: 172 },
 ];
 
 /* ─────────────────────────── LOCKED IN ──────────────────────────── */
@@ -809,6 +809,7 @@ export const CIVIC = {
       body:
         "One of twenty students in the country advising the Common App — the application 1,000+ colleges run on. A two-hour session every month plus work between meetings, feeding the student view back into the product high-schoolers actually use.",
       tags: ["national", "advisory", "monthly"],
+      photo: undefined as undefined | { src: string; alt: string; caption: string },
     },
     {
       id: "fire",
@@ -819,6 +820,7 @@ export const CIVIC = {
       body:
         "A selective summer forum on free speech in modern America — hot-take exercises, guest lectures, debate practice, and a capstone presentation, with students from Iowa farms to New York. The takeaway: free speech is the radical idea that gives those without power a seat at the table. And the internet is double-edged — anyone can post, but an algorithm decides who gets heard.",
       tags: ["free speech", "debate", "east coast"],
+      photo: { src: "/img/fire-01.jpg", alt: "The full FIRE Free Speech Forum cohort in red shirts, photographed from above", caption: "The whole forum — students from every state" },
     },
   ],
   /** The SBAI op-ed as published — real article metadata (San Mateo Daily Journal). */
@@ -984,17 +986,33 @@ export const PROJECTS: Project[] = [
   },
   {
     name: "Hermes",
-    url: "https://github.com/jadonli09",
-    domain: "github.com/jadonli09",
+    url: "https://www.instagram.com/msjclubs/",
+    domain: "@msjclubs",
     embeddable: false,
-    tagline: "Instagram club-info scraper.",
+    shot: "/embeds/hermes-story.jpg",
+    tagline: "Every club meeting, one story a day.",
     stats: [
-      { value: "90%", label: "Complete by 03/26" },
-      { value: "Aug '26", label: "Target release" },
+      { value: "Live", label: "@msjclubs · every weekday" },
+      { value: "87", label: "Clubs watched" },
     ],
     body:
-      "A scraper that pulls club info from Instagram for the 2026–2027 school year. 90% of the system finished by March 2026, with the remainder and polish coming over the summer.",
-    stack: ["Automation", "Scraping"],
+      "Eighty-seven clubs, eighty-seven Instagram feeds, and no one knows what's happening at lunch. Hermes scrapes every MSJ club account, has Claude extract the meeting — room, time, what's actually going on — and publishes a clean daily schedule story to @msjclubs every weekday. Built through junior year, live since August 2026.",
+    stack: ["Node.js", "Claude API", "Google Sheets"],
+  },
+  {
+    name: "MSJHS ASB",
+    url: "https://msjhsasb.org",
+    domain: "msjhsasb.org",
+    embeddable: true,
+    shot: "/embeds/msjhsasb.jpg",
+    tagline: "The school's information, findable.",
+    stats: [
+      { value: "87", label: "Clubs in the directory" },
+      { value: "Live", label: "msjhsasb.org · replaces msjasb.org" },
+    ],
+    body:
+      "The old ASB site was hard to navigate and the important things — forms, minutes, who to email — were buried. As ASB President he rebuilt it with Kaiwei Parks: a searchable directory of 87 clubs, every form with when you need it, approved checks and meeting minutes, the leadership roster, elections, and events. ⌘K search across all of it.",
+    stack: ["Web", "Search", "ASB"],
   },
   {
     name: "jadonli.com",
@@ -1068,8 +1086,9 @@ export const LEADERSHIP = {
   /** In office — the term log, senior year. */
   term: [
     { date: "Aug 2026", title: "Senior Sunrise lipdub", body: "First day of school: organized and edited the lipdub to “Young Dumb & Broke” — the first drop from the L2 video committee he heads with Danny Lou." },
-    { date: "Aug 2026", title: "Green & White Assembly", body: "Led the planning for the first rally of the year: Activities and Sports committees on hype, teacher-vs-student trivia, class officers mummy-wrapped in toilet paper — schedule and timeline negotiated with admin, new staff introduced to the school." },
+    { date: "Aug 2026", title: "Green & White Assembly", body: "Led the planning for the start-of-school rally: teacher introductions for new staff, student-engagement activities, and hype — teacher-vs-student trivia, class officers mummy-wrapped in toilet paper. Activities and Sports committees organized, schedule and timeline negotiated with admin.", photo: "/img/gw-01.jpg", photoAlt: "Jadon on the mic at the Green & White Assembly, in front of the Warrior Spirit mural" },
     { date: "Aug 2026", title: "The assembly promo", body: "A promo video riffing on Spider-Man: Brand New Day's Jean Grey possession effect. MSJTV continues." },
+    { date: "Aug 2026", title: "msjhsasb.org", body: "Rebuilt the ASB website with Kaiwei Parks because the old one buried the information students actually need — 87 clubs searchable, every form, minutes, checks, and who to email about what." },
   ],
   winterBall: {
     title: "Winter Ball — Built From Scratch",
@@ -1143,7 +1162,7 @@ export const LEADERSHIP = {
       title: "Green & White Assembly",
       window: "Aug 2026",
       metric: "Rally 01",
-      note: "The first rally of senior year, and the first as **ASB President**. Organized the **Activities and Sports committees** around hype — **teacher-vs-student trivia**, class officers **mummy-wrapped** in toilet paper — went back and forth with admin on the **schedule and timeline**, and emailed new staff to stage their introductions to the school.",
+      note: "The start-of-school rally, and the first as **ASB President** — **teacher introductions** for the new staff, **student-engagement activities**, and hype: **teacher-vs-student trivia**, class officers **mummy-wrapped** in toilet paper. Organized the **Activities and Sports committees**, went back and forth with admin on the **schedule and timeline**, and emailed every new teacher to stage their introduction to the school.",
       facts: [
         { value: "01", label: "first rally of the year" },
         { value: "50", label: "Leadership II students" },
@@ -1461,7 +1480,8 @@ export const TROPHIES: Trophy[] = [
   { year: "2025", title: "MSJ Makes VP", cat: "built", w: 3, detail: "Led merch design; 40 senior stoles — $700 revenue, $400 profit on that job alone." },
   { year: "2026", title: "MSJ Makes President", cat: "built", w: 4, detail: "VP → President; runs the maker-and-merch operation — ~$4,000 profit across club jobs." },
   { year: "2026", title: "MSJ STEM-PAC Co-President", cat: "research", w: 4, detail: "Co-leads the projects-and-competitions club he founded; ACSEF + olympiad pipeline." },
-  { year: "2026", title: "Hermes — in build", cat: "built", w: 2, detail: "An Instagram club-info scraper; ~90% complete." },
+  { year: "2026", title: "Hermes — live on @msjclubs", cat: "built", w: 3, detail: "A scraper + Claude pipeline that turns 87 club Instagram feeds into one clean daily schedule story, every weekday since August 2026." },
+  { year: "2026", title: "msjhsasb.org — rebuilt the ASB site", cat: "built", w: 3, detail: "With Kaiwei Parks: 87 clubs searchable, every form, minutes, checks, and who to email — replacing a site nobody could navigate." },
   // ── Junior — leadership / events ──
   { year: "2025", title: "MSJ Car Meet", cat: "leadership", w: 3, detail: "First in MSJ history · $35M+ in cars · a $3.5M Pagani." },
   { year: "2023–26", title: "Class President ×3", cat: "leadership", w: 5, detail: "Three years running — 22 fundraisers plus two years of merch: ~$11k revenue over three semesters (yes, he once spent an entire READ period negotiating with Papa John's)." },
@@ -1541,6 +1561,11 @@ export const ALBUMS: Album[] = [
     kicker: "ASB & class leadership",
     blurb: "Rallies, fundraisers, and the officer teams behind events run at the scale of a school.",
     photos: [
+      { src: "/img/gw-01.jpg", caption: "Green & White Assembly, 2026 — on the mic as ASB President" },
+      { src: "/img/gw-02.jpg", caption: "The ASB officers — Let's Get Hyped" },
+      { src: "/img/gw-06.jpg", caption: "Leadership II — the whole class, first rally of the year" },
+      { src: "/img/gw-04.jpg", caption: "Running the rally" },
+      { src: "/img/gw-03.jpg", caption: "Hosting with the co-emcee" },
       { src: "/img/speaking-at-rally.jpg", caption: "Speaking at the rally" },
       { src: "/img/asb-officers.jpg", caption: "ASB officers", fit: "contain" },
       { src: "/img/asb-with-other-schools.jpg", caption: "With ASB teams from other schools" },
@@ -1620,8 +1645,53 @@ export const ALBUMS: Album[] = [
     ],
   },
   {
-    id: "portraits",
+    id: "summer",
     index: "06",
+    title: "The Summer",
+    kicker: "Before senior year · 2026",
+    blurb: "Six weeks in a UMass lab, a week arguing about the First Amendment in DC, a Stanford pitch, and the East Coast by bike.",
+    photos: [
+      { src: "/img/umass-11.jpg", caption: "Poster day — with the team, Ma Lab" },
+      { src: "/img/umass-02.jpg", caption: "At the bench — micropipetting, Ma Lab" },
+      { src: "/img/umass-01.jpg", caption: "Poster session — walking a visitor through the RFP board" },
+      { src: "/img/umass-03.jpg", caption: "Lab chores — the autoclave" },
+      { src: "/img/umass-10.jpg", caption: "Lab team bonding at the ice rink — his idea, his planning" },
+      { src: "/img/umass-08.jpg", caption: "The UMass Amherst chair" },
+      { src: "/img/umass-04.jpg", caption: "The pre-college cohort, on the lawn" },
+      { src: "/img/umass-07.jpg", caption: "UMass dining — the best in the country, with the chef" },
+      { src: "/img/umass-05.jpg", caption: "The crew" },
+      { src: "/img/umass-09.jpg", caption: "Night sidequests" },
+      { src: "/img/umass-13.jpg", caption: "The pre-college crew on the stairs" },
+      { src: "/img/umass-06.jpg", caption: "Orientation — the whole program" },
+      { src: "/img/ybvc-02.jpg", caption: "YBVC at Stanford — pitching AcornPrep with Pradyun" },
+      { src: "/img/ybvc-01.jpg", caption: "First up — AcornPrep, top 15 of 300+" },
+      { src: "/img/ybvc-03.jpg", caption: "Mid-pitch" },
+      { src: "/img/ybvc-04.jpg", caption: "The top-15 finalists" },
+      { src: "/img/fire-01.jpg", caption: "FIRE Free Speech Forum — the whole cohort" },
+      { src: "/img/fire-03.jpg", caption: "FIRE — badges on, new friends" },
+      { src: "/img/fire-02.jpg", caption: "Spikeball on the terrace, DC" },
+      { src: "/img/fire-04.jpg", caption: "Dorm hallway crew" },
+      { src: "/img/dc-04.jpg", caption: "The National Mall — by Lime bike" },
+      { src: "/img/dc-02.jpg", caption: "The Washington Monument" },
+      { src: "/img/dc-03.jpg", caption: "Lincoln Memorial" },
+      { src: "/img/dc-01.jpg", caption: "Smithsonian Natural History" },
+      { src: "/img/boston-04.jpg", caption: "John Harvard's foot, Harvard Yard" },
+      { src: "/img/boston-05.jpg", caption: "Harvard Yard" },
+      { src: "/img/boston-02.jpg", caption: "Blank Street matcha, Boston Public Garden" },
+      { src: "/img/boston-07.jpg", caption: "Quincy Market" },
+      { src: "/img/boston-06.jpg", caption: "Downtown Boston — walkable everywhere" },
+      { src: "/img/boston-01.jpg", caption: "The Charles" },
+      { src: "/img/boston-08.jpg", caption: "Family dinner — the East Coast visit" },
+      { src: "/img/ny-01.jpg", caption: "Brooklyn Bridge at night" },
+      { src: "/img/ny-05.jpg", caption: "SUMMIT One Vanderbilt — the glass floor" },
+      { src: "/img/ny-04.jpg", caption: "The Met — Washington Crossing the Delaware" },
+      { src: "/img/ny-02.jpg", caption: "Skyline night, with a friend" },
+      { src: "/img/ny-03.jpg", caption: "Friends in the city" },
+    ],
+  },
+  {
+    id: "portraits",
+    index: "07",
     title: "Portraits",
     kicker: "The person in question",
     blurb: "Two headshots. The journal and the stopwatch are off-frame.",
@@ -1636,6 +1706,8 @@ export const ALBUMS: Album[] = [
 /** The hero trail cycles one frame per album beat — variety over completeness. */
 export const ALBUM_TRAIL: string[] = [
   "/img/ncs-champions.jpg",
+  "/img/umass-08.jpg",
+  "/img/gw-01.jpg",
   "/img/speaking-at-rally.jpg",
   "/img/droneshot1.jpg",
   "/img/missionpeak2026-1.jpg",

@@ -16,7 +16,10 @@ import { EASE } from "@/lib/motion";
  * here — any stop without an entry shows a dashed "coming soon" print.
  */
 const TRAVEL_PHOTOS: Partial<Record<string, { src: string; alt: string }>> = {
-  // e.g. "London": { src: "/img/travel-london.jpg", alt: "Tower Bridge from the Thames" },
+  "Amherst, MA": { src: "/img/umass-08.jpg", alt: "The pre-college crew on the big UMass Amherst chair" },
+  "Washington, DC": { src: "/img/dc-04.jpg", alt: "Selfie on the National Mall with the Washington Monument and reflecting pool behind" },
+  Boston: { src: "/img/boston-04.jpg", alt: "Jadon touching John Harvard's foot in Harvard Yard" },
+  "New York": { src: "/img/ny-01.jpg", alt: "Jadon by the Brooklyn Bridge at night" },
 };
 
 /* ── projection ───────────────────────────────────────────────── */

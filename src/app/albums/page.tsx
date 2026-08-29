@@ -3,11 +3,12 @@ import { World } from "@/components/chrome/World";
 import { Footer } from "@/components/chrome/Footer";
 import { AlbumsHero } from "@/components/albums/AlbumsHero";
 import { AlbumGallery } from "@/components/albums/AlbumGallery";
+import { SelfieMatchCut } from "@/components/albums/SelfieMatchCut";
 
 export const metadata: Metadata = {
   title: "Albums",
   description:
-    "The photo archive — every original frame from the court, the podium, the lens, the lab, and the climb, in one place.",
+    "The photo archive — every original frame from the court, the podium, the lens, the lab, the climb, and the summer before senior year, plus a 45-selfie match cut.",
 };
 
 /**
@@ -20,7 +21,10 @@ export default function AlbumsPage() {
       {/* 1. Cursor-trail hero over the ALBUMS headline */}
       <AlbumsHero />
 
-      {/* 2. Six albums, masonry at natural aspect */}
+      {/* 2. The selfie match cut — summer 2026, one face, hard cuts */}
+      <SelfieMatchCut />
+
+      {/* 3. Seven albums, masonry at natural aspect */}
       <AlbumGallery />
 
       {/* 3. Footer */}

@@ -214,6 +214,12 @@ export const PROGRAMS: Program[] = [
     name: "UMass Amherst — Ma Lab",
     role: "Research intensive · 6-week residential · Summer 2026",
     meta: { lab: "Ma Lab · Biochemistry & Molecular Biology", mentors: "Siyuan Wu (PhD) · Will Truncer · Dr. Li-Jun Ma", partner: "Jerry Zhang", branch: "umass-2026" },
+    image: {
+      src: "/img/umass-10.jpg",
+      alt: "The Ma Lab team and pre-college students at the ice rink — the team bonding Jadon organized",
+      caption: "Ice-rink team bonding, July 20 — 5 lab members + 7 pre-college students. Proposed, scheduled, organized.",
+      dims: "1800×1350",
+    },
     body: [
       "Six weeks at the bench, 9 to 4 every weekday, under a PhD mentor: host–pathogen interactions between Fusarium oxysporum and mammals (keratitis, blood infections). The project — engineering a red-fluorescent human clinical strain — lives on its own branch of this console: run `git checkout umass-2026`, or open fusarium/.",
       "Also: read six papers on Fusarium as a plant and animal pathogen (and built NotebookLI to get through them), kept the lab notebook, organized the lab's ice-rink team bonding, and co-planned a Lab Olympics.",
@@ -524,5 +530,8 @@ export const FUS_IMAGES = {
   strains: { src: "/img/umass-strains.jpg", alt: "Plated Fusarium oxysporum and the three strains used: NRRL32931, MRL8996, II5", caption: "The strains — a blood isolate, a keratitis isolate, and a banana pathogen.", dims: "1032×528" },
   protoplast: { src: "/img/umass-protoplast.jpg", alt: "Protoplast generation: germ tubes, enzyme digestion, filtering, washing", caption: "II — protoplast generation: germ tube → digested cell wall → protoplast.", dims: "1600×574" },
   transformation: { src: "/img/umass-transformation.jpg", alt: "PEG-mediated transformation steps: plasmid + protoplasts, STC/PEG, TB3, agarose plates", caption: "III — PEG-mediated transformation, step by step.", dims: "1600×452" },
+  photo: { src: "/img/umass-11.jpg", alt: "Jadon with the team in front of the Fusarium RFP poster at UMass Amherst", caption: "Poster day — with the team, in front of the board.", dims: "1800×1350" },
+  bench: { src: "/img/umass-02.jpg", alt: "Jadon in a lab coat and purple gloves, micropipetting at the bench in the Ma Lab", caption: "At the bench — micropipetting, Ma Lab.", dims: "1350×1800" },
+  session: { src: "/img/umass-01.jpg", alt: "Jadon walking a visitor through the RFP poster during the poster session", caption: "The poster session — walking a visitor through the board.", dims: "1279×853" },
   macrophage: { src: "/img/umass-macrophage.jpg", alt: "Time-lapse frames of a macrophage engulfing Fusarium (Schäfer et al. 2014)", caption: "Where it goes next — macrophage (red) meets Fusarium (green), 99 → 103 min (Schäfer et al. 2014).", dims: "1017×321" },
 };

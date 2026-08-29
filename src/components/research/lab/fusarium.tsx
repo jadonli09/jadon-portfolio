@@ -31,7 +31,7 @@ export function FusProjectView() {
       <div>
         <p className="text-[0.72rem] text-[var(--muted)]"><span className="text-[var(--accent)]">## </span>files in fusarium/</p>
         <p className="mt-1 font-mono text-[0.72rem] leading-relaxed text-[var(--muted)]">
-          {["protocol", "plasmid", "strains", "results", "confocal", "gel", "log", "poster"].map((f, i) => (
+          {["protocol", "plasmid", "strains", "results", "confocal", "gel", "log", "poster", "photo", "bench"].map((f, i) => (
             <Fragment key={f}>
               {i > 0 && " · "}
               <span className="text-[var(--accent)]">{f}</span>
@@ -255,6 +255,7 @@ export function FusPosterView() {
 export function FusFigureView({ id }: { id: keyof typeof FUS_IMAGES }) {
   const ASPECT: Partial<Record<keyof typeof FUS_IMAGES, string>> = {
     confocal: "9 / 7", gel: "9 / 7", pcrGel: "2.2 / 1", plasmid: "11 / 10", strains: "2 / 1", protoplast: "2.8 / 1", transformation: "3.5 / 1", macrophage: "3.2 / 1", poster: "4 / 3",
+    photo: "4 / 3", bench: "3 / 4", session: "3 / 2",
   };
   const wide = id === "protoplast" || id === "transformation" || id === "macrophage";
   return <ImagePreview {...FUS_IMAGES[id]} aspect={ASPECT[id] ?? "3 / 2"} maxW={wide ? "max-w-2xl" : "max-w-md"} />;

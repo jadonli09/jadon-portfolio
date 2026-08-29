@@ -8,6 +8,7 @@ import { Magnetic } from "@/components/primitives/Magnetic";
 import { LiveEmbed } from "@/components/built/LiveEmbed";
 import { DecodeText, StatValue } from "@/components/built/MissionFX";
 import { PROJECTS } from "@/lib/data";
+import { asset } from "@/lib/base";
 
 type Project = (typeof PROJECTS)[number];
 
@@ -20,6 +21,7 @@ const PROJECT_ICONS: Record<string, React.ComponentType<{ className?: string }>>
   Hermes: GitBranch,
   NotebookLI: BookOpen,
   "jadonli.com": Compass,
+  "MSJHS ASB": Globe,
   "Youth STEM Journal": Globe,
   "MSJ Makes": Shirt,
 };
@@ -149,7 +151,17 @@ function DesignedCard({ project, no }: { project: Project; no: string }) {
       >
         <MissionStamp no={no} />
 
-        {/* Top schematic area — blueprint grid + instrument icon */}
+        {/* Top area — a real artifact when we have one (Hermes' daily story), else the blueprint schematic */}
+        {project.shot ? (
+          <a href={project.url} target="_blank" rel="noreferrer noopener" data-cursor-hover className="archival-frame relative block h-56 w-full overflow-hidden border-b border-[var(--line)] bg-[#1a2118]" title={`Open ${project.domain}`}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={asset(project.shot)} alt={`${project.name} — a real daily story on ${project.domain}`} loading="lazy" decoding="async" className="mx-auto h-full w-auto object-cover object-top transition-transform duration-[1.2s] ease-out group-hover:scale-[1.03]" />
+            <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 border border-[var(--accent)] bg-[var(--bg)] px-2.5 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--accent)]">
+              <span className="size-1.5 animate-pulse bg-[var(--accent)]" /> Live · weekdays
+            </span>
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[var(--bg-2)] to-transparent" aria-hidden />
+          </a>
+        ) : (
         <div className="relative h-40 w-full overflow-hidden border-b border-[var(--line)]">
           <svg className="absolute inset-0 h-full w-full opacity-25" aria-hidden>
             <defs>
@@ -174,15 +186,8 @@ function DesignedCard({ project, no }: { project: Project; no: string }) {
             </div>
           </div>
 
-          {/* Status badge */}
-          {project.name === "Hermes" && (
-            <div className="absolute left-4 top-4">
-              <span className="border border-[var(--accent)] bg-[var(--bg)] px-2.5 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--accent)]">
-                In progress
-              </span>
-            </div>
-          )}
         </div>
+        )}
 
         {/* Card body */}
         <div className="flex flex-1 flex-col gap-4 p-6">
@@ -249,9 +254,9 @@ export function ProductsGrid() {
           </Reveal>
           <Reveal delay={0.2}>
             <p className="mt-5 max-w-xl text-sm leading-relaxed text-[var(--muted)] md:text-base">
-              Six more products at various stages — a research-paper reader built mid-lab, live
-              tools with active users, something building in the background, and the site you&apos;re
-              reading.
+              {OTHER_PROJECTS.length} more products, all live — a research-paper reader built mid-lab,
+              a club scraper that posts every weekday, the school&apos;s rebuilt ASB site, and the site
+              you&apos;re reading.
             </p>
           </Reveal>
         </div>

@@ -7,8 +7,9 @@ import { PROJECTS } from "@/lib/data";
  * in one mono table. Receipts, not claims. Server-safe (no client hooks).
  */
 
-function status(name: string) {
-  return name === "Hermes" ? ("IN BUILD" as const) : ("LIVE" as const);
+/** Everything on the manifest is live as of Aug 2026 (Hermes shipped to @msjclubs). */
+function status() {
+  return "LIVE" as const;
 }
 
 export function LaunchLedger() {
@@ -25,7 +26,7 @@ export function LaunchLedger() {
 
         <div className="border-t border-[var(--line)]">
           {PROJECTS.map((p, i) => {
-            const st = status(p.name);
+            const st = status();
             const live = st === "LIVE";
             const stat = p.stats[0];
             return (

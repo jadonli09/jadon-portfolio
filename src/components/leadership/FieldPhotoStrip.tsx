@@ -97,12 +97,30 @@ const PHOTOS: {
   wide?: boolean;
 }[] = [
   {
-    // Slot for the new ASB leadership photo — drop the file in /public/img.
-    src: "/img/asb-leadership-2026.jpg",
-    alt: "ASB Leadership 2026–2027 — Mission San Jose High School",
-    caption: "ASB Leadership",
-    sub: "2026–2027 · President",
+    src: "/img/gw-06.jpg",
+    alt: "Leadership II 2026–2027 — the whole class in green at the Green & White Assembly",
+    caption: "Leadership II",
+    sub: "2026–2027 · the whole class",
     wide: true,
+  },
+  {
+    src: "/img/gw-01.jpg",
+    alt: "Jadon on the mic at the Green & White Assembly in front of the Warrior Spirit mural",
+    caption: "Green & White Assembly",
+    sub: "First rally as ASB President",
+  },
+  {
+    src: "/img/gw-04.jpg",
+    alt: "Jadon running the Green & White Assembly with a microphone",
+    caption: "Running the rally",
+    sub: "Teacher intros · engagement · hype",
+    wide: true,
+  },
+  {
+    src: "/img/gw-02.jpg",
+    alt: "The ASB officers in front of the Let's Get Hyped mural",
+    caption: "The ASB Officers",
+    sub: "Let's get hyped",
   },
   {
     src: "/img/asb-officers.jpg",
@@ -260,7 +278,7 @@ export function FieldPhotoStrip() {
           <div className="flex items-baseline gap-6 border-b border-[var(--line)] pb-4">
             <span className="eyebrow text-[var(--accent)]">In the Field</span>
             <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-              ASB · Events · Class Officers · Climbing · Fundraising
+              ASB · Green & White · Events · Class Officers · Climbing · Fundraising
             </span>
           </div>
         </Reveal>
