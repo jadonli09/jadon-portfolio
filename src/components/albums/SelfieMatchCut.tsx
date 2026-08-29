@@ -3,34 +3,30 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
 import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
-import { SELFIES, type Selfie } from "@/lib/selfies";
+import { SELFIES } from "@/lib/selfies";
 import { asset } from "@/lib/base";
 import { cn } from "@/lib/cn";
 
 /**
- * The selfie match cut. Every selfie from summer 2026, cut so the face never
- * moves: each frame is scaled and translated from its detected face box so the
- * eyes land on one fixed anchor and the face keeps one fixed size. Hard cuts on
- * a beat, like the one-selfie-a-day videos — the world changes, the face holds.
+ * Summer in selfies. Every selfie from summer 2026, full frame, cycling on a
+ * beat with hard cuts — the one-selfie-a-day video, as a section.
  */
 
-const FRAME_W = 4;
-const FRAME_H = 5; // portrait 4:5
-const ANCHOR = { x: 0.5, y: 0.42 }; // where the face centre sits, as a fraction of the frame
-const FACE_W = 0.3; // face width as a fraction of frame width
+const FRAME_W = 3;
+const FRAME_H = 4; // portrait 3:4 — most of the set; landscape frames letterbox
 const BEAT_MS = 560;
 
-/** Position one selfie so its face box lands on the anchor (percent units of the frame). */
-function placement(s: Selfie) {
-  const renderedW = Math.min(3.2, Math.max(1, FACE_W / s.fw)); // in frame-width units
-  const renderedH = renderedW * (s.h / s.w); // in frame-width units
-  const left = ANCHOR.x - s.cx * renderedW; // frame-width units
-  const topFrameH = ANCHOR.y - (s.cy * renderedH) / (FRAME_H / FRAME_W); // frame-height units
-  return {
-    width: `${(renderedW * 100).toFixed(2)}%`,
-    left: `${(left * 100).toFixed(2)}%`,
-    top: `${(topFrameH * 100).toFixed(2)}%`,
-  };
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+/** "2026-06-21T12:35" → "Jun 21" — string math, so SSR and the client agree. */
+function fmtDate(iso: string) {
+  const [d] = iso.split("T");
+  const [, m, day] = d.split("-");
+  return `${MONTHS[Number(m) - 1]} ${Number(day)}`;
+}
+function fmtTime(iso: string) {
+  const [, t] = iso.split("T");
+  const [h, m] = t.split(":").map(Number);
+  return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h < 12 ? "am" : "pm"}`;
 }
 
 export function SelfieMatchCut() {
@@ -41,7 +37,6 @@ export function SelfieMatchCut() {
   const [hover, setHover] = useState(false);
   const frameRef = useRef<HTMLDivElement>(null);
   const inView = useInView(frameRef, { margin: "-20% 0px" });
-  const places = useMemo(() => SELFIES.map(placement), []);
 
   const step = useCallback((d: number) => setI((x) => (x + d + total) % total), [total]);
 
@@ -78,15 +73,12 @@ export function SelfieMatchCut() {
       <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-[1fr_minmax(300px,420px)] md:gap-16">
         {/* copy */}
         <div>
-          <p className="font-mono text-[0.62rem] uppercase tracking-[0.3em] text-[var(--muted)]">Selfie match cut · Summer 2026</p>
+          <p className="font-mono text-[0.62rem] uppercase tracking-[0.3em] text-[var(--muted)]">{total} selfies · Summer 2026</p>
           <h2 className="mt-4 font-anton text-4xl uppercase leading-[0.95] tracking-tight md:text-6xl">
-            One face,
-            <br />
-            forty-five places<span className="text-[var(--accent)]">.</span>
+            Summer in selfies<span className="text-[var(--accent)]">.</span>
           </h2>
           <p className="mt-6 max-w-md text-sm leading-relaxed text-[var(--muted)] md:text-base">
-            Every selfie from the summer before senior year — SFO to DC to Amherst to Boston to New York — cut so the face never moves.
-            Each frame is scaled and shifted from its detected face box onto one anchor; the world changes behind it, the face holds.
+            Every selfie from the summer before senior year, in the order they were taken — SFO to DC to Amherst to Boston to New York, June 20 to August 11 — cut on a beat.
           </p>
           <p className="mt-4 font-mono text-[0.62rem] uppercase tracking-[0.2em] text-[var(--muted)]">
             {reduce ? "step with the arrows" : "hover to pause · click to step · ← → keys"}
@@ -146,49 +138,24 @@ export function SelfieMatchCut() {
           {SELFIES.map((s, k) =>
             warm.has(k) && k !== i ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={s.src} src={asset(s.src)} alt="" aria-hidden decoding="async" className="pointer-events-none absolute opacity-0" style={{ ...places[k], maxWidth: "none" }} />
+              <img key={s.src} src={asset(s.src)} alt="" aria-hidden decoding="async" className="pointer-events-none absolute inset-0 h-full w-full object-contain opacity-0" />
             ) : null,
           )}
 
-          {/* the cut — a hard swap with a tiny settle, no crossfade */}
+          {/* the cut — a hard swap with a tiny settle, no crossfade; the whole photo, letterboxed if landscape */}
           <AnimatePresence initial={false}>
             <motion.img
               key={cur.src}
               src={asset(cur.src)}
               alt={`Selfie ${i + 1} of ${total}, summer 2026`}
               decoding="async"
-              initial={reduce ? false : { scale: 1.035 }}
+              initial={reduce ? false : { scale: 1.03 }}
               animate={{ scale: 1 }}
               exit={{ opacity: 0, transition: { duration: 0 } }}
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute origin-center"
-              style={{ ...places[i], maxWidth: "none" }}
+              className="absolute inset-0 h-full w-full object-contain"
             />
           </AnimatePresence>
-
-          {/* grain + vignette */}
-          <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(120% 100% at 50% 40%, transparent 55%, rgba(0,0,0,0.45) 100%)" }} />
-
-          {/* the match point — reticle on the anchor */}
-          <svg aria-hidden className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 400 500" style={{ opacity: hover ? 0.85 : 0.45, transition: "opacity 0.3s" }}>
-            {(() => {
-              const cx = ANCHOR.x * 400;
-              const cy = ANCHOR.y * 500;
-              const r = (FACE_W * 400) / 2;
-              const b = 12;
-              const c = "var(--accent)";
-              return (
-                <g stroke={c} strokeWidth={1.2} fill="none">
-                  <path d={`M ${cx - r} ${cy - r + b} V ${cy - r} H ${cx - r + b}`} />
-                  <path d={`M ${cx + r - b} ${cy - r} H ${cx + r} V ${cy - r + b}`} />
-                  <path d={`M ${cx - r} ${cy + r - b} V ${cy + r} H ${cx - r + b}`} />
-                  <path d={`M ${cx + r - b} ${cy + r} H ${cx + r} V ${cy + r - b}`} />
-                  <line x1={cx - 6} y1={cy} x2={cx + 6} y2={cy} />
-                  <line x1={cx} y1={cy - 6} x2={cx} y2={cy + 6} />
-                </g>
-              );
-            })()}
-          </svg>
 
           {/* rec strip */}
           <div className="pointer-events-none absolute inset-x-0 top-0 flex items-center justify-between px-3 py-2 font-mono text-[0.58rem] uppercase tracking-[0.22em] text-white/85">
@@ -199,8 +166,8 @@ export function SelfieMatchCut() {
             <span className="tabular-nums">{String(i + 1).padStart(2, "0")} / {total}</span>
           </div>
           <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/70 to-transparent px-3 pb-2.5 pt-8 font-mono text-[0.58rem] uppercase tracking-[0.22em] text-white/85">
-            <span>Summer &apos;26</span>
-            <span>match point · face locked</span>
+            <span>{fmtDate(cur.taken)}</span>
+            <span>{fmtTime(cur.taken)} · full frame</span>
           </div>
         </div>
       </div>
