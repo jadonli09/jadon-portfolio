@@ -124,11 +124,20 @@ function HighlightRoleCard({
  * always legible; hover (or tap) dims the print and brings the note up over it.
  */
 function SupportingRoleCard({ role, index }: { role: Role; index: number }) {
-  const [open, setOpen] = useState(false);
+  const [photoHover, setPhotoHover] = useState(false);
+  const [descHover, setDescHover] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [tapOpen, setTapOpen] = useState(false);
   const photo = "photo" in role ? role.photo : undefined;
   const photoAlt = "photoAlt" in role ? role.photoAlt : role.title;
   const crew = LEADERSHIP.crews.find((c) => role.title.startsWith(c.club) || role.title.startsWith(c.club.replace("MSJ ", "")));
   const stat = crew?.stat;
+
+  // hovering (or tapping/focusing) the picture: saturate the original print.
+  const printActive = photoHover || descHover || focused || tapOpen;
+  // hovering (or tapping/focusing) the description: swap to the officer crew photo.
+  const crewOpen = descHover || focused || tapOpen;
+
   return (
     <motion.div
       variants={{
@@ -136,24 +145,26 @@ function SupportingRoleCard({ role, index }: { role: Role; index: number }) {
         show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] } },
       }}
       className="group relative flex flex-col overflow-hidden border border-[rgba(212,175,106,0.35)] bg-[var(--bg-2)] transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-[var(--accent)]"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-      onClick={() => setOpen((v) => !v)}
-      onFocus={() => setOpen(true)}
-      onBlur={() => setOpen(false)}
+      onClick={() => setTapOpen((v) => !v)}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
       tabIndex={0}
       role="button"
-      aria-expanded={open}
+      aria-expanded={crewOpen}
       aria-label={`${role.title} — ${role.window}`}
       data-cursor-hover
     >
-      {/* print — hover / tap swaps it for the officer crew, edge to edge */}
-      <div className="relative aspect-[4/3] overflow-hidden border-b border-[rgba(212,175,106,0.25)] bg-[var(--bg)]">
+      {/* print — hover it to saturate; hover the description below to swap to the officer crew */}
+      <div
+        className="relative aspect-[4/3] overflow-hidden border-b border-[rgba(212,175,106,0.25)] bg-[var(--bg)]"
+        onMouseEnter={() => setPhotoHover(true)}
+        onMouseLeave={() => setPhotoHover(false)}
+      >
         {photo && (
           <motion.div
             initial={false}
-            animate={{ scale: open ? 1.06 : 1, filter: open ? "grayscale(0%) sepia(0%) brightness(0.7)" : "grayscale(55%) sepia(12%) brightness(1)" }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            animate={{ filter: printActive ? "grayscale(0%) sepia(0%)" : "grayscale(55%) sepia(12%)" }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="absolute inset-0"
           >
             <Photo src={photo} alt={photoAlt} className="object-cover" />
@@ -162,32 +173,16 @@ function SupportingRoleCard({ role, index }: { role: Role; index: number }) {
         {crew?.photo && (
           <motion.div
             initial={false}
-            animate={{ clipPath: open ? "inset(0% 0% 0% 0%)" : "inset(100% 0% 0% 0%)" }}
-            transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
+            animate={{ opacity: crewOpen ? 1 : 0, filter: crewOpen ? "blur(0px)" : "blur(16px)" }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="absolute inset-0 z-10 bg-[var(--bg)]"
             style={{ pointerEvents: "none" }}
           >
-            <motion.div
-              initial={false}
-              animate={{ scale: open ? 1 : 1.12, y: open ? 0 : 10 }}
-              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute inset-0"
-            >
-              <Photo src={crew.photo} alt={crew.photoAlt} className="object-cover" style={{ objectPosition: "50% 30%" }} />
-            </motion.div>
-            {/* gold leading edge of the wipe */}
-            <motion.span
-              aria-hidden
-              initial={false}
-              animate={{ opacity: open ? [0, 1, 0] : 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="absolute inset-x-0 top-0 h-px bg-[var(--accent)]"
-              style={{ boxShadow: "0 0 14px 2px rgba(212,175,106,0.6)" }}
-            />
+            <Photo src={crew.photo} alt={crew.photoAlt} className="object-cover" style={{ objectPosition: "50% 30%" }} />
             <motion.span
               initial={false}
-              animate={{ opacity: open ? 1 : 0, x: open ? 0 : -8 }}
-              transition={{ duration: 0.4, delay: open ? 0.3 : 0 }}
+              animate={{ opacity: crewOpen ? 1 : 0 }}
+              transition={{ duration: 0.35, delay: crewOpen ? 0.15 : 0 }}
               className="absolute bottom-3 left-4 font-mono text-[0.52rem] uppercase tracking-[0.28em] text-[var(--accent)] [text-shadow:0_1px_6px_rgba(0,0,0,0.9)]"
             >
               The officers
@@ -197,25 +192,24 @@ function SupportingRoleCard({ role, index }: { role: Role; index: number }) {
         <span aria-hidden className="absolute left-0 top-0 z-20 h-6 w-6 border-l-2 border-t-2 border-[var(--accent)] opacity-0 transition-opacity duration-300 group-hover:opacity-80" />
       </div>
 
-      {/* slate — title always; the note wakes up on hover */}
+      {/* slate — title always; hover the note to bring up the officer crew photo above */}
       <div className="flex flex-1 flex-col px-5 py-4">
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
           <div className="min-w-0">
             <span className="block font-mono text-[0.55rem] uppercase tracking-[0.3em] text-[var(--muted)]">{String(index + 1).padStart(2, "0")}</span>
             <p className="relative mt-1 inline-block whitespace-nowrap font-anton text-[1.4rem] uppercase leading-none tracking-tight text-[var(--fg)] transition-colors duration-300 group-hover:text-[var(--accent)] md:text-[1.45rem]">
               {role.title}
-              <motion.span aria-hidden initial={false} animate={{ scaleX: open ? 1 : 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} className="absolute -bottom-1 left-0 h-px w-full origin-left bg-[var(--accent)]" />
+              <motion.span aria-hidden initial={false} animate={{ scaleX: printActive ? 1 : 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} className="absolute -bottom-1 left-0 h-px w-full origin-left bg-[var(--accent)]" />
             </p>
           </div>
           <span className="shrink-0 border border-[rgba(212,175,106,0.35)] px-2 py-1 font-mono text-[0.55rem] uppercase tracking-widest text-[var(--accent)]">
             {role.window}
           </span>
         </div>
-        <motion.div
-          initial={false}
-          animate={{ opacity: open ? 1 : 0.38, y: open ? 0 : 4 }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        <div
           className="mt-4"
+          onMouseEnter={() => setDescHover(true)}
+          onMouseLeave={() => setDescHover(false)}
         >
           <p className="text-[0.82rem] leading-relaxed text-[var(--fg)]">{role.note}</p>
           {stat && (
@@ -223,12 +217,11 @@ function SupportingRoleCard({ role, index }: { role: Role; index: number }) {
               <span className="font-anton text-base normal-case tracking-normal">{stat.value}</span> · {stat.label}
             </p>
           )}
-        </motion.div>
+        </div>
       </div>
     </motion.div>
   );
 }
-
 /**
  * The story arc callout: sophomore loss → won it back.
  * Lives between the highlight cards and the supporting roles.
