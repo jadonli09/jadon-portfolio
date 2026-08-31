@@ -170,14 +170,22 @@ const STOPS: { anchor: string | null; label: string }[] = [
   { anchor: "fleet", label: "M-04–08 · The fleet" },
 ];
 
-/** Each stop's position as a fraction of total scroll, measured from the DOM. */
+/**
+ * Each stop's position as a fraction of total scroll, measured from the DOM.
+ * A stop fires once its section's top is a quarter of the way up the viewport,
+ * not when it reaches the very top — otherwise a `#notebookli` deep link, which
+ * lands 96px (`scroll-mt-24`) above the section, still reads "M-02 · Hermes".
+ */
+const STOP_LEAD = 0.25;
+
 function measureStops(): number[] {
   const max = document.documentElement.scrollHeight - window.innerHeight;
   return STOPS.map((s) => {
     if (!s.anchor || max <= 0) return 0;
     const el = document.getElementById(s.anchor);
     if (!el) return 0;
-    return Math.min(1, (el.getBoundingClientRect().top + window.scrollY) / max);
+    const top = el.getBoundingClientRect().top + window.scrollY;
+    return Math.min(1, Math.max(0, (top - window.innerHeight * STOP_LEAD) / max));
   });
 }
 
