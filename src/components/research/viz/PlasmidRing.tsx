@@ -37,7 +37,7 @@ const LABEL_ROW: Record<string, number> = {};
 FUS_PLASMID.features
   .filter((f) => f.kind !== "reporter")
   .slice()
-  .sort((a, b) => a.start - b.start)
+  .sort((a, b) => rel(a.start) - rel(b.start))
   .forEach((f, i) => {
     LABEL_ROW[f.name] = i % 2;
   });
@@ -46,7 +46,7 @@ FUS_PLASMID.features
 // order (and therefore Tab order, at tabIndex=0) matches the visual reading
 // order of the track. The circular view keeps declaration order — there is
 // no single "correct" reading order around a closed loop.
-const LINEAR_ORDER: Feature[] = [...FUS_PLASMID.features].sort((a, b) => a.start - b.start);
+const LINEAR_ORDER: Feature[] = [...FUS_PLASMID.features].sort((a, b) => rel(a.start) - rel(b.start));
 
 function arcPath(cx: number, cy: number, r: number, a0: number, a1: number) {
   const x0 = cx + r * Math.cos(a0);
@@ -118,6 +118,8 @@ export function PlasmidRing() {
                     onFocus={() => setFocused(f)}
                     onBlur={() => setFocused(null)}
                     tabIndex={0}
+                    role="img"
+                    aria-label={`${f.name} — ${f.note || `${f.start}–${f.end} bp`}`}
                     style={{ cursor: "pointer", filter }}
                   />
                   <text
@@ -146,7 +148,7 @@ export function PlasmidRing() {
         ) : (
           <svg viewBox={`0 0 ${W} ${W}`} className="w-full" role="img" aria-labelledby={titleId}>
             <title id={titleId}>
-              {FUS_PLASMID.name} plasmid map, {FUS_PLASMID.bp} base pairs
+              {FUS_PLASMID.name} plasmid map, {FUS_PLASMID.bp.toLocaleString()} base pairs
             </title>
             <circle cx={CX} cy={CY} r={R} fill="none" stroke="var(--line)" strokeWidth={10} />
             {[0, 1000, 2000, 3000, 4000, 5000].map((bp) => {
@@ -189,6 +191,8 @@ export function PlasmidRing() {
                     stroke={KIND_COLOR[f.kind]}
                     strokeWidth={strokeWidth}
                     tabIndex={0}
+                    role="img"
+                    aria-label={`${f.name} — ${f.note || `${f.start}–${f.end} bp`}`}
                     onMouseEnter={() => setHovered(f)}
                     onMouseLeave={() => setHovered(null)}
                     onFocus={() => setFocused(f)}
@@ -227,7 +231,7 @@ export function PlasmidRing() {
         <p className="font-mono text-[0.7rem] tracking-[0.14em] text-[var(--muted)]">
           {FUS_PLASMID.name} · {FUS_PLASMID.bp.toLocaleString()} bp
         </p>
-        <div className="min-h-[4.5rem]">
+        <div className="min-h-[4.5rem]" aria-live="polite">
           <p className="font-mono text-[0.95rem] text-[var(--fg)]">{shown.name}</p>
           <p className="mt-1 text-[0.9rem] leading-relaxed text-[var(--muted)]">
             {shown.note || `${shown.start}–${shown.end} bp`}
