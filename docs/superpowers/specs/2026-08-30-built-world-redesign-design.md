@@ -191,6 +191,6 @@ MCQ stems in Calculus, Chemistry, and Statistics are LaTeX-heavy; the portfolio 
 ### Corrections to `data.ts`
 
 - The AcornPrep body lists "flashcards, podcasts, mind maps, and study guides" — the product ships **six** study modes. Add Tips & Tricks and Worked Examples.
-- Hero stat strip fix, decided: **drop the revenue tile.** `~$700 Revenue` is unsourced and collides with MSJ Makes' `~$4k profit`; a combined figure would be mixing revenue with profit and would invent a number. Money is stated once, where it is true — on the MSJ Makes panel, at ~$4k profit (confirmed by Jadon 2026-08-30). The strip becomes four sourced facts: **08 Products · 500+ Users · #1 Google result · 87 Clubs automated.**
+- Hero stat strip fix, decided (Jadon, 2026-08-30 — recounted, and it is **profit**, not revenue): the tile becomes **`~$4k Profit`**, replacing the unsourced `~$700 Revenue`. The strip reads **08 Products · 500+ Users · #1 Google result · ~$4k Profit.** To keep the no-duplicate-stat rule, the MSJ Makes deck panel drops its own `~$4k Profit` stat pill; its body paragraph carries the breakdown that earned it (badminton and volleyball hoodies, basketball merch, DECA minicon glass, senior stoles) without restating the figure. The number appears once as a number.
 - `05 Products` → `08`.
 - `StatValue` must render its final value as the non-animated baseline so Hermes never reads "0 clubs watched".
