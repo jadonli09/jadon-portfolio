@@ -80,7 +80,7 @@ export function FleetDeck() {
               role="tab"
               id={`fleet-tab-${p.slug}`}
               aria-selected={selected === i}
-              aria-controls={`fleet-panel-${p.slug}`}
+              aria-controls={p.slug}
               tabIndex={selected === i ? 0 : -1}
               data-fleet-tab={p.slug}
               data-cursor-hover
