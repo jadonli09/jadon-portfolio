@@ -32,7 +32,7 @@ export function Evidence() {
       </div>
 
       <div className="mt-12 flex flex-col gap-7">
-        {FUS_RESULTS.map((r) => (
+        {FUS_RESULTS.filter((r) => r.heading !== "Future applications").map((r) => (
           <div key={r.heading} className="max-w-[64ch]">
             <h3 className="mb-2 text-[1.02rem] font-semibold text-[var(--fg)]">{r.heading}</h3>
             <p className="text-[0.98rem] leading-[1.7] text-[var(--muted)]">{r.body}</p>
