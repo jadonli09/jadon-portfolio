@@ -6,6 +6,7 @@ import { BuiltHero } from "@/components/built/BuiltHero";
 import { MissionIndex } from "@/components/built/MissionIndex";
 import { Chapter } from "@/components/built/Chapter";
 import { AcornDemo } from "@/components/built/demos/AcornDemo";
+import { HermesPipeline } from "@/components/built/demos/HermesPipeline";
 import { ProductsGrid } from "@/components/built/ProductsGrid";
 import { GitHubShowcase } from "@/components/built/GitHubShowcase";
 import { LaunchLedger } from "@/components/built/LaunchLedger";
@@ -43,10 +44,15 @@ export default function BuiltPage() {
         <AcornDemo />
       </Chapter>
 
-      {/* ── 4. OTHER PRODUCTS GRID ───────────────────────────── */}
+      {/* ── 4. M-02 HERMES ───────────────────────────────────── */}
+      <Chapter project={bySlug("hermes")} no="02">
+        <HermesPipeline />
+      </Chapter>
+
+      {/* ── 5. OTHER PRODUCTS GRID ───────────────────────────── */}
       <ProductsGrid />
 
-      {/* ── 5. GITHUB SHOWCASE ───────────────────────────────── */}
+      {/* ── 6. GITHUB SHOWCASE ───────────────────────────────── */}
       <section className="border-b border-[var(--line)]">
         <div className="mx-auto max-w-7xl px-5 py-20 md:px-9 md:py-28">
           {/* Section header */}
@@ -73,10 +79,10 @@ export default function BuiltPage() {
         </div>
       </section>
 
-      {/* ── 6. FLIGHT LOG ────────────────────────────────────── */}
+      {/* ── 7. FLIGHT LOG ────────────────────────────────────── */}
       <LaunchLedger />
 
-      {/* ── 7. CLOSING MANIFESTO ─────────────────────────────── */}
+      {/* ── 8. CLOSING MANIFESTO ─────────────────────────────── */}
       <section className="mx-auto max-w-5xl px-5 py-20 text-center md:px-9 md:py-28">
         <Reveal>
           <p className="eyebrow mb-8">The builder&apos;s creed</p>
@@ -107,7 +113,7 @@ export default function BuiltPage() {
         </Reveal>
       </section>
 
-      {/* ── 8. FOOTER ─────────────────────────────────────────── */}
+      {/* ── 9. FOOTER ─────────────────────────────────────────── */}
       <Footer />
     </World>
   );
