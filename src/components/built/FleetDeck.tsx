@@ -101,8 +101,17 @@ export function FleetDeck() {
               data-cursor-hover
               onClick={() => go(i)}
               onKeyDown={(e) => {
-                if (e.key === "ArrowRight") go(Math.min(i + 1, FLEET.length - 1));
-                if (e.key === "ArrowLeft") go(Math.max(i - 1, 0));
+                // Roving tabindex: arrow keys must move both the selection
+                // AND DOM focus to the new tab, or focus is stranded on a
+                // button that just dropped to tabIndex=-1 — every further
+                // arrow press then re-fires from this same stale closure
+                // instead of advancing.
+                let next: number | null = null;
+                if (e.key === "ArrowRight") next = Math.min(i + 1, FLEET.length - 1);
+                if (e.key === "ArrowLeft") next = Math.max(i - 1, 0);
+                if (next === null) return;
+                go(next);
+                document.getElementById(`fleet-tab-${FLEET[next].slug}`)?.focus();
               }}
               className={cn(
                 "flex items-baseline gap-2 border border-b-0 px-4 py-3 font-mono text-[0.65rem] uppercase tracking-[0.2em] transition-colors",
