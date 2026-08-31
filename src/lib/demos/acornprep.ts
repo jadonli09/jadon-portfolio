@@ -1,9 +1,11 @@
 /**
  * Real questions from the AcornPrep bank, baked in so the portfolio demo runs
  * with no server. Captured from the live product on 2026-08-30 — do not
- * invent questions. Five from AP Psychology, five from AP US History (the
+ * invent questions. Five from AP Psychology, four from AP US History (the
  * two prose courses; Calculus/Chemistry/Statistics are LaTeX-heavy and were
- * skipped since the portfolio has no math renderer).
+ * skipped since the portfolio has no math renderer). A fifth US History record
+ * was captured and then removed by ruling — its explanation contradicted its
+ * own answer choice — so nine ship, not ten.
  */
 
 export type DemoChoice = { label: string; text: string };

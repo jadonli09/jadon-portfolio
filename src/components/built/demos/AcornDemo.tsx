@@ -35,8 +35,15 @@ function Practice({ q, onNext }: { q: DemoMcq; onNext: () => void }) {
             <button
               key={c.label}
               type="button"
-              disabled={graded}
-              onClick={() => setPicked(c.label)}
+              // `aria-disabled` + a click guard, not `disabled`: a real
+              // `disabled` attribute drops keyboard focus to <body> the instant
+              // an answer is graded, so the reader is thrown out of the demo at
+              // exactly the moment the result appears.
+              aria-disabled={graded}
+              onClick={() => {
+                if (graded) return;
+                setPicked(c.label);
+              }}
               data-cursor-hover
               className={cn(
                 "flex items-center gap-4 border px-5 py-4 text-left transition-colors duration-200",
@@ -53,32 +60,37 @@ function Practice({ q, onNext }: { q: DemoMcq; onNext: () => void }) {
           );
         })}
 
-        <AnimatePresence>
-          {graded ? (
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: EASE }}
-              className="mt-2 border border-[var(--line)] bg-[var(--bg)] p-5"
-            >
-              <p className="mission-display text-lg text-[var(--accent)]">
-                {correct ? "Nailed it." : "Not quite."}
-              </p>
-              <p className="mt-3 text-sm leading-[1.9] text-[var(--muted)]">{q.explanation}</p>
-              <button
-                type="button"
-                onClick={() => {
-                  setPicked(null);
-                  onNext();
-                }}
-                data-cursor-hover
-                className="btn-brackets mt-5"
+        {/* The live region is mounted from the start, empty, so the verdict is
+            an update inside an existing region rather than a region that
+            appears with content — the latter is announced unreliably. */}
+        <div role="status">
+          <AnimatePresence>
+            {graded ? (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: EASE }}
+                className="mt-2 border border-[var(--line)] bg-[var(--bg)] p-5"
               >
-                Next question
-              </button>
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
+                <p className="mission-display text-lg text-[var(--accent)]">
+                  {correct ? "Nailed it." : "Not quite."}
+                </p>
+                <p className="mt-3 text-sm leading-[1.9] text-[var(--muted)]">{q.explanation}</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPicked(null);
+                    onNext();
+                  }}
+                  data-cursor-hover
+                  className="btn-brackets mt-5"
+                >
+                  Next question
+                </button>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
@@ -183,7 +195,9 @@ function Review() {
             animate={{ opacity: 1, rotateX: 0 }}
             exit={{ opacity: 0, rotateX: 35 }}
             transition={{ duration: 0.35, ease: EASE }}
-            className="text-base leading-relaxed text-[var(--fg)]"
+            // Card backs are captured verbatim, blank line between the
+            // definition and its bullets; without pre-line they run together.
+            className="whitespace-pre-line text-base leading-relaxed text-[var(--fg)]"
           >
             {flipped ? card.back : card.front}
           </motion.span>
