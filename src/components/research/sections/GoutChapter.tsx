@@ -1,18 +1,22 @@
-import { DEG_COUNTS, PAIN_MEDIATORS, PIPELINE, PROJECT } from "../lab/content";
-import { RESEARCH } from "@/lib/data";
-import { VolcanoPlot } from "@/components/research/viz/VolcanoPlot";
-import { Section, P } from "./Section";
+import { DEG_COUNTS, IMAGES, PAIN_MEDIATORS, PIPELINE, PROJECT } from "../lab/content";
+import { Photo } from "@/components/primitives/Photo";
+import { Section, P, aspectFrom } from "./Section";
 
 export function GoutChapter() {
   return (
     <div data-chapter="gout" className="bg-[var(--bg)]">
       {/* The hinge between the two projects. Without this the page is two
-          adjacent projects; with it, it is one scientist. */}
-      <p className="mx-auto max-w-5xl border-t border-[var(--line)] px-6 py-[clamp(3rem,7vh,5rem)] text-[clamp(1.1rem,2vw,1.5rem)] leading-[1.5] text-balance text-[var(--fg)] lg:pl-64 lg:pr-10">
-        Both projects are the same problem twice: a pain signal you can only see
-        in the transcriptome, and a pathogen you can only see once it&rsquo;s
-        tagged.
-      </p>
+          adjacent projects; with it, it is one scientist. Two-element shell
+          (outer padding/rail offset, inner max-width) matches Section.tsx so
+          this block lines up with every other block on the page at desktop
+          widths. */}
+      <div className="border-t border-[var(--line)] px-6 py-[clamp(3rem,7vh,5rem)] lg:pl-64 lg:pr-10">
+        <p className="mx-auto max-w-5xl text-[clamp(1.1rem,2vw,1.5rem)] leading-[1.5] text-balance text-[var(--fg)]">
+          Both projects are the same problem twice: a pain signal you can only see
+          in the transcriptome, and a pathogen you can only see once it&rsquo;s
+          tagged.
+        </p>
+      </div>
       <Section id="gout-question" kicker="Gout · RNA-seq" heading="Before the bench, the terminal.">
         <P>
           Trained in R and bioinformatics, then set loose on a public dataset to run the analysis
@@ -22,9 +26,6 @@ export function GoutChapter() {
         </P>
         <P className="text-[var(--fg)]">{PROJECT.question}</P>
         <P>{PROJECT.hypothesis}</P>
-        <p className="mt-6 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[var(--accent)]">
-          {RESEARCH.project.result}
-        </p>
       </Section>
 
       <Section id="pipeline" kicker="Pipeline" heading="Eight steps, self-built.">
@@ -39,14 +40,21 @@ export function GoutChapter() {
         </ol>
       </Section>
 
-      <Section id="volcano" kicker="Differential expression" heading="Every gene, plotted.">
+      <Section id="volcano" kicker="Differential expression" heading="What the pipeline found.">
         <P>
-          Each point is a gene: fold change across the x-axis, statistical confidence up the y. The
-          ones that clear both thresholds are the ones worth chasing.
+          Three tissues, each run through the same differential-expression pipeline in R. Fold
+          change across the x-axis, statistical confidence up the y — the points that clear both
+          thresholds are the genes worth chasing. This is the actual output, straight off the
+          poster: ankle joint, dorsal root ganglia, and spinal cord.
         </P>
-        <div className="mt-8 border border-[var(--line)] bg-[var(--bg-2)] p-4">
-          <VolcanoPlot />
-        </div>
+        <figure className="m-0 mt-8 border border-[var(--line)]">
+          <div className="relative w-full bg-black" style={aspectFrom(IMAGES.volcanos.dims)}>
+            <Photo src={IMAGES.volcanos.src} alt={IMAGES.volcanos.alt} />
+          </div>
+          <figcaption className="border-t border-[var(--line)] px-3 py-2.5 font-mono text-[0.66rem] leading-[1.55] text-[var(--muted)]">
+            {IMAGES.volcanos.caption}
+          </figcaption>
+        </figure>
         <ul className="mt-8 grid list-none gap-px bg-[var(--line)] p-0 sm:grid-cols-3">
           {DEG_COUNTS.map((d) => (
             <li key={d.tissue} className="bg-[var(--bg-2)] p-5">
