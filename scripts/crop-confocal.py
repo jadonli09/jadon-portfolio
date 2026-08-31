@@ -7,7 +7,7 @@ OUT = "public/img/confocal"
 # Verified by gutter detection + visual contact sheet. Panels are butted with no
 # gutters: content spans x 5-800 as three uniform 210px columns. Cells are inset
 # 1-2px so no neighbouring column or page frame bleeds in.
-ROWS = {"neg": (21, 227), "fo47": (229, 434), "t8996": (436, 641)}
+ROWS = {"neg": (21, 226), "fo47": (229, 434), "t8996": (436, 641)}
 COLS = {"bf": (171, 379), "rfp": (381, 589), "merge": (591, 799)}
 
 os.makedirs(OUT, exist_ok=True)
