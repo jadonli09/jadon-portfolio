@@ -907,7 +907,7 @@ export function PlasmidRing() {
       <div className="w-full max-w-[320px] shrink-0">
         {linear ? (
           <svg
-            viewBox={`0 0 ${W} 96`}
+            viewBox={`0 0 ${W} 104`}
             className="w-full"
             role="img"
             aria-labelledby={titleId}
@@ -916,9 +916,12 @@ export function PlasmidRing() {
               {FUS_PLASMID.name}, linearized at {FUS_PLASMID.cut.name}
             </title>
             <line x1={10} y1={48} x2={W - 10} y2={48} stroke="var(--line)" strokeWidth={10} />
-            {FUS_PLASMID.features.map((f) => {
+            {FUS_PLASMID.features.map((f, i) => {
               const x0 = 10 + (f.start / FUS_PLASMID.bp) * (W - 20);
               const x1 = 10 + (f.end / FUS_PLASMID.bp) * (W - 20);
+              // Non-reporter labels alternate between two rows (Ruling R9). All at one
+              // y overlapped: ori/lacZα and HygR/trpC collide at this viewBox width.
+              const labelY = f.kind === "reporter" ? 30 : i % 2 === 0 ? 66 : 80;
               return (
                 <g key={f.name}>
                   <line
@@ -943,7 +946,7 @@ export function PlasmidRing() {
                   />
                   <text
                     x={(x0 + x1) / 2}
-                    y={f.kind === "reporter" ? 30 : 72}
+                    y={labelY}
                     fontSize="7.5"
                     fill={KIND_COLOR[f.kind]}
                     textAnchor="middle"
