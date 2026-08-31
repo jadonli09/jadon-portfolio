@@ -22,6 +22,25 @@ export const metadata: Metadata = {
 const bySlug = (s: string) => PROJECTS.find((p) => p.slug === s)!;
 
 /**
+ * The flagship's build record — two real photographs, both already on the site
+ * (albums gallery / hero). Only AcornPrep has one, and that is the point: the
+ * extra screen height is what makes tier 1 outweigh tier 2 without a label
+ * announcing it.
+ */
+const ACORNPREP_PHOTOS = [
+  {
+    src: "/img/acornprep-cofounders.jpg",
+    alt: "Jadon Li and Pradyun Kanuparthi in AcornPrep shirts",
+    caption: "The co-founders, Jadon Li & Pradyun Kanuparthi",
+  },
+  {
+    src: "/img/acornprep-presentation-promptengineering.jpg",
+    alt: "Jadon Li presenting an AcornPrep prompt-engineering slide at a podium",
+    caption: "Presenting at the Google Gemini developer meetup",
+  },
+];
+
+/**
  * Things I've Built — World 03.
  * Server component shell. Interactive sections carry their own "use client".
  *
@@ -36,7 +55,7 @@ export default function BuiltPage() {
       <BuiltHero />
       <MissionIndex />
 
-      <Chapter project={bySlug("acornprep")} no="01">
+      <Chapter project={bySlug("acornprep")} no="01" photos={ACORNPREP_PHOTOS}>
         <AcornDemo />
       </Chapter>
 
