@@ -535,3 +535,85 @@ export const FUS_IMAGES = {
   session: { src: "/img/umass-01.jpg", alt: "Jadon walking a visitor through the RFP poster during the poster session", caption: "The poster session — walking a visitor through the board.", dims: "1279×853" },
   macrophage: { src: "/img/umass-macrophage.jpg", alt: "Time-lapse frames of a macrophage engulfing Fusarium (Schäfer et al. 2014)", caption: "Where it goes next — macrophage (red) meets Fusarium (green), 99 → 103 min (Schäfer et al. 2014).", dims: "1017×321" },
 };
+
+/* ═══════════════ author-verified additions — 2026-08-30 ═══════════════ */
+// Dictated by Jadon. FUS_WHY.peg and .protoplast correct an earlier drafting
+// pass and must not be reworded toward textbook phrasing. See the spec.
+
+/** One reasoning line per protocol step — why the step is necessary at all. */
+export const FUS_WHY: Record<"linearize" | "protoplast" | "peg" | "hygromycin", string> = {
+  linearize:
+    "Circular plasmid has no free ends and won't replicate in Fusarium. Linearizing gives the construct ends that integrate into the fungal genome.",
+  protoplast:
+    "The cell wall blocks DNA. Digesting it away leaves a bare membrane the plasmid can actually cross.",
+  peg:
+    "A cell with no wall will burst. The STC/PEG solution holds osmotic pressure and pH steady so the protoplast stays intact, while letting the DNA cross the membrane and integrate into the genome.",
+  hygromycin:
+    "Transformants are invisible — you can't pick them out by eye. HygR rides the same plasmid as mRFP, so hygromycin kills everything that didn't take the construct and the survivors are candidates.",
+};
+
+/** Why a red reporter rather than green — the constraint behind the design. */
+export const FUS_REPORTER = {
+  heading: "Why red",
+  body:
+    "The lab already had GFP-tagged macrophages, so the fungus had to take the other channel. Either assignment works as long as the two are distinguishable — the paper this builds toward does it the opposite way, macrophages red and Fusarium green. The green was already spoken for, so the fungus went red.",
+};
+
+/**
+ * The setback. Diagnosis and plan — NOT a completed remedy. Jadon's own
+ * framing was "in the next step, we probably want to use…".
+ */
+export const FUS_SETBACK = {
+  heading: "What went wrong",
+  paras: [
+    "Selection didn't come back clean. Alongside the fungal colonies the plates grew bacteria, introduced somewhere upstream. They're separable by eye — bacterial colonies are shiny, fungal ones grow fuzzy.",
+    "The obvious fix fails, and that's the interesting part. Any bacterium that picked up the plasmid also picked up its hygromycin and ampicillin resistance, so selecting harder on either one selects the contamination right along with the transformants.",
+    "The way out is an antibiotic the plasmid doesn't defend against, applied to the next round — leaving the RFP fungi and no bacteria, transformed or not.",
+  ],
+};
+
+/** What Jadon personally ran, and over what span. */
+export const BENCH = {
+  techniques: [
+    "miniprep",
+    "PCR",
+    "gel electrophoresis",
+    "restriction digest",
+    "protoplast generation",
+    "PEG-mediated transformation",
+    "antibiotic selection",
+    "confocal imaging",
+  ],
+  cadence: "Six weeks at the bench, 9 to 4 every weekday, under a PhD mentor.",
+  reading:
+    "Six papers on Fusarium as a plant and animal pathogen — and NotebookLI, a paper reader built during the program to get through them.",
+  log: FUS_LOG,
+};
+
+/** The nine cropped confocal panels, by strain row. */
+export const FUS_PANELS: Record<
+  "neg" | "fo47" | "t8996",
+  { label: string; note: string; bf: string; rfp: string; merge: string }
+> = {
+  t8996: {
+    label: "Trans. 8996",
+    note: "the transformed keratitis strain",
+    bf: "/img/confocal/t8996-bf.jpg",
+    rfp: "/img/confocal/t8996-rfp.jpg",
+    merge: "/img/confocal/t8996-merge.jpg",
+  },
+  fo47: {
+    label: "Fo47-RFP",
+    note: "positive control",
+    bf: "/img/confocal/fo47-bf.jpg",
+    rfp: "/img/confocal/fo47-rfp.jpg",
+    merge: "/img/confocal/fo47-merge.jpg",
+  },
+  neg: {
+    label: "NRRL32931",
+    note: "negative control — stays dark",
+    bf: "/img/confocal/neg-bf.jpg",
+    rfp: "/img/confocal/neg-rfp.jpg",
+    merge: "/img/confocal/neg-merge.jpg",
+  },
+};
