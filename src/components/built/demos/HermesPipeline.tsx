@@ -2,15 +2,24 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
-import { FEED, STORY_SHOT } from "@/lib/demos/hermes";
+import { FEED, WATCHED_HANDLES, RUN_STATS, STORY_SHOT } from "@/lib/demos/hermes";
 import { asset } from "@/lib/base";
 import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/cn";
 
 const STAGES = [
-  { id: 0, label: "Ingest", note: "87 club accounts, scraped" },
+  { id: 0, label: "Ingest", note: "93 accounts, one real run" },
   { id: 1, label: "Extract", note: "Claude pulls the meeting out" },
   { id: 2, label: "Publish", note: "One story, every weekday" },
+] as const;
+
+const RUN_STAT_ROWS = [
+  { value: String(RUN_STATS.clubsProcessed), label: "Clubs processed" },
+  { value: String(RUN_STATS.postsScraped), label: "Posts scraped" },
+  { value: String(RUN_STATS.newPosts), label: "New posts" },
+  { value: String(RUN_STATS.duplicatesSkipped), label: "Duplicates skipped" },
+  { value: String(RUN_STATS.extractionFailures), label: "Extraction failures" },
+  { value: `~${RUN_STATS.durationSeconds}s`, label: "Run time" },
 ] as const;
 
 export function HermesPipeline() {
@@ -59,7 +68,7 @@ export function HermesPipeline() {
 
       <div className="min-h-[26rem] border border-[var(--line)] bg-[var(--bg)] p-6">
         <AnimatePresence mode="wait">
-          {/* ── Ingest: the raw feed ── */}
+          {/* ── Ingest: the real roster + real telemetry from one run ── */}
           {stage === 0 ? (
             <motion.div
               key="ingest"
@@ -67,22 +76,31 @@ export function HermesPipeline() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.35, ease: EASE }}
-              className="flex flex-col gap-3"
             >
-              {FEED.map((f, i) => (
-                <motion.div
-                  key={f.handle}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, ease: EASE, delay: i * 0.08 }}
-                  className="border-l-2 border-[var(--line)] pl-4"
-                >
-                  <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--accent)]">
-                    {f.handle}
-                  </p>
-                  <p className="mt-1 text-sm leading-relaxed text-[var(--muted)]">{f.caption}</p>
-                </motion.div>
-              ))}
+              <div className="mb-9 grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3 md:grid-cols-6">
+                {RUN_STAT_ROWS.map((s) => (
+                  <div
+                    key={s.label}
+                    className="flex flex-col gap-1 border-l-[1.5px] border-[var(--accent)] pl-3"
+                  >
+                    <p className="mission-display text-xl text-[var(--fg)]">{s.value}</p>
+                    <p className="font-mono text-[0.55rem] uppercase tracking-widest text-[var(--muted)]">
+                      {s.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <p className="eyebrow mb-3">
+                {WATCHED_HANDLES.length} accounts polled — 2026-08-28 run
+              </p>
+              <div className="flex flex-wrap gap-x-3 gap-y-2">
+                {WATCHED_HANDLES.map((h) => (
+                  <span key={h} className="font-mono text-[0.6rem] text-[var(--muted)]">
+                    @{h}
+                  </span>
+                ))}
+              </div>
             </motion.div>
           ) : null}
 
@@ -96,19 +114,27 @@ export function HermesPipeline() {
               transition={{ duration: 0.35, ease: EASE }}
               className="flex flex-col gap-3"
             >
+              <p className="eyebrow mb-1">Hermes&apos;s own extraction test cases</p>
               {FEED.map((f, i) => (
                 <motion.div
-                  key={f.handle}
+                  key={f.caption}
                   initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.45, ease: EASE, delay: i * 0.1 }}
                   className="grid grid-cols-1 items-center gap-3 border-b border-[var(--line)] pb-3 md:grid-cols-[1fr_auto_1.2fr]"
                 >
-                  <p className="truncate text-xs text-[var(--muted)] opacity-60">{f.caption}</p>
+                  <div>
+                    <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--accent)]">
+                      {f.handle ? `@${f.handle}` : `Test case ${i + 1}`}
+                    </p>
+                    <p className="mt-1 truncate text-xs text-[var(--muted)] opacity-60">
+                      {f.caption}
+                    </p>
+                  </div>
                   <span className="hidden font-mono text-[var(--accent)] md:block">→</span>
                   {f.extracted ? (
                     <p className="font-mono text-[0.7rem] leading-relaxed text-[var(--fg)]">
-                      {f.extracted.club} · {f.extracted.room} · {f.extracted.time}
+                      {f.extracted.room} · {f.extracted.time}
                       <span className="text-[var(--muted)]"> — {f.extracted.what}</span>
                     </p>
                   ) : (

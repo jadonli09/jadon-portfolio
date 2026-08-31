@@ -1,55 +1,84 @@
 /**
- * Real MSJ club Instagram handles and caption text from the Hermes bot's own
- * source, run through Claude's actual extraction rules.
+ * Two honest, independently-verifiable pieces of Hermes evidence, kept
+ * deliberately separate:
  *
- * Provenance (the running bot does not persist scraped caption text to disk —
- * only run counts and Google Sheets rows, which this checkout has no live
- * credentials for): every handle below is a real, currently-watched account,
- * verified against Hermes's own progress.json / accounts.json. Every caption
- * is copied verbatim from Hermes's own Jest fixtures (scraper.test.js,
- * apify-scraper.test.js, ai-processor-usage.test.js) — real strings the repo
- * uses to test its own extraction logic, not written for this site. The
- * handle a caption is paired with here is sometimes a re-pairing (the
- * fixtures test extraction logic, not any specific club), always onto a real
- * account. Each `extracted` row is the deterministic output of the
- * extraction rules in ai-processor.js applied to that caption — never typed
- * up from imagination. Four records, not five: the fixture pool this repo
- * retains yields exactly four captions where every field resolves without
- * guessing (three complete extractions, one true no-meeting drop) — a
- * fifth would have meant inventing a caption or a field, so it was cut
- * rather than faked.
+ * 1. WATCHED_HANDLES + RUN_STATS — the real account roster and real
+ *    telemetry from one actual scraping run (Hermes's own progress.json /
+ *    run-log.json, run timestamped 2026-08-28). These are facts about the
+ *    system, not about any single post.
+ *
+ * 2. FEED — caption text copied verbatim from Hermes's own Jest test suite
+ *    (scraper.test.js, apify-scraper.test.js, ai-processor-usage.test.js),
+ *    run through the extraction rules documented in ai-processor.js's
+ *    prompt. The running bot does not retain real scraped caption text
+ *    anywhere on disk, and Hermes was never asked to read these accounts'
+ *    actual posts — so no caption here is attributed to a handle. `handle`
+ *    is optional and unset for every record below on purpose: it exists so
+ *    real {handle, caption} pairs can be dropped straight in later without
+ *    changing the shape, the moment real captions are available.
  */
 
-export type Extracted = { club: string; room: string; time: string; what: string };
+export type Extracted = { room: string; time: string; what: string };
 
-export type Ingested = {
-  handle: string;
+export type FeedItem = {
+  /** Only ever set once a caption is a verified real post from this account. */
+  handle?: string;
   caption: string;
   /** null when the caption carries no meeting — the filter is part of the demo. */
   extracted: Extracted | null;
 };
 
-export const FEED: Ingested[] = [
+export const FEED: FeedItem[] = [
   {
-    handle: "msjbio",
     caption: "Club meeting Tuesday at lunch in B17",
-    extracted: { club: "msjbio", room: "B17", time: "Lunch", what: "Club Meeting" },
+    extracted: { room: "B17", time: "Lunch", what: "Club Meeting" },
   },
   {
-    handle: "msjchemclub",
     caption: "Meeting Friday in room 12 at lunch",
-    extracted: { club: "msjchemclub", room: "12", time: "Lunch", what: "Club Meeting" },
+    extracted: { room: "12", time: "Lunch", what: "Club Meeting" },
   },
   {
-    handle: "msjmakes",
     caption: "See you at 3:30 in the library!",
-    extracted: { club: "msjmakes", room: "Library", time: "3:30", what: "Club Meeting" },
+    extracted: { room: "Library", time: "3:30", what: "Club Meeting" },
   },
   {
-    handle: "msjkoreanclub",
     caption: "Welcome to our club page! We are happy to have you here.",
     extracted: null,
   },
 ];
+
+/** Real accounts Hermes polled in its 2026-08-28 run — progress.json, processedClubs. */
+export const WATCHED_HANDLES: string[] = [
+  "msjkoreanclub", "msjmakes", "msj2027", "phoenixmsj", "msjleoclub", "msjmocktrial",
+  "msjphilosophy", "msj.fcsn", "msj.futurephysicians", "msjexitzine", "msjfilm",
+  "msjchemclub", "msjdatascience", "msjcivicsclub", "msjchineseculture",
+  "msjchineseinstrumentclub", "msjmathclub", "msjpolaris", "msjrelayforlife",
+  "tedxmsjhs", "msj.isa", "msj.tsa", "msjhs2029", "msjgreenclub", "msjquantum",
+  "msjneuroscience", "msjwistem", "msjgirlswhocode", "msjpaws", "msj.mun",
+  "msjmedcorps", "iknitmsjhs", "msjclubs", "msjrcc", "msj.pickleball",
+  "msjathenaproject", "msjcompsci", "msjcordance", "msjhs2028", "msjrobotics",
+  "msj.amwa", "msjenpassant", "msjseromed", "msjbeautification", "msjmissionjapan",
+  "msj.geography", "msjclimbingclub", "msjinvestmentclub", "msjphotographyclub",
+  "msjliftingclub", "universalperformers", "msj.csf", "msjphysicsclub", "msjvams",
+  "missionxanime", "msjyoungmentors", "msjnaadam_", "msjwarriors", "msjwritersblock",
+  "msj.aviation", "msjspanishsociety", "msj.vsa", "msjyouthalive", "msjstempac",
+  "msjspeechanddebate", "msjinteract", "msjbestbuddies", "msjhsnahs", "msjkeyclub",
+  "msjeagleclub", "msj.gamedev", "msj_artificialintelligence", "msjpovertypatchup",
+  "shss.missionsj", "msjhsac", "msjpsychology", "msjdeca", "msjy4c", "msjcamnesty",
+  "msjfashionforward", "msjpredictivemodeling", "msjmusicimpromptu",
+  "msjcloset4colombia", "msjbio", "msjhseconomics", "msj.gsa", "msjrocketry",
+  "msjhs_2030", "msj_msa", "msj.ce", "msjtradingcardgameclub", "msj.swenext",
+  "msj_arc",
+];
+
+/** Real telemetry from that same run — run-log.json. */
+export const RUN_STATS = {
+  clubsProcessed: 93,
+  postsScraped: 55,
+  newPosts: 6,
+  duplicatesSkipped: 14,
+  extractionFailures: 0,
+  durationSeconds: 80,
+};
 
 export const STORY_SHOT = "/embeds/hermes-story.jpg";
