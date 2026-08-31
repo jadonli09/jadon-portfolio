@@ -1,7 +1,6 @@
 import { DEG_COUNTS, PAIN_MEDIATORS, PIPELINE, PROJECT } from "../lab/content";
 import { RESEARCH } from "@/lib/data";
-// Current path — Task 13 moves this file to ../viz/ and updates this import (Ruling R2).
-import { VolcanoPlot } from "@/components/research/VolcanoPlot";
+import { VolcanoPlot } from "@/components/research/viz/VolcanoPlot";
 import { Section, P } from "./Section";
 
 export function GoutChapter() {

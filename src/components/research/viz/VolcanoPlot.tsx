@@ -143,11 +143,11 @@ export function VolcanoPlot({ className }: { className?: string }) {
 
         {/* Significance threshold lines */}
         <line x1={sx(-1.5)} y1={pTop} x2={sx(-1.5)} y2={pBottom}
-          stroke="#35e0e8" strokeWidth="0.8" strokeDasharray="5,3" opacity="0.55" />
+          stroke="var(--accent-2)" strokeWidth="0.8" strokeDasharray="5,3" opacity="0.55" />
         <line x1={sx(1.5)} y1={pTop} x2={sx(1.5)} y2={pBottom}
-          stroke="#b6ff3c" strokeWidth="0.8" strokeDasharray="5,3" opacity="0.55" />
+          stroke="var(--accent)" strokeWidth="0.8" strokeDasharray="5,3" opacity="0.55" />
         <line x1={PAD.left} y1={sy(2)} x2={PAD.left + PW} y2={sy(2)}
-          stroke="#8a94a3" strokeWidth="0.8" strokeDasharray="4,4" opacity="0.4" />
+          stroke="var(--muted)" strokeWidth="0.8" strokeDasharray="4,4" opacity="0.4" />
 
         {/* Zero vertical */}
         <line x1={sx(0)} y1={pTop} x2={sx(0)} y2={pBottom}
@@ -156,7 +156,7 @@ export function VolcanoPlot({ className }: { className?: string }) {
         {/* X tick labels */}
         {X_TICKS.map((v) => (
           <text key={`xl${v}`} x={sx(v)} y={VH - 10}
-            fill="#8a94a3" fontSize="8" textAnchor="middle" fontFamily="monospace">
+            fill="var(--muted)" fontSize="8" textAnchor="middle" fontFamily="monospace">
             {v > 0 ? `+${v}` : v}
           </text>
         ))}
@@ -164,17 +164,17 @@ export function VolcanoPlot({ className }: { className?: string }) {
         {/* Y tick labels */}
         {Y_TICKS.slice(1).map((v) => (
           <text key={`yl${v}`} x={PAD.left - 6} y={sy(v) + 3}
-            fill="#8a94a3" fontSize="8" textAnchor="end" fontFamily="monospace">
+            fill="var(--muted)" fontSize="8" textAnchor="end" fontFamily="monospace">
             {v}
           </text>
         ))}
 
         {/* Axis titles */}
-        <text x={VW / 2} y={VH - 1} fill="#8a94a3" fontSize="7.5"
+        <text x={VW / 2} y={VH - 1} fill="var(--muted)" fontSize="7.5"
           textAnchor="middle" fontFamily="monospace" letterSpacing="0.08em">
           {"log₂(fold change)"}
         </text>
-        <text x={9} y={PAD.top + PH / 2} fill="#8a94a3" fontSize="7.5"
+        <text x={9} y={PAD.top + PH / 2} fill="var(--muted)" fontSize="7.5"
           textAnchor="middle" fontFamily="monospace" letterSpacing="0.08em"
           transform={`rotate(-90, 9, ${PAD.top + PH / 2})`}>
           {"−log₁₀(p)"}
@@ -182,11 +182,11 @@ export function VolcanoPlot({ className }: { className?: string }) {
 
         {/* Region labels */}
         <text x={PAD.left + 8} y={pTop + 14}
-          fill="#35e0e8" fontSize="7" fontFamily="monospace" opacity="0.75" letterSpacing="0.12em">
+          fill="var(--accent-2)" fontSize="7" fontFamily="monospace" opacity="0.75" letterSpacing="0.12em">
           DOWN
         </text>
         <text x={PAD.left + PW - 36} y={pTop + 14}
-          fill="#b6ff3c" fontSize="7" fontFamily="monospace" opacity="0.75" letterSpacing="0.12em">
+          fill="var(--accent)" fontSize="7" fontFamily="monospace" opacity="0.75" letterSpacing="0.12em">
           UP
         </text>
 
@@ -194,7 +194,7 @@ export function VolcanoPlot({ className }: { className?: string }) {
         {POINTS.map((p, i) => {
           const cx = sx(p.x);
           const cy = sy(p.y);
-          const fill = p.dir === "up" ? "#b6ff3c" : p.dir === "down" ? "#35e0e8" : "#3a4250";
+          const fill = p.dir === "up" ? "var(--accent)" : p.dir === "down" ? "var(--accent-2)" : "#3a4250";
           const baseR = p.sig ? 3 : 2;
 
           return (
@@ -241,7 +241,7 @@ export function VolcanoPlot({ className }: { className?: string }) {
               cy={sy(match.y)}
               r={7}
               fill="none"
-              stroke={tip.dir === "up" ? "#b6ff3c" : "#35e0e8"}
+              stroke={tip.dir === "up" ? "var(--accent)" : "var(--accent-2)"}
               strokeWidth="1.2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.75 }}
@@ -273,7 +273,7 @@ export function VolcanoPlot({ className }: { className?: string }) {
             </p>
             <p
               className="font-mono text-sm font-bold leading-tight"
-              style={{ color: tip.dir === "up" ? "#b6ff3c" : "#35e0e8" }}
+              style={{ color: tip.dir === "up" ? "var(--accent)" : "var(--accent-2)" }}
             >
               {tip.label}
             </p>
