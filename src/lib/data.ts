@@ -907,6 +907,12 @@ export type Project = {
   stats: { value: string; label: string }[];
   body: string;
   stack: string[];
+  /** 1 = flagship chapter, 2 = chapter, 3 = fleet-deck panel. Drives page weight. */
+  tier: 1 | 2 | 3;
+  /** URL fragment for deep links (`/built#hermes`). Must be unique. */
+  slug: string;
+  /** Free text, only when the record actually says so. Omit rather than estimate. */
+  launched?: string;
 };
 
 export const PROJECTS: Project[] = [
@@ -924,65 +930,11 @@ export const PROJECTS: Project[] = [
       { value: "#1", label: "Google result" },
     ],
     body:
-      "Built by a 6-AP veteran for a high-stress school with no centralized study materials. AcornPrep packages AP prep into modes that fit how people actually study — unlimited MCQ practice, graded FRQ practice, flashcards, podcasts, mind maps, and study guides, with AI tutor guidance. Released to Mission San Jose on 04/11/2026; 100 users in the first 24 hours, 500+ across the season, 13,000 MCQs practiced. Endorsed by 4 AP teachers, #1 Google result, and rebuilt from scratch with Claude Code on a real dev pipeline. Pitched at Stanford's Youth Business Venture Competition (Aug 15, 2026) as a top-15 finalist of 300+ entries — the judges' verdict: strong pitch, crowded market. Next: SAT prep. Partner: Pradyun Kanuparthi.",
+      "Built by a 6-AP veteran for a high-stress school with no centralized study materials. AcornPrep packages AP prep into modes that fit how people actually study — unlimited MCQ practice, graded FRQ practice, flashcards, podcasts, study guides, tips & tricks, worked examples, and mind maps, with AI tutor guidance. Released to Mission San Jose on 04/11/2026; 100 users in the first 24 hours, 500+ across the season, 13,000 MCQs practiced. Endorsed by 4 AP teachers, #1 Google result, and rebuilt from scratch with Claude Code on a real dev pipeline. Pitched at Stanford's Youth Business Venture Competition (Aug 15, 2026) as a top-15 finalist of 300+ entries — the judges' verdict: strong pitch, crowded market. Next: SAT prep. Partner: Pradyun Kanuparthi.",
     stack: ["React", "TypeScript", "AI grading"],
-  },
-  {
-    name: "NotebookLI",
-    url: "https://notebookli.vercel.app",
-    domain: "notebookli.vercel.app",
-    embeddable: true,
-    shot: "/embeds/notebookli.jpg",
-    tagline: "Actually understand the research paper.",
-    stats: [
-      { value: "Live", label: "notebookli.vercel.app" },
-      { value: "6", label: "Papers read with it at UMass" },
-    ],
-    body:
-      "Built mid-research at UMass, when six dense Fusarium papers were the reading list. Search PubMed or upload a PDF, then read it in a structured reader: define any term in place, highlight and annotate, ask a chatbot that scrolls to the exact paragraph it cites, and fill a journal-club worksheet as you go. Named after NotebookLM — but LI. Friends in the lab used it too.",
-    stack: ["Next.js", "Claude API", "Supabase"],
-  },
-  {
-    name: "Youth STEM Journal",
-    url: "https://youthstemjournal.org",
-    domain: "youthstemjournal.org",
-    embeddable: true,
-    shot: "/embeds/youthstemjournal.jpg",
-    tagline: "Reading research, made teachable.",
-    stats: [
-      { value: "Live", label: "youthstemjournal.org" },
-      { value: "60", label: "Students · 2026 season" },
-    ],
-    body: "The home for the Youth STEM Journal Club — curriculum, literature reviews, and the program Jadon founded. 2026: 60 students, 6 cohorts, a team of 4 mentors.",
-    stack: ["Web", "Education"],
-  },
-  {
-    name: "CueSheet",
-    url: "https://cuesheet.xyz",
-    domain: "cuesheet.xyz",
-    embeddable: true,
-    shot: "/embeds/cuesheet.jpg",
-    tagline: "The right song for the cut.",
-    stats: [
-      { value: "Live", label: "cuesheet.xyz" },
-      { value: "AI", label: "Picks a song from a clip" },
-    ],
-    body: "Not a big music listener, but constantly cutting reels — for li_locked.in, the Mayor, the school — and always stuck on the soundtrack. CueSheet filters songs by mood, genre, event, location, and energy, and a Claude-powered feature picks a track from a clip or a description. It's now a fixed step in the editing pipeline.",
-    stack: ["React", "TypeScript", "Claude API"],
-  },
-  {
-    name: "MSJ Makes",
-    url: "https://msjmakes.framer.website/",
-    domain: "msjmakes.framer.website",
-    embeddable: true,
-    shot: "/embeds/msjmakes.jpg",
-    tagline: "Student merch, designed & sold.",
-    stats: [
-      { value: "~$4k", label: "Profit · all jobs" },
-      { value: "Design", label: "Operation" },
-    ],
-    body: "A student merch-design operation — concept, design, and sales — servicing clubs and sports teams campus-wide (badminton and volleyball hoodies, basketball merch, DECA minicon glass, senior stoles), with around $4,000 in profit across jobs.",
-    stack: ["Design", "Operations"],
+    tier: 1,
+    slug: "acornprep",
+    launched: "04/11/2026",
   },
   {
     name: "Hermes",
@@ -998,6 +950,27 @@ export const PROJECTS: Project[] = [
     body:
       "Eighty-seven clubs, eighty-seven Instagram feeds, and no one knows what's happening at lunch. Hermes scrapes every MSJ club account, has Claude extract the meeting — room, time, what's actually going on — and publishes a clean daily schedule story to @msjclubs every weekday. Built through junior year, live since August 2026.",
     stack: ["Node.js", "Claude API", "Google Sheets"],
+    tier: 2,
+    slug: "hermes",
+    launched: "08/2026",
+  },
+  {
+    name: "NotebookLI",
+    url: "https://notebookli.vercel.app",
+    domain: "notebookli.vercel.app",
+    embeddable: true,
+    shot: "/embeds/notebookli.jpg",
+    tagline: "Actually understand the research paper.",
+    stats: [
+      { value: "Live", label: "notebookli.vercel.app" },
+      { value: "6", label: "Papers read with it at UMass" },
+    ],
+    body:
+      "Built mid-research at UMass, when six dense Fusarium papers were the reading list. Search PubMed or upload a PDF, then read it in a structured reader: define any term in place, highlight and annotate, ask a chatbot that scrolls to the exact paragraph it cites, and fill a journal-club worksheet as you go. Named after NotebookLM — but LI. Friends in the lab used it too.",
+    stack: ["Next.js", "Claude API", "Supabase"],
+    tier: 2,
+    slug: "notebookli",
+    launched: "Summer 2026",
   },
   {
     name: "MSJHS ASB",
@@ -1013,6 +986,55 @@ export const PROJECTS: Project[] = [
     body:
       "The old ASB site was hard to navigate and the important things — forms, minutes, who to email — were buried. As ASB President he rebuilt it with Kaiwei Parks: a searchable directory of 87 clubs, every form with when you need it, approved checks and meeting minutes, the leadership roster, elections, and events. ⌘K search across all of it.",
     stack: ["Web", "Search", "ASB"],
+    tier: 3,
+    slug: "msjhs-asb",
+  },
+  {
+    name: "Youth STEM Journal",
+    url: "https://youthstemjournal.org",
+    domain: "youthstemjournal.org",
+    embeddable: true,
+    shot: "/embeds/youthstemjournal.jpg",
+    tagline: "Reading research, made teachable.",
+    stats: [
+      { value: "Live", label: "youthstemjournal.org" },
+      { value: "60", label: "Students · 2026 season" },
+    ],
+    body: "The home for the Youth STEM Journal Club — curriculum, literature reviews, and the program Jadon founded. 2026: 60 students, 6 cohorts, a team of 4 mentors.",
+    stack: ["Web", "Education"],
+    tier: 3,
+    slug: "youth-stem-journal",
+  },
+  {
+    name: "CueSheet",
+    url: "https://cuesheet.xyz",
+    domain: "cuesheet.xyz",
+    embeddable: true,
+    shot: "/embeds/cuesheet.jpg",
+    tagline: "The right song for the cut.",
+    stats: [
+      { value: "Live", label: "cuesheet.xyz" },
+      { value: "AI", label: "Picks a song from a clip" },
+    ],
+    body: "Not a big music listener, but constantly cutting reels — for li_locked.in, the Mayor, the school — and always stuck on the soundtrack. CueSheet filters songs by mood, genre, event, location, and energy, and a Claude-powered feature picks a track from a clip or a description. It's now a fixed step in the editing pipeline.",
+    stack: ["React", "TypeScript", "Claude API"],
+    tier: 3,
+    slug: "cuesheet",
+  },
+  {
+    name: "MSJ Makes",
+    url: "https://msjmakes.framer.website/",
+    domain: "msjmakes.framer.website",
+    embeddable: true,
+    shot: "/embeds/msjmakes.jpg",
+    tagline: "Student merch, designed & sold.",
+    stats: [
+      { value: "Design", label: "Operation" },
+    ],
+    body: "A student merch-design operation — concept, design, and sales — servicing clubs and sports teams campus-wide (badminton and volleyball hoodies, basketball merch, DECA minicon glass, senior stoles), with around $4,000 in profit across jobs.",
+    stack: ["Design", "Operations"],
+    tier: 3,
+    slug: "msj-makes",
   },
   {
     name: "jadonli.com",
@@ -1027,6 +1049,8 @@ export const PROJECTS: Project[] = [
     body:
       "This site. One hero that opens seven doors — the person, Locked In, the court, civic storytelling, leadership, research, and building — each with its own design language, built with Claude Code and inspiration from 21st.dev and Dribbble. Every number on it comes from the record.",
     stack: ["Next.js 16", "React 19", "Tailwind v4", "Three.js"],
+    tier: 3,
+    slug: "jadonli-com",
   },
 ];
 

@@ -191,10 +191,10 @@ export function BuiltHero() {
           <Reveal delay={0.75} className="mt-16">
             <div className="grid max-w-3xl grid-cols-2 gap-px border border-[var(--line)] bg-[var(--line)] sm:grid-cols-4">
               {[
-                { value: "05", label: "Products" },
+                { value: "08", label: "Products" },
                 { value: "500+", label: "Active users" },
                 { value: "#1", label: "Google result" },
-                { value: "~$700", label: "Revenue" },
+                { value: "~$4,000", label: "Profit" },
               ].map((s) => (
                 <div key={s.label} className="flex flex-col gap-2 bg-[var(--bg)] px-5 py-5">
                   <p className="mission-display text-3xl text-[var(--fg)]">
