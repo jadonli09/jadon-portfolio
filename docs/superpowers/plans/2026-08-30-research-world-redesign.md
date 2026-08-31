@@ -115,8 +115,11 @@ import os
 
 SRC = "public/img/umass-confocal.jpg"
 OUT = "public/img/confocal"
-ROWS = {"neg": (22, 226), "fo47": (230, 428), "t8996": (436, 640)}
-COLS = {"bf": (170, 385), "rfp": (385, 590), "merge": (590, 815)}
+# Verified by gutter detection + visual contact sheet (Ruling R5). The panels are
+# butted with no gutters: figure content spans x 5-800 as three uniform 210px
+# columns. Cells are inset 1-2px so no neighbouring column or page frame bleeds in.
+ROWS = {"neg": (21, 227), "fo47": (229, 434), "t8996": (436, 641)}
+COLS = {"bf": (171, 379), "rfp": (381, 589), "merge": (591, 799)}
 
 os.makedirs(OUT, exist_ok=True)
 im = Image.open(SRC).convert("RGB")
@@ -139,7 +142,7 @@ cd "/Users/jadonli/Downloads/Jadon Li/jadon" && python3 scripts/crop-confocal.py
 ls public/img/confocal/ | wc -l    # expect: 9
 ```
 
-Expected: nine lines of output, each `700x198` (rows are ~204px of a 215px-wide column), each well under 100 KB.
+Expected: nine lines of output, **all nine the same size, 700x690** (cells are 208x205/206). Uniform dimensions are a hard requirement — the drag-wipe overlays `bf` on `merge`, so any size difference between them misaligns the two layers. Each file well under 100 KB.
 
 - [ ] **Step 3: Verify the crops are correct, not just present**
 
@@ -690,6 +693,8 @@ Drag across Figure 2a to bring the glow up. This is the page's payoff and the fi
 - Consumes: `FUS_PANELS` (Task 2), `Photo` from `@/components/primitives/Photo`
 - Produces: `<ConfocalWipe />` — client component, no props
 
+> **Ruling R6 — the stage is near-square, not a letterbox.** The panels are 208x205, so the container uses an inline `aspectRatio: "208 / 205"`. An earlier draft said `aspect-[700/198]`, which with `object-cover` would have shown a thin horizontal slice of the hyphae.
+
 - [ ] **Step 1: Write the component**
 
 ```tsx
@@ -781,8 +786,9 @@ export function ConfocalWipe() {
           dragging.current = false;
         }}
         data-lenis-prevent
+        style={{ aspectRatio: "208 / 205" }}
         className={cn(
-          "relative aspect-[700/198] w-full cursor-ew-resize touch-none select-none overflow-hidden bg-black",
+          "relative w-full cursor-ew-resize touch-none select-none overflow-hidden bg-black",
           "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]",
         )}
       >
@@ -1145,6 +1151,19 @@ export function Section({
   );
 }
 
+/**
+ * Aspect ratio for a figure container, read from the image's own `dims`
+ * ("965\u00d7441"). Emitted as an INLINE STYLE, never a Tailwind arbitrary class:
+ * Tailwind cannot generate classes from runtime strings, so `aspect-[${x}]`
+ * silently produces nothing. (Ruling R7.)
+ */
+export function aspectFrom(dims: string): React.CSSProperties {
+  const [w, h] = dims.split(/[\u00d7x]/).map((n) => Number(n.trim()));
+  return Number.isFinite(w) && Number.isFinite(h) && h > 0
+    ? { aspectRatio: `${w} / ${h}` }
+    : { aspectRatio: "16 / 9" };
+}
+
 /** Body paragraph — one shared measure so copy never runs long. */
 export function P({ children, className }: { children: ReactNode; className?: string }) {
   return (
@@ -1473,7 +1492,7 @@ export function Protocol() {
               </div>
               {fig ? (
                 <figure className="mt-6 m-0 border border-[var(--line)]">
-                  <div className="relative aspect-[1600/574] w-full">
+                  <div className="relative w-full" style={aspectFrom(fig.dims)}>
                     <Photo src={fig.src} alt={fig.alt} />
                   </div>
                   <figcaption className="border-t border-[var(--line)] px-3 py-2 font-mono text-[0.65rem] leading-[1.5] text-[var(--muted)]">
@@ -1535,7 +1554,7 @@ git commit -m "feat(research): add the bench section and the protocol reasoning 
 import { FUS_IMAGES, FUS_RESULTS } from "../lab/content";
 import { ConfocalWipe } from "../viz/ConfocalWipe";
 import { Photo } from "@/components/primitives/Photo";
-import { Section, P } from "./Section";
+import { Section, P, aspectFrom } from "./Section";
 
 export function Evidence() {
   return (
@@ -1554,7 +1573,7 @@ export function Evidence() {
           const f = FUS_IMAGES[k];
           return (
             <figure key={k} className="m-0 border border-[var(--line)]">
-              <div className="relative aspect-[880/440] w-full bg-black">
+              <div className="relative w-full bg-black" style={aspectFrom(f.dims)}>
                 <Photo src={f.src} alt={f.alt} />
               </div>
               <figcaption className="border-t border-[var(--line)] px-3 py-2.5 font-mono text-[0.66rem] leading-[1.55] text-[var(--muted)]">
@@ -1608,7 +1627,7 @@ export function WentWrong() {
 // src/components/research/sections/WhatsNext.tsx
 import { FUS_IMAGES, FUS_RESULTS } from "../lab/content";
 import { Photo } from "@/components/primitives/Photo";
-import { Section, P } from "./Section";
+import { Section, P, aspectFrom } from "./Section";
 
 export function WhatsNext() {
   const future = FUS_RESULTS.find((r) => r.heading === "Future applications");
@@ -1617,7 +1636,7 @@ export function WhatsNext() {
     <Section id="next" kicker="Future applications" heading="Watch it get eaten.">
       {future ? <P>{future.body}</P> : null}
       <figure className="mt-8 m-0 border border-[var(--line)]">
-        <div className="relative aspect-[1017/321] w-full bg-black">
+        <div className="relative w-full bg-black" style={aspectFrom(fig.dims)}>
           <Photo src={fig.src} alt={fig.alt} />
         </div>
         <figcaption className="border-t border-[var(--line)] px-3 py-2.5 font-mono text-[0.66rem] leading-[1.55] text-[var(--muted)]">
@@ -1633,7 +1652,7 @@ export function WhatsNext() {
 // src/components/research/sections/Poster.tsx
 import { FUS, FUS_IMAGES } from "../lab/content";
 import { Photo } from "@/components/primitives/Photo";
-import { Section } from "./Section";
+import { Section, aspectFrom } from "./Section";
 
 const SHOTS = ["bench", "session", "photo"] as const;
 
@@ -1653,7 +1672,7 @@ export function Poster() {
         rel="noopener noreferrer"
         className="block border border-[var(--line)] transition-colors hover:border-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
       >
-        <div className="relative aspect-[2400/1800] w-full bg-black">
+        <div className="relative w-full bg-black" style={aspectFrom(FUS_IMAGES.poster.dims)}>
           <Photo src={FUS_IMAGES.poster.src} alt={FUS_IMAGES.poster.alt} />
         </div>
       </a>
