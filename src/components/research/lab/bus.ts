@@ -40,9 +40,3 @@ export function jumpTo(id: string) {
   if (lenis) lenis.scrollTo(el, { offset: -80, duration: 1 });
   else el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
-
-export function openMethodology() {
-  jumpTo("mod-project");
-  if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("lab:open-methodology"));
-  fireToast("opening methodology", "cyan");
-}
