@@ -5,6 +5,7 @@ import { Reveal } from "@/components/primitives/Reveal";
 import { BuiltHero } from "@/components/built/BuiltHero";
 import { MissionIndex } from "@/components/built/MissionIndex";
 import { Chapter } from "@/components/built/Chapter";
+import { FleetDeck } from "@/components/built/FleetDeck";
 import { AcornDemo } from "@/components/built/demos/AcornDemo";
 import { HermesPipeline } from "@/components/built/demos/HermesPipeline";
 import { NotebookReader } from "@/components/built/demos/NotebookReader";
@@ -55,10 +56,13 @@ export default function BuiltPage() {
         <NotebookReader />
       </Chapter>
 
-      {/* ── 6. OTHER PRODUCTS GRID ───────────────────────────── */}
+      {/* ── 6. THE REST OF THE FLEET ─────────────────────────── */}
+      <FleetDeck />
+
+      {/* ── 7. OTHER PRODUCTS GRID ───────────────────────────── */}
       <ProductsGrid />
 
-      {/* ── 7. GITHUB SHOWCASE ───────────────────────────────── */}
+      {/* ── 8. GITHUB SHOWCASE ───────────────────────────────── */}
       <section className="border-b border-[var(--line)]">
         <div className="mx-auto max-w-7xl px-5 py-20 md:px-9 md:py-28">
           {/* Section header */}
@@ -85,10 +89,10 @@ export default function BuiltPage() {
         </div>
       </section>
 
-      {/* ── 8. FLIGHT LOG ────────────────────────────────────── */}
+      {/* ── 9. FLIGHT LOG ────────────────────────────────────── */}
       <LaunchLedger />
 
-      {/* ── 9. CLOSING MANIFESTO ─────────────────────────────── */}
+      {/* ── 10. CLOSING MANIFESTO ────────────────────────────── */}
       <section className="mx-auto max-w-5xl px-5 py-20 text-center md:px-9 md:py-28">
         <Reveal>
           <p className="eyebrow mb-8">The builder&apos;s creed</p>
@@ -119,7 +123,7 @@ export default function BuiltPage() {
         </Reveal>
       </section>
 
-      {/* ── 10. FOOTER ─────────────────────────────────────────── */}
+      {/* ── 11. FOOTER ────────────────────────────────────────── */}
       <Footer />
     </World>
   );
