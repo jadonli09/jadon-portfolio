@@ -12,7 +12,7 @@ export function ConfocalWipe() {
   const [strain, setStrain] = useState<StrainKey>("t8996");
   const [pct, setPct] = useState(55);
   const stageRef = useRef<HTMLDivElement>(null);
-  const dragging = useRef(false);
+  const activePointer = useRef<number | null>(null);
   const panel = FUS_PANELS[strain];
 
   const setFromClientX = useCallback((clientX: number) => {
@@ -71,18 +71,20 @@ export function ConfocalWipe() {
         aria-valuetext={`${Math.round(pct)}% RFP merge`}
         onKeyDown={onKeyDown}
         onPointerDown={(e) => {
-          dragging.current = true;
+          if (e.button !== 0) return;
+          if (activePointer.current !== null) return;
+          activePointer.current = e.pointerId;
           e.currentTarget.setPointerCapture(e.pointerId);
           setFromClientX(e.clientX);
         }}
         onPointerMove={(e) => {
-          if (dragging.current) setFromClientX(e.clientX);
+          if (activePointer.current === e.pointerId) setFromClientX(e.clientX);
         }}
-        onPointerUp={() => {
-          dragging.current = false;
+        onPointerUp={(e) => {
+          if (activePointer.current === e.pointerId) activePointer.current = null;
         }}
-        onPointerCancel={() => {
-          dragging.current = false;
+        onPointerCancel={(e) => {
+          if (activePointer.current === e.pointerId) activePointer.current = null;
         }}
         data-lenis-prevent
         style={{ aspectRatio: "208 / 205" }}
