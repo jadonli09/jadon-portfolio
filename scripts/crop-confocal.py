@@ -4,8 +4,11 @@ import os
 
 SRC = "public/img/umass-confocal.jpg"
 OUT = "public/img/confocal"
-ROWS = {"neg": (22, 226), "fo47": (230, 428), "t8996": (436, 640)}
-COLS = {"bf": (170, 385), "rfp": (385, 590), "merge": (590, 815)}
+# Verified by gutter detection + visual contact sheet. Panels are butted with no
+# gutters: content spans x 5-800 as three uniform 210px columns. Cells are inset
+# 1-2px so no neighbouring column or page frame bleeds in.
+ROWS = {"neg": (21, 227), "fo47": (229, 434), "t8996": (436, 641)}
+COLS = {"bf": (171, 379), "rfp": (381, 589), "merge": (591, 799)}
 
 os.makedirs(OUT, exist_ok=True)
 im = Image.open(SRC).convert("RGB")
