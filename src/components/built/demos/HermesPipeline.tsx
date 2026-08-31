@@ -17,7 +17,10 @@ const STAGES = [
 ] as const;
 
 const RUN_STAT_ROWS = [
-  { value: String(RUN_STATS.clubsProcessed), label: "Clubs processed" },
+  // `clubsProcessed` is Hermes's own field name; the roster it counts is
+  // clubs plus ASB, the class accounts and sports teams, so the label reads
+  // "Accounts". msjhsasb.org's 87 counts clubs only — a different figure.
+  { value: String(RUN_STATS.clubsProcessed), label: "Accounts processed" },
   { value: String(RUN_STATS.postsScraped), label: "Posts scraped" },
   { value: String(RUN_STATS.newPosts), label: "New posts" },
   { value: String(RUN_STATS.duplicatesSkipped), label: "Duplicates skipped" },
@@ -99,7 +102,7 @@ export function HermesPipeline() {
               </div>
 
               {/* Labels the handle list underneath; the count is the
-                  "Clubs processed" tile above and is not repeated here. */}
+                  "Accounts processed" tile above and is not repeated here. */}
               <p className="eyebrow mb-3">Accounts polled — 2026-08-28 run</p>
               <div className="flex flex-wrap gap-x-3 gap-y-2">
                 {WATCHED_HANDLES.map((h) => (
@@ -183,7 +186,7 @@ export function HermesPipeline() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={asset(STORY_SHOT)}
-                alt="A Hermes daily club-schedule story as posted to @msjclubs"
+                alt="A Hermes daily schedule story as posted to @msjclubs"
                 loading="lazy"
                 decoding="async"
                 className="max-h-[24rem] w-auto border border-[var(--line)]"
