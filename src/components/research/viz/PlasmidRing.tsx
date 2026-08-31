@@ -20,10 +20,19 @@ const TAU = Math.PI * 2;
 
 const ang = (bp: number) => (bp / FUS_PLASMID.bp) * TAU - Math.PI / 2;
 
+// Linear-view x position, anchored at the Psp-OMI cut rather than at bp 0. A
+// plasmid cut at `cut.pos` runs cut.pos -> bp (wrap) -> 0 -> cut.pos, so the
+// cut becomes BOTH ends of the linear track, not the origin.
+const rel = (bp: number) =>
+  ((bp - FUS_PLASMID.cut.pos + FUS_PLASMID.bp) % FUS_PLASMID.bp) / FUS_PLASMID.bp;
+
 // Linear-view label row (0/1) for non-reporter features, alternated by rank in
 // start-bp order rather than by declaration order in FUS_PLASMID.features —
-// the declared array isn't sorted by start, so indexing off it directly still
-// left "ori" and "lacZα (fragment)" sharing a row and colliding.
+// the declared array isn't sorted by start, so indexing off it directly left
+// "ori" and "lacZα (fragment)" sharing a row and colliding. Sorting by raw
+// `start` still matches left-to-right order after cut-anchoring, because
+// every feature sits entirely on one side of the cut (none straddle it), so
+// the anchoring shift is a single monotonic translation.
 const LABEL_ROW: Record<string, number> = {};
 FUS_PLASMID.features
   .filter((f) => f.kind !== "reporter")
@@ -32,6 +41,12 @@ FUS_PLASMID.features
   .forEach((f, i) => {
     LABEL_ROW[f.name] = i % 2;
   });
+
+// Linear-view render order, left to right by cut-anchored position, so DOM
+// order (and therefore Tab order, at tabIndex=0) matches the visual reading
+// order of the track. The circular view keeps declaration order — there is
+// no single "correct" reading order around a closed loop.
+const LINEAR_ORDER: Feature[] = [...FUS_PLASMID.features].sort((a, b) => a.start - b.start);
 
 function arcPath(cx: number, cy: number, r: number, a0: number, a1: number) {
   const x0 = cx + r * Math.cos(a0);
@@ -42,11 +57,29 @@ function arcPath(cx: number, cy: number, r: number, a0: number, a1: number) {
   return `M ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1}`;
 }
 
+// A permanent, at-rest emphasis for the reporter gene, PLUS a further,
+// visibly distinct bump on hover/focus that applies to every feature
+// (including the reporter) — so mRFP at rest is not visually identical to
+// mRFP focused.
+const BASE_WIDTH: Record<Feature["kind"], number> = { reporter: 12, marker: 10, backbone: 10 };
+const ACTIVE_WIDTH_BONUS = 4;
+const REST_GLOW_PX = 4;
+const ACTIVE_GLOW_PX = 9;
+
+function featureVisual(f: Feature, active: boolean) {
+  const strokeWidth = BASE_WIDTH[f.kind] + (active ? ACTIVE_WIDTH_BONUS : 0);
+  const glow = active ? ACTIVE_GLOW_PX : f.kind === "reporter" ? REST_GLOW_PX : 0;
+  const filter = glow > 0 ? `drop-shadow(0 0 ${glow}px ${KIND_COLOR[f.kind]})` : undefined;
+  return { strokeWidth, filter };
+}
+
 export function PlasmidRing() {
   const [hovered, setHovered] = useState<Feature | null>(null);
+  const [focused, setFocused] = useState<Feature | null>(null);
   const [linear, setLinear] = useState(false);
   const titleId = useId();
-  const shown = hovered ?? FUS_PLASMID.features[0];
+  const active = focused ?? hovered;
+  const shown = active ?? FUS_PLASMID.features[0];
   const cutA = ang(FUS_PLASMID.cut.pos);
 
   return (
@@ -63,9 +96,11 @@ export function PlasmidRing() {
               {FUS_PLASMID.name}, linearized at {FUS_PLASMID.cut.name}
             </title>
             <line x1={10} y1={48} x2={W - 10} y2={48} stroke="var(--line)" strokeWidth={10} />
-            {FUS_PLASMID.features.map((f) => {
-              const x0 = 10 + (f.start / FUS_PLASMID.bp) * (W - 20);
-              const x1 = 10 + (f.end / FUS_PLASMID.bp) * (W - 20);
+            {LINEAR_ORDER.map((f) => {
+              const x0 = 10 + rel(f.start) * (W - 20);
+              const x1 = 10 + rel(f.end) * (W - 20);
+              const on = active?.name === f.name;
+              const { strokeWidth, filter } = featureVisual(f, on);
               // Non-reporter labels alternate between two rows. All at one y overlapped:
               // ori/lacZα and HygR/trpC collide at this viewBox width.
               const labelY = f.kind === "reporter" ? 30 : LABEL_ROW[f.name] === 0 ? 66 : 80;
@@ -77,19 +112,13 @@ export function PlasmidRing() {
                     x2={x1}
                     y2={48}
                     stroke={KIND_COLOR[f.kind]}
-                    strokeWidth={f.kind === "reporter" || hovered?.name === f.name ? 13 : 10}
+                    strokeWidth={strokeWidth}
                     onMouseEnter={() => setHovered(f)}
                     onMouseLeave={() => setHovered(null)}
-                    onFocus={() => setHovered(f)}
-                    onBlur={() => setHovered(null)}
+                    onFocus={() => setFocused(f)}
+                    onBlur={() => setFocused(null)}
                     tabIndex={0}
-                    style={{
-                      cursor: "pointer",
-                      filter:
-                        f.kind === "reporter" || hovered?.name === f.name
-                          ? `drop-shadow(0 0 6px ${KIND_COLOR[f.kind]})`
-                          : undefined,
-                    }}
+                    style={{ cursor: "pointer", filter }}
                   />
                   <text
                     x={(x0 + x1) / 2}
@@ -104,6 +133,15 @@ export function PlasmidRing() {
                 </g>
               );
             })}
+            {/* the cut is both ends of the linear molecule — mark it at each edge */}
+            <line x1={10} y1={38} x2={10} y2={58} stroke="var(--hot)" strokeWidth={2} />
+            <line x1={W - 10} y1={38} x2={W - 10} y2={58} stroke="var(--hot)" strokeWidth={2} />
+            <text x={2} y={14} fontSize="6.5" fill="var(--hot)" textAnchor="start" fontFamily="monospace">
+              {FUS_PLASMID.cut.name}
+            </text>
+            <text x={W - 2} y={14} fontSize="6.5" fill="var(--hot)" textAnchor="end" fontFamily="monospace">
+              {FUS_PLASMID.cut.name}
+            </text>
           </svg>
         ) : (
           <svg viewBox={`0 0 ${W} ${W}`} className="w-full" role="img" aria-labelledby={titleId}>
@@ -141,26 +179,21 @@ export function PlasmidRing() {
               const a0 = ang(f.start);
               const a1 = ang(f.end);
               const mid = (a0 + a1) / 2;
-              const on = hovered?.name === f.name;
+              const on = active?.name === f.name;
+              const { strokeWidth, filter } = featureVisual(f, on);
               return (
                 <g key={f.name}>
                   <path
                     d={arcPath(CX, CY, R, a0, a1)}
                     fill="none"
                     stroke={KIND_COLOR[f.kind]}
-                    strokeWidth={f.kind === "reporter" || on ? 13 : 10}
+                    strokeWidth={strokeWidth}
                     tabIndex={0}
                     onMouseEnter={() => setHovered(f)}
                     onMouseLeave={() => setHovered(null)}
-                    onFocus={() => setHovered(f)}
-                    onBlur={() => setHovered(null)}
-                    style={{
-                      cursor: "pointer",
-                      filter:
-                        f.kind === "reporter" || on
-                          ? `drop-shadow(0 0 6px ${KIND_COLOR[f.kind]})`
-                          : undefined,
-                    }}
+                    onFocus={() => setFocused(f)}
+                    onBlur={() => setFocused(null)}
+                    style={{ cursor: "pointer", filter }}
                   />
                   <text
                     x={CX + (R - 30) * Math.cos(mid)}
