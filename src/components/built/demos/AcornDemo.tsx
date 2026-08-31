@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Check, X } from "lucide-react";
-import { MCQS, FRQ, type DemoMcq, type RubricItem } from "@/lib/demos/acornprep";
+import { MCQS, FRQ, CARDS, type DemoMcq, type RubricItem } from "@/lib/demos/acornprep";
 import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/cn";
 
@@ -163,9 +163,92 @@ function Grade() {
   );
 }
 
-// Temporary wiring for this task only — Task 8 replaces this with a real
-// Practice/Grade/Review switcher. `Practice` stays intact (though currently
-// unreferenced) for that task to wire back in.
+function Review() {
+  const [i, setI] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const card = CARDS[i % CARDS.length];
+
+  return (
+    <div data-demo="acorn-review" className="flex flex-col items-center gap-6">
+      <button
+        type="button"
+        onClick={() => setFlipped((f) => !f)}
+        data-cursor-hover
+        className="flex min-h-[14rem] w-full max-w-2xl items-center justify-center border border-[var(--line)] bg-[var(--bg)] px-8 py-10 text-center transition-colors hover:border-[var(--accent)]"
+      >
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={`${i}-${flipped}`}
+            initial={{ opacity: 0, rotateX: -35 }}
+            animate={{ opacity: 1, rotateX: 0 }}
+            exit={{ opacity: 0, rotateX: 35 }}
+            transition={{ duration: 0.35, ease: EASE }}
+            className="text-base leading-relaxed text-[var(--fg)]"
+          >
+            {flipped ? card.back : card.front}
+          </motion.span>
+        </AnimatePresence>
+      </button>
+
+      <div className="flex items-center gap-6 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-[var(--muted)]">
+        <span>{flipped ? "Back" : "Front"} · click to flip</span>
+        <button
+          type="button"
+          data-cursor-hover
+          onClick={() => {
+            setFlipped(false);
+            setI((n) => n + 1);
+          }}
+          className="text-[var(--fg)] transition-opacity hover:opacity-70"
+        >
+          Next card →
+        </button>
+      </div>
+    </div>
+  );
+}
+
+const FACES = [
+  { id: "practice", label: "Practice", note: "Answer one" },
+  { id: "grade", label: "Grade", note: "Watch it mark an FRQ" },
+  { id: "review", label: "Review", note: "Flip a card" },
+] as const;
+
 export function AcornDemo() {
-  return <Grade />;
+  const [face, setFace] = useState<(typeof FACES)[number]["id"]>("practice");
+  const [i, setI] = useState(0);
+
+  return (
+    <div>
+      <div className="mb-8 flex flex-wrap items-center gap-2">
+        {FACES.map((f) => (
+          <button
+            key={f.id}
+            type="button"
+            data-demo-face={f.id}
+            aria-pressed={face === f.id}
+            onClick={() => setFace(f.id)}
+            data-cursor-hover
+            className={cn(
+              "border px-4 py-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] transition-colors",
+              face === f.id
+                ? "border-[var(--accent)] text-[var(--accent)]"
+                : "border-[var(--line)] text-[var(--muted)] hover:border-[var(--fg)] hover:text-[var(--fg)]",
+            )}
+          >
+            {f.label}
+          </button>
+        ))}
+        <span className="ml-2 font-mono text-[0.65rem] text-[var(--muted)]">
+          {FACES.find((f) => f.id === face)!.note}
+        </span>
+      </div>
+
+      {face === "practice" ? (
+        <Practice q={MCQS[i % MCQS.length]} onNext={() => setI((n) => n + 1)} />
+      ) : null}
+      {face === "grade" ? <Grade /> : null}
+      {face === "review" ? <Review /> : null}
+    </div>
+  );
 }

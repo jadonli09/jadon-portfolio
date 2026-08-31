@@ -363,3 +363,24 @@ export const FRQ: DemoFrq = {
     },
   ],
 };
+
+export type DemoCard = { front: string; back: string };
+
+/**
+ * Real cards from the AcornPrep AP US History deck, captured verbatim on
+ * 2026-08-30 — do not invent cards.
+ */
+export const CARDS: DemoCard[] = [
+  {
+    front: "What was the Columbian Exchange?",
+    back: "The transatlantic transfer of plants, animals, diseases, and people between the Old World and New World after 1492.\n\nCrops: maize and potatoes went east; wheat and horses went west\nDiseases (smallpox, measles) devastated indigenous populations",
+  },
+  {
+    front: "How did maize cultivation transform Native American societies?",
+    back: "Maize enabled surplus agriculture, which led to:\n\nSedentary settlements and population growth\nDevelopment of complex societies (e.g., Mississippian, Pueblo)\nSocial hierarchies and specialized labor",
+  },
+  {
+    front: "What was the encomienda system?",
+    back: "A Spanish labor system granting colonists the right to demand tribute and forced labor from indigenous peoples.\n\nJustified by claims of Christianization\nLed to widespread exploitation and population decline\nEventually supplemented by African slave labor",
+  },
+];
