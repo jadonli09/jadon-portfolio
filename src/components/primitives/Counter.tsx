@@ -3,7 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { animate, useInView } from "motion/react";
 
-/** Animated number counter that runs once when scrolled into view. */
+/**
+ * Animated number counter that runs once when scrolled into view.
+ *
+ * Renders `to` on the server and on first paint so the exported HTML always
+ * carries the real figure — a crawler or a JS-disabled reader must never see 0.
+ * The reset-to-zero happens 200px before the element is visible (see the
+ * `margin` below), so the drop is never on screen.
+ */
 export function Counter({
   to,
   suffix = "",
@@ -21,8 +28,9 @@ export function Counter({
   className?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-15% 0px" });
-  const [val, setVal] = useState(0);
+  // Trigger while still below the fold so the 0-reset is off screen.
+  const inView = useInView(ref, { once: true, margin: "200px" });
+  const [val, setVal] = useState(to);
 
   useEffect(() => {
     if (!inView) return;
