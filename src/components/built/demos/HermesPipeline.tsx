@@ -9,7 +9,7 @@ import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/cn";
 
 const STAGES = [
-  { id: 0, label: "Ingest", note: "93 accounts, one real run" },
+  { id: 0, label: "Ingest", note: "55 posts scraped, 6 new" },
   { id: 1, label: "Extract", note: "Claude pulls the meeting out" },
   { id: 2, label: "Publish", note: "One story, every weekday" },
 ] as const;
@@ -97,7 +97,7 @@ export function HermesPipeline() {
               </div>
 
               <p className="eyebrow mb-3">
-                {WATCHED_HANDLES.length} accounts polled — 2026-08-28 run
+                Results: {RUN_STATS.postsScraped} posts, {RUN_STATS.newPosts} new — 2026-08-28
               </p>
               <div className="flex flex-wrap gap-x-3 gap-y-2">
                 {WATCHED_HANDLES.map((h) => (
