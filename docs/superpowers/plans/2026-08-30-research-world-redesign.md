@@ -32,6 +32,8 @@ Plus a scripted browser assertion where a task has runtime behaviour, using the 
 
 **Lenis.** The site uses Lenis smooth scroll globally. Native `scrollIntoView` is ignored; navigate via `jumpTo(id)` from `@/components/research/lab/bus.ts`. Any inner scroll container or drag surface needs `data-lenis-prevent` or Lenis swallows wheel and touch events.
 
+**Fonts.** `layout.tsx` wires six font variables onto `<html>` and `globals.css` maps them in `@theme`: `font-serif` → Instrument Serif, `font-display` → Fraunces, `font-mono` → JetBrains Mono. **Use those utilities**, never the arbitrary `font-[family-name:var(--font-instrument)]` form (Ruling R3).
+
 **Images.** `next.config.ts` sets `images.unoptimized` for static export. Use the existing `Photo` primitive (`@/components/primitives/Photo`), which wraps a plain `<img>` with `asset()` base-path handling. Never import `next/image`.
 
 **Facts are not retyped.** No research number, band size, concentration, temperature, or caption may be written into JSX as a literal. Every one comes from `content.ts` or `data.ts`. If a fact is missing, stop and ask — do not invent it.
@@ -346,7 +348,11 @@ The block at former line ~112 sets a cyan/lime radial wash. Replace its `backgro
 
 - [ ] **Step 3: Delete the now-redundant `:root.rfp` block**
 
-The `:root.rfp [data-world="research"]` block (former lines 96–107) duplicated what is now the default. Delete it **and** delete `setRfp` from `src/components/research/lab/bus.ts` along with its call sites — the branch it served no longer exists. Keep `:root.mutate` (the easter egg) but retarget it so it still visibly differs from the new default:
+The `:root.rfp [data-world="research"]` block (former lines 96–107) duplicated what is now the default. Delete **the CSS block only**.
+
+> **Ruling R1 — do NOT touch `setRfp` in this task.** `ResearchIDE.tsx` holds five call sites and is not deleted until Task 13, so removing the export here breaks this task's own typecheck. `setRfp` becomes a harmless no-op the moment its CSS rule is gone; Task 13 deletes it in the same commit that removes ResearchIDE.
+
+Keep `:root.mutate` (the easter egg) but retarget it so it still visibly differs from the new default:
 
 ```css
 :root.mutate [data-world="research"] {
@@ -361,15 +367,15 @@ The `:root.rfp [data-world="research"]` block (former lines 96–107) duplicated
 
 ```bash
 npx tsc --noEmit
-grep -rn "setRfp\|root.rfp\|classList.*\"rfp\"" src/ || echo "clean — no references remain"
+grep -n "root.rfp" src/app/globals.css || echo "CSS block removed"
 ```
 
-Expected: typecheck passes; grep prints `clean`.
+Expected: typecheck passes; `CSS block removed`. `setRfp` still exists in `bus.ts` and is still called by `ResearchIDE` — that is correct at this point, per Ruling R1.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/app/globals.css src/components/research/lab/bus.ts
+git add src/app/globals.css
 git commit -m "feat(research): promote the RFP colourway to default, scope accent per chapter"
 ```
 
@@ -1128,7 +1134,7 @@ export function Section({
         ) : null}
         {heading ? (
           <Reveal>
-            <h2 className="mb-6 max-w-[18ch] font-[family-name:var(--font-instrument)] text-[clamp(1.9rem,4vw,3.1rem)] leading-[1.06] text-balance">
+            <h2 className="mb-6 max-w-[18ch] font-serif text-[clamp(1.9rem,4vw,3.1rem)] leading-[1.06] text-balance">
               {heading}
             </h2>
           </Reveal>
@@ -1183,7 +1189,7 @@ export function Hero() {
           </span>
           <span>{FUS.affiliations.split(" · ")[1] ?? "UMass Amherst"}</span>
         </p>
-        <h1 className="mb-7 font-[family-name:var(--font-instrument)] text-[clamp(3rem,10vw,8rem)] leading-[0.92] tracking-[-0.02em] text-balance">
+        <h1 className="mb-7 font-serif text-[clamp(3rem,10vw,8rem)] leading-[0.92] tracking-[-0.02em] text-balance">
           We made the fungus{" "}
           <em className="not-italic text-[var(--accent)] [text-shadow:0_0_42px_rgba(255,61,94,0.55),0_0_90px_rgba(255,61,94,0.28)]">
             glow.
@@ -1443,7 +1449,7 @@ export function Protocol() {
           return (
             <li key={s.step} className="bg-[var(--bg-2)] p-6 sm:p-8">
               <div className="flex flex-col gap-6 sm:flex-row">
-                <p className="shrink-0 font-[family-name:var(--font-instrument)] text-[2.4rem] leading-none text-[var(--accent)] sm:w-16">
+                <p className="shrink-0 font-serif text-[2.4rem] leading-none text-[var(--accent)] sm:w-16">
                   {s.n}
                 </p>
                 <div className="min-w-0 flex-1">
@@ -1707,8 +1713,8 @@ Four anchored sub-sections in one file, wrapped in `data-chapter="gout"` so the 
 **Framing matters here.** This is not "earlier, smaller work" — it is the dry-lab counterpart that proves independent analysis, where UMass proves bench competence. **Accuracy guard:** the landing copy says Jadon was *"trained in R by a Stanford professor,"* so the claim is *trained, then ran the analysis independently* — never "self-taught."
 
 **Files:**
-- Move: `src/components/research/VolcanoPlot.tsx` → `src/components/research/viz/VolcanoPlot.tsx`
 - Create: `src/components/research/sections/GoutChapter.tsx`
+- Read only: `src/components/research/VolcanoPlot.tsx` (moved in Task 13, not here — Ruling R2)
 
 **Interfaces:**
 - Consumes: `PROJECT`, `PIPELINE`, `DEG_COUNTS`, `PAIN_MEDIATORS` from `../lab/content`; `RESEARCH` from `@/lib/data`; `VolcanoPlot` (signature `({ className }: { className?: string })`); `Section`, `P`
@@ -1719,15 +1725,15 @@ connects the two projects rather than merely separating them. It sits at the
 top of the chapter, above the first section, inside the `data-chapter` wrapper
 so the accent has already turned.
 
-- [ ] **Step 1: Move the volcano plot**
+- [ ] **Step 1: Leave the volcano plot where it is**
+
+> **Ruling R2 — do NOT `git mv` VolcanoPlot in this task.** `ResearchIDE.tsx:6` imports it from `@/components/research/VolcanoPlot` and is not deleted until Task 13, so moving it now breaks this task's typecheck. Import the **current** path here; Task 13 performs the move and updates this one import in the same commit as the deletions.
 
 ```bash
-mkdir -p src/components/research/viz
-git mv src/components/research/VolcanoPlot.tsx src/components/research/viz/VolcanoPlot.tsx
-grep -rn "research/VolcanoPlot" src/ || echo "no stale imports"
+grep -n "VolcanoPlot" src/components/research/lab/ResearchIDE.tsx
 ```
 
-Expected: `no stale imports` — only the soon-to-be-deleted `ResearchIDE` referenced it, and Task 13 removes that file. The component reads its own data from `content.ts`, so no prop changes are needed.
+Expected: two hits (an import and a usage) — confirming why the move is deferred. The component reads its own data from `content.ts`, so no prop changes are needed.
 
 - [ ] **Step 2: Write the chapter**
 
@@ -1735,7 +1741,8 @@ Expected: `no stale imports` — only the soon-to-be-deleted `ResearchIDE` refer
 // src/components/research/sections/GoutChapter.tsx
 import { DEG_COUNTS, PAIN_MEDIATORS, PIPELINE, PROJECT } from "../lab/content";
 import { RESEARCH } from "@/lib/data";
-import { VolcanoPlot } from "../viz/VolcanoPlot";
+// Current path — Task 13 moves this file to ../viz/ and updates this import (Ruling R2).
+import { VolcanoPlot } from "@/components/research/VolcanoPlot";
 import { Section, P } from "./Section";
 
 export function GoutChapter() {
@@ -1821,7 +1828,7 @@ export function GoutChapter() {
 
 ```bash
 npx tsc --noEmit
-npx eslint src/components/research/sections/GoutChapter.tsx src/components/research/viz/VolcanoPlot.tsx
+npx eslint src/components/research/sections/GoutChapter.tsx
 grep -n 'data-chapter="gout"' src/app/globals.css src/components/research/sections/GoutChapter.tsx
 ```
 
@@ -1830,7 +1837,7 @@ Expected: both files clean, and `data-chapter="gout"` appears in **both** the CS
 - [ ] **Step 4: Commit**
 
 ```bash
-git add src/components/research/sections/GoutChapter.tsx src/components/research/viz/VolcanoPlot.tsx
+git add src/components/research/sections/GoutChapter.tsx
 git commit -m "feat(research): add the gout chapter with re-scoped accent"
 ```
 
@@ -2375,9 +2382,10 @@ Expected: starts at `55`, becomes `59` after two right presses (2 each), then `1
 B=~/.claude/skills/gstack/browse/dist/browse
 $B eval 'getComputedStyle(document.getElementById("strains")).getPropertyValue("--accent").trim()'
 $B eval 'getComputedStyle(document.getElementById("volcano")).getPropertyValue("--accent").trim()'
+$B eval 'getComputedStyle(document.getElementById("programs")).getPropertyValue("--bg").trim()'
 ```
 
-Expected: `#ff3d5e` then `#bcff46`. If both return crimson, the `[data-chapter="gout"]` wrapper is not wrapping — check Task 10 Step 3.
+Expected: `#ff3d5e`, then `#bcff46`, then `#0b0e13`. If the first two match, the `[data-chapter="gout"]` wrapper is not wrapping — check Task 10 Step 3. The third assertion covers the `beyond` scope, which no other task verifies (Ruling R4).
 
 - [ ] **Step 5: Verify the console navigates rather than renders**
 
