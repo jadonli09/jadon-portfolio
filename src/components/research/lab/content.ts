@@ -227,18 +227,6 @@ export const PROGRAMS: Program[] = [
   },
 ];
 
-// ASCII-meter scorecards rendered under each award's JSON (terminal graphics)
-export const AWARD_VIZ: Record<string, { label: string; frac: number; caption: string }[]> = {
-  bbo: [
-    { label: "intl field", frac: 0.9, caption: "top 10%" },
-    { label: "medal", frac: 0.66, caption: "SILVER" },
-  ],
-  acsef: [
-    { label: "placement", frac: 0.78, caption: "3rd place" },
-    { label: "category", frac: 1, caption: "BCOM · comp-bio" },
-  ],
-};
-
 // ASCII medal art shown under usabo.json (instead of a score bar)
 export const USABO_MEDAL = [
   "      .-~~-.",
@@ -257,13 +245,6 @@ export const USABO_MEDAL_INFO: [string, string][] = [
   ["exam", "USABO Open Exam"],
   ["score", "26 / 50 · cutoff 28"],
   ["rank", "top ~15% national"],
-];
-
-// standing-across-competitions bars for stats.json
-export const STAT_BARS = [
-  { label: "USABO", frac: 0.85, caption: "top ~15% national" },
-  { label: "UK BBO", frac: 0.9, caption: "Silver · top 10% intl" },
-  { label: "ACSEF", frac: 0.78, caption: "3rd · BCOM" },
 ];
 
 export const STATS = {
@@ -306,47 +287,6 @@ export const RESULTS: { heading: string; body: string }[] = [
     body: "3rd place, Computational Biology (BCOM), ACSEF 2025. Future directions: CRISPR-based gene editing, monoclonal antibody therapy, and selective EP-receptor antagonists in sensory neurons.",
   },
 ];
-
-// GO enrichment themes (pathways.tsv) — real categories from the poster (Results 3–6)
-export const PATHWAYS: { pathway: string; nes: number; dir: "up" | "down"; source: string }[] = [
-  { pathway: "Leukocyte migration", nes: 2.4, dir: "up", source: "Result 4" },
-  { pathway: "Acute inflammatory response", nes: 2.3, dir: "up", source: "Result 5" },
-  { pathway: "Cell chemotaxis", nes: 2.2, dir: "up", source: "Result 4" },
-  { pathway: "Positive regulation of reactive oxygen species", nes: 2.0, dir: "up", source: "Result 5" },
-  { pathway: "Intracellular pain-related pathways", nes: 1.9, dir: "up", source: "Result 6" },
-  { pathway: "Immune cell activation & migration", nes: 1.8, dir: "up", source: "Discussion" },
-];
-
-// expression heatmap (z-scores): pain mediators × tissue/treatment.
-// real genes + tissues from Result 6; z-scores illustrative of the MSU up-regulation.
-export const HEATMAP = {
-  samples: ["joint·PBS", "joint·MSU", "DRG·PBS", "DRG·MSU", "spine·PBS", "spine·MSU"],
-  rows: [
-    { gene: "Ccl9", z: [-1.0, 2.0, -0.9, 1.7, -0.8, 1.2] },
-    { gene: "Ngf", z: [-0.9, 1.8, -0.8, 1.6, -0.7, 1.1] },
-    { gene: "Ptgs2", z: [-1.0, 1.9, -0.9, 1.5, -0.8, 1.0] },
-    { gene: "Il1b", z: [-0.8, 1.7, -0.7, 1.4, -0.6, 1.0] },
-    { gene: "Hdc", z: [-0.7, 1.5, -0.7, 1.3, -0.6, 0.9] },
-    { gene: "Mmp8", z: [-0.9, 1.6, -0.8, 1.2, -0.6, 0.8] },
-    { gene: "Il1r1", z: [-0.6, 1.3, -0.6, 1.1, -0.5, 0.8] },
-    { gene: "Syk", z: [-0.5, 1.2, -0.5, 1.0, -0.5, 0.7] },
-    { gene: "Mertk", z: [-0.5, 1.1, -0.5, 0.9, -0.4, 0.7] },
-  ],
-};
-
-// PCA — PBS vs MSU separation (mirrors poster Result 1C); x = PC1, y = PC2 in 0..100
-export const PCA = {
-  groups: [
-    { id: "PBS (control)", color: "#4fe6ee" },
-    { id: "MSU (gout)", color: "#bcff46" },
-  ],
-  points: [
-    { x: 20, y: 55, g: 0 }, { x: 26, y: 47, g: 0 }, { x: 17, y: 62, g: 0 },
-    { x: 24, y: 39, g: 0 }, { x: 14, y: 50, g: 0 }, { x: 29, y: 58, g: 0 },
-    { x: 74, y: 52, g: 1 }, { x: 81, y: 60, g: 1 }, { x: 78, y: 43, g: 1 },
-    { x: 71, y: 64, g: 1 }, { x: 85, y: 49, g: 1 }, { x: 76, y: 37, g: 1 },
-  ],
-};
 
 export const CITATION = `@misc{li2025gout,
   author   = {Li, Jadon},

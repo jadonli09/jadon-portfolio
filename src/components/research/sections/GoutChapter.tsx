@@ -76,6 +76,14 @@ export function GoutChapter() {
           The pain signal is not confined to the inflamed joint — it also shows up in the dorsal root
           ganglia and the spinal cord, which is what makes these targets interesting.
         </P>
+        <figure className="m-0 mt-8 border border-[var(--line)]">
+          <div className="relative w-full bg-black" style={aspectFrom(IMAGES.painHeatmap.dims)}>
+            <Photo src={IMAGES.painHeatmap.src} alt={IMAGES.painHeatmap.alt} />
+          </div>
+          <figcaption className="border-t border-[var(--line)] px-3 py-2.5 font-mono text-[0.66rem] leading-[1.55] text-[var(--muted)]">
+            {IMAGES.painHeatmap.caption}
+          </figcaption>
+        </figure>
         <ul className="mt-8 grid list-none gap-px bg-[var(--line)] p-0 sm:grid-cols-3">
           {PAIN_MEDIATORS.map((m) => (
             <li key={m.gene} className="bg-[var(--bg-2)] p-4">
