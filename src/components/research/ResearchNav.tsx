@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ALL_SECTIONS, GROUPS, type SectionId } from "./sections";
 import { jumpTo } from "./lab/bus";
 import { cn } from "@/lib/cn";
@@ -9,6 +9,8 @@ export function ResearchNav() {
   const [active, setActive] = useState<SectionId>(ALL_SECTIONS[0].id);
   const [openGroup, setOpenGroup] = useState<string>(GROUPS[0].id);
   const [sheet, setSheet] = useState(false);
+  const sheetTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const sheetCloseRef = useRef<HTMLButtonElement | null>(null);
 
   // Active section — the entry whose heading most recently crossed the top third.
   useEffect(() => {
@@ -34,11 +36,70 @@ export function ResearchNav() {
     return () => io.disconnect();
   }, []);
 
+  // Floor/ceiling fallback — the observer only fires on intersection CHANGES,
+  // so if the last heading never enters the "-12%/-70%" band (not enough
+  // scroll room below it), `active` freezes on the second-to-last section
+  // forever. A throttled scroll listener forces the last entry once we're
+  // pinned to the bottom, and the first entry once we're pinned to the top.
+  // The observer stays the primary mechanism; this only covers the two ends.
+  useEffect(() => {
+    const first = ALL_SECTIONS[0];
+    const last = ALL_SECTIONS[ALL_SECTIONS.length - 1];
+    const firstGroupId = GROUPS[0].id;
+    const lastGroupId = GROUPS.find((g) => g.sections.some((s) => s.id === last.id))?.id;
+    let rafId: number | null = null;
+
+    function apply() {
+      rafId = null;
+      const doc = document.documentElement;
+      const nearBottom = window.scrollY + window.innerHeight >= doc.scrollHeight - 120;
+      const nearTop = window.scrollY <= 8;
+      if (nearBottom) {
+        setActive(last.id);
+        if (lastGroupId) setOpenGroup(lastGroupId);
+      } else if (nearTop) {
+        setActive(first.id);
+        setOpenGroup(firstGroupId);
+      }
+    }
+
+    function onScroll() {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(apply);
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  // Mobile sheet: Escape closes it, focus moves in on open and returns to
+  // the button that opened it on close.
+  useEffect(() => {
+    if (!sheet) return;
+    sheetCloseRef.current?.focus();
+    const trigger = sheetTriggerRef.current;
+
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setSheet(false);
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      trigger?.focus();
+    };
+  }, [sheet]);
+
   const index = ALL_SECTIONS.findIndex((s) => s.id === active);
   const activeLabel = ALL_SECTIONS[index]?.label ?? "";
   const progress = ((index + 1) / ALL_SECTIONS.length) * 100;
 
   function go(id: SectionId) {
+    setActive(id);
+    const group = GROUPS.find((g) => g.sections.some((s) => s.id === id));
+    if (group) setOpenGroup(group.id);
     jumpTo(id);
     setSheet(false);
   }
@@ -81,7 +142,7 @@ export function ResearchNav() {
                       aria-current={active === s.id ? "true" : undefined}
                       className={cn(
                         "-ml-2 rounded-sm py-0.5 pl-2 text-[0.8rem] transition-colors",
-                        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--accent)]",
+                        "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
                         active === s.id
                           ? "border-l border-[var(--accent)] text-[var(--fg)]"
                           : "border-l border-transparent text-[var(--muted)] hover:text-[var(--fg)]",
@@ -105,6 +166,7 @@ export function ResearchNav() {
       {/* ── mobile bar ─────────────────────────────────────────── */}
       <div className="sticky top-[3.25rem] z-40 border-y border-[var(--line)] bg-[var(--bg)]/92 backdrop-blur lg:hidden">
         <button
+          ref={sheetTriggerRef}
           type="button"
           onClick={() => setSheet(true)}
           aria-expanded={sheet}
@@ -126,6 +188,7 @@ export function ResearchNav() {
           data-lenis-prevent
         >
           <button
+            ref={sheetCloseRef}
             type="button"
             onClick={() => setSheet(false)}
             className="mb-6 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[var(--muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
