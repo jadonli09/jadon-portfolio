@@ -945,10 +945,10 @@ export const PROJECTS: Project[] = [
     tagline: "Every club meeting, one story a day.",
     stats: [
       { value: "Live", label: "@msjclubs · every weekday" },
-      { value: "87", label: "Clubs watched" },
+      { value: "93", label: "Clubs watched" },
     ],
     body:
-      "Eighty-seven clubs, eighty-seven Instagram feeds, and no one knows what's happening at lunch. Hermes scrapes every MSJ club account, has Claude extract the meeting — room, time, what's actually going on — and publishes a clean daily schedule story to @msjclubs every weekday. Built through junior year, live since August 2026.",
+      "Ninety-three clubs, ninety-three Instagram feeds, and no one knows what's happening at lunch. Hermes scrapes every MSJ club account, has Claude extract the meeting — room, time, what's actually going on — and publishes a clean daily schedule story to @msjclubs every weekday. Built through junior year, live since August 2026.",
     stack: ["Node.js", "Claude API", "Google Sheets"],
     tier: 2,
     slug: "hermes",
@@ -1129,7 +1129,7 @@ export const LEADERSHIP = {
     handle: "@msjclubs",
     url: "https://www.instagram.com/msjclubs/",
     shot: "/embeds/hermes-story-card.jpg",
-    body: "87 clubs, 87 Instagram feeds, and no one knew what was happening at lunch. Hermes scrapes every club account, has Claude pull out the meeting — room, time, what's on — and posts one clean schedule story to @msjclubs every weekday. Live since August 2026.",
+    body: "93 clubs, 93 Instagram feeds, and no one knew what was happening at lunch. Hermes scrapes every club account, has Claude pull out the meeting — room, time, what's on — and posts one clean schedule story to @msjclubs every weekday. Live since August 2026.",
     cta: { href: "/built#hermes", label: "How it's built" },
   },
   winterBall: {
@@ -1534,7 +1534,7 @@ export const TROPHIES: Trophy[] = [
   { year: "2025", title: "MSJ Makes VP", cat: "built", w: 3, detail: "Led merch design; 40 senior stoles — $700 revenue, $400 profit on that job alone." },
   { year: "2026", title: "MSJ Makes President", cat: "built", w: 4, detail: "VP → President; runs the maker-and-merch operation — ~$4,000 profit across club jobs." },
   { year: "2026", title: "MSJ STEM-PAC Co-President", cat: "research", w: 4, detail: "Co-leads the projects-and-competitions club he founded; ACSEF + olympiad pipeline." },
-  { year: "2026", title: "Hermes — live on @msjclubs", cat: "built", w: 3, detail: "A scraper + Claude pipeline that turns 87 club Instagram feeds into one clean daily schedule story, every weekday since August 2026." },
+  { year: "2026", title: "Hermes — live on @msjclubs", cat: "built", w: 3, detail: "A scraper + Claude pipeline that turns 93 club Instagram feeds into one clean daily schedule story, every weekday since August 2026." },
   { year: "2026", title: "msjhsasb.org — rebuilt the ASB site", cat: "built", w: 3, detail: "With Kaiwei Parks: 87 clubs searchable, every form, minutes, checks, and who to email — replacing a site nobody could navigate." },
   // ── Junior — leadership / events ──
   { year: "2025", title: "MSJ Car Meet", cat: "leadership", w: 3, detail: "First in MSJ history · $35M+ in cars · a $3.5M Pagani." },
