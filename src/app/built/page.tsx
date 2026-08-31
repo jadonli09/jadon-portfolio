@@ -22,10 +22,13 @@ export const metadata: Metadata = {
 const bySlug = (s: string) => PROJECTS.find((p) => p.slug === s)!;
 
 /**
- * The flagship's build record — two real photographs, both already on the site
- * (albums gallery / hero). Only AcornPrep has one, and that is the point: the
- * extra screen height is what makes tier 1 outweigh tier 2 without a label
- * announcing it.
+ * The flagship's build record — four real photographs already on the site, with
+ * the captions exactly as they are vetted in `data.ts`'s albums ledger. Only
+ * AcornPrep has a photo row, and that is the point: the extra screen height is
+ * what makes tier 1 outweigh tier 2 without a label announcing it.
+ *
+ * `ybvc-03` ("Mid-pitch") stands in for `ybvc-01`, whose vetted caption reads
+ * "top 15 of 300+" — a figure this chapter's own body paragraph already states.
  */
 const ACORNPREP_PHOTOS = [
   {
@@ -37,6 +40,16 @@ const ACORNPREP_PHOTOS = [
     src: "/img/acornprep-presentation-promptengineering.jpg",
     alt: "Jadon Li presenting an AcornPrep prompt-engineering slide at a podium",
     caption: "Presenting at the Google Gemini developer meetup",
+  },
+  {
+    src: "/img/ybvc-02.jpg",
+    alt: "Jadon Li on the microphone beside Pradyun Kanuparthi, AcornPrep slide behind them",
+    caption: "YBVC at Stanford — pitching AcornPrep with Pradyun",
+  },
+  {
+    src: "/img/ybvc-03.jpg",
+    alt: "Jadon Li speaking into a microphone in front of an AcornPrep slide",
+    caption: "Mid-pitch",
   },
 ];
 
