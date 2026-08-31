@@ -39,12 +39,27 @@ export function FleetDeck() {
     };
   }, [embla, onSelect]);
 
-  // Deep link: /built#cuesheet advances the deck to that panel.
+  // Deep link: /built#cuesheet advances the deck to that panel — both on a
+  // cold load AND on a same-document hash change. A `MissionIndex` row is an
+  // <a href="#slug">: clicking it never remounts this component, so the
+  // hashchange listener is what actually moves the deck for that click.
   useEffect(() => {
     if (!embla) return;
-    const hash = window.location.hash.slice(1);
-    const i = FLEET.findIndex((p) => p.slug === hash);
-    if (i >= 0) embla.scrollTo(i, true);
+
+    const goToHash = (jump: boolean) => {
+      const hash = window.location.hash.slice(1);
+      const i = FLEET.findIndex((p) => p.slug === hash);
+      // Ignore hashes outside the fleet (chapters like #hermes / #acornprep
+      // live elsewhere on the page) and no-op if already on that panel.
+      if (i < 0 || i === embla.selectedScrollSnap()) return;
+      embla.scrollTo(i, jump);
+    };
+
+    goToHash(true); // cold load: jump straight there, no animation
+
+    const onHashChange = () => goToHash(false); // same-document: animate
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
   }, [embla]);
 
   const go = useCallback(
