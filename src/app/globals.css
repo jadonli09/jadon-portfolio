@@ -71,17 +71,31 @@
 }
 
 [data-world="research"] {
-  /* DEG CONSOLE — dark bioinformatics terminal; acid-lime "significant" glow */
-  --bg: #0b0e13; /* lifted near-black, faint blue */
-  --bg-2: #171c24; /* console surface (brighter for contrast) */
-  --bg-3: #212834; /* raised surface */
-  --fg: #f1f5f9; /* terminal text — brighter */
-  --muted: #a2aebd; /* dim label slate — readable */
-  --accent: #bcff46; /* up-regulated / significant — acid lime */
-  --accent-2: #4fe6ee; /* down-regulated — cyan */
-  --hot: #ff5c95; /* threshold / danger magenta */
-  --line: rgba(236, 241, 247, 0.16); /* hairline — more visible */
+  /* DARK FIELD — confocal black; mRFP crimson is the only colour that matters.
+     The gout chapter re-scopes --accent to the volcano's own encoding. */
+  --bg: #07080b;          /* true dark field */
+  --bg-2: #0f1218;        /* raised surface */
+  --bg-3: #171c24;        /* card surface */
+  --fg: #eef2f7;
+  --muted: #89929f;
+  --accent: #ff3d5e;      /* mRFP — the reporter actually inserted */
+  --accent-2: #7dff8a;    /* GFP — the macrophage channel, used sparingly */
+  --hot: #ffd23c;
+  --line: rgba(238, 242, 247, 0.13);
+  --selection: rgba(255, 61, 94, 0.28);
+}
+
+/* Chapter scoping — the accent change carries information, so it is data-driven
+   and needs no JavaScript. */
+[data-world="research"] [data-chapter="gout"] {
+  --bg: #0b0e13;
+  --accent: #bcff46;      /* up-regulated */
+  --accent-2: #4fe6ee;    /* down-regulated */
+  --hot: #ff5c95;
   --selection: rgba(191, 255, 74, 0.25);
+}
+[data-world="research"] [data-chapter="beyond"] {
+  --bg: #0b0e13;
 }
 
 /* "mutation mode" easter egg — fluorescent mutant colourway */
@@ -92,28 +106,13 @@
   --selection: rgba(255, 92, 240, 0.25);
 }
 
-/* branch umass-2026 — the RFP colourway: red fluorescence on black, GFP green second */
-:root.rfp [data-world="research"] {
-  --accent: #ff3d5e; /* mRFP — the glow */
-  --accent-2: #7dff8a; /* GFP macrophages */
-  --hot: #ffd23c;
-  --selection: rgba(255, 61, 94, 0.28);
-  background-image:
-    radial-gradient(120% 80% at 50% -10%, rgba(255, 61, 94, 0.1), transparent 60%),
-    radial-gradient(100% 70% at 100% 110%, rgba(125, 255, 138, 0.06), transparent 60%);
-}
-:root.rfp [data-world="research"] .dot-live {
-  background: var(--accent);
-  box-shadow: 0 0 10px var(--accent);
-}
-
 /* ── DEG CONSOLE (research world) — dark lab terminal ─────────── */
 
 [data-world="research"] {
   background-color: var(--bg);
   background-image:
-    radial-gradient(120% 80% at 50% -10%, rgba(53, 224, 232, 0.07), transparent 60%),
-    radial-gradient(100% 70% at 100% 110%, rgba(182, 255, 60, 0.06), transparent 60%);
+    radial-gradient(120% 80% at 50% -10%, rgba(255, 61, 94, 0.10), transparent 60%),
+    radial-gradient(100% 70% at 100% 110%, rgba(125, 255, 138, 0.055), transparent 60%);
   color-scheme: dark;
 }
 
