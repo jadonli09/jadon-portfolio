@@ -180,10 +180,12 @@ The exported HTML is the ground truth — grep the built markup rather than the 
 
 ```bash
 npm run build
-grep -o "clubs watched" -B 40 out/built.html | grep -oE ">8?7?<|>0<" | head -5
+grep -o ">0<" out/built/index.html | head -3
 ```
 
-Expected: the markup contains `>0<` next to the Hermes stat.
+`next.config.ts` sets `trailingSlash: true`, so the static export writes `out/built/index.html` — not `out/built.html`.
+
+Expected: at least one hit; the Hermes counter ships as `0`.
 
 - [ ] **Step 2: Rewrite Counter to render the true value first**
 
@@ -260,7 +262,7 @@ export function Counter({
 
 ```bash
 npm run build
-grep -c ">87<" out/built.html
+grep -c ">87<" out/built/index.html
 ```
 
 Expected: at least `1` — the Hermes figure is in the exported markup.
@@ -1855,10 +1857,17 @@ $B js "document.querySelectorAll('[data-term]').length > 0"             # → tr
 $B js "document.querySelector('[data-term]').click()"
 $B js "document.querySelectorAll('[data-ask]').length"                  # → 2
 $B js "document.querySelector('[data-ask]').click()"
-$B js "!!document.querySelector('[data-sentence].bg-\\\\[var\\\\(--selection\\\\)\\\\]') || document.body.innerText.length > 0"
 ```
 
-Expected: `true`, `true`, `2`, and a highlighted sentence visible in a screenshot:
+Now assert the cited sentence actually got highlighted. Read the applied background rather than guessing at the escaped class selector, and compare it against a sentence that was NOT cited:
+
+```bash
+$B js "(() => { const s=[...document.querySelectorAll('[data-sentence]')]; const bg=e=>getComputedStyle(e).backgroundColor; const lit=s.filter(e=>bg(e)!=='rgba(0, 0, 0, 0)'); return lit.length===1 && lit[0].dataset.sentence; })()"
+```
+
+Expected: the index of the cited sentence (a string, not `false`). Exactly one sentence is highlighted — if this returns `false`, either nothing highlighted or every sentence did, and both are bugs.
+
+Then capture it:
 
 ```bash
 $B screenshot --viewport .shots/notebookli-cited.png
