@@ -119,10 +119,8 @@ variable overrides in CSS. No JavaScript required for the colour itself.
 
 ## Information architecture
 
-One page, `/research`, three chapter groups, fifteen sections. Fourteen of
-them are rail entries — the hero is the top of the page, not a destination.
-"At the bench" carries the setback as its closing beat rather than taking its
-own rail entry:
+One page, `/research`, three chapter groups, sixteen sections. Fifteen of them
+are rail entries — the hero is the top of the page, not a destination:
 
 ```
 FUSARIUM · UMASS 2026        GOUT · RNA-SEQ         (no group label)
@@ -133,6 +131,7 @@ FUSARIUM · UMASS 2026        GOUT · RNA-SEQ         (no group label)
   at the bench      ← NEW
   the protocol
   the evidence
+  what went wrong   ← NEW
   what's next
   the poster
 ```
@@ -152,7 +151,7 @@ The core fix. A persistent chapter rail, present at every scroll position.
   clutter. Everything stays reachable in at most two clicks. Active section
   highlighted; a progress bar shows position through the page.
 - **<1024px:** sticky compact bar under the global nav showing the current
-  chapter name and `4 / 14`. Tapping opens a full-screen index sheet.
+  chapter name and `4 / 15`. Tapping opens a full-screen index sheet.
 
 Built from real `<a href="#strains">` anchors, so it works with JavaScript
 disabled and every section is deep-linkable. Active state comes from an
@@ -212,6 +211,21 @@ note from `FUS_PLASMID.features`. A **"Linearize with Psp-OMI"** control
 unrolls the ring into a straight map at the cut site, which is the reason the
 enzyme is used at all. Reduced motion swaps instantly instead of animating.
 
+**Why a red reporter.** *(from Jadon, 2026-08-30 — new constant `FUS_REPORTER`)*
+
+The choice was constrained, not aesthetic: the lab already had **GFP-tagged
+macrophages**, so the fungus had to occupy the other channel. Either
+assignment works as long as the two are distinguishable — the referenced
+paper (Schäfer et al. 2014) does it the opposite way, macrophages red and
+*Fusarium* green. The Ma Lab already had the GFP macrophages on hand, so the
+fungus became red.
+
+Worth surfacing because it shows the experimental design responding to what
+was actually available, which is how real lab decisions get made. It also
+pre-empts the apparent contradiction between this project's colour scheme and
+the reference figure reproduced in "What's next" — a careful reader will
+notice, and the page should answer it rather than leave it hanging.
+
 **5. At the bench.** *(new section — the answer to "what did Jadon do?")*
 
 The page's credibility section. Three things, all assembled from content that
@@ -236,40 +250,31 @@ rule keeps the summer "to the science." They stay off this page. Same for the
 Also here: six Fusarium papers read, and NotebookLI built to get through them
 — initiative, stated as fact rather than as reflection.
 
-**5b. What went wrong.** *(new — needs Jadon's input, see Open Questions)*
-
-The page currently reads as an unbroken success, which is the least believable
-version of bench work. `FUS_LOG` hints at it — selection ran round 1 then
-round 2 on PDA + Hygr at a raised concentration. One honest, specific setback
-and how it was handled is the clearest signal on the page that this was real
-lab work rather than a tour.
-
-This must come from Jadon; it is not in `content.ts` and will not be invented.
-
 **6. The protocol.** All four steps from `FUS_PROTOCOL` visible at once —
 plasmid extraction, protoplast generation, PEG transformation, selection —
 each with its bullets and the poster's own diagram (`umass-protoplast.jpg`,
 `umass-transformation.jpg`). No stepper, no accordion.
 
-**Each step gains a "why" line.** *(new content — needs verification, see
-Open Questions)*
+**Each step gains a "why" line.** *(verified by Jadon, 2026-08-30)*
 
-The steps currently state what was done and never why it was necessary. That
-is the difference between running a protocol and understanding one, and it is
-the highest-value content a scientific reader can find on this page. One line
-per step, set apart from the procedure:
+The steps state what was done and never why it was necessary. That is the
+difference between running a protocol and understanding one, and it is the
+highest-value content a scientific reader can find on this page. One line per
+step, set apart from the procedure. New constant `FUS_WHY`, keyed by step id:
 
 | Step | The reasoning |
 |---|---|
-| I · linearize with Psp-OMI | Circular plasmid has no free ends and does not replicate in *Fusarium*; linear DNA integrates into the genome. |
-| II · protoplast | The chitin–glucan cell wall blocks DNA entry, so it is digested away — leaving an osmotically fragile cell, which is why everything downstream is buffered in 1.2 M KCl and STC. |
-| III · PEG | PEG with Ca²⁺ destabilises the membrane and brings DNA into contact with it, allowing uptake. |
-| IV · hygromycin | Transformation is rare and transformants are invisible. HygR rides the same plasmid as mRFP, so hygromycin kills everything that did not integrate the construct and the survivors are candidates. |
+| I · linearize with Psp-OMI | Circular plasmid has no free ends and will not replicate in *Fusarium*. Linearizing gives the construct ends that integrate into the fungal genome. |
+| II · protoplast | The cell wall blocks DNA. Digesting it away leaves a bare membrane the plasmid can actually cross. |
+| III · PEG/STC | A cell with no wall will burst. STC holds osmotic pressure and pH steady so the protoplast stays intact, while PEG lets the DNA cross the membrane and integrate into the genome. |
+| IV · hygromycin | Transformants are invisible — you cannot pick them by eye. HygR rides the same plasmid as mRFP, so hygromycin kills everything that did not take the construct, and the survivors are candidates. |
 
-**None of this is in `content.ts` or on the poster.** It is standard molecular
-biology and believed correct, but it is scientific reasoning being attributed
-to Jadon on his own site, so it ships only after he confirms or rewrites it.
-New constant: `FUS_WHY`, keyed by step id.
+Two of these correct the drafting assistant's first pass and must not be
+reverted toward it. Step III was originally written as "PEG destabilises the
+membrane and brings DNA into contact with it"; Jadon's framing leads with
+**osmotic and pH protection of a fragile wall-less cell**, with uptake second.
+Step II is his phrasing: the wall removal is what makes DNA transferable into
+the membrane.
 
 **7. The evidence.** The signature interaction: a **draggable wipe** across
 Figure 2a, brightfield on one side and RFP merge on the other, over the same
@@ -281,12 +286,41 @@ Then Figure 1 (PCR products: Hygromycin 563 bp, RFP 372 bp) and Figure 2b
 (gel confirmation against the 1 kb ladder) with their captions, then the four
 `FUS_RESULTS` entries as prose.
 
-**8. What's next.** The macrophage time-lapse frames (Schäfer et al. 2014) and
+**8. What went wrong.** *(from Jadon, 2026-08-30 — new constant `FUS_SETBACK`)*
+
+Deliberately placed **after** the result, not before it. The page shows the
+glow, then complicates it — which is how a scientist reports work, and it
+hands off naturally into "What's next", since the fix is itself a next step.
+
+Selection did not come back clean. Alongside the fungal colonies the plates
+grew bacteria, introduced somewhere upstream. They are separable by eye:
+bacterial colonies are shiny, fungal ones grow fuzzy.
+
+The obvious fix fails, and that is the interesting part. Any bacterium that
+picked up the plasmid also picked up its hygromycin and ampicillin resistance
+— so selecting harder on either antibiotic selects the contamination right
+along with the transformants. The way out is an antibiotic the plasmid does
+not defend against, applied to the next round, leaving the RFP fungi and no
+bacteria, transformed or not.
+
+**State this as diagnosis and plan, not as a completed remedy.** Jadon's own
+words are "in the next step, we probably want to use…" — the corrective was
+reasoned out, not executed within the six weeks. Writing it as a fix that
+worked would be an overclaim, and the diagnosis is the impressive part
+regardless: an observation, a reason the obvious response fails, and a
+corrective that follows from the plasmid's own design.
+
+This is the highest-value single item on the page for a scientific reader. It
+demonstrates something no clean result can — that the work was real, and that
+Jadon understood the selection system well enough to see why it had stopped
+discriminating.
+
+**9. What's next.** The macrophage time-lapse frames (Schäfer et al. 2014) and
 the direction they point: tracking real-time engulfment of mRFP-tagged
 Fusarium by GFP macrophages under confocal imaging, and downstream hpRNA/siRNA
 delivery into protoplasts.
 
-**9. The poster & credits.** The full poster, click to enlarge. Authors as
+**10. The poster & credits.** The full poster, click to enlarge. Authors as
 printed. Mentors credited by name — Siyuan (Melanie) Wu, Will Truncer,
 Dr. Li-Jun Ma. The three session photographs (`umass-02` bench, `umass-01`
 poster session, `umass-11` poster day).
@@ -391,6 +425,7 @@ src/components/research/
                                        the setback
     Protocol.tsx                       NEW — steps + the FUS_WHY layer
     Evidence.tsx                       NEW — wraps ConfocalWipe
+    WentWrong.tsx                      NEW — the contamination + the reasoning
     WhatsNext.tsx                      NEW
     Poster.tsx                         NEW
     GoutChapter.tsx                    NEW — renders 4 anchored sub-sections
@@ -483,27 +518,32 @@ whether the page scrolled and built.
 6. Any section is reachable in at most two clicks from any scroll position.
 7. `/research?branch=umass-2026` still lands somewhere sensible.
 8. No research fact appears that is not in `content.ts`, `data.ts`, or the
-   new `FUS_WHY` / setback content Jadon has signed off on.
+   three constants Jadon signed off on (`FUS_WHY`, `FUS_REPORTER`,
+   `FUS_SETBACK`).
 9. The wipe is operable by keyboard and by touch.
 10. `next build` passes; new files lint clean.
 
-## Open questions — blocking before ship, not before build
+## Content resolved with Jadon — 2026-08-30
 
-These three additions are the ones that carry the most weight for a
-scientific reader, and all three are content that does not exist yet. Every
-other part of the redesign can be built while they are resolved; the page
-should not ship without them.
+All three blocking questions are answered; nothing is outstanding. The
+answers live in three new constants in `content.ts` and are the only new
+research content this redesign introduces:
 
-1. **The "why" lines.** The table in the protocol section is a best-effort
-   draft of standard molecular biology. Jadon confirms, corrects, or rewrites
-   each one.
-2. **Why RFP rather than GFP?** Deliberately *not* drafted. The obvious
-   inference — a red reporter keeps the fungus in a separate channel from
-   GFP-tagged macrophages — is contradicted by the poster's own future-work
-   figure, which labels the reference images *macrophages red, Fusarium
-   green* (Schäfer et al. 2014). That is the reference paper's scheme, not
-   necessarily the Ma Lab's rationale. Only Jadon knows the real reason.
-3. **The setback.** One specific thing that failed and what was done about it.
+| Constant | Content | Section |
+|---|---|---|
+| `FUS_WHY` | Reasoning line per protocol step | 6 · the protocol |
+| `FUS_REPORTER` | Why a red reporter — the lab already had GFP macrophages | 4 · the plasmid |
+| `FUS_SETBACK` | Bacterial contamination in selection, and why the obvious fix fails | 8 · what went wrong |
+
+Two of the drafted "why" lines were **corrected by Jadon** and the corrections
+must survive implementation review: step III leads with osmotic and pH
+protection of a wall-less cell rather than membrane destabilisation, and step
+II is framed as wall removal making DNA transferable into the membrane. A
+reviewer who "improves" these back toward the textbook phrasing would be
+reverting the author's own understanding.
+
+The `FUS_SETBACK` copy is **diagnosis and plan, never a completed remedy** —
+see section 8.
 
 ## Rejected during design review
 

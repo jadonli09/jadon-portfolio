@@ -1159,7 +1159,7 @@ Per the spec, the hero **withholds the glow**. The word *glow* is the only crims
 
 import { asset } from "@/lib/base";
 import { jumpTo } from "../lab/bus";
-import { FUS_PANELS } from "../lab/content";
+import { FUS, FUS_PANELS } from "../lab/content";
 
 export function Hero() {
   return (
@@ -1218,8 +1218,6 @@ export function Hero() {
   );
 }
 ```
-
-Add `import { FUS, FUS_PANELS } from "../lab/content";` — the snippet above references `FUS.affiliations`, so both must be imported.
 
 - [ ] **Step 3: Write `Question` and `Strains`**
 
@@ -1701,3 +1699,759 @@ git commit -m "feat(research): add evidence, the setback, what's next, and the p
 ```
 
 ---
+
+## Task 10: The gout chapter
+
+Four anchored sub-sections in one file, wrapped in `data-chapter="gout"` so the CSS from Task 3 swaps the accent to the volcano's own up/down encoding.
+
+**Framing matters here.** This is not "earlier, smaller work" — it is the dry-lab counterpart that proves independent analysis, where UMass proves bench competence. **Accuracy guard:** the landing copy says Jadon was *"trained in R by a Stanford professor,"* so the claim is *trained, then ran the analysis independently* — never "self-taught."
+
+**Files:**
+- Move: `src/components/research/VolcanoPlot.tsx` → `src/components/research/viz/VolcanoPlot.tsx`
+- Create: `src/components/research/sections/GoutChapter.tsx`
+
+**Interfaces:**
+- Consumes: `PROJECT`, `PIPELINE`, `DEG_COUNTS`, `PAIN_MEDIATORS` from `../lab/content`; `RESEARCH` from `@/lib/data`; `VolcanoPlot` (signature `({ className }: { className?: string })`); `Section`, `P`
+- Produces: `<GoutChapter />`
+
+**This task also carries the spec's chapter transition** — the one line that
+connects the two projects rather than merely separating them. It sits at the
+top of the chapter, above the first section, inside the `data-chapter` wrapper
+so the accent has already turned.
+
+- [ ] **Step 1: Move the volcano plot**
+
+```bash
+mkdir -p src/components/research/viz
+git mv src/components/research/VolcanoPlot.tsx src/components/research/viz/VolcanoPlot.tsx
+grep -rn "research/VolcanoPlot" src/ || echo "no stale imports"
+```
+
+Expected: `no stale imports` — only the soon-to-be-deleted `ResearchIDE` referenced it, and Task 13 removes that file. The component reads its own data from `content.ts`, so no prop changes are needed.
+
+- [ ] **Step 2: Write the chapter**
+
+```tsx
+// src/components/research/sections/GoutChapter.tsx
+import { DEG_COUNTS, PAIN_MEDIATORS, PIPELINE, PROJECT } from "../lab/content";
+import { RESEARCH } from "@/lib/data";
+import { VolcanoPlot } from "../viz/VolcanoPlot";
+import { Section, P } from "./Section";
+
+export function GoutChapter() {
+  return (
+    <div data-chapter="gout" className="bg-[var(--bg)]">
+      {/* The hinge between the two projects. Without this the page is two
+          adjacent projects; with it, it is one scientist. */}
+      <p className="mx-auto max-w-5xl border-t border-[var(--line)] px-6 py-[clamp(3rem,7vh,5rem)] text-[clamp(1.1rem,2vw,1.5rem)] leading-[1.5] text-balance text-[var(--fg)] lg:pl-64 lg:pr-10">
+        Both projects are the same problem twice: a pain signal you can only see
+        in the transcriptome, and a pathogen you can only see once it&rsquo;s
+        tagged.
+      </p>
+      <Section id="gout-question" kicker="Gout · RNA-seq" heading="Before the bench, the terminal.">
+        <P>
+          Trained in R and bioinformatics, then set loose on a public dataset to run the analysis
+          independently: in gouty mice, which genes and pathways actually drive the pain? The wet-lab
+          work proves you can operate in someone else&rsquo;s lab. This one proves you can drive a
+          question yourself.
+        </P>
+        <P className="text-[var(--fg)]">{PROJECT.question}</P>
+        <P>{PROJECT.hypothesis}</P>
+        <p className="mt-6 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[var(--accent)]">
+          {RESEARCH.project.result}
+        </p>
+      </Section>
+
+      <Section id="pipeline" kicker="Pipeline" heading="Eight steps, self-built.">
+        <ol className="grid list-none gap-px bg-[var(--line)] p-0 sm:grid-cols-2">
+          {PIPELINE.map((s) => (
+            <li key={s.n} className="bg-[var(--bg-2)] p-5">
+              <p className="mb-1 font-mono text-[0.7rem] text-[var(--accent)]">{s.n}</p>
+              <p className="mb-1 font-mono text-[0.9rem] text-[var(--fg)]">{s.step}</p>
+              <p className="text-[0.86rem] leading-[1.55] text-[var(--muted)]">{s.detail}</p>
+            </li>
+          ))}
+        </ol>
+      </Section>
+
+      <Section id="volcano" kicker="Differential expression" heading="Every gene, plotted.">
+        <P>
+          Each point is a gene: fold change across the x-axis, statistical confidence up the y. The
+          ones that clear both thresholds are the ones worth chasing.
+        </P>
+        <div className="mt-8 border border-[var(--line)] bg-[var(--bg-2)] p-4">
+          <VolcanoPlot />
+        </div>
+        <ul className="mt-8 grid list-none gap-px bg-[var(--line)] p-0 sm:grid-cols-3">
+          {DEG_COUNTS.map((d) => (
+            <li key={d.tissue} className="bg-[var(--bg-2)] p-5">
+              <p className="mb-2 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[var(--muted)]">
+                {d.tissue}
+              </p>
+              <p className="font-mono text-[1.1rem] tabular-nums">
+                <span className="text-[var(--accent)]">↑ {d.up}</span>
+                <span className="mx-2 text-[var(--muted)]">·</span>
+                <span className="text-[var(--accent-2)]">↓ {d.down}</span>
+              </p>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <Section id="mediators" kicker="The finding" heading="Nine mediators, three tissues.">
+        <P>
+          The pain signal is not confined to the inflamed joint — it also shows up in the dorsal root
+          ganglia and the spinal cord, which is what makes these targets interesting.
+        </P>
+        <ul className="mt-8 grid list-none gap-px bg-[var(--line)] p-0 sm:grid-cols-3">
+          {PAIN_MEDIATORS.map((m) => (
+            <li key={m.gene} className="bg-[var(--bg-2)] p-4">
+              <p className="font-mono text-[0.95rem] text-[var(--accent)]">{m.gene}</p>
+              <p className="mt-1 text-[0.85rem] leading-[1.5] text-[var(--muted)]">{m.role}</p>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    </div>
+  );
+}
+```
+
+- [ ] **Step 3: Typecheck, lint, and confirm the accent actually re-scopes**
+
+```bash
+npx tsc --noEmit
+npx eslint src/components/research/sections/GoutChapter.tsx src/components/research/viz/VolcanoPlot.tsx
+grep -n 'data-chapter="gout"' src/app/globals.css src/components/research/sections/GoutChapter.tsx
+```
+
+Expected: both files clean, and `data-chapter="gout"` appears in **both** the CSS (Task 3) and the component. If it appears in only one, the accent will not change and the wayfinding is silently broken.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add src/components/research/sections/GoutChapter.tsx src/components/research/viz/VolcanoPlot.tsx
+git commit -m "feat(research): add the gout chapter with re-scoped accent"
+```
+
+---
+
+## Task 11: Olympiads and programs
+
+The closing group carries **no label** — "Beyond" named nothing and is exactly the filler subtext being cut site-wide.
+
+USABO, UK BBO, and ACSEF are told in full on `/achievements`. Here they are three single lines that link there. Do not expand them into cards; that would state the same facts in two places.
+
+**Files:**
+- Create: `src/components/research/sections/Beyond.tsx`
+
+**Interfaces:**
+- Consumes: `RESEARCH.awards`, `RESEARCH.programs` from `@/lib/data`; `Section`, `P`
+- Produces: `<Beyond />` — renders sections `olympiads` and `programs`
+
+- [ ] **Step 1: Write it**
+
+```tsx
+// src/components/research/sections/Beyond.tsx
+import Link from "next/link";
+import { RESEARCH } from "@/lib/data";
+import { Section, P } from "./Section";
+
+/** The Ma Lab program is the whole page above; listing it again would repeat. */
+const OMIT_PROGRAM = "UMass Amherst — Ma Lab";
+
+export function Beyond() {
+  const programs = RESEARCH.programs.filter((p) => p.title !== OMIT_PROGRAM);
+
+  return (
+    <div data-chapter="beyond" className="bg-[var(--bg)]">
+      <Section id="olympiads" kicker="Olympiads" heading="Externally checked.">
+        <ul className="flex list-none flex-col gap-px bg-[var(--line)] p-0">
+          {RESEARCH.awards.map((a) => (
+            <li
+              key={a.name}
+              className="flex flex-wrap items-baseline gap-x-4 gap-y-1 bg-[var(--bg-2)] px-5 py-4"
+            >
+              <span className="font-mono text-[0.7rem] tabular-nums text-[var(--muted)]">{a.year}</span>
+              <span className="text-[1rem] text-[var(--fg)]">{a.name}</span>
+              <span className="text-[0.95rem] text-[var(--accent)]">{a.result}</span>
+              <span className="text-[0.88rem] text-[var(--muted)]">{a.note}</span>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-5">
+          <Link
+            href="/achievements"
+            className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[var(--muted)] underline-offset-4 hover:text-[var(--fg)] hover:underline"
+          >
+            The full record →
+          </Link>
+        </p>
+      </Section>
+
+      <Section id="programs" kicker="Programs" heading="Teaching it forward.">
+        <div className="grid gap-px bg-[var(--line)] sm:grid-cols-3">
+          {programs.map((p) => (
+            <article key={p.title} className="bg-[var(--bg-2)] p-6">
+              <h3 className="mb-1 text-[1.02rem] font-semibold text-[var(--fg)]">{p.title}</h3>
+              <p className="mb-3 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-[var(--accent)]">
+                {p.role}
+              </p>
+              <p className="text-[0.9rem] leading-[1.6] text-[var(--muted)]">{p.detail}</p>
+            </article>
+          ))}
+        </div>
+      </Section>
+    </div>
+  );
+}
+```
+
+- [ ] **Step 2: Typecheck, lint, confirm the filter matched**
+
+```bash
+npx tsc --noEmit
+npx eslint src/components/research/sections/Beyond.tsx
+grep -c 'title: "UMass Amherst — Ma Lab"' src/lib/data.ts   # expect: 1
+```
+
+Expected: clean, and exactly `1`. If it is `0`, the em-dash in `OMIT_PROGRAM` does not match `data.ts` and the Ma Lab card will render twice — copy the string directly out of `data.ts`.
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add src/components/research/sections/Beyond.tsx
+git commit -m "feat(research): add olympiads strip and programs cards"
+```
+
+---
+
+## Task 12: The console
+
+The terminal survives, but its job changes from **delivering** content to **navigating** it. Any command that used to render a big view now scrolls the page and closes. That is what removes the duplication.
+
+**Files:**
+- Create: `src/components/research/Console.tsx`
+
+**Interfaces:**
+- Consumes: `ALL_SECTIONS`, `resolveSection` from `./sections`; `jumpTo`, `toggleMutate`, `fireToast` from `./lab/bus`; `PROFILE`, `FUS`, `FUS_LOG`, `FUS_CITATION` from `./lab/content`
+- Produces: `<Console />` — client component, no props
+
+- [ ] **Step 1: Write it**
+
+```tsx
+// src/components/research/Console.tsx
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import { ALL_SECTIONS, resolveSection } from "./sections";
+import { fireToast, jumpTo, toggleMutate } from "./lab/bus";
+import { FUS, FUS_CITATION, FUS_LOG, PROFILE } from "./lab/content";
+
+type Line = { text: string; tone: "fg" | "muted" | "accent" };
+
+const HELP: string[] = [
+  "ls                 list every section on this page",
+  "open <section>     scroll there and close  (alias: go, cd, cat)",
+  "log                the lab notebook, dated",
+  "whoami             who is typing",
+  "cite               BibTeX for the poster",
+  "mutate             a different colourway",
+  "clear              clear this console",
+  "exit               close  (or press Escape)",
+];
+
+export function Console() {
+  const [open, setOpen] = useState(false);
+  const [lines, setLines] = useState<Line[]>([
+    { text: "research console — the page has everything; this just gets you there faster.", tone: "muted" },
+    { text: "type `help`, or `ls` to see the sections.", tone: "muted" },
+  ]);
+  const [value, setValue] = useState("");
+  const [history, setHistory] = useState<string[]>([]);
+  const [hIndex, setHIndex] = useState(-1);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // ` toggles the console from anywhere, except while typing in a field.
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      const t = e.target as HTMLElement | null;
+      const typing = t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable);
+      if (e.key === "`" && !typing) {
+        e.preventDefault();
+        setOpen((v) => !v);
+      } else if (e.key === "Escape") {
+        setOpen(false);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  useEffect(() => {
+    if (open) inputRef.current?.focus();
+  }, [open]);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [lines]);
+
+  const out = useCallback((next: Line[]) => setLines((prev) => [...prev, ...next]), []);
+
+  const run = useCallback(
+    (raw: string) => {
+      const input = raw.trim();
+      if (!input) return;
+      out([{ text: `visitor@research:~$ ${input}`, tone: "accent" }]);
+      setHistory((h) => [input, ...h]);
+      setHIndex(-1);
+
+      const [cmd, ...rest] = input.split(/\s+/);
+      const arg = rest.join(" ");
+
+      switch (cmd.toLowerCase()) {
+        case "help":
+        case "?":
+          out(HELP.map((text) => ({ text, tone: "muted" as const })));
+          return;
+        case "ls":
+        case "sections":
+          out(ALL_SECTIONS.map((s) => ({ text: `  ${s.id.padEnd(16)} ${s.label}`, tone: "fg" as const })));
+          return;
+        case "open":
+        case "go":
+        case "goto":
+        case "cd":
+        case "cat": {
+          const id = resolveSection(arg);
+          if (!id) {
+            out([{ text: `no section "${arg}" — try \`ls\``, tone: "muted" }]);
+            return;
+          }
+          out([{ text: `→ ${id}`, tone: "accent" }]);
+          setOpen(false);
+          jumpTo(id);
+          return;
+        }
+        case "log":
+          out(
+            FUS_LOG.map((e) => ({
+              text: `  ${e.hash}  ${e.date}  ${e.msg}`,
+              tone: "muted" as const,
+            })),
+          );
+          return;
+        case "whoami":
+          out([
+            { text: PROFILE.name, tone: "fg" },
+            { text: PROFILE.role, tone: "muted" },
+            { text: PROFILE.focus, tone: "muted" },
+            { text: `stack: ${PROFILE.stack.join(" · ")}`, tone: "muted" },
+          ]);
+          return;
+        case "cite":
+          out(FUS_CITATION.split("\n").map((text) => ({ text, tone: "muted" as const })));
+          return;
+        case "mutate":
+          toggleMutate();
+          return;
+        case "clear":
+          setLines([]);
+          return;
+        case "exit":
+        case "quit":
+          setOpen(false);
+          return;
+        case "sudo":
+          out([{ text: "you already have root here. try `mutate`.", tone: "accent" }]);
+          return;
+        default:
+          out([{ text: `${cmd}: not found — try \`help\``, tone: "muted" }]);
+      }
+    },
+    [out],
+  );
+
+  function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      run(value);
+      setValue("");
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const i = Math.min(hIndex + 1, history.length - 1);
+      if (i >= 0) {
+        setHIndex(i);
+        setValue(history[i]);
+      }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const i = hIndex - 1;
+      setHIndex(i);
+      setValue(i >= 0 ? history[i] : "");
+    } else if (e.key === "Tab") {
+      e.preventDefault();
+      const hit = ALL_SECTIONS.find((s) => s.id.startsWith(value.replace(/^open\s+/, "")));
+      if (hit) setValue(`open ${hit.id}`);
+    }
+  }
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        aria-label="Open the research console"
+        className="fixed bottom-5 right-5 z-40 rounded-sm border border-[var(--line)] bg-[var(--bg-2)]/90 px-3 py-2 font-mono text-[0.7rem] text-[var(--muted)] backdrop-blur transition-colors hover:border-[var(--accent)] hover:text-[var(--fg)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
+      >
+        &gt;_
+      </button>
+    );
+  }
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Research console"
+      data-lenis-prevent
+      className="fixed inset-x-0 bottom-0 z-50 h-[min(60dvh,26rem)] border-t border-[var(--accent)] bg-[#05060a]/97 backdrop-blur"
+    >
+      <div className="flex items-center justify-between border-b border-[var(--line)] px-4 py-2">
+        <span className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-[var(--muted)]">
+          {FUS.id}
+        </span>
+        <button
+          type="button"
+          onClick={() => setOpen(false)}
+          className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-[var(--muted)] hover:text-[var(--fg)]"
+        >
+          Esc
+        </button>
+      </div>
+      <div ref={scrollRef} className="h-[calc(100%-5.5rem)] overflow-y-auto px-4 py-3 font-mono text-[0.8rem] leading-[1.65]">
+        {lines.map((l, i) => (
+          <p
+            key={i}
+            className={
+              l.tone === "accent"
+                ? "whitespace-pre-wrap text-[var(--accent)]"
+                : l.tone === "muted"
+                  ? "whitespace-pre-wrap text-[var(--muted)]"
+                  : "whitespace-pre-wrap text-[var(--fg)]"
+            }
+          >
+            {l.text}
+          </p>
+        ))}
+      </div>
+      <div className="flex items-center gap-2 border-t border-[var(--line)] px-4 py-2.5 font-mono text-[0.8rem]">
+        <span className="text-[var(--accent)]">visitor@research:~$</span>
+        <input
+          ref={inputRef}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onKeyDown={onKeyDown}
+          spellCheck={false}
+          autoComplete="off"
+          aria-label="Console input"
+          className="min-w-0 flex-1 bg-transparent text-[var(--fg)] outline-none"
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+- [ ] **Step 2: Typecheck and lint**
+
+```bash
+npx tsc --noEmit
+npx eslint src/components/research/Console.tsx
+```
+
+Expected: clean. `fireToast` is imported but only used if you add toast output — if lint flags it as unused, drop it from the import rather than adding a spurious call.
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add src/components/research/Console.tsx
+git commit -m "feat(research): add the navigation console, replacing the content terminal"
+```
+
+---
+
+## Task 13: Assemble the page and delete the old terminal
+
+The moment the redesign goes live. Everything before this was building parts.
+
+**Files:**
+- Rewrite: `src/app/research/page.tsx`
+- Delete: `src/components/research/lab/ResearchIDE.tsx`, `lab/term.tsx`, `lab/fusarium.tsx`
+
+**Interfaces:**
+- Consumes: every section from Tasks 7–11, `ResearchNav` (Task 4), `Console` (Task 12), `World` and `Footer` from `@/components/chrome/*`, `LabEasterEggs`
+- Produces: the route `/research`
+
+- [ ] **Step 1: Rewrite the page**
+
+Note what changes structurally: the page becomes a `<World>` like every other world (it was the only one that wasn't), and it **loses `h-[100dvh] overflow-hidden`** — that lock is why nothing scrolled.
+
+```tsx
+// src/app/research/page.tsx
+import type { Metadata } from "next";
+import { World } from "@/components/chrome/World";
+import { Footer } from "@/components/chrome/Footer";
+import { ResearchNav } from "@/components/research/ResearchNav";
+import { Console } from "@/components/research/Console";
+import { LabEasterEggs } from "@/components/research/lab/LabEasterEggs";
+import { Hero } from "@/components/research/sections/Hero";
+import { Question } from "@/components/research/sections/Question";
+import { Strains } from "@/components/research/sections/Strains";
+import { Plasmid } from "@/components/research/sections/Plasmid";
+import { AtTheBench } from "@/components/research/sections/AtTheBench";
+import { Protocol } from "@/components/research/sections/Protocol";
+import { Evidence } from "@/components/research/sections/Evidence";
+import { WentWrong } from "@/components/research/sections/WentWrong";
+import { WhatsNext } from "@/components/research/sections/WhatsNext";
+import { Poster } from "@/components/research/sections/Poster";
+import { GoutChapter } from "@/components/research/sections/GoutChapter";
+import { Beyond } from "@/components/research/sections/Beyond";
+
+export const metadata: Metadata = {
+  title: "Research & STEM",
+  description:
+    "Six weeks in the Ma Lab at UMass Amherst engineering a red-fluorescent human clinical strain of Fusarium oxysporum — plus RNA-seq on a mouse gout model that placed 3rd in computational biology at ACSEF.",
+};
+
+/**
+ * Research world — "Dark Field".
+ *
+ * Leads with the UMass Fusarium RFP transformation; the gout RNA-seq work is
+ * the dry-lab counterpart. Governing principle: nothing important sits behind
+ * a click. Every fact is reachable by scrolling; the console only navigates.
+ *
+ * Server component — interactive sections carry their own "use client".
+ */
+export default function ResearchPage() {
+  return (
+    <World id="research">
+      <h1 className="sr-only">Research &amp; STEM</h1>
+      <ResearchNav />
+      <Hero />
+      <Question />
+      <Strains />
+      <Plasmid />
+      <AtTheBench />
+      <Protocol />
+      <Evidence />
+      <WentWrong />
+      <WhatsNext />
+      <Poster />
+      <GoutChapter />
+      <Beyond />
+      <Footer />
+      <LabEasterEggs />
+      <Console />
+    </World>
+  );
+}
+```
+
+- [ ] **Step 2: Delete the replaced terminal**
+
+```bash
+git rm src/components/research/lab/ResearchIDE.tsx \
+       src/components/research/lab/term.tsx \
+       src/components/research/lab/fusarium.tsx
+```
+
+- [ ] **Step 3: Confirm nothing still references the deleted modules**
+
+```bash
+grep -rn "ResearchIDE\|lab/term\|lab/fusarium\|research/fusarium" src/ && echo "STALE REFERENCES ABOVE" || echo "clean"
+```
+
+Expected: `clean`. If anything prints, it is an import left behind — fix it before building.
+
+- [ ] **Step 4: Typecheck, lint, build**
+
+```bash
+npx tsc --noEmit
+npx eslint src/app/research/page.tsx src/components/research/
+lsof -ti:3000 | xargs kill -9 2>/dev/null
+npm run build
+```
+
+Expected: all three succeed and the export writes `out/research/index.html`.
+
+- [ ] **Step 5: Verify every rail anchor has a matching section in the built HTML**
+
+The rail is driven by `sections.ts`; a typo in any section's `id` breaks navigation silently.
+
+```bash
+node -e '
+const fs = require("fs");
+const html = fs.readFileSync("out/research/index.html","utf8");
+const reg = fs.readFileSync("src/components/research/sections.ts","utf8");
+const ids = [...reg.matchAll(/\{ id: "([a-z-]+)", label:/g)].map(m=>m[1]);
+let bad = 0;
+for (const id of ids) {
+  const present = html.includes(`id="${id}"`);
+  if (!present) { console.log("MISSING SECTION:", id); bad++; }
+}
+console.log(ids.length, "rail entries,", bad, "missing");
+'
+```
+
+Expected: `15 rail entries, 0 missing`.
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add -A src/app/research src/components/research
+git commit -m "feat(research): assemble the redesigned page, remove the content terminal"
+```
+
+---
+
+## Task 14: Verification pass
+
+Everything is built. This task proves it actually works in a browser and meets the spec's comprehension criteria, then fixes whatever it finds.
+
+**Files:**
+- Modify: whatever the checks below turn up
+
+**Interfaces:**
+- Consumes: the built site
+- Produces: a page that satisfies the spec's success criteria
+
+- [ ] **Step 1: Serve the build and take reference screenshots**
+
+```bash
+cd "/Users/jadonli/Downloads/Jadon Li/jadon"
+lsof -ti:3000 | xargs kill -9 2>/dev/null
+npx serve out -l 3000 >/dev/null 2>&1 &
+sleep 2
+B=~/.claude/skills/gstack/browse/dist/browse
+$B viewport 1440x900
+$B goto "http://localhost:3000/research/"
+$B screenshot /tmp/research-hero.jpg
+```
+
+Open `/tmp/research-hero.jpg` with the Read tool. **Assert:** the headline reads "We made the fungus glow.", *glow* is crimson, the rail is visible on the left, and there is **no red fluorescence in the hero image** — the hero is brightfield only, by design.
+
+- [ ] **Step 2: Verify the page scrolls and the rail tracks**
+
+```bash
+B=~/.claude/skills/gstack/browse/dist/browse
+$B eval 'document.querySelector("main").scrollHeight > window.innerHeight * 5'
+$B eval 'getComputedStyle(document.querySelector("[data-world=research]")).overflow'
+$B click 'a[href="#evidence"]'
+sleep 1
+$B eval 'document.querySelector("[aria-current=true]")?.textContent'
+```
+
+Expected: `true`; overflow is **not** `hidden`; the current rail entry reads `the evidence`.
+
+- [ ] **Step 3: Verify the wipe works by keyboard — the spec's a11y requirement**
+
+```bash
+B=~/.claude/skills/gstack/browse/dist/browse
+$B eval 'const s=document.querySelector("[role=slider]"); s.focus(); s.getAttribute("aria-valuenow")'
+$B press ArrowRight
+$B press ArrowRight
+$B eval 'document.querySelector("[role=slider]").getAttribute("aria-valuenow")'
+$B press End
+$B eval 'document.querySelector("[role=slider]").getAttribute("aria-valuenow")'
+```
+
+Expected: starts at `55`, becomes `59` after two right presses (2 each), then `100` on End. If the value does not change, the slider is not receiving focus — check `tabIndex={0}` and that no ancestor has `pointer-events: none`.
+
+- [ ] **Step 4: Verify the accent re-scopes between chapters**
+
+```bash
+B=~/.claude/skills/gstack/browse/dist/browse
+$B eval 'getComputedStyle(document.getElementById("strains")).getPropertyValue("--accent").trim()'
+$B eval 'getComputedStyle(document.getElementById("volcano")).getPropertyValue("--accent").trim()'
+```
+
+Expected: `#ff3d5e` then `#bcff46`. If both return crimson, the `[data-chapter="gout"]` wrapper is not wrapping — check Task 10 Step 3.
+
+- [ ] **Step 5: Verify the console navigates rather than renders**
+
+```bash
+B=~/.claude/skills/gstack/browse/dist/browse
+$B goto "http://localhost:3000/research/"
+$B press Backquote
+$B eval 'document.querySelector("[aria-label=\"Research console\"]") !== null'
+$B type 'open plasmid'
+$B press Enter
+sleep 1
+$B eval 'document.querySelector("[aria-label=\"Research console\"]") === null'
+$B eval 'Math.abs(document.getElementById("plasmid").getBoundingClientRect().top) < 200'
+```
+
+Expected: `true`, `true`, `true` — the console opens, closes on navigation, and the plasmid section is at the top of the viewport.
+
+- [ ] **Step 6: Verify reduced motion and the back-compatible deep link**
+
+```bash
+B=~/.claude/skills/gstack/browse/dist/browse
+$B goto "http://localhost:3000/research/?branch=umass-2026"
+$B eval 'document.querySelector("h1, .sr-only") !== null && !document.title.includes("404")'
+```
+
+Expected: `true` — the old shared link still lands on the redesigned page rather than 404ing.
+
+Then confirm nothing animates under reduced motion by checking the global rule is in force:
+
+```bash
+grep -n "prefers-reduced-motion" src/app/globals.css | head -3
+```
+
+Expected: at least one global rule zeroing animation and transition durations.
+
+- [ ] **Step 7: Responsive check**
+
+```bash
+B=~/.claude/skills/gstack/browse/dist/browse
+$B viewport 390x844
+$B goto "http://localhost:3000/research/"
+$B screenshot /tmp/research-mobile.jpg
+$B eval 'document.body.scrollWidth <= window.innerWidth + 1'
+```
+
+Open `/tmp/research-mobile.jpg`. **Assert:** the desktop rail is hidden, the sticky chapter bar shows a section name and `n / 15`, and the eval returns `true` — no horizontal overflow.
+
+- [ ] **Step 8: Final comprehension read**
+
+Read the rendered page top to bottom yourself and answer the spec's four comprehension criteria explicitly. Write the answers into the commit body. If you cannot answer one from the page alone, that is a defect — fix it before committing.
+
+1. What did Jadon personally do — which techniques, for how long?
+2. Why was each protocol step necessary?
+3. What do the two projects prove differently?
+4. What went wrong, and what does the page say about fixing it?
+
+- [ ] **Step 9: Clean up and commit**
+
+```bash
+lsof -ti:3000 | xargs kill -9 2>/dev/null
+git add -A
+git commit -m "fix(research): verification pass — a11y, responsive, chapter scoping"
+```
+
+- [ ] **Step 10: Report to Jadon before merging**
+
+Do **not** merge to `main` or push without asking. Summarise: what was built, what the verification found, and any spec item that could not be met. Jadon decides when this ships to `jadonli.com`.
+
+---
+
+## Notes for the executor
+
+**Do not restore anything the spec rejected.** The "Rejected during design review" section of the spec lists five things that were considered and deliberately cut — the hero iris reveal, the full 13-item rail, the "Beyond" label, the heatmap and PCA components, and the ice-rink log entries. Re-adding any of them "for completeness" undoes a decision, not an omission.
+
+**Do not soften the setback.** `FUS_SETBACK` is the highest-value content on the page precisely because it is unresolved. It reads as diagnosis and plan. Rewriting it into a tidy success would remove the strongest evidence that this was real lab work.
+
+**If a fact seems missing, ask.** The spec's rule is absolute: no research fact appears on this page that is not in `content.ts`, `data.ts`, or the three author-verified constants. Inventing a plausible number is the worst possible failure mode for a page whose entire purpose is credibility.
