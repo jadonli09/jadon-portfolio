@@ -7,6 +7,7 @@ import { MissionIndex } from "@/components/built/MissionIndex";
 import { Chapter } from "@/components/built/Chapter";
 import { AcornDemo } from "@/components/built/demos/AcornDemo";
 import { HermesPipeline } from "@/components/built/demos/HermesPipeline";
+import { NotebookReader } from "@/components/built/demos/NotebookReader";
 import { ProductsGrid } from "@/components/built/ProductsGrid";
 import { GitHubShowcase } from "@/components/built/GitHubShowcase";
 import { LaunchLedger } from "@/components/built/LaunchLedger";
@@ -49,10 +50,15 @@ export default function BuiltPage() {
         <HermesPipeline />
       </Chapter>
 
-      {/* ── 5. OTHER PRODUCTS GRID ───────────────────────────── */}
+      {/* ── 5. M-03 NOTEBOOKLI ───────────────────────────────── */}
+      <Chapter project={bySlug("notebookli")} no="03">
+        <NotebookReader />
+      </Chapter>
+
+      {/* ── 6. OTHER PRODUCTS GRID ───────────────────────────── */}
       <ProductsGrid />
 
-      {/* ── 6. GITHUB SHOWCASE ───────────────────────────────── */}
+      {/* ── 7. GITHUB SHOWCASE ───────────────────────────────── */}
       <section className="border-b border-[var(--line)]">
         <div className="mx-auto max-w-7xl px-5 py-20 md:px-9 md:py-28">
           {/* Section header */}
@@ -79,10 +85,10 @@ export default function BuiltPage() {
         </div>
       </section>
 
-      {/* ── 7. FLIGHT LOG ────────────────────────────────────── */}
+      {/* ── 8. FLIGHT LOG ────────────────────────────────────── */}
       <LaunchLedger />
 
-      {/* ── 8. CLOSING MANIFESTO ─────────────────────────────── */}
+      {/* ── 9. CLOSING MANIFESTO ─────────────────────────────── */}
       <section className="mx-auto max-w-5xl px-5 py-20 text-center md:px-9 md:py-28">
         <Reveal>
           <p className="eyebrow mb-8">The builder&apos;s creed</p>
@@ -113,7 +119,7 @@ export default function BuiltPage() {
         </Reveal>
       </section>
 
-      {/* ── 9. FOOTER ─────────────────────────────────────────── */}
+      {/* ── 10. FOOTER ─────────────────────────────────────────── */}
       <Footer />
     </World>
   );
