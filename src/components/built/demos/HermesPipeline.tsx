@@ -8,8 +8,10 @@ import { asset } from "@/lib/base";
 import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/cn";
 
+// Notes must not restate a figure the stage already renders: the Ingest tiles
+// below carry every number from the run, so the note says what the stage IS.
 const STAGES = [
-  { id: 0, label: "Ingest", note: "55 posts scraped, 6 new" },
+  { id: 0, label: "Ingest", note: "One real run" },
   { id: 1, label: "Extract", note: "Claude pulls the meeting out" },
   { id: 2, label: "Publish", note: "One story, every weekday" },
 ] as const;
@@ -96,9 +98,9 @@ export function HermesPipeline() {
                 ))}
               </div>
 
-              <p className="eyebrow mb-3">
-                Results: {RUN_STATS.postsScraped} posts, {RUN_STATS.newPosts} new — 2026-08-28
-              </p>
+              {/* Labels the handle list underneath; the count is the
+                  "Clubs processed" tile above and is not repeated here. */}
+              <p className="eyebrow mb-3">Accounts polled — 2026-08-28 run</p>
               <div className="flex flex-wrap gap-x-3 gap-y-2">
                 {WATCHED_HANDLES.map((h) => (
                   <span key={h} className="font-mono text-[0.6rem] text-[var(--muted)]">
