@@ -92,12 +92,12 @@ export const AWARDS: Award[] = [
       exam: "USA Biology Olympiad — Open Exam",
       score: "26 / 50",
       cutoff: "28 / 50 (semifinalist)",
-      tier: "top ~15% nationally",
+      tier: "top 20% nationally",
       prep: "Campbell Biology + past papers",
     },
-    summary: "Score 26/50 — two points from the semifinalist cutoff. Top ~15% nationally.",
+    summary: "Score 26/50 — two points from the semifinalist cutoff. Top 20% nationally.",
     detail:
-      "Taken by thousands of strong biology students nationwide; scoring in the top 15% without a dedicated olympiad coach reflects the depth of self-directed study. A springboard, not a ceiling.",
+      "Taken by thousands of strong biology students nationwide; scoring in the top 20% without a dedicated olympiad coach reflects the depth of self-directed study. A springboard, not a ceiling.",
   },
   {
     id: "bbo",
@@ -244,7 +244,7 @@ export const USABO_MEDAL_INFO: [string, string][] = [
   ["award", "Honorable Mention"],
   ["exam", "USABO Open Exam"],
   ["score", "26 / 50 · cutoff 28"],
-  ["rank", "top ~15% national"],
+  ["rank", "top 20% national"],
 ];
 
 export const STATS = {
@@ -254,7 +254,7 @@ export const STATS = {
   degs_drg: "1254 up / 869 down",
   degs_spinal_cord: "202 up / 164 down",
   pain_mediators: 9,
-  usabo_score: "26/50 · top ~15% national",
+  usabo_score: "26/50 · top 20% national",
   uk_bbo: "Silver · top 10% intl",
   acsef: "3rd · BCOM",
   ysjc_students: "30 (2025) · 60 (2026)",

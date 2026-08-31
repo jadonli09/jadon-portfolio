@@ -1509,7 +1509,7 @@ export const TROPHIES: Trophy[] = [
   // ── Summer 2025 / Junior — research ──
   { year: "2025", title: "R + Bioinformatics training", cat: "research", w: 3, detail: "Learned R (ggplot2) and the RNA-seq pipeline under Dr. Shady Younice, Stanford." },
   { year: "2025", title: "ACSEF — 3rd, Computational Biology", cat: "research", w: 5, detail: "Gout RNA-seq; pain mediators traced to the spinal cord → new therapeutic targets." },
-  { year: "2025", title: "USABO — Honorable Mention", cat: "research", w: 4, detail: "26/50, top ~15% (semifinalist cutoff 28)." },
+  { year: "2025", title: "USABO — Honorable Mention", cat: "research", w: 4, detail: "26/50, top 20% (semifinalist cutoff 28)." },
   { year: "2025", title: "UK Biology Olympiad — Silver", cat: "research", w: 3, detail: "Top 10%, taken with no explicit prep." },
   { year: "2025", title: "Youth STEM Journal Club — founder", cat: "research", w: 3, detail: "Taught 8 middle-schoolers to dissect research papers at the Fremont Library." },
   { year: "2025", title: "PRISM — co-founder", cat: "research", w: 3, detail: "Promoting representation in clinical trials, with partner Arav." },
