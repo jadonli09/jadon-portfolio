@@ -872,6 +872,21 @@ import { FUS_PLASMID } from "../lab/content";
 
 type Feature = (typeof FUS_PLASMID.features)[number];
 
+/**
+ * Row assignment for the linear view's non-reporter labels. Parity over
+ * START-SORTED RANK, not over array index — FUS_PLASMID.features is declared
+ * mRFP/HygR/AmpR/ori/trpC/lacZa/GFP, so index parity groups the wrong pairs and
+ * leaves ori/lacZa overlapping. (Ruling R9, corrected.)
+ */
+const LABEL_ROW: Record<string, number> = {};
+FUS_PLASMID.features
+  .filter((f) => f.kind !== "reporter")
+  .slice()
+  .sort((a, b) => a.start - b.start)
+  .forEach((f, i) => {
+    LABEL_ROW[f.name] = i % 2;
+  });
+
 const KIND_COLOR: Record<Feature["kind"], string> = {
   reporter: "var(--accent)",
   marker: "var(--accent-2)",
@@ -916,12 +931,11 @@ export function PlasmidRing() {
               {FUS_PLASMID.name}, linearized at {FUS_PLASMID.cut.name}
             </title>
             <line x1={10} y1={48} x2={W - 10} y2={48} stroke="var(--line)" strokeWidth={10} />
-            {FUS_PLASMID.features.map((f, i) => {
+            {FUS_PLASMID.features.map((f) => {
               const x0 = 10 + (f.start / FUS_PLASMID.bp) * (W - 20);
               const x1 = 10 + (f.end / FUS_PLASMID.bp) * (W - 20);
-              // Non-reporter labels alternate between two rows (Ruling R9). All at one
-              // y overlapped: ori/lacZα and HygR/trpC collide at this viewBox width.
-              const labelY = f.kind === "reporter" ? 30 : i % 2 === 0 ? 66 : 80;
+              // Two rows so labels do not collide — see LABEL_ROW above.
+              const labelY = f.kind === "reporter" ? 30 : LABEL_ROW[f.name] === 0 ? 66 : 80;
               return (
                 <g key={f.name}>
                   <line
