@@ -171,7 +171,7 @@ Pure data. No UI. Everything here was dictated by Jadon on 2026-08-30 and is the
   - `FUS_REPORTER: { heading: string; body: string }`
   - `FUS_SETBACK: { heading: string; paras: string[] }`
   - `BENCH: { techniques: string[]; cadence: string; reading: string; log: typeof FUS_LOG }`
-  - `FUS_PANELS: Record<"neg" | "fo47" | "t8996", { label: string; bf: string; rfp: string; merge: string }>`
+  - `FUS_PANELS: Record<"neg" | "fo47" | "t8996", { label: string; note: string; bf: string; rfp: string; merge: string }>`
 
 - [ ] **Step 1: Append the constants**
 
