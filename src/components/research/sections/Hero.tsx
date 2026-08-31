@@ -1,8 +1,9 @@
 "use client";
 
 import { asset } from "@/lib/base";
+import { RESEARCH } from "@/lib/data";
 import { jumpTo } from "../lab/bus";
-import { FUS, FUS_PANELS } from "../lab/content";
+import { FUS_PANELS } from "../lab/content";
 
 export function Hero() {
   return (
@@ -24,7 +25,7 @@ export function Hero() {
             <span className="h-[7px] w-[7px] rounded-full bg-[var(--accent)] shadow-[0_0_10px_var(--accent)]" />
             Summer 2026
           </span>
-          <span>{FUS.affiliations.split(" · ")[1] ?? "UMass Amherst"}</span>
+          <span>{RESEARCH.umass.lab}</span>
         </p>
         <h1 className="mb-7 font-serif text-[clamp(3rem,10vw,8rem)] leading-[0.92] tracking-[-0.02em] text-balance">
           We made the fungus{" "}
