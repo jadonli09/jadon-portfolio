@@ -45,7 +45,7 @@ Plus a scripted browser assertion where a task has runtime behaviour, using the 
 
 **Copy rule.** No decorative eyebrows, no label chips that restate a heading, no italic ledes that paraphrase the paragraph below, no "+ the story" toggles. Labels that carry a fact (dates, roles, counts) are fine. Never state the same number in two places.
 
-**Accessibility floor.** Every interactive control is keyboard-operable with a visible `:focus-visible` ring. Every animation checks `prefers-reduced-motion`.
+**Accessibility floor.** Every interactive control is keyboard-operable with a visible focus indicator. Use the repo's established pattern — `focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]` (23 existing uses across `src/components`) — not an `outline-*` variant (Ruling R8). SVG elements cannot rely on a ring: a focusable `<path>`/`<line>` must change its own stroke or filter on focus, driven by component state. Every animation checks `prefers-reduced-motion`.
 
 **Commits.** Conventional-commit subject. Every commit message ends with:
 
@@ -569,7 +569,7 @@ export function ResearchNav() {
                       aria-current={active === s.id ? "true" : undefined}
                       className={cn(
                         "-ml-2 rounded-sm py-0.5 pl-2 text-[0.8rem] transition-colors",
-                        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--accent)]",
+                        "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
                         active === s.id
                           ? "border-l border-[var(--accent)] text-[var(--fg)]"
                           : "border-l border-transparent text-[var(--muted)] hover:text-[var(--fg)]",
@@ -746,7 +746,7 @@ export function ConfocalWipe() {
               aria-pressed={strain === k}
               className={cn(
                 "rounded-sm border px-3 py-1.5 font-mono text-[0.62rem] uppercase tracking-[0.12em] transition-colors",
-                "focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--accent)]",
+                "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
                 strain === k
                   ? "border-[var(--accent)] bg-[var(--accent)] text-[#10040a]"
                   : "border-[var(--line)] text-[var(--muted)] hover:text-[var(--fg)]",
@@ -789,7 +789,7 @@ export function ConfocalWipe() {
         style={{ aspectRatio: "208 / 205" }}
         className={cn(
           "relative w-full cursor-ew-resize touch-none select-none overflow-hidden bg-black",
-          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]",
+          "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:ring-[var(--accent)]",
         )}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -927,11 +927,19 @@ export function PlasmidRing() {
                     x2={x1}
                     y2={48}
                     stroke={KIND_COLOR[f.kind]}
-                    strokeWidth={f.kind === "reporter" ? 12 : 10}
+                    strokeWidth={f.kind === "reporter" || hovered?.name === f.name ? 13 : 10}
                     onMouseEnter={() => setHovered(f)}
+                    onMouseLeave={() => setHovered(null)}
                     onFocus={() => setHovered(f)}
+                    onBlur={() => setHovered(null)}
                     tabIndex={0}
-                    style={{ cursor: "pointer" }}
+                    style={{
+                      cursor: "pointer",
+                      filter:
+                        f.kind === "reporter" || hovered?.name === f.name
+                          ? `drop-shadow(0 0 6px ${KIND_COLOR[f.kind]})`
+                          : undefined,
+                    }}
                   />
                   <text
                     x={(x0 + x1) / 2}
@@ -1048,7 +1056,7 @@ export function PlasmidRing() {
           aria-pressed={linear}
           className={cn(
             "self-start rounded-sm border px-3 py-2 font-mono text-[0.65rem] uppercase tracking-[0.12em] transition-colors",
-            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--accent)]",
+            "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
             linear
               ? "border-[var(--hot)] text-[var(--hot)]"
               : "border-[var(--line)] text-[var(--muted)] hover:text-[var(--fg)]",
@@ -1670,7 +1678,7 @@ export function Poster() {
         href={FUS_IMAGES.poster.src}
         target="_blank"
         rel="noopener noreferrer"
-        className="block border border-[var(--line)] transition-colors hover:border-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
+        className="block border border-[var(--line)] transition-colors hover:border-[var(--accent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
       >
         <div className="relative w-full bg-black" style={aspectFrom(FUS_IMAGES.poster.dims)}>
           <Photo src={FUS_IMAGES.poster.src} alt={FUS_IMAGES.poster.alt} />
@@ -2129,7 +2137,7 @@ export function Console() {
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Open the research console"
-        className="fixed bottom-5 right-5 z-40 rounded-sm border border-[var(--line)] bg-[var(--bg-2)]/90 px-3 py-2 font-mono text-[0.7rem] text-[var(--muted)] backdrop-blur transition-colors hover:border-[var(--accent)] hover:text-[var(--fg)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
+        className="fixed bottom-5 right-5 z-40 rounded-sm border border-[var(--line)] bg-[var(--bg-2)]/90 px-3 py-2 font-mono text-[0.7rem] text-[var(--muted)] backdrop-blur transition-colors hover:border-[var(--accent)] hover:text-[var(--fg)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
       >
         &gt;_
       </button>
@@ -2151,7 +2159,7 @@ export function Console() {
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-[var(--muted)] hover:text-[var(--fg)]"
+          className="rounded-sm font-mono text-[0.65rem] uppercase tracking-[0.16em] text-[var(--muted)] hover:text-[var(--fg)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
         >
           Esc
         </button>
