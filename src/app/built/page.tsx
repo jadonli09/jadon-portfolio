@@ -4,18 +4,20 @@ import { Footer } from "@/components/chrome/Footer";
 import { Reveal } from "@/components/primitives/Reveal";
 import { BuiltHero } from "@/components/built/BuiltHero";
 import { MissionIndex } from "@/components/built/MissionIndex";
-import { AcornFlagship } from "@/components/built/AcornFlagship";
+import { Chapter } from "@/components/built/Chapter";
 import { ProductsGrid } from "@/components/built/ProductsGrid";
 import { GitHubShowcase } from "@/components/built/GitHubShowcase";
 import { LaunchLedger } from "@/components/built/LaunchLedger";
 import { DecodeText, MissionRail } from "@/components/built/MissionFX";
-import { PROFILE } from "@/lib/data";
+import { PROFILE, PROJECTS } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Things I've Built",
   description:
     "AcornPrep, CueSheet, Hermes — real products with real users. 500+ users, #1 Google result, shipped by a high-school builder.",
 };
+
+const bySlug = (s: string) => PROJECTS.find((p) => p.slug === s)!;
 
 /**
  * Things I've Built — World 03.
@@ -35,8 +37,8 @@ export default function BuiltPage() {
       {/* ── 2. MISSION INDEX ─────────────────────────────────── */}
       <MissionIndex />
 
-      {/* ── 3. ACORNPREP FLAGSHIP ────────────────────────────── */}
-      <AcornFlagship />
+      {/* ── 3. M-01 ACORNPREP ────────────────────────────────── */}
+      <Chapter project={bySlug("acornprep")} no="01" />
 
       {/* ── 4. OTHER PRODUCTS GRID ───────────────────────────── */}
       <ProductsGrid />
