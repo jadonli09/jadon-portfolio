@@ -20,6 +20,19 @@ const TAU = Math.PI * 2;
 
 const ang = (bp: number) => (bp / FUS_PLASMID.bp) * TAU - Math.PI / 2;
 
+// Linear-view label row (0/1) for non-reporter features, alternated by rank in
+// start-bp order rather than by declaration order in FUS_PLASMID.features —
+// the declared array isn't sorted by start, so indexing off it directly still
+// left "ori" and "lacZα (fragment)" sharing a row and colliding.
+const LABEL_ROW: Record<string, number> = {};
+FUS_PLASMID.features
+  .filter((f) => f.kind !== "reporter")
+  .slice()
+  .sort((a, b) => a.start - b.start)
+  .forEach((f, i) => {
+    LABEL_ROW[f.name] = i % 2;
+  });
+
 function arcPath(cx: number, cy: number, r: number, a0: number, a1: number) {
   const x0 = cx + r * Math.cos(a0);
   const y0 = cy + r * Math.sin(a0);
@@ -41,7 +54,7 @@ export function PlasmidRing() {
       <div className="w-full max-w-[320px] shrink-0">
         {linear ? (
           <svg
-            viewBox={`0 0 ${W} 96`}
+            viewBox={`0 0 ${W} 104`}
             className="w-full"
             role="img"
             aria-labelledby={titleId}
@@ -53,6 +66,9 @@ export function PlasmidRing() {
             {FUS_PLASMID.features.map((f) => {
               const x0 = 10 + (f.start / FUS_PLASMID.bp) * (W - 20);
               const x1 = 10 + (f.end / FUS_PLASMID.bp) * (W - 20);
+              // Non-reporter labels alternate between two rows. All at one y overlapped:
+              // ori/lacZα and HygR/trpC collide at this viewBox width.
+              const labelY = f.kind === "reporter" ? 30 : LABEL_ROW[f.name] === 0 ? 66 : 80;
               return (
                 <g key={f.name}>
                   <line
@@ -77,7 +93,7 @@ export function PlasmidRing() {
                   />
                   <text
                     x={(x0 + x1) / 2}
-                    y={f.kind === "reporter" ? 30 : 72}
+                    y={labelY}
                     fontSize="7.5"
                     fill={KIND_COLOR[f.kind]}
                     textAnchor="middle"
