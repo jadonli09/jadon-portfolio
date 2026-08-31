@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
-import { FEED, WATCHED_HANDLES, RUN_STATS, STORY_SHOT } from "@/lib/demos/hermes";
+import { ArrowUpRight } from "lucide-react";
+import { EXTRACTIONS, WATCHED_HANDLES, RUN_STATS, STORY_SHOT } from "@/lib/demos/hermes";
 import { asset } from "@/lib/base";
 import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/cn";
@@ -21,6 +22,10 @@ const RUN_STAT_ROWS = [
   { value: String(RUN_STATS.extractionFailures), label: "Extraction failures" },
   { value: `~${RUN_STATS.durationSeconds}s`, label: "Run time" },
 ] as const;
+
+// Matches Hermes's own review threshold (web/review.js REVIEW_CONFIDENCE) — below
+// this, a human looks at the row before it counts as verified.
+const REVIEW_CONFIDENCE = 0.7;
 
 export function HermesPipeline() {
   const ref = useRef<HTMLDivElement>(null);
@@ -104,7 +109,7 @@ export function HermesPipeline() {
             </motion.div>
           ) : null}
 
-          {/* ── Extract: caption → structured row ── */}
+          {/* ── Extract: real rows from Hermes's own output sheet ── */}
           {stage === 1 ? (
             <motion.div
               key="extract"
@@ -112,38 +117,54 @@ export function HermesPipeline() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.35, ease: EASE }}
-              className="flex flex-col gap-3"
+              className="flex flex-col gap-4"
             >
-              <p className="eyebrow mb-1">Hermes&apos;s own extraction test cases</p>
-              {FEED.map((f, i) => (
-                <motion.div
-                  key={f.caption}
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.45, ease: EASE, delay: i * 0.1 }}
-                  className="grid grid-cols-1 items-center gap-3 border-b border-[var(--line)] pb-3 md:grid-cols-[1fr_auto_1.2fr]"
-                >
-                  <div>
-                    <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--accent)]">
-                      {f.handle ? `@${f.handle}` : `Test case ${i + 1}`}
+              <p className="eyebrow mb-1">Real rows, Hermes&apos;s own output sheet</p>
+              {EXTRACTIONS.map((e, i) => {
+                const confident = e.confidence >= REVIEW_CONFIDENCE;
+                return (
+                  <motion.div
+                    key={e.postUrl}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.45, ease: EASE, delay: i * 0.1 }}
+                    className="border-b border-[var(--line)] pb-4"
+                  >
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--accent)]">
+                          @{e.club}
+                        </p>
+                        <p className="mt-1 font-mono text-[0.7rem] text-[var(--fg)]">
+                          {e.date || "—"} · {e.time || "—"} · {e.type} · {e.location || "—"}
+                        </p>
+                      </div>
+                      <span
+                        className={cn(
+                          "shrink-0 border px-2 py-0.5 font-mono text-[0.6rem]",
+                          confident
+                            ? "border-[var(--accent)] text-[var(--accent)]"
+                            : "border-[var(--line)] text-[var(--muted)]",
+                        )}
+                      >
+                        confidence {e.confidence}
+                      </span>
+                    </div>
+                    <p className="mt-2 text-xs leading-relaxed text-[var(--muted)]">
+                      {e.description}
                     </p>
-                    <p className="mt-1 truncate text-xs text-[var(--muted)] opacity-60">
-                      {f.caption}
-                    </p>
-                  </div>
-                  <span className="hidden font-mono text-[var(--accent)] md:block">→</span>
-                  {f.extracted ? (
-                    <p className="font-mono text-[0.7rem] leading-relaxed text-[var(--fg)]">
-                      {f.extracted.room} · {f.extracted.time}
-                      <span className="text-[var(--muted)]"> — {f.extracted.what}</span>
-                    </p>
-                  ) : (
-                    <p className="font-mono text-[0.7rem] text-[var(--muted)]">
-                      no meeting — dropped
-                    </p>
-                  )}
-                </motion.div>
-              ))}
+                    <a
+                      href={e.postUrl}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      data-cursor-hover
+                      className="mt-2 inline-flex items-center gap-1 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--fg)]"
+                    >
+                      View post <ArrowUpRight className="size-3" />
+                    </a>
+                  </motion.div>
+                );
+              })}
             </motion.div>
           ) : null}
 

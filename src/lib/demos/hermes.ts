@@ -1,49 +1,88 @@
 /**
- * Two honest, independently-verifiable pieces of Hermes evidence, kept
- * deliberately separate:
+ * Two honest, independently-verifiable pieces of Hermes evidence:
  *
  * 1. WATCHED_HANDLES + RUN_STATS — the real account roster and real
  *    telemetry from one actual scraping run (Hermes's own progress.json /
- *    run-log.json, run timestamped 2026-08-28). These are facts about the
- *    system, not about any single post.
+ *    run-log.json, run timestamped 2026-08-28). Facts about the system.
  *
- * 2. FEED — caption text copied verbatim from Hermes's own Jest test suite
- *    (scraper.test.js, apify-scraper.test.js, ai-processor-usage.test.js),
- *    run through the extraction rules documented in ai-processor.js's
- *    prompt. The running bot does not retain real scraped caption text
- *    anywhere on disk, and Hermes was never asked to read these accounts'
- *    actual posts — so no caption here is attributed to a handle. `handle`
- *    is optional and unset for every record below on purpose: it exists so
- *    real {handle, caption} pairs can be dropped straight in later without
- *    changing the shape, the moment real captions are available.
+ * 2. EXTRACTIONS — real rows copied verbatim from a CSV export of Hermes's
+ *    live output Google Sheet (.superpowers/sdd/2026-08-30-built-world-redesign/hermes-sheet.csv,
+ *    86 rows across 43 real clubs). Each row is Claude's actual structured
+ *    extraction from a real Instagram post by that account, plus the
+ *    confidence Claude assigned itself and a link to the source post so any
+ *    claim here is one click from verification. The two low-confidence rows
+ *    are genuine — posts that were never meeting announcements, where the
+ *    model correctly left date/time/location blank and scored itself low
+ *    rather than guessing. Fields are empty strings, not invented values,
+ *    exactly as the sheet has them.
  */
 
-export type Extracted = { room: string; time: string; what: string };
-
-export type FeedItem = {
-  /** Only ever set once a caption is a verified real post from this account. */
-  handle?: string;
-  caption: string;
-  /** null when the caption carries no meeting — the filter is part of the demo. */
-  extracted: Extracted | null;
+export type Extraction = {
+  club: string;
+  date: string;
+  time: string;
+  type: string;
+  location: string;
+  confidence: number;
+  description: string;
+  postUrl: string;
 };
 
-export const FEED: FeedItem[] = [
+export const EXTRACTIONS: Extraction[] = [
   {
-    caption: "Club meeting Tuesday at lunch in B17",
-    extracted: { room: "B17", time: "Lunch", what: "Club Meeting" },
+    club: "msjmocktrial",
+    date: "08/17/2026",
+    time: "After School",
+    type: "Club Meeting",
+    location: "C120",
+    confidence: 0.95,
+    description:
+      "MSJ Mock Trial introductory meeting to learn about auditions, meet officers, and discover how the team operates.",
+    postUrl: "https://www.instagram.com/p/DcAOXIFPpmq/",
   },
   {
-    caption: "Meeting Friday in room 12 at lunch",
-    extracted: { room: "12", time: "Lunch", what: "Club Meeting" },
+    club: "msjclubs",
+    date: "08/19/2026",
+    time: "Lunch",
+    type: "Club Meeting",
+    location: "C120",
+    confidence: 0.95,
+    description:
+      "The first ever council meeting, mandatory for all clubs, will be held during lunch on Wednesday 8/19 in C120 next to the chemistry building.",
+    postUrl: "https://www.instagram.com/p/DcMuBxRvvNz/",
   },
   {
-    caption: "See you at 3:30 in the library!",
-    extracted: { room: "Library", time: "3:30", what: "Club Meeting" },
+    club: "msjwarriors",
+    date: "08/14/2026",
+    time: "Lunch",
+    type: "Competition",
+    location: "BTQ",
+    confidence: 0.95,
+    description:
+      "A-Team hosts the Mission Man Competition, a 3-challenge tournament at the BTQ during lunch on Friday, August 14th.",
+    postUrl: "https://www.instagram.com/p/Db-CsGVMisO/",
   },
   {
-    caption: "Welcome to our club page! We are happy to have you here.",
-    extracted: null,
+    club: "msjgreenclub",
+    date: "",
+    time: "",
+    type: "Event",
+    location: "",
+    confidence: 0.4,
+    description:
+      "MSJ Green Club hosted a photo booth at their booth during Maze Day, thanking attendees and inviting them to their upcoming intro meeting.",
+    postUrl: "https://www.instagram.com/p/Db3uz8svDp8/",
+  },
+  {
+    club: "msj.futurephysicians",
+    date: "",
+    time: "",
+    type: "Announcement",
+    location: "",
+    confidence: 0.4,
+    description:
+      "MSJ Future Physicians club thanks attendees for visiting their booth at Maze Day and looks forward to the upcoming school year.",
+    postUrl: "https://www.instagram.com/p/Db4LXTTvmdo/",
   },
 ];
 
