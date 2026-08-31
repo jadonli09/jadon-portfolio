@@ -6,6 +6,7 @@ import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { Magnetic } from "@/components/primitives/Magnetic";
 import { TiltCard } from "@/components/primitives/TiltCard";
 import { Photo } from "@/components/primitives/Photo";
+import { Develop } from "@/components/built/Develop";
 import { LiveEmbed } from "@/components/built/LiveEmbed";
 import { DecodeText, StatValue } from "@/components/built/MissionFX";
 import { PROJECTS } from "@/lib/data";
@@ -141,13 +142,15 @@ export function AcornFlagship() {
         {/* ── Full-width landscape transmission — the entire AcornPrep hero ── */}
         <Reveal delay={0.15} className="mt-14">
           <div className="frame-brackets">
-            <LiveEmbed
-              url={acorn.url}
-              domain={acorn.domain}
-              title={acorn.name}
-              screenshot={acorn.shot}
-              aspect="1280/800"
-            />
+            <Develop>
+              <LiveEmbed
+                url={acorn.url}
+                domain={acorn.domain}
+                title={acorn.name}
+                screenshot={acorn.shot}
+                aspect="1280/800"
+              />
+            </Develop>
           </div>
 
           {/* Sub-caption */}
