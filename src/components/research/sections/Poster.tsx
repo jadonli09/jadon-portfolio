@@ -1,9 +1,13 @@
 import { asset } from "@/lib/base";
-import { FUS, FUS_IMAGES } from "../lab/content";
+import { FUS, FUS_IMAGES, FUS_RESOURCES } from "../lab/content";
 import { Photo } from "@/components/primitives/Photo";
 import { Section, aspectFrom } from "./Section";
 
 const SHOTS = ["bench", "session", "photo"] as const;
+
+// The poster cites this literature reference; everything else in
+// FUS_RESOURCES has a home elsewhere on the page.
+const CITATION = FUS_RESOURCES.find((r) => r.kind === "text");
 
 export function Poster() {
   return (
@@ -41,6 +45,12 @@ export function Poster() {
           );
         })}
       </div>
+
+      {CITATION ? (
+        <p className="mt-6 text-[0.8rem] leading-relaxed text-[var(--muted)]">
+          {CITATION.label} — {CITATION.detail}
+        </p>
+      ) : null}
     </Section>
   );
 }

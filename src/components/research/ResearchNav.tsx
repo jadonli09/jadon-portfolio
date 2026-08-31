@@ -115,7 +115,17 @@ export function ResearchNav() {
           {GROUPS.map((g) => {
             const open = openGroup === g.id;
             return (
-              <div key={g.id} className="flex flex-col gap-1.5">
+              <div
+                key={g.id}
+                className={cn(
+                  "flex flex-col gap-1.5",
+                  // Group has no heading by design (see NavGroup.label), so a
+                  // hairline stands in for one — otherwise its entries render
+                  // flush under whichever group sits above and read as part
+                  // of it, collapsed or not.
+                  g.label === null && "mt-2 border-t border-[var(--line)] pt-3",
+                )}
+              >
                 {g.label ? (
                   <button
                     type="button"
@@ -197,7 +207,13 @@ export function ResearchNav() {
           </button>
           <div className="flex flex-col gap-6">
             {GROUPS.map((g) => (
-              <div key={g.id} className="flex flex-col gap-2">
+              <div
+                key={g.id}
+                className={cn(
+                  "flex flex-col gap-2",
+                  g.label === null && "border-t border-[var(--line)] pt-5",
+                )}
+              >
                 {g.label ? (
                   <p className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-[var(--accent)]">
                     {g.label}

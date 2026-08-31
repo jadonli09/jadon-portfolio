@@ -224,7 +224,7 @@ export function PlasmidRing() {
       </div>
 
       <div className="flex min-w-0 flex-col gap-4">
-        <p className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[var(--muted)]">
+        <p className="font-mono text-[0.7rem] tracking-[0.14em] text-[var(--muted)]">
           {FUS_PLASMID.name} · {FUS_PLASMID.bp.toLocaleString()} bp
         </p>
         <div className="min-h-[4.5rem]">
@@ -238,7 +238,7 @@ export function PlasmidRing() {
           onClick={() => setLinear((v) => !v)}
           aria-pressed={linear}
           className={cn(
-            "self-start rounded-sm border px-3 py-2 font-mono text-[0.65rem] uppercase tracking-[0.12em] transition-colors",
+            "self-start rounded-sm border px-3 py-2 font-mono text-[0.65rem] tracking-[0.12em] transition-colors",
             "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
             linear
               ? "border-[var(--hot)] text-[var(--hot)]"

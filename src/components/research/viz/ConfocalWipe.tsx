@@ -44,7 +44,7 @@ export function ConfocalWipe() {
               onClick={() => setStrain(k)}
               aria-pressed={strain === k}
               className={cn(
-                "rounded-sm border px-3 py-1.5 font-mono text-[0.62rem] uppercase tracking-[0.12em] transition-colors",
+                "rounded-sm border px-3 py-1.5 font-mono text-[0.62rem] tracking-[0.12em] transition-colors",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
                 strain === k
                   ? "border-[var(--accent)] bg-[var(--accent)] text-[#10040a]"
