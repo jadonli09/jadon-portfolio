@@ -29,14 +29,23 @@ export function Console() {
   const [hIndex, setHIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  // Whatever had focus right before the console opened — restored on close.
-  // The `>_` trigger unmounts while the console is open, so this can't be a
-  // fixed ref to that button the way ResearchNav's always-mounted sheet
-  // trigger is; capturing document.activeElement covers both the "opened by
-  // clicking the trigger" case (the browser focuses a button before its
-  // click handler runs, so it's already the active element here) and the
-  // "opened with the ` key from elsewhere on the page" case.
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  // Whatever had focus right before the console opened via the ` key from
+  // elsewhere on the page — restored on close. Only used when the console
+  // was NOT opened by clicking the trigger (see openedByTrigger below).
   const previouslyFocused = useRef<HTMLElement | null>(null);
+  // True for the one open→close cycle that started with a click on the `>_`
+  // trigger. Can't just capture e.currentTarget from that click and refocus
+  // it later: the trigger unmounts the instant the console opens (this
+  // component renders either the button or the dialog, never both) and a
+  // brand-new <button> DOM node is created when it closes again, so a
+  // captured reference to the OLD node would be detached and silently
+  // ignore .focus(). triggerRef, read live in the close cleanup below, always
+  // points at whichever trigger node is currently mounted — which also sidesteps
+  // Safari's refusal to auto-focus a <button> on click (document.activeElement
+  // at open time can't be trusted there either).
+  const openedByTrigger = useRef(false);
 
   // ` toggles the console from anywhere, except while typing in a field.
   useEffect(() => {
@@ -55,14 +64,24 @@ export function Console() {
   }, []);
 
   // Focus moves into the console on open (the input, its primary control)
-  // and returns to whatever had it beforehand on close — same shape as the
-  // mobile section sheet in ResearchNav.tsx.
+  // and returns to the trigger (click-opens) or whatever had focus before
+  // (keyboard-summoned opens) on close — same shape as the mobile section
+  // sheet in ResearchNav.tsx.
   useEffect(() => {
     if (!open) return;
-    previouslyFocused.current = document.activeElement as HTMLElement | null;
+    if (!openedByTrigger.current) {
+      previouslyFocused.current = document.activeElement as HTMLElement | null;
+    }
     inputRef.current?.focus();
     return () => {
-      previouslyFocused.current?.focus();
+      // Deliberately read live rather than copying into a variable above: the
+      // whole point is that triggerRef.current is null while this effect body
+      // runs (trigger unmounted) and becomes the freshly-remounted button by
+      // the time this cleanup fires — see the openedByTrigger comment above.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      (openedByTrigger.current ? triggerRef.current : previouslyFocused.current)?.focus();
+      openedByTrigger.current = false;
+      previouslyFocused.current = null;
     };
   }, [open]);
 
@@ -160,11 +179,19 @@ export function Console() {
       }
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      const i = hIndex - 1;
+      const i = Math.max(hIndex - 1, -1);
       setHIndex(i);
       setValue(i >= 0 ? history[i] : "");
     } else if (e.key === "Tab") {
       e.preventDefault();
+      // Shift+Tab leaves the input for the close button — the input would
+      // otherwise swallow Tab in both directions for autocomplete below,
+      // making the close button unreachable by keyboard. Plain Tab keeps
+      // doing autocomplete.
+      if (e.shiftKey) {
+        closeButtonRef.current?.focus();
+        return;
+      }
       const hit = ALL_SECTIONS.find((s) => s.id.startsWith(value.replace(/^open\s+/, "")));
       if (hit) setValue(`open ${hit.id}`);
     }
@@ -173,9 +200,9 @@ export function Console() {
   // The console only ever has two focusable elements: this close button and
   // the input. Forward Tab from either already lands inside the console (the
   // input is the next thing in DOM order after this button), and the input
-  // already consumes Tab/Shift+Tab entirely for autocomplete above — so the
-  // one gap a focus trap needs to close is Shift+Tab off this button, which
-  // would otherwise walk backward into the page behind the overlay.
+  // now sends Shift+Tab here explicitly (see onKeyDown above) — so the one
+  // remaining gap a focus trap needs to close is Shift+Tab off this button,
+  // which would otherwise walk backward into the page behind the overlay.
   function onCloseKeyDown(e: React.KeyboardEvent<HTMLButtonElement>) {
     if (e.key === "Tab" && e.shiftKey) {
       e.preventDefault();
@@ -186,8 +213,12 @@ export function Console() {
   if (!open) {
     return (
       <button
+        ref={triggerRef}
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          openedByTrigger.current = true;
+          setOpen(true);
+        }}
         aria-label="Open the research console"
         className="fixed bottom-5 right-5 z-40 rounded-sm border border-[var(--line)] bg-[var(--bg-2)]/90 px-3 py-2 font-mono text-[0.7rem] text-[var(--muted)] backdrop-blur transition-colors hover:border-[var(--accent)] hover:text-[var(--fg)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
       >
@@ -201,50 +232,57 @@ export function Console() {
       role="dialog"
       aria-modal="true"
       aria-label="Research console"
-      data-lenis-prevent
-      className="fixed inset-x-0 bottom-0 z-50 h-[min(60dvh,26rem)] border-t border-[var(--accent)] bg-[#05060a]/97 backdrop-blur"
+      className="fixed inset-0 z-50 bg-black/30"
+      onClick={() => setOpen(false)}
     >
-      <div className="flex items-center justify-between border-b border-[var(--line)] px-4 py-2">
-        <span className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-[var(--muted)]">
-          {FUS.id}
-        </span>
-        <button
-          type="button"
-          onClick={() => setOpen(false)}
-          onKeyDown={onCloseKeyDown}
-          className="rounded-sm font-mono text-[0.65rem] uppercase tracking-[0.16em] text-[var(--muted)] hover:text-[var(--fg)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-        >
-          Esc
-        </button>
-      </div>
-      <div ref={scrollRef} className="h-[calc(100%-5.5rem)] overflow-y-auto px-4 py-3 font-mono text-[0.8rem] leading-[1.65]">
-        {lines.map((l, i) => (
-          <p
-            key={i}
-            className={
-              l.tone === "accent"
-                ? "whitespace-pre-wrap text-[var(--accent)]"
-                : l.tone === "muted"
-                  ? "whitespace-pre-wrap text-[var(--muted)]"
-                  : "whitespace-pre-wrap text-[var(--fg)]"
-            }
+      <div
+        data-lenis-prevent
+        onClick={(e) => e.stopPropagation()}
+        className="fixed inset-x-0 bottom-0 h-[min(60dvh,26rem)] border-t border-[var(--accent)] bg-[#05060a]/97 backdrop-blur"
+      >
+        <div className="flex items-center justify-between border-b border-[var(--line)] px-4 py-2">
+          <span className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-[var(--muted)]">
+            {FUS.id}
+          </span>
+          <button
+            ref={closeButtonRef}
+            type="button"
+            onClick={() => setOpen(false)}
+            onKeyDown={onCloseKeyDown}
+            className="rounded-sm font-mono text-[0.65rem] uppercase tracking-[0.16em] text-[var(--muted)] hover:text-[var(--fg)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
           >
-            {l.text}
-          </p>
-        ))}
-      </div>
-      <div className="flex items-center gap-2 border-t border-[var(--line)] px-4 py-2.5 font-mono text-[0.8rem]">
-        <span className="text-[var(--accent)]">visitor@research:~$</span>
-        <input
-          ref={inputRef}
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onKeyDown={onKeyDown}
-          spellCheck={false}
-          autoComplete="off"
-          aria-label="Console input"
-          className="min-w-0 flex-1 bg-transparent text-[var(--fg)] outline-none"
-        />
+            Esc
+          </button>
+        </div>
+        <div ref={scrollRef} className="h-[calc(100%-5.5rem)] overflow-y-auto px-4 py-3 font-mono text-[0.8rem] leading-[1.65]">
+          {lines.map((l, i) => (
+            <p
+              key={i}
+              className={
+                l.tone === "accent"
+                  ? "whitespace-pre-wrap text-[var(--accent)]"
+                  : l.tone === "muted"
+                    ? "whitespace-pre-wrap text-[var(--muted)]"
+                    : "whitespace-pre-wrap text-[var(--fg)]"
+              }
+            >
+              {l.text}
+            </p>
+          ))}
+        </div>
+        <div className="flex items-center gap-2 border-t border-[var(--line)] px-4 py-2.5 font-mono text-[0.8rem]">
+          <span className="text-[var(--accent)]">visitor@research:~$</span>
+          <input
+            ref={inputRef}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onKeyDown={onKeyDown}
+            spellCheck={false}
+            autoComplete="off"
+            aria-label="Console input"
+            className="min-w-0 flex-1 bg-transparent text-[var(--fg)] outline-none"
+          />
+        </div>
       </div>
     </div>
   );
