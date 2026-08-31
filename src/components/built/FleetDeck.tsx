@@ -70,8 +70,20 @@ export function FleetDeck() {
   );
 
   return (
-    <section className="border-b border-[var(--line)] bg-[var(--bg-2)]">
+    <section id="fleet" className="border-b border-[var(--line)] bg-[var(--bg-2)]">
       <div className="mx-auto max-w-7xl px-5 py-20 md:px-9 md:py-28">
+        {/*
+          Deep-link anchors for the five deck slugs. They MUST live outside the
+          embla track: the track is `overflow-hidden`, so a native anchor jump
+          to an id inside it scrolls the track horizontally while embla is
+          independently translating it — the two offsets add and the deck lands
+          on the wrong panel. These zero-height stubs absorb the browser's jump
+          (vertical only); the hash listener below is what moves the deck.
+        */}
+        {FLEET.map((p) => (
+          <div key={p.slug} id={p.slug} className="h-0 scroll-mt-24" aria-hidden />
+        ))}
+
         <div className="mb-10">
           <Reveal>
             <h2 className="mission-display text-[2.2rem] md:text-[3.6rem]">
@@ -95,7 +107,7 @@ export function FleetDeck() {
               role="tab"
               id={`fleet-tab-${p.slug}`}
               aria-selected={selected === i}
-              aria-controls={p.slug}
+              aria-controls={`fleet-panel-${p.slug}`}
               tabIndex={selected === i ? 0 : -1}
               data-fleet-tab={p.slug}
               data-cursor-hover
@@ -131,34 +143,45 @@ export function FleetDeck() {
         {/* Panels — all in the DOM so ⌘F and crawlers find every project */}
         <div className="overflow-hidden border border-t-0 border-[var(--line)]" ref={emblaRef}>
           <div className="flex">
-            {FLEET.map((p) => (
+            {FLEET.map((p, i) => (
               <div
                 key={p.slug}
-                id={p.slug}
-                className="min-w-0 flex-[0_0_100%] scroll-mt-24"
+                id={`fleet-panel-${p.slug}`}
+                className="min-w-0 flex-[0_0_100%]"
                 role="tabpanel"
                 aria-labelledby={`fleet-tab-${p.slug}`}
                 data-deck={p.slug}
+                // Off-screen panels stay in the DOM (⌘F and crawlers still find
+                // CueSheet) but must not take Tab focus — landing on a link in a
+                // panel nobody can see scrolls the track and desyncs the deck.
+                inert={selected !== i}
               >
                 <div className="grid min-h-[30rem] grid-cols-1 gap-8 p-6 md:p-10 lg:grid-cols-[1fr_1.3fr] lg:gap-12">
                   {/* Writeup */}
                   <div className="flex flex-col justify-center">
-                    <p className="mission-display text-2xl">{p.name}</p>
+                    {/* The product name is the heading — a document outline of
+                        five taglines names none of these projects. */}
+                    <h3 className="mission-display text-2xl">{p.name}</h3>
                     <p className="mt-2 text-sm text-[var(--muted)]">{p.tagline}</p>
                     <p className="mt-5 text-sm leading-[1.9] text-[var(--muted)]">{p.body}</p>
 
-                    <div className="mt-6 flex flex-col gap-1.5">
-                      {p.stats.map((s) => (
-                        <div key={s.label} className="flex items-baseline gap-2">
-                          <span className="mission-display text-xl text-[var(--fg)]">
-                            <StatValue value={s.value} />
-                          </span>
-                          <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-                            {s.label}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+                    {/* MSJ Makes carries no stat — its one figure lives in the
+                        hero strip. Skip the block entirely rather than leave a
+                        margin where a fact should be. */}
+                    {p.stats.length ? (
+                      <div className="mt-6 flex flex-col gap-1.5">
+                        {p.stats.map((s) => (
+                          <div key={s.label} className="flex items-baseline gap-2">
+                            <span className="mission-display text-xl text-[var(--fg)]">
+                              <StatValue value={s.value} />
+                            </span>
+                            <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
+                              {s.label}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
 
                     <div className="mt-5 flex flex-wrap gap-1.5">
                       {p.stack.map((s) => (
