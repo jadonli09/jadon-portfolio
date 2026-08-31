@@ -283,3 +283,83 @@ export const MCQS: DemoMcq[] = [
       "Welch's publicly broadcast rebuke — watched by millions on live television — punctured McCarthy's credibility and marked the turning point of the senator's public support; the Senate voted to censure McCarthy in December 1954, effectively ending his influence. Choice C is factually wrong; HUAC was not closed at this time and operated for many more years.",
   },
 ];
+
+export type RubricItem = {
+  title: string;
+  earned: number;
+  outOf: number;
+  justification: string;
+  /** Verbatim span from the response that earned the point; null when none did. */
+  quote: string | null;
+};
+
+export type FrqPart = {
+  part: string;
+  earned: number;
+  outOf: number;
+  summary: string;
+  items: RubricItem[];
+};
+
+export type DemoFrq = {
+  exam: string;
+  prompt: string;
+  response: string;
+  scored: number;
+  total: number;
+  parts: FrqPart[];
+};
+
+/**
+ * A real grading run, captured verbatim from the live product. A partial score
+ * demos better than full marks — you watch the grader reason, and you see it
+ * cite the student's own words back as evidence.
+ */
+export const FRQ: DemoFrq = {
+  exam: "AP Calculus AB · 2025 FRQ #5",
+  prompt:
+    "Two particles, H and J, are moving along the x-axis. For 0 ≤ t ≤ 5, the position of particle H at time t is given by x_H(t) = e^(t² − 4t). (a) Find the velocity of particle H at time t = 1. Show the work that leads to your answer.",
+  response:
+    "v_H(t) = x_H(t) differentiated. Using the chain rule on x_H(t) = e^(t² − 4t): v_H(t) = (2t − 4)e^(t² − 4t). At t = 1: v_H(1) = (2(1) − 4)e^(1 − 4) = −2e^(−3) = −0.0996.",
+  scored: 2,
+  total: 5,
+  parts: [
+    {
+      part: "(a)",
+      earned: 2,
+      outOf: 3,
+      summary: "Correctly calculated the velocity of particle H at t = 1 using the chain rule.",
+      items: [
+        {
+          title: "Considers x′_H",
+          earned: 1,
+          outOf: 1,
+          justification: "Acknowledges the need to differentiate x_H(t) to find velocity.",
+          quote: "v_H(t) = x_H(t) differentiated.",
+        },
+        {
+          title: "Answer",
+          earned: 1,
+          outOf: 1,
+          justification: "Correctly calculated v_H(1) = −0.0996.",
+          quote: "v_H(1) = −2e^(−3) = −0.0996.",
+        },
+      ],
+    },
+    {
+      part: "(b)",
+      earned: 0,
+      outOf: 1,
+      summary: "No response provided.",
+      items: [
+        {
+          title: "Complete and correct response",
+          earned: 0,
+          outOf: 1,
+          justification: "No relevant response provided.",
+          quote: null,
+        },
+      ],
+    },
+  ],
+};
