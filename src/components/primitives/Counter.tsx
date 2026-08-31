@@ -36,7 +36,9 @@ export function Counter({
     if (!inView) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
-      setVal(to);
+      // `val` already initializes to `to` (see useState above), so there is
+      // nothing to synchronize here — skip the animation without a redundant
+      // setState-in-effect call.
       return;
     }
     const controls = animate(0, to, {

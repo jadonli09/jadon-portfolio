@@ -155,24 +155,68 @@ export function DustField({ className }: { className?: string }) {
 
 /* ── 2. MissionRail — fixed scroll-progress telemetry on the right ── */
 
-const STAGES = [
-  { at: 0, label: "T-0 · Launch" },
-  { at: 0.16, label: "M-01 · Flagship" },
-  { at: 0.44, label: "M-02–05 · Fleet" },
-  { at: 0.66, label: "Log · GitHub" },
-  { at: 0.9, label: "End of transmission" },
+/**
+ * One stop per real section of `/built`, in page order. `anchor` is the id the
+ * page actually renders, so the rail's positions are read off the live document
+ * instead of hard-coded fractions — the previous version still announced a
+ * GitHub section that had been deleted and an "end of transmission" the spec
+ * cut. Each label names the section it marks; nothing decorative.
+ */
+const STOPS: { anchor: string | null; label: string }[] = [
+  { anchor: null, label: "Things I've built" },
+  { anchor: "acornprep", label: "M-01 · AcornPrep" },
+  { anchor: "hermes", label: "M-02 · Hermes" },
+  { anchor: "notebookli", label: "M-03 · NotebookLI" },
+  { anchor: "fleet", label: "M-04–08 · The fleet" },
 ];
+
+/**
+ * Each stop's position as a fraction of total scroll, measured from the DOM.
+ * A stop fires once its section's top is a quarter of the way up the viewport,
+ * not when it reaches the very top — otherwise a `#notebookli` deep link, which
+ * lands 96px (`scroll-mt-24`) above the section, still reads "M-02 · Hermes".
+ */
+const STOP_LEAD = 0.25;
+
+function measureStops(): number[] {
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  return STOPS.map((s) => {
+    if (!s.anchor || max <= 0) return 0;
+    const el = document.getElementById(s.anchor);
+    if (!el) return 0;
+    const top = el.getBoundingClientRect().top + window.scrollY;
+    return Math.min(1, Math.max(0, (top - window.innerHeight * STOP_LEAD) / max));
+  });
+}
 
 export function MissionRail() {
   const { scrollYProgress } = useScroll();
   const fill = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
   const [stage, setStage] = useState(0);
+  // Even spacing is only the pre-measurement placeholder; the observer below
+  // replaces it with the real section offsets before the first paint settles.
+  const [stops, setStops] = useState<number[]>(() => STOPS.map((_, i) => i / STOPS.length));
+  const stopsRef = useRef(stops);
+
+  // Re-measure whenever the page's height changes — images finishing, the
+  // viewport resizing, a section being added. ResizeObserver fires once on
+  // observe, which is also the initial measurement.
+  useEffect(() => {
+    const ro = new ResizeObserver(() => {
+      const next = measureStops();
+      stopsRef.current = next;
+      setStops(next);
+    });
+    ro.observe(document.body);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(
     () =>
       scrollYProgress.on("change", (v) => {
+        const at = stopsRef.current;
         let s = 0;
-        for (let i = 0; i < STAGES.length; i++) if (v >= STAGES[i].at) s = i;
+        for (let i = 0; i < at.length; i++) if (v >= at[i]) s = i;
         setStage(s);
       }),
     [scrollYProgress],
@@ -190,12 +234,12 @@ export function MissionRail() {
           style={{ scaleY: fill, height: "100%" }}
         />
         {/* Stage ticks */}
-        {STAGES.map((s, i) => (
+        {STOPS.map((s, i) => (
           <div
-            key={s.at}
+            key={s.label}
             className="absolute -left-[3.25px] size-2 border-[1.5px] transition-colors duration-500"
             style={{
-              top: `${s.at * 100}%`,
+              top: `${(stops[i] ?? 0) * 100}%`,
               borderColor: i <= stage ? "var(--accent)" : "var(--line)",
               background: i <= stage ? "var(--accent)" : "var(--bg)",
             }}
@@ -205,10 +249,11 @@ export function MissionRail() {
 
       {/* Current stage label */}
       <p
+        data-rail-label
         className="font-mono text-[0.55rem] uppercase tracking-[0.3em] text-[var(--muted)]"
         style={{ writingMode: "vertical-rl" }}
       >
-        {STAGES[stage].label}
+        {STOPS[stage].label}
       </p>
     </div>
   );
