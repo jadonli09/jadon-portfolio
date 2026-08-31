@@ -1035,7 +1035,7 @@ export const PROJECTS: Project[] = [
     // "Design / Operation" was a label with no fact behind it. The body carries
     // what the operation actually is.
     stats: [],
-    body: "A student merch-design operation — concept, design, and sales — servicing clubs and sports teams campus-wide (badminton and volleyball hoodies, basketball merch, DECA minicon glass, senior stoles), with around $4,000 in profit across jobs.",
+    body: "A student merch-design operation — concept, design, and sales — servicing clubs and sports teams campus-wide (badminton and volleyball hoodies, basketball merch, DECA minicon glass, senior stoles).",
     stack: ["Design", "Operations"],
     tier: 3,
     slug: "msj-makes",
