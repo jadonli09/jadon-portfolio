@@ -148,3 +148,49 @@ The repo has no test runner — `package.json` exposes only `dev`, `build`, `sta
 - **Demo login** for AcornPrep (test account, or stay signed in to Chrome and let the browser tools drive it). Blocks the interior captures for the Practice / Grade / Review faces.
 - **Real MCQ content** — either the login gives access to the bank, or ~10 questions exported from Supabase.
 - **Revenue figure** for the hero stat strip, or confirmation to drop that tile.
+
+---
+
+## Addendum — product interiors captured (2026-08-30)
+
+Jadon supplied a demo login; the AcornPrep interiors were captured headless and the session was logged out afterward. Credentials were never written to a file or committed. Reference captures live in `.shots/ap-*.png` (gitignored).
+
+### What the product actually contains
+
+| Surface | What it is |
+|---|---|
+| Dashboard | Readiness %, predicted score /5, accuracy, total MCQs, day streak; weakest-unit callout; daily challenge; friends/leaderboard. Mascots **Pax** and **Sprout**. |
+| MCQ Practice | Split view: stimulus (tables, figures) left, stem + 4 choices right. Difficulty and topic tags, calculator flag, filters, "Ask Sprout" tutor. **423 questions in AP Calculus AB alone.** |
+| FRQ Practice | Real past exam FRQs by year (2025, 6 questions for Calc AB), multi-part A/B/C/D, reference panel, math symbol palette. |
+| Study | **Six** modes: Flashcards (160 cards, space to flip), Podcasts, Study Guides, Tips & Tricks, Worked Examples, Mind Maps (draggable force-directed graph, one node per unit). |
+
+### The FRQ grader is the best asset on the site
+
+Grading a real 2025 Calc AB FRQ returned a per-part rubric where each line item carries points earned, a plain-English justification, **and a verbatim quotation from the student's own response as the evidence for that point**:
+
+```
+Your results                                    2 / 5 (40%)
+PART (A)                                            2/3 pts
+  ✓ Considers x'_H                                     1/1
+    Acknowledges the need to differentiate x_H(t)…
+    ❝ "v_H(t) = x_H(t) differentiated."
+  ✓ Answer                                             1/1
+    Correctly calculated v_H(1) = -0.0996.
+    ❝ "v_H(t) = -2e^(-3) = -0.0996."
+PART (B)                                            0/1 pts
+  ✗ Complete and correct response                      0/1
+    No relevant response provided.
+```
+
+That citation behaviour is the differentiator and it is what the **Grade** face must reproduce: response on the left, rubric items animating in on the right, each pulling a highlight back to the quoted span in the response. A partial score reads better than full marks — it shows the grader reasoning rather than rubber-stamping.
+
+### Consequence for the demo content set
+
+MCQ stems in Calculus, Chemistry, and Statistics are LaTeX-heavy; the portfolio has no math renderer and adding KaTeX for one panel is not worth the bundle. **The baked demo set should be drawn from the prose-based courses** — Psychology, US History, World History, Biology — which need no renderer and read better to a non-specialist visitor. The FRQ demo is the exception: its captured rubric can be reproduced as styled text with the one inline expression set as an image or plain glyphs.
+
+### Corrections to `data.ts`
+
+- The AcornPrep body lists "flashcards, podcasts, mind maps, and study guides" — the product ships **six** study modes. Add Tips & Tricks and Worked Examples.
+- Hero stat strip fix, decided: **drop the revenue tile.** `~$700 Revenue` is unsourced and collides with MSJ Makes' `~$4k profit`; a combined figure would be mixing revenue with profit and would invent a number. Money is stated once, where it is true — on the MSJ Makes panel, at ~$4k profit (confirmed by Jadon 2026-08-30). The strip becomes four sourced facts: **08 Products · 500+ Users · #1 Google result · 87 Clubs automated.**
+- `05 Products` → `08`.
+- `StatValue` must render its final value as the non-animated baseline so Hermes never reads "0 clubs watched".
