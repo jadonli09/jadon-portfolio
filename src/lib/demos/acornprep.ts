@@ -223,36 +223,6 @@ export const MCQS: DemoMcq[] = [
       "The discriminatory pricing practices described — charging different rates to different shippers and monopolistic control over shipping — led directly to the Interstate Commerce Act of 1887, which created the Interstate Commerce Commission (ICC) to oversee railroad rates and prohibited rate discrimination. The Sherman Antitrust Act addressed broader monopoly practices, not specifically railroad rate discrimination.",
   },
   {
-    id: "apush-articles-of-confederation",
-    course: "AP US History",
-    unit: "Unit 3: Period 3: 1754–1800",
-    difficulty: "Easy",
-    stimulus:
-      "After independence, the new United States operated under the Articles of Confederation (1781–1789), which created a weak central government. Events of the 1780s, particularly Shays' Rebellion, convinced many leaders that a stronger government was necessary. \"We have probably had too good an opinion of human nature in forming our confederation. Experience has taught us that men will not adopt and carry into execution measures the best calculated for their own good, without the intervention of a coercive power. I do not conceive we can exist long as a nation without having lodged somewhere a power which will pervade the whole Union in as energetic a manner as the authority of the state governments extends over the several states. It is not the same causes that produce the same effects in all cases, but the want of energy in the Federal government; the want of authority in the Congress; and the want of a regular administration of the laws in the states, which have produced the present dilemma.\" — George Washington, letter to James Madison, November 5, 1786",
-    stem: "The passage best illustrates which of the following weaknesses of the Articles of Confederation?",
-    choices: [
-      {
-        label: "A",
-        text: "The federal government's inability to regulate commerce between the states effectively",
-      },
-      {
-        label: "B",
-        text: "The federal government's excessive interference in state taxation and trade policy",
-      },
-      {
-        label: "C",
-        text: "The dominance of large states over small states in the Continental Congress",
-      },
-      {
-        label: "D",
-        text: "The absence of centralized coercive power to enforce laws and maintain national authority",
-      },
-    ],
-    answer: "D",
-    explanation:
-      "Washington explicitly argues that the federal government lacks 'a coercive power' that would 'pervade the whole Union' and complains of 'want of energy in the Federal government' and 'want of authority in the Congress' — all pointing to the absence of enforceable national authority under the Articles. Option D is the opposite of what Washington describes.",
-  },
-  {
     id: "apush-shays-rebellion",
     course: "AP US History",
     unit: "Unit 3: Period 3: 1754–1800",
