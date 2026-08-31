@@ -35,17 +35,19 @@ export function Beyond() {
       </Section>
 
       <Section id="programs" kicker="Programs" heading="Teaching it forward.">
-        <div className="grid gap-px bg-[var(--line)] sm:grid-cols-3">
+        <ul className="grid list-none gap-px bg-[var(--line)] p-0 sm:grid-cols-3">
           {programs.map((p) => (
-            <article key={p.title} className="bg-[var(--bg-2)] p-6">
-              <h3 className="mb-1 text-[1.02rem] font-semibold text-[var(--fg)]">{p.title}</h3>
-              <p className="mb-3 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-[var(--accent)]">
-                {p.role}
-              </p>
-              <p className="text-[0.9rem] leading-[1.6] text-[var(--muted)]">{p.detail}</p>
-            </article>
+            <li key={p.title} className="bg-[var(--bg-2)] p-6">
+              <article>
+                <h3 className="mb-1 text-[1.02rem] font-semibold text-[var(--fg)]">{p.title}</h3>
+                <p className="mb-3 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-[var(--accent)]">
+                  {p.role}
+                </p>
+                <p className="text-[0.9rem] leading-[1.6] text-[var(--muted)]">{p.detail}</p>
+              </article>
+            </li>
           ))}
-        </div>
+        </ul>
       </Section>
     </div>
   );
