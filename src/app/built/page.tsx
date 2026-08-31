@@ -5,6 +5,7 @@ import { Reveal } from "@/components/primitives/Reveal";
 import { BuiltHero } from "@/components/built/BuiltHero";
 import { MissionIndex } from "@/components/built/MissionIndex";
 import { Chapter } from "@/components/built/Chapter";
+import { AcornDemo } from "@/components/built/demos/AcornDemo";
 import { ProductsGrid } from "@/components/built/ProductsGrid";
 import { GitHubShowcase } from "@/components/built/GitHubShowcase";
 import { LaunchLedger } from "@/components/built/LaunchLedger";
@@ -38,7 +39,9 @@ export default function BuiltPage() {
       <MissionIndex />
 
       {/* ── 3. M-01 ACORNPREP ────────────────────────────────── */}
-      <Chapter project={bySlug("acornprep")} no="01" />
+      <Chapter project={bySlug("acornprep")} no="01">
+        <AcornDemo />
+      </Chapter>
 
       {/* ── 4. OTHER PRODUCTS GRID ───────────────────────────── */}
       <ProductsGrid />
