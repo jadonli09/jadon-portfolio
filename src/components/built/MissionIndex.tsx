@@ -1,5 +1,5 @@
 import { Reveal } from "@/components/primitives/Reveal";
-import { PROJECTS } from "@/lib/data";
+import { PROJECTS, type Project } from "@/lib/data";
 
 /**
  * The manifest. Eight rows in `PROJECTS` order — which IS display order, and
@@ -8,6 +8,18 @@ import { PROJECTS } from "@/lib/data";
  * Server-safe — no client hooks.
  */
 const ORDERED = PROJECTS;
+
+/**
+ * The right-hand column earns its place only when the stat tells the reader
+ * something the row has not already told them. "Live · cuesheet.xyz" restates a
+ * domain the row itself names, and "Design / Operation" states nothing; a
+ * figure does. Rows without one drop the column rather than take a substitute —
+ * promoting a second stat here would print the same number twice on the page.
+ */
+function headlineStat(p: Project) {
+  const s = p.stats[0];
+  return s && /\d/.test(s.value) ? s : null;
+}
 
 export function MissionIndex() {
   return (
@@ -21,7 +33,9 @@ export function MissionIndex() {
         </Reveal>
 
         <div className="border-t border-[var(--line)]">
-          {ORDERED.map((p, i) => (
+          {ORDERED.map((p, i) => {
+            const stat = headlineStat(p);
+            return (
             <Reveal key={p.slug} delay={i * 0.04}>
               <a
                 href={`#${p.slug}`}
@@ -40,13 +54,15 @@ export function MissionIndex() {
                   {p.tagline}
                 </span>
 
-                <span className="hidden justify-self-end font-mono text-[0.65rem] uppercase tracking-[0.18em] text-[var(--muted)] md:block">
-                  <span className="text-[var(--fg)]">{p.stats[0].value}</span>{" "}
-                  {p.stats[0].label}
-                </span>
+                {stat ? (
+                  <span className="hidden justify-self-end font-mono text-[0.65rem] uppercase tracking-[0.18em] text-[var(--muted)] md:block">
+                    <span className="text-[var(--fg)]">{stat.value}</span> {stat.label}
+                  </span>
+                ) : null}
               </a>
             </Reveal>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

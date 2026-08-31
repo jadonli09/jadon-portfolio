@@ -192,7 +192,7 @@ export function BuiltHero() {
             <div className="grid max-w-3xl grid-cols-2 gap-px border border-[var(--line)] bg-[var(--line)] sm:grid-cols-4">
               {[
                 { value: "08", label: "Products" },
-                { value: "500+", label: "Active users" },
+                { value: "500+", label: "Users" },
                 { value: "#1", label: "Google result" },
                 { value: "~$4,000", label: "Profit" },
               ].map((s) => (

@@ -1028,9 +1028,10 @@ export const PROJECTS: Project[] = [
     embeddable: true,
     shot: "/embeds/msjmakes.jpg",
     tagline: "Student merch, designed & sold.",
-    stats: [
-      { value: "Design", label: "Operation" },
-    ],
+    // No stat: the ~$4k profit figure lives once, in the hero strip, and
+    // "Design / Operation" was a label with no fact behind it. The body carries
+    // what the operation actually is.
+    stats: [],
     body: "A student merch-design operation — concept, design, and sales — servicing clubs and sports teams campus-wide (badminton and volleyball hoodies, basketball merch, DECA minicon glass, senior stoles), with around $4,000 in profit across jobs.",
     stack: ["Design", "Operations"],
     tier: 3,
