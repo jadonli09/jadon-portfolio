@@ -232,6 +232,7 @@ export function Console() {
       role="dialog"
       aria-modal="true"
       aria-label="Research console"
+      data-lenis-prevent
       className="fixed inset-0 z-50 bg-black/30"
       onClick={() => setOpen(false)}
     >
