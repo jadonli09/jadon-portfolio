@@ -3,6 +3,7 @@ import { World } from "@/components/chrome/World";
 import { Footer } from "@/components/chrome/Footer";
 import { Reveal } from "@/components/primitives/Reveal";
 import { BuiltHero } from "@/components/built/BuiltHero";
+import { MissionIndex } from "@/components/built/MissionIndex";
 import { AcornFlagship } from "@/components/built/AcornFlagship";
 import { ProductsGrid } from "@/components/built/ProductsGrid";
 import { GitHubShowcase } from "@/components/built/GitHubShowcase";
@@ -31,13 +32,16 @@ export default function BuiltPage() {
       {/* ── 1. HERO ──────────────────────────────────────────── */}
       <BuiltHero />
 
-      {/* ── 2. ACORNPREP FLAGSHIP ────────────────────────────── */}
+      {/* ── 2. MISSION INDEX ─────────────────────────────────── */}
+      <MissionIndex />
+
+      {/* ── 3. ACORNPREP FLAGSHIP ────────────────────────────── */}
       <AcornFlagship />
 
-      {/* ── 3. OTHER PRODUCTS GRID ───────────────────────────── */}
+      {/* ── 4. OTHER PRODUCTS GRID ───────────────────────────── */}
       <ProductsGrid />
 
-      {/* ── 4. GITHUB SHOWCASE ───────────────────────────────── */}
+      {/* ── 5. GITHUB SHOWCASE ───────────────────────────────── */}
       <section className="border-b border-[var(--line)]">
         <div className="mx-auto max-w-7xl px-5 py-20 md:px-9 md:py-28">
           {/* Section header */}
@@ -64,10 +68,10 @@ export default function BuiltPage() {
         </div>
       </section>
 
-      {/* ── 5. FLIGHT LOG ────────────────────────────────────── */}
+      {/* ── 6. FLIGHT LOG ────────────────────────────────────── */}
       <LaunchLedger />
 
-      {/* ── 6. CLOSING MANIFESTO ─────────────────────────────── */}
+      {/* ── 7. CLOSING MANIFESTO ─────────────────────────────── */}
       <section className="mx-auto max-w-5xl px-5 py-20 text-center md:px-9 md:py-28">
         <Reveal>
           <p className="eyebrow mb-8">The builder&apos;s creed</p>
@@ -98,7 +102,7 @@ export default function BuiltPage() {
         </Reveal>
       </section>
 
-      {/* ── 7. FOOTER ─────────────────────────────────────────── */}
+      {/* ── 8. FOOTER ─────────────────────────────────────────── */}
       <Footer />
     </World>
   );
