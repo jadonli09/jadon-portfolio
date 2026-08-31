@@ -35,7 +35,6 @@ export const metadata: Metadata = {
 export default function ResearchPage() {
   return (
     <World id="research">
-      <h1 className="sr-only">Research &amp; STEM</h1>
       <ResearchNav />
       <Hero />
       <Question />
