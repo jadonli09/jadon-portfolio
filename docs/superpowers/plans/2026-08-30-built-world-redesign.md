@@ -772,7 +772,7 @@ Log into AcornPrep and read ten questions out of the prose-based courses. Calcul
 ```bash
 B=~/.claude/skills/gstack/browse/dist/browse
 $B goto https://www.acornprep.com/auth
-$B fill "#signin-email" "jadonli2020@gmail.com"
+$B fill "#signin-email" '<account email from Jadon>'
 $B fill "#signin-password" '<password from Jadon>'
 $B press Enter
 # switch course via the sidebar course picker, then:
@@ -784,7 +784,7 @@ $B click "text=SHOW EXPLANATION" && $B text
 
 Take 5 from **AP Psychology** and 5 from **AP US History**. Record each verbatim — stem, all four choices, correct label, and the full explanation including its distractor sentence. **Log out when done** (`$B click` the sidebar `Logout` button) and confirm with `$B cookies`.
 
-Credentials are Jadon's own and were supplied for this purpose. Never write them into a file, a commit, or a screenshot.
+Credentials are Jadon's own and are supplied at dispatch time, never in this file. This repo is PUBLIC — never write an account email, password, token, or cookie into any file, commit, or retained screenshot. The account carries admin access: do not open the Admin area, and log out when the capture is done.
 
 - [ ] **Step 2: Write the failing assertion**
 
