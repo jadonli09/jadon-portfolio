@@ -25,12 +25,6 @@ export function fireToast(text: string, tone: ToastTone = "lime") {
   window.dispatchEvent(new CustomEvent("lab:toast", { detail: { text, tone } }));
 }
 
-/** The RFP colourway — on for branch umass-2026 (red fluorescence, GFP green). */
-export function setRfp(on: boolean) {
-  if (typeof document === "undefined") return;
-  document.documentElement.classList.toggle("rfp", on);
-}
-
 export function toggleMutate(): boolean {
   if (typeof document === "undefined") return false;
   const on = document.documentElement.classList.toggle("mutate");
