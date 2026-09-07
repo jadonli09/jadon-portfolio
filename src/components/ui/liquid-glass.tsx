@@ -77,6 +77,7 @@ export function LiquidGlass({
   className,
   contentClassName,
   children,
+  onPointerMove,
   ...props
 }: React.ComponentProps<"div"> & {
   /**
@@ -87,6 +88,40 @@ export function LiquidGlass({
    */
   contentClassName?: string;
 }) {
+  const paneRef = React.useRef<HTMLDivElement>(null);
+  const frame = React.useRef(0);
+
+  React.useEffect(
+    () => () => {
+      if (frame.current) cancelAnimationFrame(frame.current);
+    },
+    [],
+  );
+
+  /*
+    Where the light is. The pointer's position is written to the pane as two
+    custom properties and CSS does the rest — see `.liquid-glass-glow`.
+
+    Read inside a rAF because the handler is the one place here that touches
+    layout (`getBoundingClientRect`), and a pointer can fire faster than the
+    screen refreshes. Coordinates are pulled off the event BEFORE the frame is
+    queued: by the time it runs the event is stale.
+  */
+  const track = (e: React.PointerEvent<HTMLDivElement>) => {
+    onPointerMove?.(e);
+    const { clientX, clientY } = e;
+    if (frame.current) return;
+    frame.current = requestAnimationFrame(() => {
+      frame.current = 0;
+      const el = paneRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      el.style.setProperty("--lg-x", `${((clientX - r.left) / r.width) * 100}%`);
+      el.style.setProperty("--lg-y", `${((clientY - r.top) / r.height) * 100}%`);
+    });
+  };
+
   return (
     /*
       Deliberately just `relative`. `isolation: isolate`, an `opacity` below 1,
@@ -100,7 +135,12 @@ export function LiquidGlass({
       a negative z-index here would punch the backdrop through the hero's own
       stacking context.
     */
-    <div className={cn("liquid-glass relative", className)} {...props}>
+    <div
+      ref={paneRef}
+      className={cn("liquid-glass relative", className)}
+      onPointerMove={track}
+      {...props}
+    >
       {/*
         The refracting backdrop. The blur/saturate pair is the FALLBACK and is
         declared unconditionally in CSS: Safari has shipped `backdrop-filter`
@@ -109,6 +149,16 @@ export function LiquidGlass({
         it only where the filter is real.
       */}
       <div aria-hidden className="liquid-glass-backdrop absolute inset-0" />
+      {/*
+        The moving highlight. Its own element rather than another background on
+        the sheen, so the fade in and out is a plain `opacity` transition — a
+        custom property inside a gradient does not interpolate without being
+        registered with `@property`, and would snap on and off.
+
+        Under the sheen on purpose: the fixed specular is the edge of the glass
+        and stays on top of whatever is travelling through it.
+      */}
+      <div aria-hidden className="liquid-glass-glow pointer-events-none absolute inset-0" />
       {/*
         The sheen. A pane of white over a white page is invisible — the only
         parts of real glass you can see against paper are the light it catches

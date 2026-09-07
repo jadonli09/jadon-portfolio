@@ -784,6 +784,35 @@ body {
 }
 
 /*
+   The travelling highlight — where the light is, as the pointer moves it.
+
+   This is the whole hover state, and it is optical rather than mechanical on
+   purpose: these are figures, not controls. A lift-and-shadow would promise a
+   click that isn't there, so what responds is the MATERIAL — the glass catches
+   the light you bring to it and thickens under your cursor.
+
+   `--lg-x` / `--lg-y` are written by the component on `pointermove`. They fall
+   back to the centre so the pane is correct before it has ever been pointed at.
+*/
+[data-world="built"] .liquid-glass-glow {
+  border-radius: inherit;
+  opacity: 0;
+  /*
+     Tight, not a wash. At 14rem the hotspot was wider than the pane and read
+     as the whole thing merely getting brighter; a specular has to have a
+     PLACE, or there is nothing for the pointer to be moving.
+  */
+  background: radial-gradient(
+    8rem circle at var(--lg-x, 50%) var(--lg-y, 50%),
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.42) 26%,
+    rgba(255, 255, 255, 0.1) 52%,
+    rgba(255, 255, 255, 0) 76%
+  );
+  transition: opacity 300ms var(--ease-out);
+}
+
+/*
    Specular. One run of light along the top edge, falling off fast, plus a
    quieter return along the bottom where a thick lens picks the page back up.
    Diagonal, so the pane reads as lit from the upper left like everything else
@@ -824,6 +853,70 @@ body {
     0 1px 2px rgba(15, 23, 42, 0.06),
     0 12px 28px -10px rgba(15, 23, 42, 0.2),
     0 30px 60px -30px rgba(15, 23, 42, 0.3);
+}
+
+/*
+   Hover. Guarded, because on a touch screen `:hover` sticks after a tap and
+   would leave one pane lit for as long as the page is open.
+
+   Three things move together, and all of them are properties of the glass:
+   the highlight arrives, the lens gets thicker (more blur, more lift in the
+   backdrop), and the rim and shadow deepen as though the pane had risen a
+   little off the page. The pane itself only travels 2px — enough to read as
+   an object with air under it, far too little to read as a button.
+*/
+[data-world="built"] .liquid-glass {
+  transition:
+    translate 300ms var(--ease-out),
+    box-shadow 300ms var(--ease-out);
+}
+[data-world="built"] .liquid-glass-backdrop,
+[data-world="built"] .liquid-glass-shell {
+  transition:
+    backdrop-filter 300ms var(--ease-out),
+    -webkit-backdrop-filter 300ms var(--ease-out),
+    box-shadow 300ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  [data-world="built"] .liquid-glass:hover {
+    translate: 0 -3px;
+  }
+  [data-world="built"] .liquid-glass:hover .liquid-glass-glow {
+    opacity: 1;
+  }
+  [data-world="built"] .liquid-glass:hover .liquid-glass-backdrop {
+    backdrop-filter: blur(18px) saturate(200%) brightness(1.22);
+    -webkit-backdrop-filter: blur(18px) saturate(200%) brightness(1.22);
+  }
+  @supports (backdrop-filter: url("#liquid-glass-displace")) {
+    [data-world="built"] .liquid-glass:hover .liquid-glass-backdrop {
+      backdrop-filter: url("#liquid-glass-displace") blur(13px) saturate(200%)
+        brightness(1.22);
+    }
+  }
+  [data-world="built"] .liquid-glass:hover .liquid-glass-shell {
+    box-shadow:
+      inset 0 1.5px 1px -0.5px rgba(255, 255, 255, 1),
+      inset 1px 0 1px -0.5px rgba(255, 255, 255, 0.82),
+      inset -1px 0 1px -0.5px rgba(255, 255, 255, 0.82),
+      inset 0 -1px 1px -0.5px rgba(255, 255, 255, 0.72),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.68),
+      inset 0 0 26px 12px rgba(255, 255, 255, 0.16),
+      inset 0 -12px 18px -12px rgba(15, 23, 42, 0.3),
+      0 0 0 0.5px rgba(15, 23, 42, 0.08),
+      0 2px 4px rgba(15, 23, 42, 0.07),
+      0 20px 40px -12px rgba(15, 23, 42, 0.26),
+      0 40px 70px -30px rgba(15, 23, 42, 0.34);
+  }
+}
+
+/* The light still follows the pointer; the pane just stops travelling. */
+@media (prefers-reduced-motion: reduce) {
+  [data-world="built"] .liquid-glass,
+  [data-world="built"] .liquid-glass:hover {
+    translate: none;
+  }
 }
 
 @media (prefers-reduced-transparency: reduce) {
