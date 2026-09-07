@@ -109,6 +109,14 @@ export function LiquidGlass({
         it only where the filter is real.
       */}
       <div aria-hidden className="liquid-glass-backdrop absolute inset-0" />
+      {/*
+        The sheen. A pane of white over a white page is invisible — the only
+        parts of real glass you can see against paper are the light it catches
+        and the shadow it drops. So the material is faintly COOLER than the
+        ground, with a specular run across its upper edge; that tint is what
+        makes it a thing sitting on the page rather than a hole in it.
+      */}
+      <div aria-hidden className="liquid-glass-sheen pointer-events-none absolute inset-0" />
       {/* The bevel. A shadow stack only — it paints nothing of its own. */}
       <div aria-hidden className="liquid-glass-shell pointer-events-none absolute inset-0" />
       <div className={cn("relative", contentClassName)}>{children}</div>

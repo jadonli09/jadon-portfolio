@@ -741,13 +741,35 @@ body {
    belongs in a stylesheet rather than in a className.
    ─────────────────────────────────────────────────────────────── */
 [data-world="built"] .liquid-glass {
-  border-radius: 22px;
+  border-radius: 26px;
 }
+
+/*
+   The backdrop. Blurred, saturated, and given a faint cool tint.
+
+   The tint is not decoration. Against this world's white page a purely white
+   translucent pane is literally invisible — white blurred is white — so the
+   material has to be a shade cooler than the ground to exist at all. Over the
+   corridor's screenshots the same tint reads as the colour of thick glass.
+*/
 [data-world="built"] .liquid-glass-backdrop {
   border-radius: inherit;
-  /* The fallback, and the base every browser gets. */
-  backdrop-filter: blur(6px) saturate(180%);
-  -webkit-backdrop-filter: blur(6px) saturate(180%);
+  /*
+     Light. An earlier pass sat at 0.42–0.58 and that is not glass, it is a
+     white card with a shadow: at that weight the tint hides whatever the blur
+     just picked up. Transmission is the whole point, so the fill only carries
+     the material's colour and `brightness` does the legibility work — it lifts
+     a dark screenshot far enough for near-black numerals to hold on it,
+     without going opaque.
+  */
+  background: linear-gradient(
+    170deg,
+    rgba(255, 255, 255, 0.26) 0%,
+    rgba(240, 243, 249, 0.3) 48%,
+    rgba(226, 232, 244, 0.36) 100%
+  );
+  backdrop-filter: blur(14px) saturate(180%) brightness(1.16);
+  -webkit-backdrop-filter: blur(14px) saturate(180%) brightness(1.16);
 }
 /*
    The refraction, only where an SVG filter in `backdrop-filter` is real. Safari
@@ -756,199 +778,54 @@ body {
 */
 @supports (backdrop-filter: url("#liquid-glass-displace")) {
   [data-world="built"] .liquid-glass-backdrop {
-    backdrop-filter: url("#liquid-glass-displace") blur(2px) saturate(180%);
+    backdrop-filter: url("#liquid-glass-displace") blur(10px) saturate(180%)
+      brightness(1.16);
   }
 }
+
 /*
-   The bevel. Bright inset on the top-left where light would catch the lens,
-   dark on the bottom-right where it turns away, a wide inner glow for the
-   body of the glass, and one soft drop shadow so the pane sits ABOVE the
-   corridor rather than being painted onto it.
+   Specular. One run of light along the top edge, falling off fast, plus a
+   quieter return along the bottom where a thick lens picks the page back up.
+   Diagonal, so the pane reads as lit from the upper left like everything else
+   in this world.
+*/
+[data-world="built"] .liquid-glass-sheen {
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      158deg,
+      rgba(255, 255, 255, 0.85) 0%,
+      rgba(255, 255, 255, 0.34) 18%,
+      rgba(255, 255, 255, 0) 44%
+    ),
+    linear-gradient(to top, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 34%);
+}
+
+/*
+   The edge. This is the layer doing the most work: a lens is THICK, and what
+   tells you so is the bright rim where light enters it, the darker line where
+   it leaves, and the shadow it drops on whatever is underneath.
 */
 [data-world="built"] .liquid-glass-shell {
   border-radius: inherit;
   box-shadow:
-    /* the lit top-left bevel */
-    inset 2px 2px 1.5px -2px rgba(255, 255, 255, 0.95),
-    inset 1px 1px 1px -0.5px rgba(255, 255, 255, 0.8),
-    /* the shaded bottom-right one, where the lens turns away */
-    inset -2px -2px 1.5px -2px rgba(0, 0, 0, 0.12),
-    inset -1px -1px 1px -0.5px rgba(0, 0, 0, 0.06),
-    /* body of the glass, and a hairline so the pane has an edge on white */
-    inset 0 0 10px 7px rgba(255, 255, 255, 0.16),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.45),
-    inset 0 0 0 1px rgba(0, 0, 0, 0.045),
-    /* it sits ABOVE the corridor rather than being painted onto it */
-    0 1px 1px rgba(0, 0, 0, 0.04),
-    0 14px 40px -14px rgba(0, 0, 0, 0.26);
+    /* the lit rim, brightest along the top */
+    inset 0 1.5px 1px -0.5px rgba(255, 255, 255, 0.98),
+    inset 1px 0 1px -0.5px rgba(255, 255, 255, 0.7),
+    inset -1px 0 1px -0.5px rgba(255, 255, 255, 0.7),
+    inset 0 -1px 1px -0.5px rgba(255, 255, 255, 0.62),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+    /* the body of the glass, and the shade where it turns away */
+    inset 0 0 22px 10px rgba(255, 255, 255, 0.12),
+    inset 0 -10px 16px -12px rgba(15, 23, 42, 0.28),
+    /* the outer edge, so the pane has a boundary on a white page */
+    0 0 0 0.5px rgba(15, 23, 42, 0.07),
+    /* contact shadow, then the cast one */
+    0 1px 2px rgba(15, 23, 42, 0.06),
+    0 12px 28px -10px rgba(15, 23, 42, 0.2),
+    0 30px 60px -30px rgba(15, 23, 42, 0.3);
 }
 
-/* ── Controls ──────────────────────────────────────────────────── */
-
-[data-world="built"] .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: 999px;
-  padding: 0.8rem 1.4rem;
-  font-family: var(--font-ui);
-  font-size: 0.9375rem;
-  font-weight: 560;
-  letter-spacing: -0.006em;
-  white-space: nowrap;
-  /* Feedback lives on the press and it is instant. Never `transition: all`. */
-  transition:
-    transform 130ms var(--ease-out),
-    background-color 130ms var(--ease-out),
-    border-color 130ms var(--ease-out),
-    opacity 130ms var(--ease-out);
-}
-[data-world="built"] .btn:active {
-  transform: scale(0.965);
-}
-
-/* The blue pill. Apple's primary action, at Apple's blue. */
-[data-world="built"] .btn-primary {
-  background: var(--accent);
-  color: #ffffff;
-}
-/* The quiet one: a tinted, borderless companion to the blue pill. */
-[data-world="built"] .btn-glass {
-  background: color-mix(in srgb, var(--accent) 9%, transparent);
-  color: var(--accent);
-}
-@media (hover: hover) and (pointer: fine) {
-  [data-world="built"] .btn-primary:hover { background: var(--accent-2); }
-  [data-world="built"] .btn-glass:hover {
-    background: color-mix(in srgb, var(--accent) 15%, transparent);
-  }
-}
-
-/*
-   A list row. Hover is an occasional-tier interaction, so it is near
-   imperceptible on purpose: a wash of light and a 3px lean on the arrow toward
-   where the click goes. The press response is instant and lives on :active.
-*/
-[data-world="built"] .row {
-  transition:
-    background-color 150ms var(--ease-out),
-    scale 130ms var(--ease-out);
-}
-[data-world="built"] .row:active {
-  scale: 0.996;
-}
-[data-world="built"] .row .lean {
-  transition:
-    translate 150ms var(--ease-out),
-    color 150ms var(--ease-out);
-}
-@media (hover: hover) and (pointer: fine) {
-  [data-world="built"] .row:hover { background-color: var(--bg-2); }
-  [data-world="built"] .row:hover .lean {
-    translate: 3px -3px;
-    color: var(--fg);
-  }
-}
-
-/* A stack / tag pill. */
-[data-world="built"] .pill {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  background: var(--bg-2);
-  padding: 0.3rem 0.7rem;
-  font-family: var(--font-ui);
-  font-size: 0.78rem;
-  font-weight: 480;
-  letter-spacing: 0.002em;
-  color: var(--muted);
-}
-
-/* Live indicator — a slow breath, well clear of the flicker floor. */
-[data-world="built"] .live-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--accent);
-  box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent);
-  animation: live-breathe 2.6s var(--ease-out) infinite;
-}
-@keyframes live-breathe {
-  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
-  70% { box-shadow: 0 0 0 6px transparent; }
-  100% { box-shadow: 0 0 0 0 transparent; }
-}
-
-/* ── Product canvas ────────────────────────────────────────────── */
-
-/*
-   The screenshot's housing. On white, a hard border would trap the shot in a
-   box; a soft shadow lifts it off the page instead, which is how every device
-   render on apple.com sits on its white ground. The hairline is there only to
-   keep a near-white screenshot from bleeding into a white page.
-*/
-[data-world="built"] .canvas {
-  position: relative;
-  overflow: hidden;
-  border-radius: 18px;
-  border: 1px solid rgba(0, 0, 0, 0.07);
-  background: var(--bg-2);
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.03),
-    0 18px 44px -18px rgba(0, 0, 0, 0.16);
-}
-[data-world="built"] .canvas-bar {
-  display: flex;
-  height: 2.35rem;
-  flex-shrink: 0;
-  align-items: center;
-  gap: 0.6rem;
-  border-bottom: 1px solid var(--line);
-  background: rgba(0, 0, 0, 0.025);
-  padding: 0 0.85rem;
-}
-
-/*
-   A glass plate over a product shot. It MATERIALIZES — blur, scale and opacity
-   move together — so it reads as a real surface arriving rather than an image
-   being cross-faded. Hover only, and gated to real pointers: on touch, a tap
-   fires a false hover and the plate would flash on the way to the link.
-*/
-[data-world="built"] .plate,
-[data-world="built"] .plate-scrim {
-  opacity: 0;
-  transition: opacity 200ms var(--ease-out);
-  pointer-events: none;
-}
-[data-world="built"] .plate {
-  transform: translateY(8px) scale(0.94);
-  filter: blur(3px);
-  transition:
-    opacity 200ms var(--ease-out),
-    transform 200ms var(--ease-out),
-    filter 200ms var(--ease-out);
-}
-@media (hover: hover) and (pointer: fine) {
-  [data-world="built"] .plate-host:hover .plate-scrim { opacity: 1; }
-  [data-world="built"] .plate-host:hover .plate {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
-}
-
-/* The custom cursor hides the native pointer, so keyboard users are the ones
-   who most need a visible ring. */
-[data-world="built"] :focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 6px;
-}
-
-/* ── Accessibility signals ─────────────────────────────────────── */
-
-/* Solid, not frosted. The dock is the only translucent surface left. */
 @media (prefers-reduced-transparency: reduce) {
   [data-world="built"] .surface-chrome {
     background: #ffffff;

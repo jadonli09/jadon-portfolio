@@ -1,13 +1,12 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ArrowUpRight } from "lucide-react";
 import { ImageStreamHero, type StreamImage } from "@/components/ui/image-stream-hero";
 import { LiquidGlass, LiquidGlassFilter } from "@/components/ui/liquid-glass";
 import { StatFigure } from "@/components/built/StatFigure";
 import { asset } from "@/lib/base";
 import { EASE_OUT } from "@/lib/fluid";
-import { PROFILE, PROJECTS } from "@/lib/data";
+import { PROJECTS } from "@/lib/data";
 
 /* ────────────────────────────────────────────────────────────────────
    StreamHero — twelve real screens rushing the viewer.
@@ -77,8 +76,6 @@ function Line({ children, delay }: { children: React.ReactNode; delay: number })
 }
 
 export function StreamHero() {
-  const acorn = PROJECTS.find((p) => p.slug === "acornprep")!;
-
   return (
     <section className="relative">
       <ImageStreamHero
@@ -112,14 +109,19 @@ export function StreamHero() {
             // whites out the cards at the sides, which are the largest and the
             // only ones you can actually read — the whole point of the shot.
             //
-            // Lifted slightly off centre so the glass pane in the lower third
-            // is not fully washed out. Only slightly: pulled higher than this,
-            // the lede started competing with the cards behind it on narrow
-            // screens, and legibility beats refraction — every card in the
-            // stream is a screenshot of a LIGHT interface, so what shows
-            // through a pane over them is close to white either way.
+            // Drawn tight around the HEADLINE, which is the only thing here
+            // that needs bare paper behind it. It used to reach far enough
+            // down to bleach the band the glass sits in — so the panes had a
+            // white wall behind them and read as plain cards. The figures
+            // don't need it: making text legible over busy content is the one
+            // job the glass is for, and the sentence below has already fallen
+            // clear of the stream.
+            //
+            // Wide and SHORT. The headline runs nearly the full frame, so a
+            // narrow ellipse left its last two words hanging over the cards;
+            // the height is what has to stay small, not the width.
             background:
-              "radial-gradient(54% 38% at 50% 44%, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%)",
+              "radial-gradient(64% 22% at 50% 35%, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.9) 52%, rgba(255,255,255,0) 100%)",
           }}
         />
         {/* Fades tie the corridor into the white page above and below. Eased,
@@ -152,8 +154,52 @@ export function StreamHero() {
             </Line>
           </h1>
 
+          {/*
+            The figures, as three panes of glass.
+
+            One divided card was the wrong object: dividers make a table, and a
+            table on a white page is a card, not a lens. Three separate capsules
+            float — the corridor shows between them, each one catches its own
+            light, and each drops its own shadow.
+
+            They sit HERE, between the headline and the sentence, because
+            this is the band of the corridor the cards actually cross. Below
+            the sentence the stream has already thinned to nothing, and glass
+            over blank paper is just a white card — which is what this was.
+
+            Transform-only entrance, on purpose. Fading these in by animating
+            opacity on the wrapper would make it a backdrop root for the frame
+            of the animation and flash the glass clear — see `liquid-glass.tsx`.
+          */}
+          <motion.dl
+            /*
+              A row at every width. Stacked on a phone, three capsules ran
+              taller than the corridor itself and pushed the eyebrow off the
+              top of the screen — on the one layout where the stream has the
+              least room to spare.
+            */
+            className="mt-8 flex w-full max-w-[56rem] gap-2 sm:gap-4 md:mt-12"
+            initial={{ transform: "translateY(18px)" }}
+            animate={{ transform: "translateY(0px)" }}
+            transition={{ duration: 0.65, ease: EASE_OUT, delay: 0.4 }}
+          >
+            {TELEMETRY.map((s) => (
+              <LiquidGlass
+                key={s.label}
+                className="flex-1"
+                contentClassName="flex flex-col items-center gap-1.5 px-2.5 py-4 sm:px-5 sm:py-5 md:py-6"
+              >
+                <dt className="t-num text-[1.35rem] leading-none sm:text-[1.75rem] md:text-[2.1rem]">
+                  <StatFigure value={s.value} />
+                </dt>
+                <dd className="t-small vibrant text-[0.68rem] leading-tight sm:text-[0.75rem] md:text-[0.8rem]">
+                  {s.label}
+                </dd>
+              </LiquidGlass>
+            ))}
+          </motion.dl>
           <motion.p
-            className="t-body mt-6 max-w-lg text-balance"
+            className="t-body mt-9 max-w-lg text-balance md:mt-10"
             initial={{ opacity: 0, transform: "translateY(10px)" }}
             animate={{ opacity: 1, transform: "translateY(0px)" }}
             transition={{ duration: 0.5, ease: EASE_OUT, delay: 0.3 }}
@@ -162,79 +208,6 @@ export function StreamHero() {
             one of them, live right now.
           </motion.p>
 
-          <motion.div
-            className="mt-8 flex flex-wrap items-center justify-center gap-3"
-            initial={{ opacity: 0, transform: "translateY(10px)" }}
-            animate={{ opacity: 1, transform: "translateY(0px)" }}
-            transition={{ duration: 0.5, ease: EASE_OUT, delay: 0.38 }}
-          >
-            <a
-              href={acorn.url}
-              target="_blank"
-              rel="noreferrer noopener"
-              data-cursor-hover
-              className="btn btn-primary"
-            >
-              Visit AcornPrep
-            </a>
-            <a
-              href={PROFILE.links.github}
-              target="_blank"
-              rel="noreferrer noopener"
-              data-cursor-hover
-              className="btn btn-glass"
-            >
-              View the code <ArrowUpRight className="size-4" />
-            </a>
-          </motion.div>
-
-          {/*
-            The three figures, ON the corridor rather than on the white page
-            below it. That is the whole reason the material is here: a pane of
-            glass over flat paper is an expensive rectangle, but over a moving
-            wall of screenshots it refracts them, and the numbers read as
-            floating in front of the work they describe.
-
-            Transform-only entrance, on purpose. Fading this in by animating
-            opacity on the wrapper would make it a backdrop root for the frame
-            of the animation and flash the glass clear — see `liquid-glass.tsx`.
-          */}
-          <motion.dl
-            /*
-              Wide on purpose. The corridor converges on a vanishing point, so
-              its MIDDLE is the one part with nothing in it — a narrow pane sat
-              in that hole and frosted blank paper. At this width the pane
-              reaches the cards on both flanks, which is where the refraction
-              actually has something to bend.
-            */
-            /*
-              Sized to the headline above it, not to the corridor. Full-bleed
-              was tried and reads as a plain bar: every card in the stream is a
-              screenshot of a LIGHT interface, so a blurred backdrop is white
-              wherever it lands and extra width buys no extra refraction. What
-              carries the material here is the bevel and the shadow.
-            */
-            className="mt-9 w-full max-w-[52rem] md:mt-11"
-            initial={{ transform: "translateY(16px)" }}
-            animate={{ transform: "translateY(0px)" }}
-            transition={{ duration: 0.6, ease: EASE_OUT, delay: 0.46 }}
-          >
-            <LiquidGlass contentClassName="grid grid-cols-3 divide-x divide-black/10">
-              {TELEMETRY.map((s) => (
-                <div
-                  key={s.label}
-                  className="flex flex-col items-center gap-1.5 px-3 py-5 md:px-5 md:py-6"
-                >
-                  <dt className="t-num text-[1.6rem] leading-none md:text-[1.9rem]">
-                    <StatFigure value={s.value} />
-                  </dt>
-                  <dd className="t-small vibrant text-[0.72rem] leading-tight md:text-[0.78rem]">
-                    {s.label}
-                  </dd>
-                </div>
-              ))}
-            </LiquidGlass>
-          </motion.dl>
         </div>
       </ImageStreamHero>
 
