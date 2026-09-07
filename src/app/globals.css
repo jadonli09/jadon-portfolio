@@ -296,15 +296,35 @@
 }
 
 [data-world="built"] {
-  /* the mission archive — halftone black, paper white, one rocket-red signal */
-  --bg: #0c0c0c;
-  --bg-2: #141414;
-  --fg: #f2f1ec;
-  --muted: #8f8f88;
-  --accent: #fc3d21; /* rocket red */
-  --accent-2: #b8b7b0; /* faded telemetry gray */
-  --line: rgba(242, 241, 236, 0.16);
-  --selection: rgba(252, 61, 33, 0.35);
+  /* APPLE LIGHT. White ground, one grey for alternating sections, near-black
+     text, one blue for anything you can act on. These are Apple's own values,
+     not approximations of them: #f5f5f7 is the section grey, #1d1d1f the text,
+     #6e6e73 the secondary, #0071e3 the interactive blue.
+
+     Near-monochrome on purpose. The product screenshots carry every colour on
+     the page and the chrome must not compete with them — which is exactly why
+     Apple's own product pages are white with blue links and nothing else. */
+  --bg: #ffffff;
+  --bg-2: #f5f5f7;   /* alternating section ground */
+  --bg-3: #fbfbfd;   /* opaque card fallback */
+  --fg: #1d1d1f;
+  --muted: #6e6e73;
+  --accent: #0071e3;   /* the one interactive colour */
+  --accent-2: #0077ed; /* its hover */
+  --line: rgba(0, 0, 0, 0.1);
+  --line-2: rgba(0, 0, 0, 0.16);
+  --selection: rgba(0, 113, 227, 0.2);
+
+  /* Materials. Weight encodes hierarchy: thin for chips, regular for cards,
+     thick for floating chrome. Bigger surface => stronger blur + deeper shadow.
+     On a light ground the material is white held back from opaque, and the
+     shadow does the separating that a border does on black. */
+  --mat-thin: rgba(255, 255, 255, 0.62);
+  --mat-reg: rgba(255, 255, 255, 0.72);
+  --mat-thick: rgba(255, 255, 255, 0.82);
+  --blur-thin: 14px;
+  --blur-reg: 26px;
+  --blur-thick: 40px;
 }
 
 [data-world="leadership"] {
@@ -389,7 +409,18 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-grotesk), system-ui, sans-serif;
+  /*
+    `clip`, not `hidden`. They paint the same, but `hidden` makes the body a
+    scroll container, and a scroll container between the viewport and an
+    element kills `position: sticky` for everything inside it — silently. The
+    built world's pinned product stage simply scrolled away with the page.
+
+    `hidden` stays first as the fallback for browsers without `clip`; they lose
+    the pin, which is the same behaviour they had before, and keep the
+    horizontal clamp that matters.
+  */
   overflow-x: hidden;
+  overflow-x: clip;
   transition: background-color 0.6s var(--ease-cine), color 0.6s var(--ease-cine);
 }
 
@@ -461,164 +492,364 @@ body {
   color: var(--muted);
 }
 
-/* ── MISSION ARCHIVE (built world) ────────────────────────────── */
+/* ── THE WORKBENCH (built world) ──────────────────────────────── */
+/*
+   Design language: Apple, light. White ground, system type with size-specific
+   tracking, translucent chrome, springs for anything you can touch, and one
+   blue for anything you can act on. Everything that used to shout here —
+   halftone screens, stencil strokes, viewfinder brackets, ghost type — is
+   gone: the product shots are the loudest thing on the page and nothing else
+   may compete with them.
 
-/* Registered so the viewfinder brackets can tween their length on hover. */
-@property --bl {
-  syntax: "<length>";
-  inherits: false;
-  initial-value: 13px;
-}
+   The one world on this site that is light. That is the point — it is the
+   only one whose subject is software, and software wants a white page.
+*/
 
-/* Halftone dot field + faint cartographic grid over the whole world. */
+/* Motion tokens. Built-in CSS easings are too weak for UI; these are the
+   strong curves every transition in this world uses. */
 [data-world="built"] {
-  background-image:
-    radial-gradient(rgba(242, 241, 236, 0.05) 1px, transparent 1.4px),
-    linear-gradient(rgba(242, 241, 236, 0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(242, 241, 236, 0.028) 1px, transparent 1px);
-  background-size: 5px 5px, 104px 104px, 104px 104px;
-}
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 
-/* Heavy condensed mission type. */
-[data-world="built"] .mission-display {
-  font-family: var(--font-anton), Impact, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.015em;
-  line-height: 0.94;
-}
+  /* The platform font first — it already ships optical sizing, tracking tables
+     and legibility tuning. Archivo is the non-Apple fallback. */
+  --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    var(--font-grotesk), "Segoe UI", system-ui, sans-serif;
 
-/* Stroke-only word inside a display headline. */
-[data-world="built"] .stencil {
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--fg);
-}
-
-/* Stroke-only word in rocket red — the one loud moment per screen. */
-[data-world="built"] .stencil-accent {
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--accent);
-}
-
-/* Giant ghost type bleeding off the right edge. */
-[data-world="built"] .ghost-line {
-  font-family: var(--font-anton), Impact, sans-serif;
-  text-transform: uppercase;
-  white-space: nowrap;
-  line-height: 1.04;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(242, 241, 236, 0.1);
-  user-select: none;
-}
-
-/* Filled mission button — hard white slab, no radius. */
-[data-world="built"] .btn-fill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  background: var(--fg);
-  color: #0c0c0c;
-  font-family: var(--font-grotesk), sans-serif;
-  font-weight: 700;
-  font-size: 0.7rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  padding: 1.05rem 2.1rem;
-  transition: transform 0.25s var(--ease-cine), box-shadow 0.25s var(--ease-cine);
-}
-[data-world="built"] .btn-fill:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 4px 4px 0 var(--accent);
-}
-[data-world="built"] .btn-fill:active {
-  transform: translate(0, 0);
-  box-shadow: none;
-}
-
-/* Outline mission button — corner brackets only, like a viewfinder. */
-[data-world="built"] .btn-brackets {
-  --bk: 1.5px;
-  --bl: 13px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  color: var(--fg);
-  font-family: var(--font-grotesk), sans-serif;
-  font-weight: 700;
-  font-size: 0.7rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  padding: 1.05rem 2.1rem;
-  background:
-    linear-gradient(currentColor, currentColor) left top / var(--bl) var(--bk) no-repeat,
-    linear-gradient(currentColor, currentColor) left top / var(--bk) var(--bl) no-repeat,
-    linear-gradient(currentColor, currentColor) right top / var(--bl) var(--bk) no-repeat,
-    linear-gradient(currentColor, currentColor) right top / var(--bk) var(--bl) no-repeat,
-    linear-gradient(currentColor, currentColor) left bottom / var(--bl) var(--bk) no-repeat,
-    linear-gradient(currentColor, currentColor) left bottom / var(--bk) var(--bl) no-repeat,
-    linear-gradient(currentColor, currentColor) right bottom / var(--bl) var(--bk) no-repeat,
-    linear-gradient(currentColor, currentColor) right bottom / var(--bk) var(--bl) no-repeat,
-    rgba(242, 241, 236, 0);
-  transition: --bl 0.25s, background-color 0.25s var(--ease-cine);
-}
-[data-world="built"] .btn-brackets:hover {
-  --bl: 22px;
-  color: var(--accent);
-  background-color: rgba(252, 61, 33, 0.07);
-}
-
-/* Bracket frame for media — same viewfinder corners, padded out. */
-[data-world="built"] .frame-brackets {
-  --bk: 1.5px;
-  --bl: 22px;
-  padding: 12px;
-  background:
-    linear-gradient(var(--fg), var(--fg)) left top / var(--bl) var(--bk) no-repeat,
-    linear-gradient(var(--fg), var(--fg)) left top / var(--bk) var(--bl) no-repeat,
-    linear-gradient(var(--fg), var(--fg)) right top / var(--bl) var(--bk) no-repeat,
-    linear-gradient(var(--fg), var(--fg)) right top / var(--bk) var(--bl) no-repeat,
-    linear-gradient(var(--fg), var(--fg)) left bottom / var(--bl) var(--bk) no-repeat,
-    linear-gradient(var(--fg), var(--fg)) left bottom / var(--bk) var(--bl) no-repeat,
-    linear-gradient(var(--fg), var(--fg)) right bottom / var(--bl) var(--bk) no-repeat,
-    linear-gradient(var(--fg), var(--fg)) right bottom / var(--bk) var(--bl) no-repeat;
-}
-
-/* Archival photo treatment — washed colour print + halftone screen on top. */
-[data-world="built"] .archival {
-  filter: saturate(0.72) contrast(1.1) brightness(1.02);
-}
-[data-world="built"] .archival-frame {
+  color-scheme: light;
+  font-family: var(--font-ui);
   position: relative;
-}
-[data-world="built"] .archival-frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.5) 0.7px, transparent 1px);
-  background-size: 3px 3px;
-  opacity: 0.22;
-  mix-blend-mode: multiply;
+  isolation: isolate;
 }
 
-/* Product screenshots enter halftone and resolve to full colour. Photographs
-   keep .archival; product UI is evidence and has to be legible. */
-[data-world="built"] .developing img,
-[data-world="built"] .developing iframe {
-  filter: saturate(0) contrast(1.25) brightness(0.95);
-  transition: filter 900ms cubic-bezier(0.16, 1, 0.3, 1);
+/*
+   No gradient, no glow, no texture. Apple's product pages are flat white with
+   flat #f5f5f7 bands, and the restraint is the effect: with nothing behind
+   them, the screenshots read as the only objects on the page.
+*/
+
+/* ── Type. Tracking and leading are size-specific — one letter-spacing value
+   across a whole scale is wrong somewhere. Large text tightens; body sits at
+   0; small type gets a touch of positive tracking. ─────────────── */
+
+[data-world="built"] .t-display {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: clamp(2.7rem, 7vw, 6.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.036em;
+  font-optical-sizing: auto;
 }
-[data-world="built"] .developed img,
-[data-world="built"] .developed iframe {
-  filter: saturate(1) contrast(1) brightness(1);
-  transition: filter 900ms cubic-bezier(0.16, 1, 0.3, 1);
+[data-world="built"] .t-title {
+  font-family: var(--font-ui);
+  font-weight: 650;
+  font-size: clamp(2rem, 4.4vw, 3.4rem);
+  line-height: 1.06;
+  letter-spacing: -0.028em;
+  font-optical-sizing: auto;
 }
-@media (prefers-reduced-motion: reduce) {
-  [data-world="built"] .developing img,
-  [data-world="built"] .developing iframe {
-    filter: none;
+[data-world="built"] .t-head {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: clamp(1.3rem, 2vw, 1.75rem);
+  line-height: 1.18;
+  letter-spacing: -0.018em;
+}
+[data-world="built"] .t-sub {
+  font-family: var(--font-ui);
+  font-weight: 590;
+  font-size: 1.0625rem;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+[data-world="built"] .t-body {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 1.0625rem;
+  line-height: 1.62;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+[data-world="built"] .t-small {
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  letter-spacing: 0.004em;
+  color: var(--muted);
+}
+[data-world="built"] .t-label {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+[data-world="built"] .t-num {
+  font-family: var(--font-ui);
+  font-weight: 640;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+
+/* Vibrancy: text sitting on a translucent surface needs more contrast and a
+   little more weight than text on a solid one, or the blur eats it. */
+[data-world="built"] .vibrant {
+  color: color-mix(in srgb, var(--fg) 92%, transparent);
+  font-weight: 500;
+  letter-spacing: 0.006em;
+}
+
+/* ── Materials ─────────────────────────────────────────────────── */
+
+/*
+   Card. On white this is a solid #f5f5f7 panel with a large radius and no
+   border — Apple's own card. A translucent card over a white page has nothing
+   to be translucent against; the blur would cost paint and show nothing.
+*/
+[data-world="built"] .surface {
+  background: var(--bg-2);
+  border-radius: 22px;
+}
+
+/* Chip. Same idea, smaller radius, and a hairline because it is often small
+   enough that a fill alone does not register as an edge. */
+[data-world="built"] .surface-thin {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+/*
+   Floating chrome — the ONE genuinely translucent surface, because it is the
+   only one with live content passing underneath it. This is Apple's nav
+   material: white held back from opaque, a strong blur, and saturation pushed
+   up so colour showing through stays colour instead of going grey.
+*/
+[data-world="built"] .surface-chrome {
+  background: var(--mat-thick);
+  backdrop-filter: blur(var(--blur-thick)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--blur-thick)) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 999px;
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.03),
+    0 8px 28px -8px rgba(0, 0, 0, 0.16);
+}
+
+/* Scroll edge effect, not a 1px rule: content fades out where floating chrome
+   overlaps it. */
+[data-world="built"] .edge-fade {
+  background: linear-gradient(to top, var(--bg) 14%, transparent);
+}
+
+/* ── Controls ──────────────────────────────────────────────────── */
+
+[data-world="built"] .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.8rem 1.4rem;
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  font-weight: 560;
+  letter-spacing: -0.006em;
+  white-space: nowrap;
+  /* Feedback lives on the press and it is instant. Never `transition: all`. */
+  transition:
+    transform 130ms var(--ease-out),
+    background-color 130ms var(--ease-out),
+    border-color 130ms var(--ease-out),
+    opacity 130ms var(--ease-out);
+}
+[data-world="built"] .btn:active {
+  transform: scale(0.965);
+}
+
+/* The blue pill. Apple's primary action, at Apple's blue. */
+[data-world="built"] .btn-primary {
+  background: var(--accent);
+  color: #ffffff;
+}
+/* The quiet one: a tinted, borderless companion to the blue pill. */
+[data-world="built"] .btn-glass {
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+  color: var(--accent);
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-world="built"] .btn-primary:hover { background: var(--accent-2); }
+  [data-world="built"] .btn-glass:hover {
+    background: color-mix(in srgb, var(--accent) 15%, transparent);
   }
+}
+
+/*
+   A list row. Hover is an occasional-tier interaction, so it is near
+   imperceptible on purpose: a wash of light and a 3px lean on the arrow toward
+   where the click goes. The press response is instant and lives on :active.
+*/
+[data-world="built"] .row {
+  transition:
+    background-color 150ms var(--ease-out),
+    scale 130ms var(--ease-out);
+}
+[data-world="built"] .row:active {
+  scale: 0.996;
+}
+[data-world="built"] .row .lean {
+  transition:
+    translate 150ms var(--ease-out),
+    color 150ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-world="built"] .row:hover { background-color: var(--bg-2); }
+  [data-world="built"] .row:hover .lean {
+    translate: 3px -3px;
+    color: var(--fg);
+  }
+}
+
+/* A stack / tag pill. */
+[data-world="built"] .pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: var(--bg-2);
+  padding: 0.3rem 0.7rem;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 480;
+  letter-spacing: 0.002em;
+  color: var(--muted);
+}
+
+/* Live indicator — a slow breath, well clear of the flicker floor. */
+[data-world="built"] .live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent);
+  animation: live-breathe 2.6s var(--ease-out) infinite;
+}
+@keyframes live-breathe {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+  70% { box-shadow: 0 0 0 6px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* ── Product canvas ────────────────────────────────────────────── */
+
+/*
+   The screenshot's housing. On white, a hard border would trap the shot in a
+   box; a soft shadow lifts it off the page instead, which is how every device
+   render on apple.com sits on its white ground. The hairline is there only to
+   keep a near-white screenshot from bleeding into a white page.
+*/
+[data-world="built"] .canvas {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  background: var(--bg-2);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.03),
+    0 18px 44px -18px rgba(0, 0, 0, 0.16);
+}
+[data-world="built"] .canvas-bar {
+  display: flex;
+  height: 2.35rem;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.6rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.025);
+  padding: 0 0.85rem;
+}
+
+/*
+   A glass plate over a product shot. It MATERIALIZES — blur, scale and opacity
+   move together — so it reads as a real surface arriving rather than an image
+   being cross-faded. Hover only, and gated to real pointers: on touch, a tap
+   fires a false hover and the plate would flash on the way to the link.
+*/
+[data-world="built"] .plate,
+[data-world="built"] .plate-scrim {
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out);
+  pointer-events: none;
+}
+[data-world="built"] .plate {
+  transform: translateY(8px) scale(0.94);
+  filter: blur(3px);
+  transition:
+    opacity 200ms var(--ease-out),
+    transform 200ms var(--ease-out),
+    filter 200ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-world="built"] .plate-host:hover .plate-scrim { opacity: 1; }
+  [data-world="built"] .plate-host:hover .plate {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* The custom cursor hides the native pointer, so keyboard users are the ones
+   who most need a visible ring. */
+[data-world="built"] :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ── Accessibility signals ─────────────────────────────────────── */
+
+/* Solid, not frosted. The dock is the only translucent surface left. */
+@media (prefers-reduced-transparency: reduce) {
+  [data-world="built"] .surface-chrome {
+    background: #ffffff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* Darker secondary text and defined edges. */
+@media (prefers-contrast: more) {
+  [data-world="built"] {
+    --muted: #43434a;
+    --line: rgba(0, 0, 0, 0.3);
+    --line-2: rgba(0, 0, 0, 0.45);
+  }
+  [data-world="built"] .surface,
+  [data-world="built"] .surface-thin,
+  [data-world="built"] .pill {
+    border: 1px solid var(--line);
+  }
+  [data-world="built"] .surface-chrome {
+    background: #ffffff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* Gentler, not gone: opacity and colour stay, movement goes. */
+@media (prefers-reduced-motion: reduce) {
+  [data-world="built"] .live-dot { animation: none; }
+}
+
+/*
+   No film grain on a white page. The site-wide overlay is an `overlay` blend
+   tuned for the dark worlds; over white it is visible dirt on what is supposed
+   to be paper.
+*/
+[data-world="built"] ~ .grain,
+body:has([data-world="built"]) .grain {
+  display: none;
 }
 
 /* ── ATMOSPHERE ───────────────────────────────────────────────── */
