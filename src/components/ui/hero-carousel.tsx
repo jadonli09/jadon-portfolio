@@ -327,17 +327,22 @@ export function HeroCarousel({
       />
 
       {/* Soft seams. A full-bleed dark band dropped into a white page meets it
-          at a hard line; these dissolve the two edges into each other. */}
+          at a hard line; these dissolve the two edges into each other.
+
+          The ramp is an ease-in-out sine, not the two-stop linear fade this
+          used to be. Alpha interpolated linearly reads as a band with an edge
+          — the fade appears to stop about a third of the way down and then
+          finish abruptly — which is exactly the seam it is here to hide. */}
       {fadeEdges ? (
         <>
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 bg-gradient-to-b from-white to-transparent"
+            className="scrim-down pointer-events-none absolute inset-x-0 top-0"
             style={{ height: fadeEdges }}
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-white to-transparent"
+            className="scrim-up pointer-events-none absolute inset-x-0 bottom-0"
             style={{ height: fadeEdges }}
           />
         </>

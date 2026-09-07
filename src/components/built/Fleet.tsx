@@ -77,15 +77,10 @@ function Detail({ project }: { project: Project }) {
         </div>
       ) : null}
 
+      {/* No stack chips. "Web · Search · ASB" named a technology and told the
+          reader nothing about the product; the figures and the link do the
+          work. */}
       <div className="flex flex-wrap items-center gap-2 sm:justify-end">
-        {project.stack.map((t) => (
-          <span
-            key={t}
-            className="rounded-full border border-white/25 px-2.5 py-0.5 text-[0.72rem] opacity-80"
-          >
-            {t}
-          </span>
-        ))}
         <a
           href={project.url}
           target="_blank"
@@ -152,7 +147,7 @@ export function Fleet() {
         backgroundBlur={26}
         // 16:10 — a browser capture's own shape, so the whole page shows.
         cardAspect={1.6}
-        fadeEdges={110}
+        fadeEdges={150}
         className="h-[92svh] min-h-[36rem]"
       />
     </section>

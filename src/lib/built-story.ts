@@ -37,7 +37,7 @@ export const STORIES: Record<string, Story> = {
    * these are the genuine article rather than a reconstruction of it.
    */
   acornprep: {
-    lede: "Built by a 6-AP veteran for a school with no shared study materials.",
+    lede: "Built by an 11-AP veteran, every exam a 5, for a school with no shared study materials.",
     beats: [
       {
         label: "Practice",

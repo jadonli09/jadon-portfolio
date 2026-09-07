@@ -4,7 +4,6 @@ import { Footer } from "@/components/chrome/Footer";
 import { StreamHero } from "@/components/built/StreamHero";
 import { ProjectChapter } from "@/components/built/ProjectChapter";
 import { PhotoStrip } from "@/components/built/PhotoStrip";
-import { HermesRun } from "@/components/built/HermesRun";
 import { HermesFlow } from "@/components/built/HermesFlow";
 import { Fleet } from "@/components/built/Fleet";
 import { Dock } from "@/components/built/Dock";
@@ -61,14 +60,18 @@ export default function BuiltPage() {
       </ProjectChapter>
 
       {/* Hermes has no interface to pin, so its section shows the pipeline
-          itself rather than a screenshot of the one thing it emits. */}
+          itself rather than a screenshot of the one thing it emits.
+
+          Nothing sits under the pipeline any more. A six-figure breakdown of
+          one night's run — accounts, posts, new, duplicates, failures, run
+          time — was telemetry from inside the machine; the section already
+          says what the machine does and how often, and the numbers that
+          matter to a reader are in the figures row above. */}
       <ProjectChapter
         project={bySlug("hermes")}
         index={2}
         stage={<HermesFlow shot="/embeds/hermes-story.jpg" />}
-      >
-        <HermesRun />
-      </ProjectChapter>
+      />
 
       <ProjectChapter project={bySlug("notebookli")} index={3} />
 

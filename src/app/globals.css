@@ -638,10 +638,149 @@ body {
     0 8px 28px -8px rgba(0, 0, 0, 0.16);
 }
 
+/* ── Scrims ────────────────────────────────────────────────────────
+   A two-stop `white → transparent` gradient interpolates alpha LINEARLY, and
+   the eye does not read light linearly: the result has a visible shoulder
+   partway down where the fade appears to stop, and a hard-looking heel where
+   it meets the content. That shoulder is the "abrupt" edge.
+
+   These ramp alpha along an ease-in-out sine instead — sixteen stops, dense
+   where the curve bends. The fade has no edge to find, so a dark band or a
+   corridor of screenshots dissolves into the white page rather than ending
+   on a seam.
+
+   `--scrim` is the colour being faded FROM; it defaults to the page ground.
+   ─────────────────────────────────────────────────────────────── */
+[data-world="built"] .scrim-down,
+[data-world="built"] .scrim-up {
+  --scrim: var(--bg);
+  --s0: var(--scrim);
+  --s1: color-mix(in srgb, var(--scrim) 98.7%, transparent);
+  --s2: color-mix(in srgb, var(--scrim) 95.1%, transparent);
+  --s3: color-mix(in srgb, var(--scrim) 89.6%, transparent);
+  --s4: color-mix(in srgb, var(--scrim) 82.5%, transparent);
+  --s5: color-mix(in srgb, var(--scrim) 74.1%, transparent);
+  --s6: color-mix(in srgb, var(--scrim) 64.8%, transparent);
+  --s7: color-mix(in srgb, var(--scrim) 55%, transparent);
+  --s8: color-mix(in srgb, var(--scrim) 45%, transparent);
+  --s9: color-mix(in srgb, var(--scrim) 35.2%, transparent);
+  --s10: color-mix(in srgb, var(--scrim) 25.9%, transparent);
+  --s11: color-mix(in srgb, var(--scrim) 17.5%, transparent);
+  --s12: color-mix(in srgb, var(--scrim) 10.4%, transparent);
+  --s13: color-mix(in srgb, var(--scrim) 4.9%, transparent);
+  --s14: color-mix(in srgb, var(--scrim) 1.3%, transparent);
+  --s15: transparent;
+  --stops:
+    var(--s0) 0%, var(--s1) 8.1%, var(--s2) 15.5%, var(--s3) 22.5%,
+    var(--s4) 29%, var(--s5) 35.3%, var(--s6) 41.2%, var(--s7) 47.1%,
+    var(--s8) 52.9%, var(--s9) 58.8%, var(--s10) 64.7%, var(--s11) 71%,
+    var(--s12) 77.5%, var(--s13) 84.5%, var(--s14) 91.9%, var(--s15) 100%;
+}
+/* Solid at the TOP edge, clear at the bottom. */
+[data-world="built"] .scrim-down {
+  background-image: linear-gradient(to bottom, var(--stops));
+}
+/* Solid at the BOTTOM edge, clear at the top. */
+[data-world="built"] .scrim-up {
+  background-image: linear-gradient(to top, var(--stops));
+}
+
 /* Scroll edge effect, not a 1px rule: content fades out where floating chrome
    overlaps it. */
 [data-world="built"] .edge-fade {
-  background: linear-gradient(to top, var(--bg) 14%, transparent);
+  --scrim: var(--bg);
+  background-image: linear-gradient(
+    to top,
+    var(--bg) 0%,
+    color-mix(in srgb, var(--bg) 95%, transparent) 24%,
+    color-mix(in srgb, var(--bg) 74%, transparent) 45%,
+    color-mix(in srgb, var(--bg) 40%, transparent) 66%,
+    color-mix(in srgb, var(--bg) 12%, transparent) 84%,
+    transparent 100%
+  );
+}
+
+/* ── One-line statement ────────────────────────────────────────────
+   A line that must not break. The size is the SMALLER of its natural step on
+   the scale and the size at which its own character count still fits the
+   column, so it shrinks to stay on one line instead of dropping a single
+   orphaned word onto a second.
+
+   `--ch` is the string's length, set per instance. 0.53em is the measured
+   average advance of this face at this weight and tracking — checked against
+   the real strings on the page, not assumed.
+   ─────────────────────────────────────────────────────────────── */
+[data-world="built"] .t-oneline {
+  --ch: 40;
+  --gutter: 1.25rem;
+  --avail: calc(min(100vw, 80rem) - 2 * var(--gutter));
+  font-size: clamp(1.15rem, 4.4vw, 1.35rem);
+  /* Balanced, not ragged. On a phone the line WILL wrap, and the point of the
+     rule is that no single word is left alone on the last line. */
+  text-wrap: balance;
+}
+/*
+   One line, from tablet up. Below this the column is simply too narrow to hold
+   these sentences without shrinking them under the body copy they sit above —
+   which trades an orphaned word for an upside-down hierarchy.
+*/
+@media (min-width: 768px) {
+  [data-world="built"] .t-oneline {
+    --gutter: 2.25rem;
+    font-size: min(
+      clamp(1.15rem, 1.95vw, 1.7rem),
+      calc(var(--avail) / (var(--ch) * 0.545))
+    );
+    white-space: nowrap;
+  }
+}
+
+/* ── Liquid glass ──────────────────────────────────────────────────
+   See `components/ui/liquid-glass.tsx` for what the two layers are for. The
+   material lives here because the bevel is a shadow stack, and a shadow stack
+   belongs in a stylesheet rather than in a className.
+   ─────────────────────────────────────────────────────────────── */
+[data-world="built"] .liquid-glass {
+  border-radius: 22px;
+}
+[data-world="built"] .liquid-glass-backdrop {
+  border-radius: inherit;
+  /* The fallback, and the base every browser gets. */
+  backdrop-filter: blur(6px) saturate(180%);
+  -webkit-backdrop-filter: blur(6px) saturate(180%);
+}
+/*
+   The refraction, only where an SVG filter in `backdrop-filter` is real. Safari
+   has `backdrop-filter` but not url() inside it, and would otherwise drop the
+   whole declaration and show unblurred content through the pane.
+*/
+@supports (backdrop-filter: url("#liquid-glass-displace")) {
+  [data-world="built"] .liquid-glass-backdrop {
+    backdrop-filter: url("#liquid-glass-displace") blur(2px) saturate(180%);
+  }
+}
+/*
+   The bevel. Bright inset on the top-left where light would catch the lens,
+   dark on the bottom-right where it turns away, a wide inner glow for the
+   body of the glass, and one soft drop shadow so the pane sits ABOVE the
+   corridor rather than being painted onto it.
+*/
+[data-world="built"] .liquid-glass-shell {
+  border-radius: inherit;
+  box-shadow:
+    /* the lit top-left bevel */
+    inset 2px 2px 1.5px -2px rgba(255, 255, 255, 0.95),
+    inset 1px 1px 1px -0.5px rgba(255, 255, 255, 0.8),
+    /* the shaded bottom-right one, where the lens turns away */
+    inset -2px -2px 1.5px -2px rgba(0, 0, 0, 0.12),
+    inset -1px -1px 1px -0.5px rgba(0, 0, 0, 0.06),
+    /* body of the glass, and a hairline so the pane has an edge on white */
+    inset 0 0 10px 7px rgba(255, 255, 255, 0.16),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.45),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.045),
+    /* it sits ABOVE the corridor rather than being painted onto it */
+    0 1px 1px rgba(0, 0, 0, 0.04),
+    0 14px 40px -14px rgba(0, 0, 0, 0.26);
 }
 
 /* ── Controls ──────────────────────────────────────────────────── */
@@ -816,6 +955,14 @@ body {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
+  [data-world="built"] .liquid-glass-backdrop {
+    background: #ffffff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  [data-world="built"] .liquid-glass-shell {
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
 }
 
 /* Darker secondary text and defined edges. */
@@ -834,6 +981,14 @@ body {
     background: #ffffff;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
+  }
+  [data-world="built"] .liquid-glass-backdrop {
+    background: #ffffff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  [data-world="built"] .liquid-glass-shell {
+    box-shadow: inset 0 0 0 1px var(--line);
   }
 }
 

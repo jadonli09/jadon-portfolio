@@ -26,10 +26,16 @@ export function ScrubLine({
   /** Words after this fraction of the phrase stay muted — the "second half"
    *  of a two-tone Apple headline. Omit for a single-tone line. */
   muteFrom,
+  /** The type step this line sits on. A chapter's tagline is a subcaption
+   *  under the product's name now, not the statement line it used to be. */
+  baseClass = "t-title",
+  style,
 }: {
   text: string;
   className?: string;
   muteFrom?: number;
+  baseClass?: string;
+  style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLParagraphElement>(null);
   const reduce = useReducedMotion();
@@ -50,7 +56,7 @@ export function ScrubLine({
   const words = text.split(" ");
 
   return (
-    <p ref={ref} className={cn("t-title", className)}>
+    <p ref={ref} className={cn(baseClass, className)} style={style}>
       {words.map((w, i) => (
         <Word
           key={`${w}-${i}`}

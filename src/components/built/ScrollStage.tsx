@@ -48,10 +48,18 @@ const PINNED_QUERY = "(min-width: 1024px)";
 export function ScrollStage({
   beats,
   name,
+  header,
   aside,
 }: {
   beats: Beat[];
   name: string;
+  /**
+   * The chapter's own heading block. It rides INSIDE the pinned screen rather
+   * than above the runway: pinned a screenful below its own header, the stage
+   * left half a screen of white between the two, and the section read as two
+   * things with a hole between them instead of one composition.
+   */
+  header?: React.ReactNode;
   /**
    * Extra content for the right column, under the beat line. Single-beat
    * sections only, and really only the portrait one: a 9:16 phone leaves a
@@ -64,7 +72,9 @@ export function ScrollStage({
   const [pinned, setPinned] = useState(false);
   const runwayRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const screenRef = useRef<HTMLDivElement>(null);
   const [travel, setTravel] = useState(0);
+  const [stickyTop, setStickyTop] = useState(0);
   const single = beats.length === 1;
 
   /*
@@ -116,6 +126,38 @@ export function ScrollStage({
     });
   }, [single, pinned, beats.length, scrollYProgress]);
 
+  /**
+   * Where the pinned screen sits.
+   *
+   * It used to be a full-viewport box with its contents centred, and that box
+   * begins at the TOP OF THE RUNWAY — so before anything pinned, the heading
+   * and product sat half a screen down from where the section starts, with the
+   * same emptiness underneath. Half a screen of white, twice, for a section
+   * that is otherwise packed.
+   *
+   * Now the sticky element is only as tall as its content and is offset by the
+   * space that would have been above it. Identical once pinned — the
+   * composition still holds the middle of the screen — but on the way in it
+   * begins exactly where the section does.
+   */
+  useEffect(() => {
+    const el = screenRef.current;
+    if (!el || single || !pinned) {
+      setStickyTop(0);
+      return;
+    }
+    const measure = () =>
+      setStickyTop(Math.max(0, Math.round((window.innerHeight - el.offsetHeight) / 2)));
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    window.addEventListener("resize", measure);
+    measure();
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [single, pinned]);
+
   /** The list's travel, measured — not assumed from a line count. */
   useEffect(() => {
     const el = listRef.current;
@@ -134,7 +176,9 @@ export function ScrollStage({
     const b = beats[0];
     const portrait = isPortrait(b.aspect);
     return (
-      <div
+      <>
+        {header}
+        <div
         /*
           The runway ref is attached in BOTH branches. `useScroll` is a hook, so
           it always runs — and pointing it at a ref this branch never attached
@@ -171,7 +215,8 @@ export function ScrollStage({
           <p className="t-title mt-3 max-w-2xl">{b.line}</p>
           {aside}
         </div>
-      </div>
+        </div>
+      </>
     );
   }
 
@@ -191,13 +236,20 @@ export function ScrollStage({
   return (
     <div
       ref={runwayRef}
-      className="mt-9 lg:relative"
+      className="lg:relative"
       // One screen of scroll per beat past the first, plus the screen that is
       // pinned. Any less and the last beat is never reachable.
       style={pinned ? { height: `calc(100svh + ${(beats.length - 1) * 62}svh)` } : undefined}
     >
-      <div className="lg:sticky lg:top-0 lg:flex lg:h-svh lg:items-center">
-        <div className="grid w-full grid-cols-1 gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+      {/* A column, held at the middle of the screen as a whole — heading and
+          stage travel together for the length of the runway. */}
+      <div
+        ref={screenRef}
+        className="lg:sticky lg:flex lg:flex-col"
+        style={pinned ? { top: stickyTop } : undefined}
+      >
+        {header}
+        <div className="mt-8 grid w-full grid-cols-1 gap-10 lg:mt-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
           <div className="hidden lg:block">
             <Frame beats={beats} active={active} name={name} aspect={STAGE_ASPECT} />
           </div>

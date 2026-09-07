@@ -145,7 +145,7 @@ export const SENTENCE_DOORS = {
   leads: { id: "leadership", num: "01", kicker: "The Operator", word: "leads", href: "/leadership", color: "#d9a83f", accent: "#b07c1e", photo: "/img/asb-officers.jpg", peek: "3× Class President → ASB President, in office", desc: "Elected class president three years running, now ASB President in office — the operator behind the rallies, Winter Ball, and $15k raised for the Class of 2027.", title: "Elected to lead, every year.", lede: "That discipline found a stage. Three-time Class President, now ASB President — he lost his way into winning, and runs events at the scale of a city.", cta: "Into leadership & events" },
   films: { id: "civic", num: "02", kicker: "The Storyteller", word: "films", href: "/civic", color: "#e0644e", accent: "#c2402c", photo: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg", peek: "The Mayor's videographer · Voices of Fremont", desc: "Films for the Mayor of Fremont — civic stories like Voices of Fremont that pull 10k+ views a video.", title: "Documenting a city, and himself.", lede: "Then he picked up a camera. He tells a city's stories — directing the Voices of Fremont podcast with the Mayor, a viral push to revive a beloved restaurant, and a paid role as the Mayor's videographer.", cta: "Into civic & storytelling" },
   researches: { id: "research", num: "03", kicker: "The Scientist", word: "researches", href: "/research", color: "#2fc4ad", accent: "#0c9c86", photo: "/img/acsef-science-fair.jpg", peek: "ACSEF 3rd · a glowing fungus at UMass", desc: "Computational biology on gout pain (3rd in comp bio at ACSEF) — then a summer in a UMass Amherst lab engineering a red-fluorescent Fusarium.", title: "Reading the genome of pain.", lede: "Curiosity pulled him into the lab. Trained in R by a Stanford professor, he hunted the mediators of gout pain in a mouse model — then spent six weeks at UMass Amherst making a human-pathogenic fungus glow red.", cta: "Into research & STEM" },
-  builds: { id: "built", num: "04", kicker: "The Builder", word: "builds", href: "/built", color: "#7c89e8", accent: "#4f5fd6", photo: "/img/presenting-acornprep-at-gemini-meetup.jpg", peek: "AcornPrep · 500+ students · NotebookLI", desc: "Built AcornPrep, an AP study app 500+ students use (#1 on Google), and NotebookLI, a reader that makes dense research papers legible.", title: "Ship it. Then ship the next.", lede: "What he learned, he shipped. AcornPrep turned six AP exams into a study tool 500+ students actually use — the #1 Google result, pitched at Stanford. Then NotebookLI, built mid-research so dense papers read like conversations.", cta: "Into the things he's built" },
+  builds: { id: "built", num: "04", kicker: "The Builder", word: "builds", href: "/built", color: "#7c89e8", accent: "#4f5fd6", photo: "/img/presenting-acornprep-at-gemini-meetup.jpg", peek: "AcornPrep · 500+ students · NotebookLI", desc: "Built AcornPrep, an AP study app 500+ students use (#1 on Google), and NotebookLI, a reader that makes dense research papers legible.", title: "Ship it. Then ship the next.", lede: "What he learned, he shipped. AcornPrep turned eleven AP exams, every one a 5, into a study tool 500+ students actually use — the #1 Google result, pitched at Stanford. Then NotebookLI, built mid-research so dense papers read like conversations.", cta: "Into the things he's built" },
   competes: { id: "court", num: "05", kicker: "The Competitor", word: "competes", href: "/court", color: "#f0703a", accent: "#e04e12", photo: "/img/ncs-champions.jpg", peek: "First NCS title in school history", desc: "Varsity basketball — started on the team that won the first NCS title in school history.", title: "First in school history.", lede: "And through all of it, the court. He started in the first five the year Mission San Jose won its first NCS title in school and district history.", cta: "Into the court" },
   documents: { id: "lockedin", num: "06", kicker: "The Pursuit", word: "documents all of it", href: "/locked-in", color: "#e8689c", accent: "#d23f7c", photo: "/img/headshot1.jpg", peek: "@li_locked.in · 1.39M plays in year one", desc: "Posts the whole journey on @li_locked.in — 83 reels and 1.39M plays in year one.", title: "The pursuit of happiness.", lede: "And the whole thing is documented. @li_locked.in is the public journal — one year, 83 reels, 1.39 million plays — all pointing one direction: the pursuit of happiness.", cta: "Into Locked In" },
   person: { id: "about", num: "07", kicker: "The Person", word: "person", href: "/about", color: "#c98a5d", accent: "#a9683f", photo: "/img/missionpeak2026-1.jpg", peek: "Mission Peak every birthday · journaling since 8th grade", desc: "The person underneath it all: Mission Peak every birthday, journaling since 8th grade.", title: "A stopwatch, a journal, a kitchen.", lede: "Start with the person. Every birthday since he was twelve, Jadon runs Mission Peak alone. He's journaled since eighth grade, cooks feasts with designed menus for his friends — and recommends a good nap.", cta: "Into the person" },
@@ -199,7 +199,7 @@ export const PINBOARD: PinItem[] = [
   { kind: "receipt", href: "/leadership#elected-offices-heading", go: "→ leadership · offices", lines: ["CLASS OF 2027", "──────────", "FUNDRAISED  $15,000", "STOLES JOB     $700", "──────────", "TOTAL        A LOT"], left: "16%", top: 208, rot: -4, z: 5, w: 132 },
   { kind: "ribbon", world: "research", href: "/research", go: "→ research", value: "3rd", label: "ACSEF · comp bio", left: "27%", top: 190, rot: 6, z: 7, w: 96 },
   { kind: "polaroid", href: "/research", go: "→ research", img: "/img/acsef-science-fair.jpg", caption: "the genomics of gout pain", left: "33%", top: 236, rot: -2, z: 4, w: 162 },
-  { kind: "ticket", world: "built", href: "/built", go: "→ built", text: "ACORNPREP · ADMIT 500+", label: "six AP exams · #1 on Google", accent: "#7c89e8", left: "48%", top: 204, rot: -5, z: 6, w: 154 },
+  { kind: "ticket", world: "built", href: "/built", go: "→ built", text: "ACORNPREP · ADMIT 500+", label: "eleven AP 5s · #1 on Google", accent: "#7c89e8", left: "48%", top: 204, rot: -5, z: 6, w: 154 },
   { kind: "polaroid", href: "/built", go: "→ built", img: "/img/presenting-acornprep-at-gemini-meetup.jpg", caption: "pitching at the Gemini meetup", left: "57%", top: 242, rot: 5, z: 4, w: 168 },
   { kind: "polaroid", world: "civic", href: "/civic", go: "→ civic", img: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg", caption: "Voices of Fremont, w/ the First Partner", left: "72%", top: 232, rot: -4, z: 5, w: 178 },
   { kind: "polaroid", world: "about", href: "/about", go: "→ the person", img: "/img/missionpeak2026-1.jpg", caption: "every birthday, same mountain", left: "4%", top: 352, rot: -5, z: 3, w: 158 },
@@ -903,6 +903,12 @@ export type Project = {
   embeddable: boolean; // attempt iframe first; fall back to mockup
   /** Captured screenshot of the live site (in /public/embeds), shown in the device mockup. */
   shot?: string;
+  /**
+   * The product's OWN mark, in /public/img/logos — pulled from the live site's
+   * icon (or, for Hermes, from its dashboard's app icon), never redrawn here.
+   * A product with no mark of its own simply omits this.
+   */
+  logo?: string;
   tagline: string;
   stats: { value: string; label: string }[];
   body: string;
@@ -922,6 +928,7 @@ export const PROJECTS: Project[] = [
     domain: "acornprep.com",
     embeddable: true,
     shot: "/embeds/acornprep.jpg",
+    logo: "/img/logos/acornprep.png",
     tagline: "Unconventionally productive AP study tools.",
     stats: [
       { value: "500+", label: "Users · 2026 AP season" },
@@ -930,7 +937,7 @@ export const PROJECTS: Project[] = [
       { value: "#1", label: "Google result" },
     ],
     body:
-      "Built by a 6-AP veteran for a high-stress school with no centralized study materials. AcornPrep packages AP prep into modes that fit how people actually study — unlimited MCQ practice, graded FRQ practice, flashcards, podcasts, study guides, tips & tricks, worked examples, and mind maps, with AI tutor guidance. Released to Mission San Jose on 04/11/2026; 100 users in the first 24 hours, 500+ across the season, 13,000 MCQs practiced. Endorsed by 4 AP teachers, #1 Google result, and rebuilt from scratch with Claude Code on a real dev pipeline. Pitched at Stanford's Youth Business Venture Competition (Aug 15, 2026) as a top-15 finalist of 300+ entries — the judges' verdict: strong pitch, crowded market. Next: SAT prep. Partner: Pradyun Kanuparthi.",
+      "Built by an 11-AP veteran — every exam a 5 — for a high-stress school with no centralized study materials. AcornPrep packages AP prep into modes that fit how people actually study — unlimited MCQ practice, graded FRQ practice, flashcards, podcasts, study guides, tips & tricks, worked examples, and mind maps, with AI tutor guidance. Released to Mission San Jose on 04/11/2026; 100 users in the first 24 hours, 500+ across the season, 13,000 MCQs practiced. Endorsed by 4 AP teachers, #1 Google result, and rebuilt from scratch with Claude Code on a real dev pipeline. Pitched at Stanford's Youth Business Venture Competition (Aug 15, 2026) as a top-15 finalist of 300+ entries — the judges' verdict: strong pitch, crowded market. Next: SAT prep. Partner: Pradyun Kanuparthi.",
     stack: ["React", "TypeScript", "AI grading"],
     tier: 1,
     slug: "acornprep",
@@ -942,6 +949,7 @@ export const PROJECTS: Project[] = [
     domain: "@msjclubs",
     embeddable: false,
     shot: "/embeds/hermes-story.jpg",
+    logo: "/img/logos/hermes.png",
     tagline: "Every club meeting, one story a day.",
     stats: [
       { value: "Live", label: "@msjclubs · every weekday" },
@@ -963,6 +971,7 @@ export const PROJECTS: Project[] = [
     domain: "notebookli.vercel.app",
     embeddable: true,
     shot: "/embeds/notebookli.jpg",
+    logo: "/img/logos/notebookli.svg",
     tagline: "Actually understand the research paper.",
     stats: [
       { value: "Live", label: "notebookli.vercel.app" },
@@ -981,6 +990,7 @@ export const PROJECTS: Project[] = [
     domain: "msjhsasb.org",
     embeddable: true,
     shot: "/embeds/msjhsasb.jpg",
+    logo: "/img/logos/msjhs-asb.png",
     tagline: "The school's information, findable.",
     stats: [
       { value: "87", label: "Clubs in the directory" },
@@ -998,6 +1008,7 @@ export const PROJECTS: Project[] = [
     domain: "youthstemjournal.org",
     embeddable: true,
     shot: "/embeds/youthstemjournal.jpg",
+    logo: "/img/logos/youth-stem-journal.png",
     tagline: "Reading research, made teachable.",
     stats: [
       { value: "Live", label: "youthstemjournal.org" },
@@ -1014,6 +1025,7 @@ export const PROJECTS: Project[] = [
     domain: "cuesheet.xyz",
     embeddable: true,
     shot: "/embeds/cuesheet.jpg",
+    logo: "/img/logos/cuesheet.svg",
     tagline: "The right song for the cut.",
     stats: [
       { value: "Live", label: "cuesheet.xyz" },
@@ -1030,6 +1042,7 @@ export const PROJECTS: Project[] = [
     domain: "msjmakes.framer.website",
     embeddable: true,
     shot: "/embeds/msjmakes.jpg",
+    logo: "/img/logos/msj-makes.png",
     tagline: "Student merch, designed & sold.",
     // No stat: the ~$4k profit figure lives once, in the hero strip, and
     // "Design / Operation" was a label with no fact behind it. The body carries
@@ -1045,6 +1058,7 @@ export const PROJECTS: Project[] = [
     url: "https://jadonli.com",
     domain: "jadonli.com",
     embeddable: false,
+    logo: "/img/logos/jadonli-com.svg",
     tagline: "Websites are the new résumés.",
     stats: [
       { value: "7", label: "Doors, one person" },

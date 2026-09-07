@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { ImageStreamHero, type StreamImage } from "@/components/ui/image-stream-hero";
+import { LiquidGlass, LiquidGlassFilter } from "@/components/ui/liquid-glass";
 import { StatFigure } from "@/components/built/StatFigure";
 import { asset } from "@/lib/base";
 import { EASE_OUT } from "@/lib/fluid";
@@ -45,14 +46,18 @@ const STREAM: StreamImage[] = [
 ].map((i) => ({ ...i, src: asset(i.src) }));
 
 /**
- * Every figure is sourced. `08` is the length of PROJECTS rather than a
+ * Three figures, and no fourth. `08` is the length of PROJECTS rather than a
  * literal, so adding a ninth product cannot leave a stale number on the page.
+ *
+ * "People using them" is the whole fleet, not AcornPrep alone: ~500 on
+ * AcornPrep, ~1,500 on the ASB site, ~100 on MSJ Makes, and the remainder
+ * across CueSheet, the Journal and NotebookLI. AcornPrep's own 500+ still
+ * appears once, in its chapter — this is the sum, which is a different claim.
  */
 const TELEMETRY = [
   { value: String(PROJECTS.length).padStart(2, "0"), label: "Products shipped" },
-  { value: "500+", label: "People using them" },
+  { value: "2,200+", label: "People using them" },
   { value: "#1", label: "Google result" },
-  { value: "~$4,000", label: "Profit" },
 ];
 
 /** One masked line of the display headline. */
@@ -106,18 +111,28 @@ export function StreamHero() {
             // Tight enough to clear the headline and no more. A wide scrim
             // whites out the cards at the sides, which are the largest and the
             // only ones you can actually read — the whole point of the shot.
+            //
+            // Lifted slightly off centre so the glass pane in the lower third
+            // is not fully washed out. Only slightly: pulled higher than this,
+            // the lede started competing with the cards behind it on narrow
+            // screens, and legibility beats refraction — every card in the
+            // stream is a screenshot of a LIGHT interface, so what shows
+            // through a pane over them is close to white either way.
             background:
-              "radial-gradient(52% 40% at 50% 50%, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.9) 52%, rgba(255,255,255,0) 100%)",
+              "radial-gradient(54% 38% at 50% 44%, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%)",
           }}
         />
-        {/* Short fades tie the corridor into the white page above and below. */}
+        {/* Fades tie the corridor into the white page above and below. Eased,
+            not linear, and deeper than they were: a two-stop gradient put a
+            visible shoulder partway down where the fade looked like it stopped.
+            See `.scrim-*` in globals.css. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white to-transparent"
+          className="scrim-down pointer-events-none absolute inset-x-0 top-0 h-32 md:h-40"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent"
+          className="scrim-up pointer-events-none absolute inset-x-0 bottom-0 h-40 md:h-52"
         />
 
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-5 text-center md:px-9">
@@ -143,8 +158,8 @@ export function StreamHero() {
             animate={{ opacity: 1, transform: "translateY(0px)" }}
             transition={{ duration: 0.5, ease: EASE_OUT, delay: 0.3 }}
           >
-            Eight products, built and launched from a bedroom in Fremont. Every screen
-            flying past is one of them, live right now.
+            Built and launched from a bedroom in Fremont. Every screen flying past is
+            one of them, live right now.
           </motion.p>
 
           <motion.div
@@ -172,28 +187,60 @@ export function StreamHero() {
               View the code <ArrowUpRight className="size-4" />
             </a>
           </motion.div>
+
+          {/*
+            The three figures, ON the corridor rather than on the white page
+            below it. That is the whole reason the material is here: a pane of
+            glass over flat paper is an expensive rectangle, but over a moving
+            wall of screenshots it refracts them, and the numbers read as
+            floating in front of the work they describe.
+
+            Transform-only entrance, on purpose. Fading this in by animating
+            opacity on the wrapper would make it a backdrop root for the frame
+            of the animation and flash the glass clear — see `liquid-glass.tsx`.
+          */}
+          <motion.dl
+            /*
+              Wide on purpose. The corridor converges on a vanishing point, so
+              its MIDDLE is the one part with nothing in it — a narrow pane sat
+              in that hole and frosted blank paper. At this width the pane
+              reaches the cards on both flanks, which is where the refraction
+              actually has something to bend.
+            */
+            /*
+              Sized to the headline above it, not to the corridor. Full-bleed
+              was tried and reads as a plain bar: every card in the stream is a
+              screenshot of a LIGHT interface, so a blurred backdrop is white
+              wherever it lands and extra width buys no extra refraction. What
+              carries the material here is the bevel and the shadow.
+            */
+            className="mt-9 w-full max-w-[52rem] md:mt-11"
+            initial={{ transform: "translateY(16px)" }}
+            animate={{ transform: "translateY(0px)" }}
+            transition={{ duration: 0.6, ease: EASE_OUT, delay: 0.46 }}
+          >
+            <LiquidGlass contentClassName="grid grid-cols-3 divide-x divide-black/10">
+              {TELEMETRY.map((s) => (
+                <div
+                  key={s.label}
+                  className="flex flex-col items-center gap-1.5 px-3 py-5 md:px-5 md:py-6"
+                >
+                  <dt className="t-num text-[1.6rem] leading-none md:text-[1.9rem]">
+                    <StatFigure value={s.value} />
+                  </dt>
+                  <dd className="t-small vibrant text-[0.72rem] leading-tight md:text-[0.78rem]">
+                    {s.label}
+                  </dd>
+                </div>
+              ))}
+            </LiquidGlass>
+          </motion.dl>
         </div>
       </ImageStreamHero>
 
-      {/* ── The figures, on the white page below the corridor ── */}
-      <div className="mx-auto max-w-7xl px-5 pb-20 md:px-9 md:pb-28">
-        <motion.dl
-          className="surface grid grid-cols-2 divide-x divide-y divide-[var(--line)] overflow-hidden sm:grid-cols-4 sm:divide-y-0"
-          initial={{ opacity: 0, transform: "translateY(14px)" }}
-          whileInView={{ opacity: 1, transform: "translateY(0px)" }}
-          viewport={{ once: true, margin: "-10% 0px" }}
-          transition={{ duration: 0.55, ease: EASE_OUT }}
-        >
-          {TELEMETRY.map((s) => (
-            <div key={s.label} className="flex flex-col gap-1.5 px-6 py-6">
-              <dt className="t-num text-[1.7rem] leading-none">
-                <StatFigure value={s.value} />
-              </dt>
-              <dd className="t-small vibrant text-[0.78rem] leading-tight">{s.label}</dd>
-            </div>
-          ))}
-        </motion.dl>
-      </div>
+      {/* One displacement map for the page, mounted beside the only thing
+          using it. */}
+      <LiquidGlassFilter />
     </section>
   );
 }
