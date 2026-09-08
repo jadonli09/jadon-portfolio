@@ -36,14 +36,12 @@ const ITEMS: HeroCarouselItem[] = FLEET.map((p, i) => {
     image: asset(`/embeds/fleet/${p.slug}.jpg`),
     href: p.url,
     credit: `${String(i + OFFSET + 1).padStart(2, "0")} — ${p.tagline.toUpperCase()}`,
-    meta: [...card.facts, p.domain.toUpperCase()],
+    meta: card.facts,
     accent: card.accent,
-    // No build date is on the record for these five, so the caption falls back
-    // to the domain — unless the name IS the domain, in which case printing it
-    // twice on one line says nothing the first half did not.
+    // The domain belongs to the action above the strip; captions identify the product.
     caption: {
       name: p.name,
-      when: card.when ?? (p.domain === p.name ? undefined : p.domain),
+      when: card.when,
     },
   };
 });
@@ -62,11 +60,15 @@ const serverHash = () => "";
  * out to it. Sits above the strip, where the reference put three words.
  */
 function Detail({ project }: { project: Project }) {
+  const stats = project.stats.filter((stat) => stat.value !== "Live");
   return (
     <div className="flex flex-col items-start gap-4 sm:items-end">
-      {project.stats.length ? (
+      {project.slug === "msjhs-asb" && (
+        <p className="text-sm text-white/80">Rebuilt with Kaiwei Parks.</p>
+      )}
+      {stats.length ? (
         <div className="flex flex-wrap items-baseline gap-x-7 gap-y-2 sm:justify-end">
-          {project.stats.map((s) => (
+          {stats.map((s) => (
             <span key={s.label} className="flex items-baseline gap-2">
               <span className="text-[1.35rem] font-semibold leading-none tracking-[-0.03em] tabular-nums">
                 {s.value}
@@ -141,14 +143,14 @@ export function Fleet() {
         index={index}
         onIndexChange={onIndexChange}
         renderDetail={renderDetail}
-        brand="THE REST OF THE FLEET"
-        autoplay
-        autoplayDelay={5200}
+        brand={<span className="text-[var(--muted)]">More projects</span>}
+        contentClassName="mx-auto max-w-7xl px-5 md:px-9"
         backgroundBlur={26}
         // 16:10 — a browser capture's own shape, so the whole page shows.
         cardAspect={1.6}
+        captionRatio={0.16}
         fadeEdges={150}
-        className="h-[92svh] min-h-[36rem]"
+        className="h-[84svh] min-h-[40rem] md:h-[88svh] md:min-h-[42rem]"
       />
     </section>
   );

@@ -28,12 +28,7 @@ import { cn } from "@/lib/cn";
    ──────────────────────────────────────────────────────────────────── */
 
 
-/**
- * The pinned stage keeps ONE aspect for every beat, and portrait screens are
- * letterboxed inside it by `object-contain`. Matching each beat's own aspect
- * would resize the pinned frame under the reader mid-scroll — the one thing a
- * pinned element must never do.
- */
+/** All AcornPrep beats fill the same 16:10 frame, on desktop and mobile. */
 const STAGE_ASPECT = "1280/800";
 
 function isPortrait(aspect?: string) {
@@ -237,9 +232,8 @@ export function ScrollStage({
     <div
       ref={runwayRef}
       className="lg:relative"
-      // One screen of scroll per beat past the first, plus the screen that is
-      // pinned. Any less and the last beat is never reachable.
-      style={pinned ? { height: `calc(100svh + ${(beats.length - 1) * 62}svh)` } : undefined}
+      // Progress still reaches every beat; a shorter runway keeps browsing brisk.
+      style={pinned ? { height: `calc(100svh + ${(beats.length - 1) * 40}svh)` } : undefined}
     >
       {/* A column, held at the middle of the screen as a whole — heading and
           stage travel together for the length of the runway. */}
@@ -249,7 +243,7 @@ export function ScrollStage({
         style={pinned ? { top: stickyTop } : undefined}
       >
         {header}
-        <div className="mt-8 grid w-full grid-cols-1 gap-10 lg:mt-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+        <div className="mt-8 grid w-full grid-cols-1 gap-10 lg:mt-12 lg:grid-cols-[1.45fr_0.75fr] lg:gap-12">
           <div className="hidden lg:block">
             <Frame beats={beats} active={active} name={name} aspect={STAGE_ASPECT} />
           </div>
@@ -269,12 +263,7 @@ export function ScrollStage({
                   className="flex flex-col justify-center py-6 md:grid md:grid-cols-2 md:items-center md:gap-8 lg:block lg:py-0"
                 >
                   <div className="mb-4 md:mb-0 lg:hidden">
-                    {/* Capped, because the beats do not share an aspect: the
-                        tutor screen was portrait and at full column width its
-                        row ran two and a half times the height of the others,
-                        which reads as a broken rhythm rather than a taller
-                        picture. */}
-                    <Frame beats={[b]} active={0} name={name} aspect={b.aspect} cap="21rem" />
+                    <Frame beats={[b]} active={0} name={name} aspect={STAGE_ASPECT} />
                   </div>
 
                   <motion.div
@@ -297,59 +286,40 @@ export function ScrollStage({
   );
 }
 
-/**
- * The screens, cross-faded in a fixed box.
- *
- * There is no frame around them. A bordered box has to pick one aspect, and
- * these beats do not share one — the tutor screen is portrait, the rest are
- * landscape — so a fixed box put grey letterbox bars down both sides of the
- * portrait shot. The box still exists to hold a CONSTANT height (a pinned
- * element that resizes mid-scroll is the one thing pinning must never do), but
- * it is invisible: each image sits inside it at its own shape, carrying its own
- * rounded corners and its own shadow, floating on the page the way a product
- * render does on Apple's.
- *
- * `drop-shadow` rather than `box-shadow`, because the shadow has to follow the
- * image's real edges, not the bounding box's.
- */
-function Frame({
-  beats,
-  active,
-  name,
-  aspect,
-  cap,
-}: {
+/** Tutor keeps its close-up; the other captures retain their earlier scale and full image. */
+function Frame({ beats, active, name, aspect }: {
   beats: Beat[];
   active: number;
   name: string;
   aspect?: string;
-  /** Max height. The box then takes its width from the aspect. */
-  cap?: string;
 }) {
   return (
-    <div
-      className={cn("relative", cap ? "w-auto" : "w-full")}
-      style={{ aspectRatio: aspect ?? STAGE_ASPECT, maxHeight: cap, maxWidth: "100%" }}
-    >
-      {beats.map((b, i) => (
-        <motion.img
-          key={b.shot}
-          src={asset(b.shot)}
-          alt={`${name} — ${b.label.toLowerCase()}`}
-          loading={i === 0 ? "eager" : "lazy"}
-          decoding="async"
-          draggable={false}
-          className="absolute inset-0 h-full w-full rounded-xl object-contain [filter:drop-shadow(0_2px_4px_rgba(0,0,0,0.04))_drop-shadow(0_18px_40px_rgba(0,0,0,0.16))]"
-          initial={false}
-          // Scale rides along with the opacity so the incoming screen reads as
-          // arriving rather than as a cross-dissolve between two flat images.
-          animate={{
-            opacity: active === i ? 1 : 0,
-            transform: active === i ? "scale(1)" : "scale(0.985)",
-          }}
-          transition={{ duration: 0.28, ease: EASE_OUT }}
-        />
-      ))}
+    <div className="relative w-full" style={{ aspectRatio: aspect ?? STAGE_ASPECT }}>
+      {beats.map((b, i) => {
+        const focused = Boolean(b.zoom);
+        // Preserve the old media width: .575 * (chapterWidth - 64px).
+        // The wider tutor column is (1.45 / 2.2) * (chapterWidth - 48px),
+        // so the old width inside it is 87.2414% - 9.2px.
+        return (
+          <motion.div key={b.shot} className="absolute inset-0 grid place-items-center"
+            initial={false}
+            animate={{ opacity: active === i ? 1 : 0, scale: active === i ? 1 : .985 }}
+            transition={{ duration: .28, ease: EASE_OUT }}>
+            <div className={cn(
+              "relative aspect-[16/10] w-full",
+              focused
+                ? "overflow-hidden rounded-xl [filter:drop-shadow(0_2px_4px_rgba(0,0,0,0.04))_drop-shadow(0_18px_40px_rgba(0,0,0,0.16))]"
+                : "lg:w-[calc(87.2414%_-_9.2px)]",
+            )}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={asset(b.shot)} alt={`${name} — ${b.label.toLowerCase()}`}
+                loading={i === 0 ? "eager" : "lazy"} decoding="async" draggable={false}
+                className={cn("absolute inset-0 h-full w-full", focused ? "object-cover" : "rounded-xl object-contain [filter:drop-shadow(0_2px_4px_rgba(0,0,0,0.04))_drop-shadow(0_18px_40px_rgba(0,0,0,0.16))]")}
+                style={focused ? { objectPosition: b.position, transformOrigin: b.origin, transform: `scale(${b.zoom})` } : undefined} />
+            </div>
+          </motion.div>
+        );
+      })}
     </div>
   );
 }

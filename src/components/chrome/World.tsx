@@ -22,7 +22,7 @@ export function World({
       className={cn("relative min-h-screen w-full bg-[var(--bg)] text-[var(--fg)]", className)}
     >
       {children}
-      <DeepDiveBar id={id} />
+      {id !== "built" && <DeepDiveBar id={id} />}
     </main>
   );
 }

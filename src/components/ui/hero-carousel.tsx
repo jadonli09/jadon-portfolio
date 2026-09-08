@@ -16,6 +16,7 @@
 // Adding `framer-motion` alongside it would install a second copy of the same
 // animation runtime.
 import * as React from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import {
   AnimatePresence,
   animate,
@@ -99,14 +100,16 @@ export interface HeroCarouselProps {
    * inside a white page without a hard seam. Height in px. @default 0
    */
   fadeEdges?: number;
+  /** Optional shared content gutter for the heading above the full-width strip. */
+  contentClassName?: string;
   /** Extra classes for the stage. @default undefined */
   className?: string;
 }
 
 /* Ratios lifted from the reference layout, all relative to the stage box. */
-const CARD_H = 0.264; // active card height ÷ stage height
+const CARD_H = 0.38; // active card height ÷ stage height
 const GAP = 0.038; // gap ÷ card width
-const STRIP_TOP = 0.5; // strip's shared top edge, down the stage
+const STRIP_TOP = 0.38; // strip's shared top edge, down the stage
 const TITLE = 0.067; // headline cap size ÷ stage height
 const LABEL = 0.0103; // small mono label ÷ stage height
 const PAD = 0.017; // page gutter ÷ stage width
@@ -137,6 +140,7 @@ export function HeroCarousel({
   captionRatio = 0.26,
   renderDetail,
   fadeEdges = 0,
+  contentClassName,
   className,
 }: HeroCarouselProps) {
   const stageRef = React.useRef<HTMLDivElement>(null);
@@ -177,13 +181,13 @@ export function HeroCarousel({
     that gets cut. Emphasis moves to brightness and a lift instead, and the
     caption band is what changes height.
   */
-  const cardH = clamp(box.h * CARD_H, 96, 360);
-  const cardW = cardH * cardAspect;
+  const cardW = Math.min(box.w * 0.86, clamp(box.h * CARD_H, 160, 420) * cardAspect);
+  const cardH = cardW / cardAspect;
   const capH = Math.round(cardH * captionRatio);
   const gap = Math.max(4, Math.round(cardW * GAP));
   const step = cardW + gap;
   const pad = Math.max(16, Math.round(box.w * PAD));
-  const label = Math.max(9, Math.round(box.h * LABEL));
+  const label = Math.max(11, Math.round(box.h * LABEL));
   /** Hover wins over focus, so pointing at a neighbour previews that one. */
   const shown = hovered ?? index;
 
@@ -280,7 +284,7 @@ export function HeroCarousel({
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
       className={cn(
-        "relative h-full min-h-[24rem] w-full select-none overflow-hidden bg-black text-white",
+        "relative h-full min-h-[24rem] w-full select-none overflow-clip bg-black text-white",
         "outline-none focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-white/40",
         className,
       )}
@@ -388,20 +392,20 @@ export function HeroCarousel({
 
       {/* ── Headline block, sitting just above the strip's top edge ── */}
       <div
-        className="absolute inset-x-0 top-0 flex flex-col justify-end"
+        className={cn("absolute inset-x-0 top-0 flex flex-col justify-end", contentClassName)}
         style={{
           height: `${STRIP_TOP * 100}%`,
-          paddingLeft: pad,
-          paddingRight: pad,
+          paddingLeft: contentClassName ? undefined : pad,
+          paddingRight: contentClassName ? undefined : pad,
           paddingBottom: Math.round(box.h * 0.028),
         }}
       >
-        <div className="flex w-full flex-wrap items-end gap-x-[6vw] gap-y-2">
+        <div className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-end gap-x-6 gap-y-4">
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.h2
               key={index}
               className="font-semibold leading-[0.88] tracking-[-0.03em]"
-              style={{ fontSize: Math.max(24, Math.round(box.h * TITLE)) }}
+              style={{ fontSize: Math.max(24, Math.round(Math.min(box.h * TITLE, box.w * 0.1))) }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, transition: { duration: 0.18 } }}
@@ -429,7 +433,7 @@ export function HeroCarousel({
           {active.credit ? (
             <motion.p
               key={`credit-${index}`}
-              className="font-mono uppercase tracking-[0.14em] opacity-80"
+              className="col-span-2 row-start-2 font-mono uppercase tracking-[0.12em] opacity-80"
               style={{ fontSize: label }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.8 }}
@@ -444,7 +448,7 @@ export function HeroCarousel({
           {renderDetail ? (
             <motion.div
               key={`detail-${index}`}
-              className="ml-auto"
+              className="col-start-2 row-start-1 ml-auto max-w-[11rem] sm:max-w-[20rem]"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={reduced ? { duration: 0 } : { duration: 0.45, delay: 0.12 }}
@@ -568,6 +572,22 @@ export function HeroCarousel({
             );
           })}
         </motion.div>
+      </div>
+
+      <div
+        className="absolute flex gap-2"
+        style={{ right: pad, bottom: Math.max(14, box.h * 0.022) + fadeEdges * 0.5 }}
+      >
+        <button type="button" aria-label="Previous project" disabled={index === 0}
+          onClick={() => go(index - 1)}
+          className="flex size-11 items-center justify-center rounded-full border border-white/40 bg-black/10 transition-colors hover:bg-white/20 disabled:opacity-30 disabled:cursor-default">
+          <ArrowLeft className="size-5" />
+        </button>
+        <button type="button" aria-label="Next project" disabled={index === last}
+          onClick={() => go(index + 1)}
+          className="flex size-11 items-center justify-center rounded-full border border-white/40 bg-black/10 transition-colors hover:bg-white/20 disabled:opacity-30 disabled:cursor-default">
+          <ArrowRight className="size-5" />
+        </button>
       </div>
 
       {/* ── Position rail ── */}

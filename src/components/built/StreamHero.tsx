@@ -6,6 +6,8 @@ import { LiquidGlass, LiquidGlassFilter } from "@/components/ui/liquid-glass";
 import { StatFigure } from "@/components/built/StatFigure";
 import { asset } from "@/lib/base";
 import { EASE_OUT } from "@/lib/fluid";
+import { Typewriter } from "@/components/primitives/Typewriter";
+import { cn } from "@/lib/cn";
 import { PROJECTS } from "@/lib/data";
 
 /* ────────────────────────────────────────────────────────────────────
@@ -45,7 +47,7 @@ const STREAM: StreamImage[] = [
 ].map((i) => ({ ...i, src: asset(i.src) }));
 
 /**
- * Three figures, and no fourth. `08` is the length of PROJECTS rather than a
+ * `08` is the length of PROJECTS rather than a
  * literal, so adding a ninth product cannot leave a stale number on the page.
  *
  * "People using them" is the whole fleet, not AcornPrep alone: ~500 on
@@ -54,15 +56,29 @@ const STREAM: StreamImage[] = [
  * appears once, in its chapter — this is the sum, which is a different claim.
  */
 const TELEMETRY = [
-  { value: String(PROJECTS.length).padStart(2, "0"), label: "Products shipped" },
-  { value: "2,200+", label: "People using them" },
-  { value: "#1", label: "Google result" },
+  { value: String(PROJECTS.length).padStart(2, "0"), label: "Products" },
+  { value: "2,200+", label: "Users" },
 ];
 
 /** One masked line of the display headline. */
-function Line({ children, delay }: { children: React.ReactNode; delay: number }) {
+function Line({
+  children,
+  delay,
+  className,
+}: {
+  children: React.ReactNode;
+  delay: number;
+  className?: string;
+}) {
   return (
-    <span className="block overflow-hidden pb-[0.09em] -mb-[0.09em]">
+    // Size lands here, not on the inner text: the clip box and its em-based
+    // padding have to scale with the line, or a larger line gets cropped.
+    <span
+      className={cn(
+        "block overflow-hidden pb-[0.09em] -mb-[0.09em]",
+        className
+      )}
+    >
       <motion.span
         className="block"
         initial={{ transform: "translateY(105%)" }}
@@ -93,7 +109,7 @@ export function StreamHero() {
             railExit − (1.79 × exitHeight) / 2  =  70 − 37.6  =  32.4cqw
         */
         path={{ exitHeight: 42, railExit: 70 }}
-        className="h-[72svh] min-h-[30rem] w-full bg-[var(--bg)] md:h-[88svh] md:min-h-[36rem]"
+        className="h-[60svh] min-h-[30rem] w-full bg-[var(--bg)] md:h-[70svh] md:min-h-[36rem]"
       >
         {/*
           The corridor converges on the vanishing point, so the middle of the
@@ -148,8 +164,10 @@ export function StreamHero() {
           </motion.p>
 
           <h1 className="t-display mt-5 text-balance">
-            <Line delay={0.08}>Ship it.</Line>
-            <Line delay={0.16}>
+            <Line delay={0.08} className="text-[1.2em]">
+              Ship it.
+            </Line>
+            <Line delay={0.16} className="text-[0.62em]">
               <span className="text-[var(--muted)]">Then ship the next one.</span>
             </Line>
           </h1>
@@ -178,7 +196,7 @@ export function StreamHero() {
               top of the screen — on the one layout where the stream has the
               least room to spare.
             */
-            className="mt-8 flex w-full max-w-[56rem] gap-2 sm:gap-4 md:mt-12"
+            className="mt-8 flex w-full max-w-[37rem] gap-3 sm:gap-4 md:mt-12"
             initial={{ transform: "translateY(18px)" }}
             animate={{ transform: "translateY(0px)" }}
             transition={{ duration: 0.65, ease: EASE_OUT, delay: 0.4 }}
@@ -186,8 +204,8 @@ export function StreamHero() {
             {TELEMETRY.map((s) => (
               <LiquidGlass
                 key={s.label}
-                className="flex-1"
-                contentClassName="flex flex-col items-center gap-1.5 px-2.5 py-4 sm:px-5 sm:py-5 md:py-6"
+                className="min-w-0 flex-1"
+                contentClassName="flex h-full flex-col items-center gap-1 px-2 py-3 sm:px-5 md:py-3.5"
               >
                 <dt className="t-num text-[1.35rem] leading-none sm:text-[1.75rem] md:text-[2.1rem]">
                   <StatFigure value={s.value} />
@@ -198,15 +216,13 @@ export function StreamHero() {
               </LiquidGlass>
             ))}
           </motion.dl>
-          <motion.p
+          {/* The line types itself in rather than fading — one entrance, not
+              two competing ones. */}
+          <Typewriter
             className="t-body mt-9 max-w-lg text-balance md:mt-10"
-            initial={{ opacity: 0, transform: "translateY(10px)" }}
-            animate={{ opacity: 1, transform: "translateY(0px)" }}
-            transition={{ duration: 0.5, ease: EASE_OUT, delay: 0.3 }}
-          >
-            Built and launched from a bedroom in Fremont. Every screen flying past is
-            one of them, live right now.
-          </motion.p>
+            text="Built to solve problems, launched to serve the community."
+            delay={420}
+          />
 
         </div>
       </ImageStreamHero>

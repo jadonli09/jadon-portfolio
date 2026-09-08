@@ -18,20 +18,12 @@ import { PROJECTS } from "@/lib/data";
 export function Closing({ githubUser }: { githubUser: string }) {
   return (
     <section className="border-t border-[var(--line)]">
-      <div className="mx-auto max-w-3xl px-5 py-24 md:px-9 md:py-32">
+      <div className="mx-auto max-w-3xl px-5 py-16 md:px-9 md:py-20">
         <Rise>
-          <h2 className="t-title text-balance">Build something people use.</h2>
+          <h2 className="t-title text-balance">Explore the projects</h2>
         </Rise>
 
-        <Rise delay={0.06}>
-          <p className="t-body mt-6">
-            Every product on this page started as the same question — what if there
-            were a better way to do this? The answer never changes. Build it, put it
-            in front of someone, and find out whether you were right.
-          </p>
-        </Rise>
-
-        <RiseGroup className="mt-14" delayChildren={0.08}>
+        <RiseGroup className="mt-8" delayChildren={0.08}>
           {PROJECTS.map((p) => (
             <RiseItem key={p.slug}>
               <a
@@ -82,9 +74,9 @@ export function Closing({ githubUser }: { githubUser: string }) {
             target="_blank"
             rel="noreferrer noopener"
             data-cursor-hover
-            className="btn btn-glass mt-10"
+            className="mt-10 inline-flex min-h-11 items-center gap-2 whitespace-nowrap text-sm font-medium underline-offset-4 hover:underline"
           >
-            The code, on GitHub <ArrowUpRight className="size-4" />
+            The code, on GitHub <ArrowUpRight className="size-4 shrink-0" />
           </a>
         </Rise>
       </div>

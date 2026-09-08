@@ -53,6 +53,10 @@ export function ProjectChapter({
   children?: React.ReactNode;
 }) {
   const story = STORIES[project.slug];
+  // NotebookLI and Hermes already explain their figures in the chapter itself.
+  const stats = project.stats.filter(
+    (stat) => stat.value !== "Live" && !["notebookli", "hermes"].includes(project.slug),
+  );
 
   /*
     A single portrait screen — Hermes's story — leaves a tall column of empty
@@ -123,12 +127,21 @@ export function ProjectChapter({
       />
 
       <Rise delay={0.05}>
-        <p className="t-body mt-3 max-w-xl">{story.lede}</p>
+        <p className={cn("t-body mt-3", project.slug === "acornprep" ? "max-w-none" : "max-w-xl")}>{story.lede}</p>
+        <a
+          href={project.url}
+          target="_blank"
+          rel="noreferrer noopener"
+          data-cursor-hover
+          className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium hover:underline underline-offset-4"
+        >
+          {project.domain} <ArrowUpRight className="size-4" />
+        </a>
       </Rise>
     </div>
   );
 
-  const facts = (
+  const facts = stats.length ? (
     <Rise
       className={cn(
         "flex flex-wrap items-center gap-x-10 gap-y-6",
@@ -137,7 +150,7 @@ export function ProjectChapter({
           : "mt-12 border-t border-[var(--line)] pt-8",
       )}
     >
-      {project.stats.map((s) => (
+      {stats.map((s) => (
         <div key={s.label} className="flex flex-col gap-1">
           <p className="t-num text-[1.65rem] leading-none">
             <StatFigure value={s.value} />
@@ -146,25 +159,8 @@ export function ProjectChapter({
         </div>
       ))}
 
-      {/*
-        No stack pills. "React · TypeScript · AI grading" is a list of things
-        every one of these is built out of — it separated no product from any
-        other, and it sat in the row where the figures, which do, have to be
-        read. The record still carries `stack`; this page just stops printing it.
-      */}
-      <div className={cn("flex items-center", !beside && "lg:ml-auto")}>
-        <a
-          href={project.url}
-          target="_blank"
-          rel="noreferrer noopener"
-          data-cursor-hover
-          className="btn btn-primary"
-        >
-          {project.domain} <ArrowUpRight className="size-4" />
-        </a>
-      </div>
     </Rise>
-  );
+  ) : null;
 
   return (
     <section
@@ -179,7 +175,7 @@ export function ProjectChapter({
     >
       <div
         className={cn(
-          "mx-auto max-w-7xl px-5 py-16 md:px-9 md:py-24",
+          "mx-auto max-w-7xl px-5 py-12 md:px-9 md:py-16",
           // The first chapter runs straight on from the hero. The corridor
           // already ends in a long fade to white, so a full section's padding
           // on top of that is a second empty screen doing nothing.

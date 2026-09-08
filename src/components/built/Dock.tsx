@@ -24,7 +24,7 @@ const SECTIONS = [
   { id: "acornprep", label: "AcornPrep", short: "Acorn" },
   { id: "hermes", label: "Hermes", short: "Hermes" },
   { id: "notebookli", label: "NotebookLI", short: "Notebook" },
-  { id: "fleet", label: "The fleet", short: "Fleet" },
+  { id: "fleet", label: "More projects", short: "More" },
 ] as const;
 
 export function Dock() {
@@ -114,9 +114,8 @@ export function Dock() {
       {visible ? (
         <motion.div
           key="dock"
-          // Sits above the site's fixed "one person" chip on narrow screens,
-          // where a centred dock and a bottom-left chip would otherwise meet.
-          className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center pb-20 sm:pb-5 md:pb-7"
+          // Keep a consistent inset above the device safe area.
+          className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center pb-[max(1.25rem,env(safe-area-inset-bottom))] md:pb-7"
           // Enters and exits along the same path — up from the bottom edge,
           // back down to it. A little bounce, because it is a surface being
           // pushed into place rather than a menu fading in.

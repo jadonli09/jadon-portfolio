@@ -8,6 +8,7 @@ import { HermesFlow } from "@/components/built/HermesFlow";
 import { Fleet } from "@/components/built/Fleet";
 import { Dock } from "@/components/built/Dock";
 import { Closing } from "@/components/built/Closing";
+import { NotebookShowcase } from "@/components/built/NotebookShowcase";
 import { PROFILE, PROJECTS } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -31,8 +32,8 @@ const ACORNPREP_PHOTOS = [
     caption: "With Pradyun, co-founder",
   },
   {
-    src: "/img/acornprep-presentation-promptengineering.jpg",
-    alt: "Jadon Li presenting an AcornPrep prompt-engineering slide at a podium",
+    src: "/img/presenting-acornprep-at-gemini-meetup.jpg",
+    alt: "Jadon Li presenting AcornPrep to a seated audience at a Google Gemini developer meetup",
     caption: "Google Gemini developer meetup",
   },
   {
@@ -70,10 +71,10 @@ export default function BuiltPage() {
       <ProjectChapter
         project={bySlug("hermes")}
         index={2}
-        stage={<HermesFlow shot="/embeds/hermes-story.jpg" />}
+        stage={<HermesFlow key="hermes-flow" shot="/embeds/hermes-story.jpg" />}
       />
 
-      <ProjectChapter project={bySlug("notebookli")} index={3} />
+      <ProjectChapter project={bySlug("notebookli")} index={3} stage={<NotebookShowcase key="notebook-showcase" />} />
 
       <Fleet />
 

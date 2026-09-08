@@ -21,6 +21,10 @@ export type Beat = {
   shot: string;
   /** Portrait screens need a taller frame than a 16:10 web capture. */
   aspect?: string;
+  /** Keep the important product detail in view when filling the shared frame. */
+  position?: string;
+  zoom?: number;
+  origin?: string;
 };
 
 export type Story = {
@@ -37,7 +41,7 @@ export const STORIES: Record<string, Story> = {
    * these are the genuine article rather than a reconstruction of it.
    */
   acornprep: {
-    lede: "Built by an 11-AP veteran, every exam a 5, for a school with no shared study materials.",
+    lede: "Co-built with Pradyun Kanuparthi for a school with no shared study materials.",
     beats: [
       {
         label: "Practice",
@@ -52,12 +56,12 @@ export const STORIES: Record<string, Story> = {
       {
         label: "Tutor",
         line: "Sprout explains the miss, not just the answer.",
-        // Sprout open inside MCQ practice, captured from the signed-in
-        // product. acornprep.com only publishes the tutor as a portrait panel;
-        // this is the landscape view of the same feature, so the beat matches
-        // the shape of the three around it without anything being matted or
-        // cropped to fake it.
+        // Fill the shared frame from the right, keeping Sprout visible and
+        // trimming the capture's black left edge.
         shot: "/embeds/acornprep/tutor-live.jpg",
+        position: "right center",
+        zoom: 1.5,
+        origin: "80% 60%",
       },
       {
         label: "Study",
