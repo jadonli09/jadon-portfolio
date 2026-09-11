@@ -468,11 +468,13 @@ export const FUS_IMAGES = {
   pcrGel: { src: "/img/umass-pcr-gel.jpg", alt: "Figure 1: agarose gel of PCR products — 100 bp ladder, HygR, positive control, mRFP", caption: "Figure 1 — PCR products: Hygromycin 563 bp · RFP 372 bp. The plasmid is real.", dims: "965×441" },
   plasmid: { src: "/img/umass-plasmid.jpg", alt: "pCT74-mRFP plasmid map, 5774 bp, with restriction sites, mRFP, HygR and AmpR features", caption: "pCT74-mRFP (5774 bp) — the plasmid, from E. coli.", dims: "1032×936" },
   strains: { src: "/img/umass-strains.jpg", alt: "Plated Fusarium oxysporum and the three strains used: NRRL32931, MRL8996, II5", caption: "The strains — a blood isolate, a keratitis isolate, and a banana pathogen.", dims: "1032×528" },
+  extraction: { src: "/img/umass-extraction.jpg", alt: "Plasmid extraction workflow from the poster: miniprep from RFP E. coli, PCR confirmation of HygR and mRFP, linearization with Psp-OMI, beside the confirming gel", caption: "I — plasmid extraction, straight off the poster.", dims: "876×252" },
+  selection: { src: "/img/umass-selection.jpg", alt: "Selection workflow from the poster: hygromycin on TB3 agarose, incubation, two rounds of colony selection, replating on PDA+Hygr, then confocal", caption: "IV — two rounds of selection, straight off the poster.", dims: "878×414" },
   protoplast: { src: "/img/umass-protoplast.jpg", alt: "Protoplast generation: germ tubes, enzyme digestion, filtering, washing", caption: "II — protoplast generation: germ tube → digested cell wall → protoplast.", dims: "1600×574" },
   transformation: { src: "/img/umass-transformation.jpg", alt: "PEG-mediated transformation steps: plasmid + protoplasts, STC/PEG, TB3, agarose plates", caption: "III — PEG-mediated transformation, step by step.", dims: "1600×452" },
-  photo: { src: "/img/umass-11.jpg", alt: "Jadon with the team in front of the Fusarium RFP poster at UMass Amherst", caption: "Poster day — with the team, in front of the board.", dims: "1800×1350" },
-  bench: { src: "/img/umass-02.jpg", alt: "Jadon in a lab coat and purple gloves, micropipetting at the bench in the Ma Lab", caption: "At the bench — micropipetting, Ma Lab.", dims: "1350×1800" },
-  session: { src: "/img/umass-01.jpg", alt: "Jadon walking a visitor through the RFP poster during the poster session", caption: "The poster session — walking a visitor through the board.", dims: "1279×853" },
+  photo: { src: "/img/umass-11.jpg", alt: "Jadon with the team in front of the Fusarium RFP poster at UMass Amherst", caption: "Poster day, with Dr. Li-Jun Ma and Jerry Zhang.", dims: "1800×1350" },
+  bench: { src: "/img/umass-02.jpg", alt: "Jadon in a lab coat and purple gloves, micropipetting at the bench in the Ma Lab", caption: "Micropipetting in the Ma Lab.", dims: "1350×1800" },
+  session: { src: "/img/umass-01.jpg", alt: "Jadon walking a visitor through the RFP poster during the poster session", caption: "Presenting at the poster session.", dims: "1279×853" },
   macrophage: { src: "/img/umass-macrophage.jpg", alt: "Time-lapse frames of a macrophage engulfing Fusarium (Schäfer et al. 2014)", caption: "Where it goes next — macrophage (red) meets Fusarium (green), 99 → 103 min (Schäfer et al. 2014).", dims: "1017×321" },
 };
 
@@ -510,6 +512,18 @@ export const FUS_SETBACK = {
     "The obvious fix fails, and that's the interesting part. Any bacterium that picked up the plasmid also picked up its hygromycin and ampicillin resistance, so selecting harder on either one selects the contamination right along with the transformants.",
     "The way out is an antibiotic the plasmid doesn't defend against, applied to the next round — leaving the RFP fungi and no bacteria, transformed or not.",
   ],
+};
+
+/** One plain sentence per technique — what the step actually does. */
+export const TECHNIQUE_GLOSS: Record<string, string> = {
+  miniprep: "Pull the plasmid DNA out of E. coli and clean it up.",
+  PCR: "Copy one stretch of DNA until there is enough of it to see.",
+  "gel electrophoresis": "Run DNA through a gel — size sorts it into bands.",
+  "restriction digest": "Cut the plasmid at one exact sequence to open the ring.",
+  "protoplast generation": "Digest the cell wall away so DNA can reach the membrane.",
+  "PEG-mediated transformation": "Chemically coax the plasmid across a bare membrane.",
+  "antibiotic selection": "Kill everything that did not take the construct.",
+  "confocal imaging": "Excite the reporter and photograph a single optical slice.",
 };
 
 /** What Jadon personally ran, and over what span. */

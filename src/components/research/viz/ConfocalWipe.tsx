@@ -44,7 +44,7 @@ export function ConfocalWipe() {
               onClick={() => setStrain(k)}
               aria-pressed={strain === k}
               className={cn(
-                "rounded-sm border px-3 py-1.5 font-mono text-[0.62rem] tracking-[0.12em] transition-colors",
+                "rounded-sm border px-4 py-2.5 font-mono text-[0.85rem] transition-colors",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
                 strain === k
                   ? "border-[var(--accent)] bg-[var(--accent)] text-[#10040a]"
@@ -55,9 +55,7 @@ export function ConfocalWipe() {
             </button>
           ))}
         </div>
-        <span className="font-mono text-[0.62rem] uppercase tracking-[0.1em] text-[var(--muted)]">
-          drag, or use ← →
-        </span>
+        <span className="text-[0.92rem] text-[var(--muted)]">Drag it, or use ← →</span>
       </div>
 
       <div
@@ -108,10 +106,10 @@ export function ConfocalWipe() {
           className="absolute inset-0 h-full w-full object-cover"
           style={{ clipPath: `inset(0 0 0 ${pct}%)` }}
         />
-        <span className="pointer-events-none absolute bottom-2 left-2 rounded-sm bg-black/60 px-2 py-1 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[#b9c2ce]">
+        <span className="pointer-events-none absolute bottom-2.5 left-2.5 rounded-sm bg-black/70 px-2.5 py-1.5 font-mono text-[0.8rem] text-[#c6cedb]">
           Brightfield
         </span>
-        <span className="pointer-events-none absolute bottom-2 right-2 rounded-sm bg-black/60 px-2 py-1 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-[var(--accent)]">
+        <span className="pointer-events-none absolute bottom-2.5 right-2.5 rounded-sm bg-black/70 px-2.5 py-1.5 font-mono text-[0.8rem] text-[var(--accent)]">
           RFP merge
         </span>
         <div

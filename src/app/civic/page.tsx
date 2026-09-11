@@ -7,6 +7,7 @@ import { CivicAwardsTicker } from "@/components/civic/CivicAwardsTicker";
 import { CivicFeaturedPress } from "@/components/civic/CivicFeaturedPress";
 import { CivicBroadcast } from "@/components/civic/CivicBroadcast";
 import { CivicStories } from "@/components/civic/CivicStories";
+import { CivicInternProgram } from "@/components/civic/CivicInternProgram";
 import { CivicSBAIFlow } from "@/components/civic/CivicSBAIFlow";
 import { CivicCommission } from "@/components/civic/CivicCommission";
 import { CivicInstagramCTA } from "@/components/civic/CivicInstagramCTA";
@@ -43,6 +44,9 @@ export default function CivicPage() {
 
       {/* 4. Editorial stories section — all six stories with deep bylines/detail */}
       <CivicStories />
+
+      {/* 5. The mayor's intern program — intern, then one of three leads */}
+      <CivicInternProgram />
 
       {/* 6. Small Business Accessibility Initiative — process flow deep dive */}
       <CivicSBAIFlow />

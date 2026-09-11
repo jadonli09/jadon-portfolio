@@ -5,7 +5,7 @@ import { CIVIC } from "@/lib/data";
 export function CivicAwardsTicker() {
   const tickerItems = [
     ...CIVIC.awards,
-    "10k views per mayor video",
+    "20k views per mayor video",
     "500k+ views in under a month",
     "18k Palm Ave Park promo views",
     "32k FUSD families reached",

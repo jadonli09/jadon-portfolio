@@ -7,42 +7,50 @@ import type { SectionId } from "../sections";
  * Every section shares one shell so rhythm and the rail's anchor targets stay
  * consistent. `id` must match an entry in ../sections.ts or the rail will not
  * highlight it.
+ *
+ * No kicker slot on purpose. A tracked-out label above every heading is the
+ * page's old habit and it made the whole thing read as small print; where a
+ * section needs context it gets `lede` — an actual sentence, at a size a
+ * person can read.
  */
 export function Section({
   id,
-  kicker,
   heading,
+  lede,
   children,
   className,
+  width = "text",
 }: {
   id: SectionId;
-  kicker?: string;
   heading?: string;
+  lede?: ReactNode;
   children: ReactNode;
   className?: string;
+  /** "text" reads comfortably; "figure" is for sections carrying big images. */
+  width?: "text" | "figure";
 }) {
   return (
     <section
       id={id}
       className={cn(
-        "scroll-mt-24 border-t border-[var(--line)] px-6 py-[clamp(3.5rem,9vh,7rem)] lg:pl-64 lg:pr-10",
+        "scroll-mt-24 border-t border-[var(--line)] px-6 py-[clamp(4rem,10vh,7.5rem)] lg:pl-64 lg:pr-10",
         className,
       )}
     >
-      <div className="mx-auto max-w-5xl">
-        {kicker ? (
-          <p className="mb-3 font-mono text-[0.68rem] uppercase tracking-[0.2em] text-[var(--accent)]">
-            {kicker}
-          </p>
-        ) : null}
+      <div className={cn("mx-auto", width === "figure" ? "max-w-7xl" : "max-w-5xl")}>
         {heading ? (
           <Reveal>
-            <h2 className="mb-6 max-w-[18ch] font-serif text-[clamp(1.9rem,4vw,3.1rem)] leading-[1.06] text-balance">
+            <h2 className="max-w-[20ch] font-serif text-[clamp(2.1rem,4.4vw,3.4rem)] leading-[1.04] tracking-[-0.01em] text-balance">
               {heading}
             </h2>
           </Reveal>
         ) : null}
-        {children}
+        {lede ? (
+          <p className="mt-5 max-w-[58ch] text-[clamp(1.05rem,1.35vw,1.2rem)] leading-[1.65] text-[var(--muted)]">
+            {lede}
+          </p>
+        ) : null}
+        <div className={heading || lede ? "mt-10" : undefined}>{children}</div>
       </div>
     </section>
   );
@@ -64,8 +72,17 @@ export function aspectFrom(dims: string): React.CSSProperties {
 /** Body paragraph — one shared measure so copy never runs long. */
 export function P({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <p className={cn("mb-4 max-w-[64ch] text-[1.02rem] leading-[1.72] text-[var(--muted)]", className)}>
+    <p className={cn("mb-5 max-w-[62ch] text-[1.08rem] leading-[1.7] text-[var(--muted)]", className)}>
       {children}
     </p>
+  );
+}
+
+/** A caption under a figure. Small, but not small print. */
+export function Caption({ children }: { children: ReactNode }) {
+  return (
+    <figcaption className="border-t border-[var(--line)] px-4 py-3 text-[0.9rem] leading-[1.55] text-[var(--muted)]">
+      {children}
+    </figcaption>
   );
 }

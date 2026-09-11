@@ -49,7 +49,7 @@ function SeatCard({ seat, index }: { seat: Seat; index: number }) {
           <div className="relative aspect-[16/9] overflow-hidden">
             <Photo src={seat.photo.src} alt={seat.photo.alt} className="object-cover [filter:grayscale(35%)] transition-[filter] duration-500 group-hover:[filter:grayscale(0%)]" style={{ objectPosition: "50% 35%" }} />
           </div>
-          <figcaption className="px-1 pb-0.5 pt-1.5 font-mono text-[0.52rem] uppercase tracking-[0.22em] text-[var(--muted)]">{seat.photo.caption}</figcaption>
+          <figcaption className="px-1 pb-0.5 pt-2 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-[var(--muted)]">{seat.photo.caption}</figcaption>
         </figure>
       )}
 

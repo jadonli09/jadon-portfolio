@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useLenis } from "lenis/react";
 import { ArrowDown } from "lucide-react";
 import { Preloader } from "@/components/hero/Preloader";
+import { NameFlare } from "@/components/hero/flare/NameFlare";
 import { asset } from "@/lib/base";
 import { BoardSurface } from "@/components/landing/BoardSurface";
 import { SentenceDoors } from "@/components/landing/SentenceDoors";
@@ -44,6 +45,8 @@ export function Landing() {
   const heroY = useTransform(scrollY, [0, 600], [0, 160]);
   const heroOpacity = useTransform(scrollY, [0, 500], [1, 0]);
   const lenis = useLenis();
+  const heroRef = useRef<HTMLElement>(null);
+  const nameRef = useRef<HTMLSpanElement>(null);
 
   // Returning from a deep dive (/#chapter) → scroll the reader back to that chapter.
   useEffect(() => {
@@ -69,7 +72,10 @@ export function Landing() {
 
       {/* COLD OPEN — the Golden Gate lookout. Name slides in BEHIND the subject:
           photo (back) → ghost watermark → giant name → pixel-aligned cutout (front). */}
-      <section className="relative h-[100svh] min-h-[440px] w-full overflow-hidden">
+      <section
+        ref={heroRef}
+        className="relative h-[100svh] min-h-[440px] w-full overflow-hidden"
+      >
         {/* L0 — the scene */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -105,6 +111,7 @@ export function Landing() {
           <h1 className="font-anton leading-[0.85] tracking-tight text-white [text-shadow:0_2px_6px_rgba(13,36,49,0.45),0_10px_44px_rgba(13,36,49,0.55)]">
             <span className="block overflow-hidden whitespace-nowrap pb-[0.05em]">
               <motion.span
+                ref={nameRef}
                 className="inline-block text-[min(18vw,16svh)] md:landscape:text-[min(13.5vw,38svh)]"
                 initial={{ y: "112%" }}
                 animate={{ y: 0 }}
@@ -115,6 +122,17 @@ export function Landing() {
             </span>
           </h1>
         </motion.div>
+
+        {/* L2.5 — WebGPU flare. A light orbits the name (and follows the cursor
+            over the hero), raking the letterforms and throwing streaks. Screen
+            blended, so it only ever adds light to the photo beneath. Sits above
+            the name and below the cutout, so the subject still occludes it. */}
+        <NameFlare
+          anchorRef={heroRef}
+          headlineRef={nameRef}
+          offset={heroY}
+          intensity={heroOpacity}
+        />
 
         {/* L3 — the subject, pixel-aligned over the photo (same cover + position) */}
         {/* eslint-disable-next-line @next/next/no-img-element */}

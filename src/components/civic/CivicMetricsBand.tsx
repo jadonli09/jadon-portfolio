@@ -43,9 +43,14 @@ export function CivicMetricsBand() {
               <p className="mt-3 text-sm font-semibold uppercase leading-tight tracking-wide text-[var(--fg)]">
                 / {m.label}
               </p>
-              <p className="mt-1 font-mono text-[0.62rem] uppercase tracking-widest text-[var(--accent)]">
+              <p className="mt-1.5 font-mono text-[0.78rem] uppercase tracking-[0.12em] text-[var(--accent)]">
                 {m.note}
               </p>
+              {"note2" in m && m.note2 ? (
+                <p className="mt-1 font-mono text-[0.78rem] uppercase tracking-[0.12em] text-[var(--fg)]/60">
+                  {m.note2}
+                </p>
+              ) : null}
               {/* Underline draw on hover */}
               <div className="mt-4 h-[2px] w-0 bg-[var(--accent)] transition-all duration-500 ease-[var(--ease-cine)] group-hover:w-full" />
             </motion.div>

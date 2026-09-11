@@ -4,17 +4,11 @@ import { Footer } from "@/components/chrome/Footer";
 import { ResearchNav } from "@/components/research/ResearchNav";
 import { Console } from "@/components/research/Console";
 import { LabEasterEggs } from "@/components/research/lab/LabEasterEggs";
-import { Hero } from "@/components/research/sections/Hero";
-import { Question } from "@/components/research/sections/Question";
-import { Strains } from "@/components/research/sections/Strains";
-import { Plasmid } from "@/components/research/sections/Plasmid";
-import { AtTheBench } from "@/components/research/sections/AtTheBench";
-import { Protocol } from "@/components/research/sections/Protocol";
-import { Evidence } from "@/components/research/sections/Evidence";
-import { WentWrong } from "@/components/research/sections/WentWrong";
-import { WhatsNext } from "@/components/research/sections/WhatsNext";
-import { Poster } from "@/components/research/sections/Poster";
-import { GoutChapter } from "@/components/research/sections/GoutChapter";
+import { Opening } from "@/components/research/sections/Opening";
+import { Glow } from "@/components/research/sections/Glow";
+import { Bench } from "@/components/research/sections/Bench";
+import { Deeper } from "@/components/research/sections/Deeper";
+import { ScienceFair } from "@/components/research/sections/ScienceFair";
 import { Beyond } from "@/components/research/sections/Beyond";
 
 export const metadata: Metadata = {
@@ -26,9 +20,9 @@ export const metadata: Metadata = {
 /**
  * Research world — "Dark Field".
  *
- * Leads with the UMass Fusarium RFP transformation; the gout RNA-seq work is
- * the dry-lab counterpart. Governing principle: nothing important sits behind
- * a click. Every fact is reachable by scrolling; the console only navigates.
+ * Two projects, two posters, in that order: the claim, the boards, then as
+ * much of either as you ask for. Depth that used to run down the page in
+ * full now sits inside panels you open — the page is an overview first.
  *
  * Server component — interactive sections carry their own "use client".
  */
@@ -36,17 +30,11 @@ export default function ResearchPage() {
   return (
     <World id="research">
       <ResearchNav />
-      <Hero />
-      <Question />
-      <Strains />
-      <Plasmid />
-      <AtTheBench />
-      <Protocol />
-      <Evidence />
-      <WentWrong />
-      <WhatsNext />
-      <Poster />
-      <GoutChapter />
+      <Opening />
+      <Glow />
+      <Bench />
+      <Deeper />
+      <ScienceFair />
       <Beyond />
       <Footer />
       <LabEasterEggs />

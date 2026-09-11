@@ -28,108 +28,120 @@ const WORK_PHOTOS = [
   },
 ];
 
+const SERVICES = ["/ CIVIC VIDEO", "/ PODCAST DIRECTION", "/ OP-ED & CAMPAIGNS"];
+
 /**
- * Hero 04 — oversized-headline poster hero, themed for the Civic &
- * Storytelling world. Server component; all content is real (data.ts /
- * SpringLight profile), images are local /public assets.
+ * The portrait, whole. The frame carries the photo's own 3:4 ratio so nothing
+ * is cropped off it; the location strip is a sibling column, not an overlay.
+ */
+function Portrait() {
+  return (
+    <div className="group flex bg-secondary">
+      <div className="relative aspect-[3/4] min-w-0 flex-1 overflow-hidden">
+        <img
+          src={asset("/img/civics-jadon-picture.jpg")}
+          alt={`${PROFILE.name} portrait`}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-cine)] group-hover:scale-[1.04]"
+        />
+      </div>
+      <div className="shrink-0 rotate-180 p-2 text-left text-xs font-medium tracking-widest [writing-mode:vertical-rl]">
+        BASED IN FREMONT, CALIFORNIA
+      </div>
+    </div>
+  );
+}
+
+function RecentWork() {
+  return (
+    <div className="mt-6 text-right">
+      <div className="flex items-center justify-end gap-2">
+        <span className="text-lg font-medium tracking-wider">RECENT WORK</span>
+        <ArrowDownRight className="size-6" />
+      </div>
+      <div className="mt-2">
+        <KineticHeadline
+          as="h2"
+          text="A City, Documented"
+          className="text-right text-[2.1rem] uppercase leading-[1.05] tracking-[-2px] lg:text-4xl lg:tracking-[-3px]"
+        />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Hero 04 — oversized-headline poster hero for the Civic world.
+ *
+ * One block, no leftover strip at the bottom: the headline runs flush left,
+ * the fanned work photos fill the rag beside CIVIC, and the portrait column on
+ * the right carries the "A City, Documented" heading under it. Everything that
+ * used to sit in its own row below the fold now holds up part of the poster.
  */
 export function HeroSection04() {
   return (
-    <section className="relative overflow-hidden pb-10 pt-36 md:pb-14 md:pt-40">
+    <section className="relative overflow-hidden pb-12 pt-32 md:pb-16 md:pt-36">
       <div className="relative z-20 mx-auto max-w-7xl px-6">
-        <div className="relative">
-          <Reveal delay={0.5}>
-            <p className="absolute -top-4 left-20 text-sm font-medium tracking-wider">
-              EST. 2025
-            </p>
-          </Reveal>
-          {/* Fluid below sm: "STORYTELLER" is too long for the original fixed text-7xl at 375px */}
-          <KineticHeadline
-            as="h1"
-            text="CIVIC STORYTELLER"
-            balance={false}
-            className="relative z-20 text-center font-grotesk text-[13vw] font-bold tracking-[-0.08em] text-primary sm:text-7xl sm:tracking-[-7px] md:text-9xl md:tracking-[-14px] xl:text-[10rem] xl:tracking-[-1rem]"
-          />
-          <Reveal delay={0.6}>
-            <p className="absolute -bottom-12 right-24 hidden text-4xl font-thin tracking-[6px] xl:block">
-              {PROFILE.name.toUpperCase()}
-            </p>
-            <p className="absolute -bottom-12 left-24 text-4xl font-thin tracking-[6px] xl:hidden">
-              {PROFILE.name.toUpperCase()}
-            </p>
-          </Reveal>
-        </div>
-
-        <div className="relative grid">
-          <div className="flex justify-center gap-6 space-y-8 pt-20">
-            <div className="flex h-fit w-full max-w-xl items-end gap-6 space-y-2 bg-secondary p-10 text-xl font-bold md:text-2xl lg:text-3xl">
-              <div className="text-xl font-semibold">
-                <div>/ CIVIC VIDEO</div>
-                <div>/ PODCAST DIRECTION</div>
-                <div>/ OP-ED &amp; CAMPAIGNS</div>
-              </div>
-              <div className="group absolute -top-10 left-1/2 hidden w-fit overflow-hidden bg-secondary md:flex">
-                <img
-                  src={asset("/img/civics-jadon-picture.jpg")}
-                  alt={`${PROFILE.name} portrait`}
-                  className="h-100 w-72 object-cover object-[35%_40%] transition-transform duration-700 ease-[var(--ease-cine)] group-hover:scale-[1.04]"
-                />
-                <div className="rotate-180 p-2 text-left text-xs font-medium tracking-widest [writing-mode:vertical-rl]">
-                  BASED IN FREMONT, CALIFORNIA
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="-top-10 left-1/2 flex w-full overflow-hidden bg-secondary md:hidden md:w-fit">
-            <img
-              src={asset("/img/civics-jadon-picture.jpg")}
-              alt={`${PROFILE.name} portrait`}
-              className="h-100 w-full object-cover object-[35%_40%]"
-            />
-            <div className="rotate-180 p-2 text-left text-xs font-medium tracking-widest [writing-mode:vertical-rl]">
-              BASED IN FREMONT, CALIFORNIA
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-10 md:mt-40">
-          <Reveal>
-            <p className="mx-auto max-w-2xl text-center font-mono text-sm font-medium tracking-wide md:text-base">
-              I TURN A CITY INTO A STORY —
-              <br />
-              CIVIC VIDEO, PODCASTS, AND CAMPAIGNS
-              <br />
-              THAT MOVE REAL NUMBERS
-            </p>
-          </Reveal>
-        </div>
-        <Reveal delay={0.1}>
-          <div className="flex justify-center pt-6">
-            <Button size="lg" asChild>
-              <Link href="/contact">Get in touch</Link>
-            </Button>
+        <Reveal delay={0.4}>
+          <div className="flex items-baseline justify-between border-b border-primary/15 pb-4 font-mono text-xs font-medium tracking-[0.2em] md:text-sm">
+            <span>EST. 2025</span>
+            <span className="tracking-[0.4em]">{PROFILE.name.toUpperCase()}</span>
           </div>
         </Reveal>
 
-        <div className="mt-6 items-end justify-between md:mt-8 lg:flex">
-          <Reveal>
-            <PhotoStack photos={WORK_PHOTOS} />
-          </Reveal>
-          <div>
-            <div className="flex items-center gap-2 lg:justify-end">
-              <span className="text-lg font-medium tracking-wider">
-                RECENT WORK
-              </span>
-              <ArrowDownRight className="size-6" />
+        <div className="mt-7 grid gap-x-14 gap-y-10 md:mt-9 lg:grid-cols-[minmax(0,1fr)_18rem] xl:grid-cols-[minmax(0,1fr)_20rem]">
+          {/* ── left: the headline, the services, the promise ── */}
+          <div className="min-w-0">
+            <div className="relative">
+              <KineticHeadline
+                as="h1"
+                text="CIVIC STORYTELLER"
+                balance={false}
+                className="relative z-20 max-w-[12ch] font-grotesk text-[12.8vw] font-bold leading-[0.82] tracking-[-0.045em] text-primary md:text-[10.5vw] md:tracking-[-0.065em] lg:text-[8.2vw] xl:text-[8.6vw]"
+              />
+              {/* Fanned into the rag to the right of CIVIC — short enough to
+                  live inside that one line without landing on STORYTELLER. */}
+              <div className="absolute right-0 top-2 z-30 hidden lg:block">
+                <PhotoStack photos={WORK_PHOTOS} variant="compact" />
+              </div>
             </div>
 
-            <div className="mt-3 lg:text-right">
-              <KineticHeadline
-                as="h2"
-                text="A City, Documented"
-                className="text-5xl uppercase tracking-[-4px]"
-              />
+            <div className="mt-10 grid gap-x-12 gap-y-8 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-end md:mt-14 lg:mt-16">
+              <div className="bg-secondary px-8 py-7 text-xl font-semibold leading-[1.75]">
+                {SERVICES.map((s) => (
+                  <div key={s}>{s}</div>
+                ))}
+              </div>
+              <div>
+                <Reveal>
+                  <p className="max-w-[42ch] font-mono text-sm font-medium leading-[1.7] tracking-wide md:text-base">
+                    I TURN A CITY INTO A STORY — CIVIC VIDEO, PODCASTS, AND CAMPAIGNS THAT MOVE
+                    REAL NUMBERS.
+                  </p>
+                </Reveal>
+                <Reveal delay={0.1}>
+                  <div className="mt-6">
+                    <Button size="lg" asChild>
+                      <Link href="/contact">Get in touch</Link>
+                    </Button>
+                  </div>
+                </Reveal>
+              </div>
             </div>
+
+            {/* Below lg there is no rag to sit in, so the pile rides here. */}
+            <div className="mt-12 lg:hidden">
+              <Reveal>
+                <PhotoStack photos={WORK_PHOTOS} />
+              </Reveal>
+            </div>
+          </div>
+
+          {/* ── right: the portrait, whole, and what it points at ── */}
+          <div className="lg:pt-1">
+            <Portrait />
+            <Reveal delay={0.1}>
+              <RecentWork />
+            </Reveal>
           </div>
         </div>
       </div>

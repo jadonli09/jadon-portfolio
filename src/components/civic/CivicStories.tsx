@@ -40,10 +40,10 @@ const STORY_DETAIL: Record<
       { label: "Rate", val: "$50 / video flat" },
       { label: "First invoice", val: "$600" },
       { label: "Before", val: "~1k views / video" },
-      { label: "After", val: "~10k views / video" },
+      { label: "After", val: "~20k views / video" },
     ],
     extraBody:
-      "The Mayor spotted Jadon's @li_locked.in channel and reached out directly. Jadon films civic events and onstage talks, edits the footage, and delivers final cuts for the Mayor's Instagram. A 10× growth in per-video reach — from roughly 1k to 10k — is the proof of concept. The Intern Program layer added door-knocking and flyer distribution to gather constituent opinions.",
+      "The Mayor spotted Jadon's @li_locked.in channel and reached out directly. Jadon films civic events and onstage talks, edits the footage, and delivers final cuts for the Mayor's Instagram. Per-video reach is up roughly sixteen-fold since he started, and the account's following has quadrupled.",
   },
   "Reviving Sweet Tomatoes": {
     byline: "Jadon Li · @li_locked.in",
@@ -401,53 +401,6 @@ function SecondFeature({ story }: { story: Story }) {
   );
 }
 
-/** Mayor Intern Program — door-knocking, constituent outreach. */
-function InternProgramFeature() {
-  return (
-    <Reveal delay={0.08}>
-      <article className="relative bg-secondary p-7 md:p-10">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_auto] md:items-start md:gap-10">
-          <div>
-            <div className="mb-3 flex flex-wrap items-center gap-4">
-              <span className="eyebrow text-[var(--accent)]">Intern Program</span>
-              <span className="eyebrow">Jun 2025 – Oct 2025</span>
-            </div>
-            <h3 className="font-grotesk text-2xl font-bold uppercase leading-tight tracking-[-1px] md:text-3xl md:tracking-[-2px]">
-              Mayor&apos;s Intern Program
-            </h3>
-            <p className="mt-1 font-mono text-xs text-[var(--muted)]">
-              Mayor Salwan · City of Fremont
-            </p>
-            <p className="mt-4 text-base leading-relaxed text-[var(--fg)]">
-              Door-knocking and city events, handing flyers to constituents to gather opinions
-              on city policy. 50 calls per week from the Mayor&apos;s call sheet — the analog
-              side of civic engagement, paired with the video production work.
-            </p>
-          </div>
-
-          <div className="shrink-0 border border-[var(--line)] bg-[var(--bg)] p-5 md:w-44">
-            <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-              Weekly calls
-            </p>
-            <p className="mt-1 font-anton text-4xl leading-none text-[var(--accent)]">
-              <Counter to={50} suffix="" duration={1.2} />
-            </p>
-            <p className="mt-1 font-mono text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">
-              from the Mayor&apos;s sheet
-            </p>
-            <div className="mt-4 border-t border-[var(--line)] pt-3">
-              <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-                Mode
-              </p>
-              <p className="mt-0.5 font-mono text-[0.65rem] text-[var(--fg)]">Door-knocking + events</p>
-            </div>
-          </div>
-        </div>
-      </article>
-    </Reveal>
-  );
-}
-
 export function CivicStories() {
   // Stories by position: Sweet Tomatoes (#2 idx) = viral lead, Mayor's Videographer (#0) = second feature
   const viralStory = CIVIC.stories[2]; // "Reviving Sweet Tomatoes"
@@ -469,11 +422,6 @@ export function CivicStories() {
       {/* Mayor story — horizontal layout */}
       <div className="mt-6 md:mt-8">
         <SecondFeature story={mayorStory} />
-      </div>
-
-      {/* Mayor Intern Program — adjacent feature block */}
-      <div className="mt-6 md:mt-8">
-        <InternProgramFeature />
       </div>
     </section>
   );

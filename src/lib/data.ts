@@ -143,7 +143,7 @@ export type SentenceDoor = {
 
 export const SENTENCE_DOORS = {
   leads: { id: "leadership", num: "01", kicker: "The Operator", word: "leads", href: "/leadership", color: "#d9a83f", accent: "#b07c1e", photo: "/img/asb-officers.jpg", peek: "3× Class President → ASB President, in office", desc: "Elected class president three years running, now ASB President in office — the operator behind the rallies, Winter Ball, and $15k raised for the Class of 2027.", title: "Elected to lead, every year.", lede: "That discipline found a stage. Three-time Class President, now ASB President — he lost his way into winning, and runs events at the scale of a city.", cta: "Into leadership & events" },
-  films: { id: "civic", num: "02", kicker: "The Storyteller", word: "films", href: "/civic", color: "#e0644e", accent: "#c2402c", photo: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg", peek: "The Mayor's videographer · Voices of Fremont", desc: "Films for the Mayor of Fremont — civic stories like Voices of Fremont that pull 10k+ views a video.", title: "Documenting a city, and himself.", lede: "Then he picked up a camera. He tells a city's stories — directing the Voices of Fremont podcast with the Mayor, a viral push to revive a beloved restaurant, and a paid role as the Mayor's videographer.", cta: "Into civic & storytelling" },
+  films: { id: "civic", num: "02", kicker: "The Storyteller", word: "films", href: "/civic", color: "#e0644e", accent: "#c2402c", photo: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg", peek: "The Mayor's videographer · Voices of Fremont", desc: "Films for the Mayor of Fremont — civic stories like Voices of Fremont that pull 20k+ views a video.", title: "Documenting a city, and himself.", lede: "Then he picked up a camera. He tells a city's stories — directing the Voices of Fremont podcast with the Mayor, a viral push to revive a beloved restaurant, and a paid role as the Mayor's videographer.", cta: "Into civic & storytelling" },
   researches: { id: "research", num: "03", kicker: "The Scientist", word: "researches", href: "/research", color: "#2fc4ad", accent: "#0c9c86", photo: "/img/acsef-science-fair.jpg", peek: "ACSEF 3rd · a glowing fungus at UMass", desc: "Computational biology on gout pain (3rd in comp bio at ACSEF) — then a summer in a UMass Amherst lab engineering a red-fluorescent Fusarium.", title: "Reading the genome of pain.", lede: "Curiosity pulled him into the lab. Trained in R by a Stanford professor, he hunted the mediators of gout pain in a mouse model — then spent six weeks at UMass Amherst making a human-pathogenic fungus glow red.", cta: "Into research & STEM" },
   builds: { id: "built", num: "04", kicker: "The Builder", word: "builds", href: "/built", color: "#7c89e8", accent: "#4f5fd6", photo: "/img/presenting-acornprep-at-gemini-meetup.jpg", peek: "AcornPrep · 500+ students · NotebookLI", desc: "Built AcornPrep, an AP study app 500+ students use (#1 on Google), and NotebookLI, a reader that makes dense research papers legible.", title: "Ship it. Then ship the next.", lede: "What he learned, he shipped. AcornPrep turned eleven AP exams, every one a 5, into a study tool 500+ students actually use — the #1 Google result, pitched at Stanford. Then NotebookLI, built mid-research so dense papers read like conversations.", cta: "Into the things he's built" },
   competes: { id: "court", num: "05", kicker: "The Competitor", word: "competes", href: "/court", color: "#f0703a", accent: "#e04e12", photo: "/img/ncs-champions.jpg", peek: "First NCS title in school history", desc: "Varsity basketball — started on the team that won the first NCS title in school history.", title: "First in school history.", lede: "And through all of it, the court. He started in the first five the year Mission San Jose won its first NCS title in school and district history.", cta: "Into the court" },
@@ -151,7 +151,7 @@ export const SENTENCE_DOORS = {
   person: { id: "about", num: "07", kicker: "The Person", word: "person", href: "/about", color: "#c98a5d", accent: "#a9683f", photo: "/img/missionpeak2026-1.jpg", peek: "Mission Peak every birthday · journaling since 8th grade", desc: "The person underneath it all: Mission Peak every birthday, journaling since 8th grade.", title: "A stopwatch, a journal, a kitchen.", lede: "Start with the person. Every birthday since he was twelve, Jadon runs Mission Peak alone. He's journaled since eighth grade, cooks feasts with designed menus for his friends — and recommends a good nap.", cta: "Into the person" },
 } satisfies Record<string, SentenceDoor>;
 
-export const SENTENCE_TICKER = ["3× president", "ACT 35", "10k views / video", "ACSEF 3rd", "500+ users", "11 AP 5s", "NCS champions", "1 of 20 · CommonApp", "1.39M plays"] as const;
+export const SENTENCE_TICKER = ["3× president", "ACT 35", "20k views / video", "ACSEF 3rd", "500+ users", "11 AP 5s", "NCS champions", "1 of 20 · CommonApp", "1.39M plays"] as const;
 
 /* ─────────────────── THE PINBOARD (landing record) ─────────────────── */
 export type PinKind = "letter" | "polaroid" | "plaque" | "seal" | "ticket" | "note" | "news" | "receipt" | "ribbon" | "index";
@@ -222,7 +222,7 @@ export const LOCKED = {
     { value: 368, suffix: "", label: "Days documented" },
     { value: 83, suffix: "", label: "Reels" },
     { value: 1.39, suffix: "M+", decimals: 2, label: "Plays in year one" },
-    { value: 1769, suffix: "", label: "Followers" },
+    { value: 1926, suffix: "", label: "Followers" },
   ],
   /** Real li_locked.in reels — Instagram blocks third-party iframe embeds, so each
    *  card links to the live reel. */
@@ -244,10 +244,13 @@ export const LOCKED = {
     { src: "/vid/cooking-feast1.mp4", poster: "/vid/cooking-feast1.jpg", label: "Feast night" },
     { src: "/vid/cookingfeasts-3.mp4", poster: "/vid/cookingfeasts-3.jpg", label: "Plating up" },
   ],
-  /** Year two, summer 2026 — real reels, embedded live (dates + counts render from Instagram). */
+  /** Year two — real reels, embedded live (dates + counts render from Instagram).
+   *  Pulled from @li_locked.in on 2026-09-09; one per world the account covers. */
   yearTwo: [
-    { code: "Dag2u2ixRms", label: "The AP score reaction — the reel that went viral" },
-    { code: "DcAIukQNv69", label: "A music video with the UMass pre-college crew" },
+    { code: "Dag2u2ixRms", label: "“War is over” — the AP score reaction, and the biggest reel of the account" },
+    { code: "DbjzSAuRMX6", label: "Life in the fume hood — the summer in the Ma Lab" },
+    { code: "DcfGaXINvap", label: "Passing the phone at a pitch competition" },
+    { code: "DZoMW0QpBLc", label: "Making the case for showing up to city hall" },
   ].map((r) => ({ ...r, url: `https://www.instagram.com/reel/${r.code}/` })),
   douyin: {
     url: "https://www.iesdouyin.com/share/video/7247003661631622458/",
@@ -732,11 +735,30 @@ export const CIVIC = {
       poster: "/embeds/st-04.jpg",
     },
   ],
+  /** Verified against the live accounts on 2026-09-09: @rajsalwan's newest 20
+   *  reels average 20.5k views against 1.3k for his oldest 20, and he is at
+   *  6,281 followers; @msjhsvideography has 42 posts. */
   metrics: [
-    { value: 10, suffix: "k", label: "Views per mayor video", note: "grown from ~1k" },
+    {
+      value: 20,
+      suffix: "k",
+      label: "Views per mayor video",
+      note: "up from ~1k",
+      note2: "his following: 1.5k → 6.3k",
+    },
     { value: 500, suffix: "k+", label: "Views in under a month", note: "@li_locked.in" },
-    { value: 18, suffix: "k", label: "Palm Ave Park promo views", note: "700+ shares" },
-    { value: 32000, suffix: "", label: "FUSD families reached", note: "Car Meet email blast" },
+    {
+      value: 1,
+      suffix: " of 20",
+      label: "Common App commissioners",
+      note: "students, nationwide",
+    },
+    {
+      value: 42,
+      suffix: "",
+      label: "Videos on @msjhsvideography",
+      note: "most of last year, shot and cut",
+    },
   ],
   stories: [
     {
@@ -744,7 +766,7 @@ export const CIVIC = {
       handle: "Mayor Salwan Intern Program · paid videographer",
       window: "Jun 2025 – present",
       body:
-        "Surveyed Fremont residents (50 calls/week from the mayor's call sheet), drafted policy, and produced ~1-minute civic videos. Grew the mayor's per-video reach from roughly 1k to 10k. Paid at $50/video; first invoice $600. Still filming in summer 2026: met Rep. Ro Khanna at Fremont Street Eats and shot a li_locked.in reel with him on youth civic engagement — then, before leaving for the East Coast, trained his brother Carter to take over as the Mayor's primary videographer.",
+        "Surveyed Fremont residents from the mayor's call sheet, drafted policy, and cut ~1-minute civic videos at $50 each. Per-video reach went from roughly 1k to 20k, and his following from 1.5k to 6.3k. Summer 2026: filmed Rep. Ro Khanna at Fremont Street Eats, then trained his brother Carter to take over the camera.",
     },
     {
       title: "Voices of Fremont",
@@ -782,6 +804,42 @@ export const CIVIC = {
         "Lead videographer and editor for a San Jose D7 City Council campaign — intro and donation videos, event coverage, and website design help.",
     },
   ],
+  /** Mayor Salwan's intern program — one summer as an intern, the next as one
+   *  of three leads over a cohort of 36. Told as one arc, not two entries. */
+  internProgram: {
+    title: "Mayor Salwan's Intern Program",
+    org: "Mayor Salwan · City of Fremont",
+    window: "Jun 2025 – Oct 2026",
+    lede: "Two summers on the same program: the first knocking on doors, the second running the room.",
+    years: [
+      {
+        year: "2025",
+        role: "Intern",
+        body:
+          "Door-knocking and city events, handing flyers to constituents to gather opinions on city policy — the analog half of civic engagement.",
+        stat: { value: 50, label: "calls a week", note: "off the mayor's call sheet" },
+      },
+      {
+        year: "2026",
+        role: "Lead intern",
+        body:
+          "One of three leads running the cohort: scheduling, training, and the certificates at the end of it.",
+        stat: { value: 36, label: "interns in the cohort", note: "run by three leads" },
+      },
+    ],
+    photos: [
+      {
+        src: "/img/mayor-interns-2026.jpg",
+        alt: "The full 2026 cohort of Mayor Salwan's intern program holding their certificates of completion",
+        caption: "The 2026 cohort, certificates in hand.",
+      },
+      {
+        src: "/img/mayor-intern-leads.jpg",
+        alt: "Jadon Li with Mayor Raj Salwan and the two other lead interns",
+        caption: "The three leads, with Mayor Salwan.",
+      },
+    ],
+  },
   commission: {
     title: "Fremont Youth Advisory Commission",
     window: "Nov 2025 – present",
@@ -809,7 +867,11 @@ export const CIVIC = {
       body:
         "One of twenty students in the country advising the Common App — the application 1,000+ colleges run on. A two-hour session every month plus work between meetings, feeding the student view back into the product high-schoolers actually use.",
       tags: ["national", "advisory", "monthly"],
-      photo: undefined as undefined | { src: string; alt: string; caption: string },
+      photo: {
+        src: "/img/commonapp-01.jpg",
+        alt: "A Common App Student Advisory Committee session on video call — Jenny Rickard speaking, Jadon Li in the panel beside her",
+        caption: "A monthly session — Jenny Rickard, Common App's CEO, on the call",
+      } as undefined | { src: string; alt: string; caption: string },
     },
     {
       id: "fire",
@@ -861,20 +923,20 @@ export const RESEARCH = {
       role: "Founder — Biology Department · led the 2026 team",
       site: "youthstemjournal.org",
       detail:
-        "A summer program teaching middle-schoolers to read research papers — what to read first, what to skip, how to annotate and discuss. 2025: 30 students, 8 hands-on, capstones presented to parents. 2026: led a team of 4 mentors, 60 students across 6 cohorts; taught a 20-student biology cohort on the tardigrade's DNA-repair mechanism with debates, role-plays, and research activities.",
+        "30 students in 2025, 60 across six cohorts in 2026 with a team of four mentors. Taught a biology cohort on the tardigrade's DNA-repair mechanism — debates, role-plays, capstones presented to parents.",
     },
     {
       title: "PRISM",
       role: "Promoting Representation in Science & Medicine",
       site: "theprismproject.blog",
-      detail: "Working to increase Hispanic and Asian representation in clinical trials so treatments are backed by better data. Weekly posts on the site and Instagram; field interviews at the Ohlone Flea Market on how community members see clinical research.",
+      detail: "Weekly writing and field interviews at the Ohlone Flea Market on how people actually see clinical research — because treatments are only as good as the data behind them.",
     },
     {
       title: "MSJ STEM-PAC",
       role: "Co-President — competition pipeline",
       site: "science fairs · olympiads",
       detail:
-        "Built MSJ STEM-PAC — Projects and Competitions — from the club Jadon founded as a 10th-grade officer into a pipeline that guides students toward real competitions: the Alameda County Science Fair (ACSEF), biology and broader STEM olympiads, and other external contests, not just in-house events. Iron Chef (23 contestants) and the egg drop (12 teams) are the community glue; the science-fair and olympiad pipeline is the point.",
+        "Grew the club he founded in 10th grade into a pipeline that points students at real contests — ACSEF, biology and STEM olympiads — not just in-house events. Iron Chef and the egg drop are the glue; the pipeline is the point.",
     },
     {
       title: "UMass Amherst — Ma Lab",
@@ -1534,7 +1596,7 @@ export const TROPHIES: Trophy[] = [
   // ── Junior — civic / media ──
   { year: "2025", title: "li_locked.in launched", cat: "civic", w: 4, detail: "0 → 1,000 followers in a summer; 500k+ views." },
   { year: "2025", title: "Mayor's Intern Program", cat: "civic", w: 3, detail: "Surveyed residents and worked city events." },
-  { year: "2025", title: "Mayor's Videographer (paid)", cat: "civic", w: 4, detail: "Grew the Mayor's per-video reach ~1k → 10k; $50/video." },
+  { year: "2025", title: "Mayor's Videographer (paid)", cat: "civic", w: 4, detail: "Grew the Mayor's per-video reach ~1k → 20k; $50/video." },
   { year: "2025", title: "Voices of Fremont — director", cat: "civic", w: 4, detail: "Directs & edits the Mayor's ~7-minute podcast; thousands of views monthly." },
   { year: "2025", title: "Sweet Tomatoes revival", cat: "civic", w: 3, detail: "The viral origin — pitched reviving the restaurant; emailed Tucson with the Mayor." },
   { year: "2025", title: "Fremont Stories", cat: "civic", w: 3, detail: "A video series on unconventional career paths (with Akash Sethi & Brittany Lu)." },

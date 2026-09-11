@@ -2,20 +2,25 @@
  * Single source of truth for the page's sections. ResearchNav renders the
  * rail from it, Console resolves `open <name>` against it, and page.tsx
  * composes in this order. Adding a section means editing this file only.
+ *
+ * Seven stops, not fifteen: the page is an overview of two projects, and
+ * everything below the overview is reachable by opening a panel in place.
  */
 
 export type SectionId =
-  | "hero"
-  | "question" | "strains" | "plasmid" | "bench" | "protocol"
-  | "evidence" | "went-wrong" | "next" | "poster"
-  | "gout-question" | "pipeline" | "volcano" | "mediators"
-  | "olympiads" | "programs";
+  | "boards"
+  | "glow"
+  | "bench"
+  | "deeper"
+  | "gout"
+  | "olympiads"
+  | "programs";
 
 export type Chapter = "fusarium" | "gout" | "beyond";
 
 export type NavGroup = {
   id: string;
-  /** null renders no group heading — "Beyond" named nothing and was cut. */
+  /** null renders no group heading — a hairline stands in for one. */
   label: string | null;
   chapter: Chapter;
   sections: { id: SectionId; label: string }[];
@@ -23,31 +28,26 @@ export type NavGroup = {
 
 export const GROUPS: NavGroup[] = [
   {
+    id: "boards",
+    label: null,
+    chapter: "fusarium",
+    sections: [{ id: "boards", label: "the posters" }],
+  },
+  {
     id: "fusarium",
-    label: "Fusarium · UMass 2026",
+    label: "Fusarium, UMass 2026",
     chapter: "fusarium",
     sections: [
-      { id: "question", label: "the question" },
-      { id: "strains", label: "the strains" },
-      { id: "plasmid", label: "the plasmid" },
+      { id: "glow", label: "the glow" },
       { id: "bench", label: "at the bench" },
-      { id: "protocol", label: "the protocol" },
-      { id: "evidence", label: "the evidence" },
-      { id: "went-wrong", label: "what went wrong" },
-      { id: "next", label: "what's next" },
-      { id: "poster", label: "the poster" },
+      { id: "deeper", label: "the details" },
     ],
   },
   {
     id: "gout",
-    label: "Gout · RNA-seq",
+    label: "Gout, science fair",
     chapter: "gout",
-    sections: [
-      { id: "gout-question", label: "the question" },
-      { id: "pipeline", label: "the pipeline" },
-      { id: "volcano", label: "the volcano" },
-      { id: "mediators", label: "the mediators" },
-    ],
+    sections: [{ id: "gout", label: "the study" }],
   },
   {
     id: "beyond",
@@ -60,10 +60,10 @@ export const GROUPS: NavGroup[] = [
   },
 ];
 
-/** Rail entries, in page order. The hero is the top of the page, not a stop. */
+/** Rail entries, in page order. The opening is the top of the page, not a stop. */
 export const ALL_SECTIONS = GROUPS.flatMap((g) => g.sections);
 
-/** Resolve a console argument ("plasmid", "went wrong") to a section id. */
+/** Resolve a console argument ("glow", "the study") to a section id. */
 export function resolveSection(arg: string): SectionId | null {
   const q = arg.trim().toLowerCase().replace(/[\s_]+/g, "-");
   if (!q) return null;

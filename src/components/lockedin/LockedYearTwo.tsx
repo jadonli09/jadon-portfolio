@@ -24,7 +24,7 @@ export function LockedYearTwo() {
         </Reveal>
         <Reveal delay={0.12}>
           <p className="mt-5 max-w-xl text-sm leading-relaxed text-[var(--muted)] md:text-base">
-            Year two opened on the East Coast — an AP-score reaction that went viral, and a music video shot with friends from across the world at UMass. Embedded live: the dates and counts are Instagram&rsquo;s, not ours.
+            Year two has been a summer in a fungal-genetics lab, a pitch competition, a case for showing up to city hall — and one AP-score reaction that got away from him. Embedded live: the dates and counts are Instagram&rsquo;s, not ours.
           </p>
         </Reveal>
 
