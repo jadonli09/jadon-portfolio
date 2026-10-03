@@ -9,10 +9,8 @@ import {
   HeroFacets,
   HeroReel,
 } from "@/components/landing/HeroVariants";
+import { HeroCovers } from "@/components/landing/HeroCovers";
 import { asset } from "@/lib/base";
-import { BoardSurface } from "@/components/landing/BoardSurface";
-import { SentenceDoors } from "@/components/landing/SentenceDoors";
-import { Pinboard } from "@/components/landing/Pinboard";
 import { LandingClose } from "@/components/landing/LandingClose";
 import { Footer } from "@/components/chrome/Footer";
 import { PROFILE } from "@/lib/data";
@@ -51,7 +49,7 @@ export function Landing() {
   const heroY = useTransform(scrollY, [0, 600], [0, 160]);
   const heroOpacity = useTransform(scrollY, [0, 500], [1, 0]);
   const lenis = useLenis();
-  // Hero options under review: /?hero=facets | editorial | reel (default: the bridge).
+  // Default hero is the covers; earlier options stay reachable at /?hero=bridge | facets | editorial | reel.
   const [variant, setVariant] = useState<string | null>(null);
   useEffect(() => {
     const v = new URLSearchParams(window.location.search).get("hero");
@@ -85,7 +83,11 @@ export function Landing() {
   }, [lenis]);
 
   return (
-    <main className="relative w-full overflow-clip bg-[#07070a] text-[#f4f1ea]">
+    <main
+      className="relative w-full overflow-clip bg-[#120e0c] text-[#f4efe6]"
+      // the shared footer reads these, so it sits on the same warm dark as the covers
+      style={{ ["--line" as string]: "rgba(244,239,230,0.1)", ["--muted" as string]: "#a59c92" }}
+    >
       <Preloader />
 
       {variant === "facets" ? (
@@ -94,7 +96,7 @@ export function Landing() {
         <HeroEditorial />
       ) : variant === "reel" ? (
         <HeroReel />
-      ) : (
+      ) : variant === "bridge" ? (
         <>
           {/* COLD OPEN — the Golden Gate lookout. Name slides in BEHIND the subject:
           photo (back) → ghost watermark → giant name → pixel-aligned cutout (front). */}
@@ -183,22 +185,14 @@ export function Landing() {
             />
           </section>
         </>
+      ) : (
+        <HeroCovers />
       )}
 
-      {/* THE EVIDENCE BOARD — sentence, record and close on one continuous wall,
-          tied together by red threads from each pinned word to its proof. */}
-      <BoardSurface>
-        {/* THE SENTENCE — the 20-second overview, seven doors */}
-        <SentenceDoors />
+      {/* THE CLOSE — three more covers */}
+      <LandingClose />
 
-        {/* THE RECORD — achievements, pinned */}
-        <Pinboard />
-
-        {/* THE CLOSE */}
-        <LandingClose />
-      </BoardSurface>
-
-      <Footer />
+      <Footer seamless />
     </main>
   );
 }

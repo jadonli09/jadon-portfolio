@@ -151,63 +151,26 @@ export const SENTENCE_DOORS = {
   person: { id: "about", num: "07", kicker: "The Person", word: "person", href: "/about", color: "#c98a5d", accent: "#a9683f", photo: "/img/missionpeak2026-1.jpg", peek: "Mission Peak every birthday · journaling since 8th grade", desc: "The person underneath it all: Mission Peak every birthday, journaling since 8th grade.", title: "A stopwatch, a journal, a kitchen.", lede: "Start with the person. Every birthday since he was twelve, Jadon runs Mission Peak alone. He's journaled since eighth grade, cooks feasts with designed menus for his friends — and recommends a good nap.", cta: "Into the person" },
 } satisfies Record<string, SentenceDoor>;
 
-/* ─────────────────── THE PINBOARD (landing record) ─────────────────── */
-export type PinKind = "letter" | "polaroid" | "plaque" | "seal" | "ticket" | "note" | "news" | "receipt" | "ribbon" | "index";
-export type PinItem = {
-  kind: PinKind;
-  /** destination; omit for the letter */
-  href?: string;
-  img?: string;
-  caption?: string;
-  value?: string;
-  label?: string;
-  text?: string;
-  hed?: string;
-  src?: string;
-  lines?: string[];
-  accent?: string;
-  /** optional fluorescence halo colour (the RFP glow) */
-  glow?: string;
-  /** SENTENCE_DOORS id this pin anchors — the red thread from that word ends here */
-  world?: string;
-  /** desktop board placement */
-  left: string;
-  top: number;
-  rot: number;
-  z: number;
-  w?: number;
+/* ─────────────────── THE COVERS (landing hero) ─────────────────── */
+/** One magazine cover per sentence word; `cut` is the subject cutout layered in front of the masthead. */
+export type HeroCover = {
+  door: keyof typeof SENTENCE_DOORS;
+  img: string;
+  cut?: string;
+  line: string;
+  sub: string;
+  cta: string;
 };
 
-/** Sixty-word intro, pinned on the board as a letter. */
-export const PIN_LETTER_TEXT =
-  "Jadon Li is a senior at Mission San Jose. Elected president every year since freshman year — now ASB President — he films for the Mayor of Fremont, traced gout pain through the genome, spent a summer making a fungus glow red at UMass, built a study app students actually use, started on the first championship team in school history — and posted the whole journey.";
-
-export const PINBOARD: PinItem[] = [
-  { kind: "letter", left: "1%", top: 26, rot: -2, z: 7, w: 300 },
-  { kind: "polaroid", world: "court", href: "/court", img: "/img/ncs-champions.jpg", caption: "first NCS title in school history!", left: "21%", top: 12, rot: 4, z: 4, w: 180 },
-  { kind: "news", href: "/court", hed: "“Believe it: Mission San Jose wins first NCS title in boys basketball”", src: "The Mercury News, Feb 2026 — MSJ 46–40", left: "34%", top: 114, rot: -3.5, z: 6, w: 212 },
-  { kind: "seal", world: "leadership", href: "/leadership#elected-offices-heading", text: "3× Class President, now ASB President", left: "53%", top: 10, rot: 8, z: 5, w: 124 },
-  { kind: "polaroid", href: "/leadership", img: "/img/speaking-at-rally.jpg", caption: "rally szn", left: "61%", top: 50, rot: -5, z: 3, w: 158 },
-  { kind: "plaque", world: "lockedin", href: "/locked-in#timeline", value: "1.39M", label: "plays in year one on @li_locked.in", accent: "#e8689c", left: "75%", top: 20, rot: 3, z: 6 },
-  { kind: "note", href: "/about", text: "journaling since 8th grade ✎ — naps highly recommended", accent: "#ffe27a", left: "87%", top: 90, rot: -6, z: 4, w: 132 },
-  { kind: "polaroid", href: "/about", img: "/img/ironchef-win.jpg", caption: "Iron Chef — W", left: "85%", top: 192, rot: 5, z: 3, w: 146 },
-  { kind: "polaroid", href: "/leadership#elected-offices-heading", img: "/img/asb-officers.jpg", caption: "ASB officer team", left: "2%", top: 246, rot: 3, z: 4, w: 168 },
-  { kind: "receipt", href: "/leadership#elected-offices-heading", lines: ["CLASS OF 2027", "──────────", "FUNDRAISED  $15,000", "STOLES JOB     $700", "──────────", "TOTAL        A LOT"], left: "16%", top: 208, rot: -4, z: 5, w: 172 },
-  { kind: "ribbon", world: "research", href: "/research", value: "3rd", label: "ACSEF, comp bio", left: "27%", top: 190, rot: 6, z: 7, w: 112 },
-  { kind: "polaroid", href: "/research", img: "/img/umass-01.jpg", caption: "presenting at UMass Amherst", left: "33%", top: 236, rot: -2, z: 4, w: 162 },
-  { kind: "ticket", world: "built", href: "/built", text: "ACORNPREP · ADMIT 500+", label: "eleven AP 5s, #1 on Google", accent: "#7c89e8", left: "48%", top: 204, rot: -5, z: 6, w: 176 },
-  { kind: "polaroid", href: "/built", img: "/img/presenting-acornprep-at-gemini-meetup.jpg", caption: "pitching at the Gemini meetup", left: "57%", top: 242, rot: 5, z: 4, w: 168 },
-  { kind: "polaroid", world: "civic", href: "/civic", img: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg", caption: "Voices of Fremont, w/ the First Partner", left: "72%", top: 232, rot: -4, z: 5, w: 178 },
-  { kind: "polaroid", world: "about", href: "/about", img: "/img/missionpeak2026-1.jpg", caption: "every birthday, same mountain", left: "4%", top: 352, rot: -5, z: 3, w: 158 },
-  { kind: "seal", href: "/about", value: "46:46", text: "Mission Peak", accent: "silver", left: "18%", top: 336, rot: 7, z: 6, w: 100 },
-  { kind: "index", href: "/leadership#club-crews-heading", text: "Also currently: MSJ Makes President, STEM-PAC Co-President, and ~$4k profit shipping merch jobs", left: "26%", top: 382, rot: -3, z: 5, w: 200 },
-  { kind: "ticket", href: "/civic", text: "★ 20K VIEWS", label: "per Mayor video", accent: "#e0644e", left: "41%", top: 350, rot: 4, z: 5, w: 140 },
-  { kind: "note", href: "/civic", text: "rallying Fremont to bring Sweet Tomatoes back — to be continued…", accent: "#ffd0e2", left: "50%", top: 388, rot: -6, z: 4, w: 132 },
-  { kind: "polaroid", href: "/leadership#winter-ball-title", img: "/img/winterball-1.jpg", caption: "Winter Ball — sold out", left: "61%", top: 358, rot: 6, z: 4, w: 152 },
-  // ── summer 2026 ──
-  { kind: "polaroid", glow: "#ff3d5e", href: "/research?branch=umass-2026", img: "/img/umass-confocal.jpg", caption: "made a fungus glow red — UMass '26", left: "74%", top: 404, rot: 3, z: 6, w: 170 },
-  { kind: "seal", href: "/civic#national", text: "CommonApp Student Advisory, 1 of 20", left: "88%", top: 336, rot: -7, z: 6, w: 124 },
-  { kind: "polaroid", href: "/built", img: "/img/ybvc-02.jpg", caption: "pitching AcornPrep at Stanford — top 15", left: "31%", top: 468, rot: 4, z: 6, w: 172 },
+/** In sentence order: the name (the person) first, then the six verbs. */
+export const HERO_COVERS: HeroCover[] = [
+  { door: "person", img: "/img/covers/person.jpg", cut: "/img/covers/person-cut.webp", line: "A stopwatch, a journal, a kitchen", sub: "Mission Peak every birthday since twelve", cta: "Meet the person" },
+  { door: "leads", img: "/img/covers/leads.jpg", cut: "/img/covers/leads-cut.webp", line: "Three-time president", sub: "Class president every year, now ASB President", cta: "Leadership & events" },
+  { door: "films", img: "/img/covers/films.jpg", cut: "/img/covers/films-cut.webp", line: "The Mayor's videographer", sub: "Voices of Fremont, 20k+ views a video", cta: "Civic & storytelling" },
+  { door: "researches", img: "/img/covers/researches.jpg", cut: "/img/covers/researches-cut.webp", line: "Why a fungus glows red", sub: "Six weeks in a UMass Amherst lab, after 3rd at ACSEF", cta: "Research & STEM" },
+  { door: "builds", img: "/img/covers/builds.jpg", line: "500+ students, #1 on Google", sub: "AcornPrep, then NotebookLI", cta: "Things he's built" },
+  { door: "competes", img: "/img/covers/competes.jpg", cut: "/img/covers/competes-cut.webp", line: "First in school history", sub: "Starter on Mission\u00a0San\u00a0Jose's first NCS title team", cta: "The court" },
+  { door: "documents", img: "/img/covers/documents.jpg", cut: "/img/covers/documents-cut.webp", line: "1.39M plays in year one", sub: "83 reels on @li_locked.in", cta: "Locked In" },
 ];
 
 /* ─────────────────────────── LOCKED IN ──────────────────────────── */

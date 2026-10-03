@@ -4,11 +4,12 @@ import { Magnetic } from "@/components/primitives/Magnetic";
 import { FooterNav } from "@/components/chrome/FooterNav";
 
 /** Designed page close: a "where to next" chapter picker + contact links — never a blank white footer. */
-export function Footer() {
+/** `seamless`: no band or rule, and no utility links — for the landing, whose closing covers already carry them. */
+export function Footer({ seamless = false }: { seamless?: boolean }) {
   return (
-    <footer className="relative border-t border-[var(--line)] bg-[var(--bg-2)] px-5 py-16 md:px-9 md:py-24">
-      <div className="mx-auto max-w-6xl">
-        <FooterNav />
+    <footer className={`relative px-5 md:px-9 ${seamless ? "pb-16 pt-4 md:pb-24" : "border-t border-[var(--line)] bg-[var(--bg-2)] py-16 md:py-24"}`}>
+      <div className={`mx-auto ${seamless ? "max-w-[1360px]" : "max-w-6xl"}`}>
+        <FooterNav extras={!seamless} />
         <div className="flex flex-col justify-between gap-8 border-t border-[var(--line)] pt-8 md:flex-row md:items-end">
           <div>
             <p className="font-display text-2xl">{PROFILE.name}</p>

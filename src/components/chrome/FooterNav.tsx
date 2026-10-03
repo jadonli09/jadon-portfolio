@@ -22,14 +22,14 @@ const EXTRAS = [
  * the same per-world transitions as the menu), plus the utility pages. Lives
  * inside Footer, so every page that closes with a Footer gets it for free.
  */
-export function FooterNav() {
+export function FooterNav({ extras: showExtras = true }: { extras?: boolean }) {
   const pathname = usePathname();
   const current = pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
   const router = useRouter();
   const navigating = useRef(false);
 
   const doors = DOORS.filter((d) => d.href !== current);
-  const extras = EXTRAS.filter((e) => e.href !== current);
+  const extras = showExtras ? EXTRAS.filter((e) => e.href !== current) : [];
 
   const go = (e: React.MouseEvent, door: Door) => {
     e.preventDefault();
@@ -70,6 +70,7 @@ export function FooterNav() {
           </Link>
         ))}
       </div>
+      {extras.length > 0 && (
       <div className="mt-6 flex flex-wrap gap-3">
         {extras.map((x) => (
           <Link
@@ -82,6 +83,7 @@ export function FooterNav() {
           </Link>
         ))}
       </div>
+      )}
     </nav>
   );
 }

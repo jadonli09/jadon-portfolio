@@ -22,7 +22,7 @@ export function DeepDiveBar({ id }: { id: WorldId }) {
       className={`fixed bottom-5 left-5 z-40 transition-[translate,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:bottom-7 md:left-7 ${hidden ? "pointer-events-none translate-y-24 opacity-0" : ""}`}
     >
       <Link
-        href="/#doors"
+        href="/"
         data-cursor-hover
         className="group inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--bg-2)]/80 px-5 py-3 text-base font-medium text-[var(--muted)] backdrop-blur transition-colors hover:border-[var(--accent)] hover:text-[var(--fg)]"
       >

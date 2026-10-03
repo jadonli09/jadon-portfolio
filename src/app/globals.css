@@ -1015,3 +1015,9 @@ body:has([data-world="built"]) .grain {
   .grain { display: none; }
   .marquee-track { animation: none; }
 }
+
+/* landing hero — the active word's underline doubles as the cover timer */
+@keyframes cover-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
