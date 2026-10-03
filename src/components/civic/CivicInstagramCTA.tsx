@@ -13,7 +13,7 @@ import { PROFILE } from "@/lib/data";
  */
 export function CivicInstagramCTA() {
   return (
-    <section className="relative overflow-hidden py-20 md:py-32">
+    <section className="relative overflow-hidden py-16 md:py-24">
       <DashedGrid fade="bottom" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">

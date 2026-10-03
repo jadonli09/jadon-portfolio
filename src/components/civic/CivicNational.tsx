@@ -63,7 +63,7 @@ function SeatCard({ seat }: { seat: Seat }) {
  */
 export function CivicNational() {
   return (
-    <section id="national" className="relative scroll-mt-24 border-t border-[var(--line)] py-16 md:py-24">
+    <section id="national" className="relative scroll-mt-24 border-t border-[var(--line)] py-14 md:py-20">
       <div className="mx-auto max-w-7xl px-5 md:px-9">
         <div className="mb-8 h-[2px] w-10 bg-[var(--accent)] md:mb-12" />
 

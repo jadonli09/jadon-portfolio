@@ -21,7 +21,7 @@ export function CivicInternProgram() {
   return (
     <section
       id="intern-program"
-      className="relative scroll-mt-24 border-t border-[var(--line)] py-16 md:py-24"
+      className="relative scroll-mt-24 border-t border-[var(--line)] py-14 md:py-20"
     >
       <div className="mx-auto max-w-7xl px-5 md:px-9">
         <div className="mb-6 h-[2px] w-10 bg-[var(--accent)] md:mb-8" />

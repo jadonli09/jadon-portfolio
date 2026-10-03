@@ -32,9 +32,9 @@ export function CivicHero() {
               as="h1"
               text="CIVIC STORYTELLER"
               balance={false}
-              className="relative z-20 max-w-[12ch] font-grotesk text-[12.8vw] font-bold leading-[0.82] tracking-[-0.045em] text-primary md:text-[8vw] md:tracking-[-0.065em] xl:text-[8.6vw]"
+              className="relative z-20 max-w-[12ch] font-grotesk text-[12.8vw] font-bold leading-[0.82] tracking-[-0.045em] text-primary md:text-[min(8vw,7.5rem)] md:tracking-[-0.065em] xl:text-[min(8.6vw,7.75rem)]"
             />
-            <div className="absolute right-0 top-2 z-30 hidden lg:block">
+            <div className="absolute -right-6 top-3 z-30 hidden lg:block xl:-right-10">
               <PhotoStack photos={WORK_PHOTOS} variant="compact" />
             </div>
           </div>

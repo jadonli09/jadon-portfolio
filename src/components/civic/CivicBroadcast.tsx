@@ -8,7 +8,7 @@ import { PosterHeading } from "@/components/ui/poster-heading";
 import { ClipCard } from "@/components/civic/ClipCard";
 import { asset } from "@/lib/base";
 import { CIVIC } from "@/lib/data";
-import { EASE, revealUp } from "@/lib/motion";
+import { revealUp } from "@/lib/motion";
 
 /* ── Data — MSJTV / Leadership II "L2 Vid" ─────────────────────── */
 
@@ -33,7 +33,7 @@ const CUTS = [
 
 export function CivicBroadcast() {
   return (
-    <section className="mx-auto max-w-7xl px-5 py-12 md:px-9 md:py-16">
+    <section className="mx-auto max-w-7xl px-5 py-14 md:px-9 md:py-20">
       <PosterHeading
         title="The school, on the record"
         className="mb-8 md:mb-10"
@@ -117,7 +117,6 @@ export function CivicBroadcast() {
           </p>
         </Reveal>
         <RevealGroup
-          data-lenis-prevent
           className="-mx-5 mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3"
           stagger={0.08}
           delayChildren={0.05}
@@ -136,15 +135,6 @@ export function CivicBroadcast() {
         </RevealGroup>
       </div>
 
-      <Reveal delay={0.2}>
-        <motion.div
-          className="mt-10 h-[1px] bg-[var(--line)] md:mt-14"
-          initial={{ scaleX: 0, originX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.3, ease: EASE }}
-        />
-      </Reveal>
     </section>
   );
 }

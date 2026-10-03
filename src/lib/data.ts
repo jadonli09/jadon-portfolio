@@ -731,30 +731,36 @@ export const CIVIC = {
       poster: "/embeds/st-04.jpg",
     },
   ],
-  /** Verified against the live accounts on 2026-09-09: @rajsalwan's newest 20
-   *  reels average 20.5k views against 1.3k for his oldest 20, and he is at
-   *  6,281 followers; @msjhsvideography has 42 posts. */
+  /** Verified against the live accounts: on 2026-09-09 @rajsalwan's newest 20
+   *  reels averaged 20.5k views against 1.3k for his oldest 20; on 2026-10-03 he
+   *  was at 6,635 followers. @msjhsvideography has 42 posts. */
   metrics: [
     {
       value: 20,
       suffix: "k",
       label: "Views per Mayor video",
-      note: "up from ~1k",
-      note2: "his following: 1.5k → 6.3k",
+      note: "Up from about 1k when he started. The Mayor's following grew from 1.5k to 6.6k.",
     },
-    { value: 500, suffix: "k+", label: "Views in under a month", note: "@li_locked.in" },
+    { value: 2, suffix: "M+", label: "Views on @li_locked.in", note: "All time." },
     {
       value: 1,
       suffix: " of 20",
       label: "Common App commissioners",
-      note: "students, nationwide",
+      note: "Students advising the Common App, nationwide.",
     },
     {
       value: 42,
       suffix: "",
       label: "Videos on @msjhsvideography",
-      note: "most of last year, shot and cut",
+      note: "Most of last year's, shot and cut by him.",
     },
+  ],
+  /** Example cuts from @rajsalwan — views read off the live reels tab on 2026-10-03. */
+  mayorReels: [
+    { url: "https://www.instagram.com/reel/Dd33ZWqBpcO/", title: "18 acres on Crystalline Drive, preserved", views: "32.2k", poster: "/embeds/mayor-Dd33ZWqBpcO.jpg" },
+    { url: "https://www.instagram.com/reel/Dd6fSiwRhPH/", title: "Are AI data centers coming to Fremont?", views: "18.3k", poster: "/embeds/mayor-Dd6fSiwRhPH.jpg" },
+    { url: "https://www.instagram.com/reel/DS8D_4ZD8dI/", title: "Fremont's 2025, in highlights", views: "11.7k", poster: "/embeds/mayor-DS8D_4ZD8dI.jpg" },
+    { url: "https://www.instagram.com/reel/DUtJJUVDhGQ/", title: "AI runs on hardware built in Fremont", views: "8.5k", poster: "/embeds/mayor-DUtJJUVDhGQ.jpg" },
   ],
   stories: [
     {
@@ -762,7 +768,7 @@ export const CIVIC = {
       handle: "Mayor Salwan Intern Program · paid videographer",
       window: "Jun 2025 – present",
       body:
-        "Surveyed Fremont residents from the mayor's call sheet, drafted policy, and cut ~1-minute civic videos at $50 each. Per-video reach went from roughly 1k to 20k, and his following from 1.5k to 6.3k. Summer 2026: filmed Rep. Ro Khanna at Fremont Street Eats, then trained his brother Carter to take over the camera.",
+        "Surveyed Fremont residents from the mayor's call sheet, drafted policy, and cut ~1-minute civic videos at $50 each. Per-video reach went from roughly 1k to 20k, and his following from 1.5k to 6.6k. Summer 2026: filmed Rep. Ro Khanna at Fremont Street Eats, then trained his brother Carter to take over the camera.",
     },
     {
       title: "Voices of Fremont",

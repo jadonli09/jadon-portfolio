@@ -63,7 +63,7 @@ function FeedTile({ src, caption, url }: { src: string; caption: string; url: st
  */
 export function CivicFeaturedPress() {
   return (
-    <section className="mx-auto max-w-7xl px-5 py-12 md:px-9 md:py-16">
+    <section className="mx-auto max-w-7xl px-5 py-14 md:px-9 md:py-20">
       <PosterHeading
         title="Voices of Fremont"
         className="mb-10 md:mb-14"
@@ -161,16 +161,6 @@ export function CivicFeaturedPress() {
         </div>
       </Reveal>
 
-      {/* Thin rule end */}
-      <Reveal delay={0.24}>
-        <motion.div
-          className="mt-10 h-[1px] bg-[var(--line)] md:mt-14"
-          initial={{ scaleX: 0, originX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.3, ease: EASE }}
-        />
-      </Reveal>
     </section>
   );
 }

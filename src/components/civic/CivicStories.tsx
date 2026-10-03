@@ -3,7 +3,6 @@
 import { motion } from "motion/react";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
-import { CivicPressPhoto } from "@/components/civic/CivicPressPhoto";
 import { ClipCard } from "@/components/civic/ClipCard";
 import { PosterHeading } from "@/components/ui/poster-heading";
 import { CIVIC } from "@/lib/data";
@@ -17,8 +16,7 @@ const SWEET_TOMATOES = {
 
 const MAYOR = {
   dateline: "Fremont, CA, since June 2025",
-  body: "The Mayor spotted Jadon's @li_locked.in channel and reached out directly. Jadon films civic events and onstage talks, edits the footage, and delivers final cuts for the Mayor's Instagram. Per-video reach is up roughly sixteen-fold since he started, and the account's following has quadrupled.",
-  photo: { src: "/img/editing-for-mayor-timeline.jpg", caption: "Editing for Mayor Salwan" },
+  body: "The Mayor spotted Jadon's @li_locked.in channel and reached out directly. Jadon films civic events and onstage talks, edits the footage, and delivers final cuts for the Mayor's Instagram — more than 60 videos to date. Per-video reach is up roughly sixteen-fold since he started, and the account's following has quadrupled.",
 };
 
 type Story = (typeof CIVIC.stories)[number];
@@ -42,7 +40,6 @@ function LeadFeature({ story }: { story: Story }) {
         </p>
 
         <RevealGroup
-          data-lenis-prevent
           className="-mx-6 mt-10 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:px-0 md:pb-0"
           stagger={0.06}
         >
@@ -62,40 +59,27 @@ function LeadFeature({ story }: { story: Story }) {
   );
 }
 
-/** The Mayor's Videographer — the story, the editing desk, and the two numbers of the paid gig. */
+/** The Mayor's Videographer — the story, then a few of the cuts on the Mayor's feed. */
 function SecondFeature({ story }: { story: Story }) {
   return (
     <Reveal delay={0.05}>
-      <article className="grid grid-cols-1 border border-[var(--line)] bg-[var(--bg)] md:grid-cols-[1fr_15rem]">
-        <div className="p-6 md:border-l-8 md:border-[var(--accent)] md:p-10">
-          <h3 className="font-grotesk text-3xl font-bold uppercase leading-tight tracking-[-1px] md:text-5xl md:tracking-[-3px]">
-            {story.title}
-          </h3>
-          <p className="mt-2 text-base text-[var(--muted)]">{MAYOR.dateline}</p>
-          <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_14rem]">
-            <p className="max-w-xl text-base leading-relaxed text-[var(--fg)] md:text-lg">{MAYOR.body}</p>
-            <CivicPressPhoto
-              src={MAYOR.photo.src}
-              alt={MAYOR.photo.caption}
-              caption={MAYOR.photo.caption}
-              variant="frame"
-              aspect="4 / 3"
-            />
-          </div>
-        </div>
+      <article className="border border-[var(--line)] bg-[var(--bg)] p-6 md:border-l-8 md:border-l-[var(--accent)] md:p-10">
+        <h3 className="font-grotesk text-3xl font-bold uppercase leading-tight tracking-[-1px] md:text-5xl md:tracking-[-3px]">
+          {story.title}
+        </h3>
+        <p className="mt-2 text-base text-[var(--muted)]">{MAYOR.dateline}</p>
+        <p className="mt-6 max-w-[62ch] text-base leading-relaxed text-[var(--fg)] md:text-lg">{MAYOR.body}</p>
 
-        <div className="grid grid-cols-2 border-t border-[var(--line)] md:grid-cols-1 md:content-start md:border-l md:border-t-0">
-          <div className="p-6 md:p-8">
-            <p className="font-grotesk text-3xl font-bold tracking-[-1px]">
-              $50<span className="text-base font-normal text-[var(--muted)]"> a video</span>
-            </p>
-            <p className="mt-1 text-sm text-[var(--muted)]">His rate</p>
-          </div>
-          <div className="border-l border-[var(--line)] p-6 md:border-l-0 md:border-t md:p-8">
-            <p className="font-grotesk text-3xl font-bold tracking-[-1px] text-[var(--accent)]">$600</p>
-            <p className="mt-1 text-sm text-[var(--muted)]">First invoice</p>
-          </div>
-        </div>
+        <RevealGroup
+          className="-mx-6 mt-8 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:px-0 md:pb-0"
+          stagger={0.06}
+        >
+          {CIVIC.mayorReels.map((reel) => (
+            <motion.div key={reel.url} variants={revealUp} className="w-[46%] shrink-0 snap-start md:w-auto">
+              <ClipCard href={reel.url} poster={reel.poster} title={reel.title} meta={`${reel.views} views`} />
+            </motion.div>
+          ))}
+        </RevealGroup>
       </article>
     </Reveal>
   );
@@ -106,7 +90,7 @@ export function CivicStories() {
   const viralStory = CIVIC.stories[2]; // "Reviving Sweet Tomatoes"
 
   return (
-    <section className="mx-auto max-w-7xl px-5 py-12 md:px-9 md:py-20">
+    <section className="mx-auto max-w-7xl px-5 py-14 md:px-9 md:py-20">
       <PosterHeading title="From the Field" className="mb-8 md:mb-12" />
       <SecondFeature story={mayorStory} />
       <div className="mt-6 md:mt-8">

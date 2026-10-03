@@ -63,7 +63,7 @@ const SBAI_PULLQUOTE =
 
 export function CivicSBAIFlow() {
   return (
-    <section className="mx-auto max-w-7xl px-5 py-16 md:px-9 md:py-20">
+    <section className="mx-auto max-w-7xl px-5 py-14 md:px-9 md:py-20">
       {/* Poster section heading */}
       <PosterHeading
         title="Small Business Accessibility"
@@ -114,34 +114,6 @@ export function CivicSBAIFlow() {
                     </h3>
                     <p className="text-base leading-relaxed text-[var(--muted)]">{step.detail}</p>
 
-                    {/* The receipt — the published op-ed, embedded where it happened */}
-                    {step.n === "03" && (
-                      <div className="mt-4 max-w-md">
-                        <a
-                          href={CIVIC.opEd.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          data-cursor-hover
-                          className="group/clip relative block overflow-hidden rounded-md border bg-white shadow-lg transition-transform duration-500 ease-[var(--ease-cine)] hover:-translate-y-1"
-                        >
-                          <img
-                            src={asset(CIVIC.opEd.image)}
-                            alt={`${CIVIC.opEd.title} — ${CIVIC.opEd.byline}, ${CIVIC.opEd.outlet}`}
-                            loading="lazy"
-                            className="w-full transition-transform duration-700 ease-[var(--ease-cine)] group-hover/clip:scale-[1.02]"
-                          />
-                          <div className="flex items-center justify-between gap-3 border-t border-[var(--line)] bg-[var(--fg)] px-3 py-2.5">
-                            <p className="min-w-0 text-sm leading-snug text-[var(--bg)]">
-                              {CIVIC.opEd.byline}, {CIVIC.opEd.date}
-                            </p>
-                            <p className="flex shrink-0 items-center gap-1.5 text-base font-semibold text-[var(--bg)]">
-                              Read it
-                              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/clip:translate-x-0.5 group-hover/clip:-translate-y-0.5" />
-                            </p>
-                          </div>
-                        </a>
-                      </div>
-                    )}
 
                     {/* Arrow connector — not on last */}
                     {i < SBAI_STEPS.length - 1 && (
@@ -159,10 +131,37 @@ export function CivicSBAIFlow() {
         </div>
 
         {/* Right — credential rail (sticky so it tracks the longer flow) */}
-        <div className="hidden flex-col gap-6 md:sticky md:top-28 md:flex md:self-start">
+        <div className="flex flex-col gap-6">
+          {/* The receipt — the published op-ed */}
+          <Reveal delay={0.15}>
+            <a
+              href={CIVIC.opEd.url}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor-hover
+              className="group/clip relative block overflow-hidden rounded-md border bg-white shadow-lg transition-[translate] duration-500 ease-[var(--ease-cine)] hover:-translate-y-1"
+            >
+              <img
+                src={asset(CIVIC.opEd.image)}
+                alt={`${CIVIC.opEd.title} — ${CIVIC.opEd.byline}, ${CIVIC.opEd.outlet}`}
+                loading="lazy"
+                className="w-full transition-[scale] duration-700 ease-[var(--ease-cine)] group-hover/clip:scale-[1.02]"
+              />
+              <div className="flex items-center justify-between gap-3 border-t border-[var(--line)] bg-[var(--fg)] px-4 py-3">
+                <p className="min-w-0 text-sm leading-snug text-[var(--bg)]">
+                  {CIVIC.opEd.byline}, {CIVIC.opEd.date}
+                </p>
+                <p className="flex shrink-0 items-center gap-1.5 text-base font-semibold text-[var(--bg)]">
+                  Read it
+                  <ArrowUpRight className="h-4 w-4 transition-[translate] duration-300 group-hover/clip:translate-x-0.5 group-hover/clip:-translate-y-0.5" />
+                </p>
+              </div>
+            </a>
+          </Reveal>
+
           {/* Key people card */}
           <Reveal delay={0.22}>
-            <div className="border border-[var(--line)] bg-[var(--bg)]">
+            <div className="hidden border border-[var(--line)] bg-[var(--bg)] md:block">
               {[
                 { name: "Luke Wu", role: "Co-advocate, boba shop owner" },
                 { name: "Arissa", role: "Co-advocate, year 2" },
@@ -186,16 +185,6 @@ export function CivicSBAIFlow() {
         </div>
       </div>
 
-      {/* Bottom closing rule */}
-      <Reveal delay={0.3}>
-        <motion.div
-          className="mt-10 h-[1px] bg-[var(--line)] md:mt-14"
-          initial={{ scaleX: 0, originX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
-        />
-      </Reveal>
     </section>
   );
 }
