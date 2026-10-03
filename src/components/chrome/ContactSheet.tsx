@@ -101,16 +101,10 @@ function FilmFrame({
             style={{ boxShadow: `inset 0 0 0 1.5px ${door.accent}, 0 0 26px -8px ${door.accent}` }}
           />
         </div>
-        {/* rebate — film edge markings under the frame */}
-        <div className="relative h-6 font-mono text-[0.58rem] uppercase tracking-[0.18em]">
-          <span className="absolute inset-x-0.5 inset-y-0 flex items-center gap-1.5 overflow-hidden text-[#d9a83f] transition-opacity duration-300 group-hover:opacity-0 group-focus-visible:opacity-0">
-            <span className="truncate">FR {door.num} · {door.word}</span>
-            {isCurrent && <span className="shrink-0 text-[#c43e2c]">● here</span>}
-          </span>
-          <span className="pointer-events-none absolute inset-x-0.5 inset-y-0 flex items-center gap-2 truncate opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
-            <span className="shrink-0 text-[#d9a83f]">↗ enter</span>
-            <span className="truncate text-[#6f6f7d]">{door.peek}</span>
-          </span>
+        {/* the page's name under its frame */}
+        <div className="flex h-9 items-center gap-2 px-0.5 font-display text-[1.05rem] text-[#e2dfd6] transition-colors duration-300 group-hover:text-[#f4f1ea]">
+          <span className="truncate">{door.word[0].toUpperCase() + door.word.slice(1)}</span>
+          {isCurrent && <span aria-hidden className="size-1.5 shrink-0 rounded-full bg-[#c43e2c]" />}
         </div>
       </motion.div>
     </Link>
@@ -193,12 +187,8 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
       {/* safelight glow */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-44 bg-[radial-gradient(ellipse_at_50%_0%,rgba(196,62,44,0.3),transparent_70%)]" />
 
-      <p className="pt-20 text-center font-mono text-[0.62rem] uppercase tracking-[0.3em] text-[#8a8a99] md:pt-24">
-        One year · one roll — hover a frame to preview the page
-      </p>
-
       {/* two cut strips of film on the light table — 4 frames up, 3 below */}
-      <div ref={rollRef} className="flex flex-1 flex-col justify-center gap-3 py-3">
+      <div ref={rollRef} className="flex flex-1 flex-col justify-center gap-3 pb-3 pt-20 md:pt-24">
         {STRIPS.map((strip, r) => (
           <motion.div
             key={r}
@@ -248,7 +238,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
               data-cursor-hover
               onClick={here ? (e) => { e.preventDefault(); onClose(); } : undefined}
               aria-current={here ? "page" : undefined}
-              className={`border px-7 py-4 font-mono text-[0.82rem] uppercase tracking-[0.24em] transition-colors [background:linear-gradient(#1c1c24,#1c1c24)_padding-box,repeating-linear-gradient(90deg,#070709_0_6px,#3a3a45_6px_8px)_border-box] ${
+              className={`border px-7 py-4 text-[1.05rem] transition-colors [background:linear-gradient(#1c1c24,#1c1c24)_padding-box,repeating-linear-gradient(90deg,#070709_0_6px,#3a3a45_6px_8px)_border-box] ${
                 here ? "border-[#c43e2c] text-[#f4f1ea]" : "border-transparent text-[#e2dfd6] hover:border-[#d9a83f] hover:text-[#f4f1ea]"
               }`}
             >
@@ -261,7 +251,7 @@ export function ContactSheet({ onClose }: { onClose: () => void }) {
           target="_blank"
           rel="noreferrer"
           data-cursor-hover
-          className="px-4 py-4 font-mono text-[0.82rem] uppercase tracking-[0.24em] text-[#e2dfd6] transition-colors hover:text-[#f4f1ea]"
+          className="px-4 py-4 text-[1.05rem] text-[#e2dfd6] transition-colors hover:text-[#f4f1ea]"
         >
           {PROFILE.links.instagramHandle}
         </a>

@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useLenis } from "lenis/react";
-import { ArrowDown } from "lucide-react";
 import { Preloader } from "@/components/hero/Preloader";
 import {
   HeroEditorial,
@@ -159,7 +158,7 @@ export function Landing() {
               style={{ objectPosition: "40% 32%" }}
             />
 
-            {/* L4 — UI: descriptors at left (inspo-style), scroll cue, soft melt into the story paper */}
+            {/* L4 — UI: descriptors at left, soft melt into the story paper */}
             <motion.div
               initial={{ opacity: 0, x: -14 }}
               animate={{ opacity: 1, x: 0 }}
@@ -169,22 +168,9 @@ export function Landing() {
               <p className="font-display text-2xl text-white md:text-4xl">
                 <RoleRotator />
               </p>
-              <p className="mt-3 font-mono text-[clamp(0.45rem,2.35vw,0.55rem)] uppercase tracking-[0.18em] text-white/90 md:text-[0.85rem] md:tracking-[0.28em]">
-                <span className="whitespace-nowrap">{PROFILE.school}</span>
-                <br />
-                <span className="whitespace-nowrap">
-                  {PROFILE.city} · {PROFILE.gradeNote}
-                </span>
+              <p className="mt-2 text-[0.95rem] text-white/90 [text-shadow:0_2px_10px_rgba(13,36,49,0.5)] md:text-lg">
+                {PROFILE.school}, {PROFILE.gradeNote}
               </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.3 }}
-              className="absolute bottom-5 right-5 z-[4] flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-widest text-white/90 [text-shadow:0_2px_10px_rgba(13,36,49,0.5)] md:right-9"
-            >
-              Begin <ArrowDown className="size-3.5 animate-bounce" />
             </motion.div>
 
             {/* melt into the evidence board below */}
