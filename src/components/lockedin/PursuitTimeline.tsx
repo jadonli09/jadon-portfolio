@@ -240,7 +240,7 @@ function MomentVideoCard({
                   aria-label={`Watch "${m.title}" on Instagram`}
                 >
                   Instagram
-                  <ArrowUpRight className="size-4 transition-transform duration-200 group-hover/ig:translate-x-px group-hover/ig:-translate-y-px" />
+                  <ArrowUpRight className="size-4 transition-[translate,scale,rotate] duration-200 group-hover/ig:translate-x-px group-hover/ig:-translate-y-px" />
                 </a>
               </div>
             </div>
@@ -523,7 +523,7 @@ export function PursuitTimeline() {
                 className="group inline-flex items-center gap-2 font-grotesk text-base text-[var(--fg)]/85 transition-colors hover:text-[var(--fg)] md:text-lg"
               >
                 The next chapter is posting now — {PROFILE.links.instagramHandle}
-                <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight className="size-4 transition-[translate,scale,rotate] duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </Reveal>
           </div>

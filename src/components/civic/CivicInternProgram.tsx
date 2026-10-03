@@ -48,7 +48,7 @@ export function CivicInternProgram() {
                 key={y.year}
                 variants={revealUp}
                 className={cn(
-                  "relative flex flex-col border p-7 transition-colors duration-300 md:p-9",
+                  "relative flex flex-col border p-7 transition-[translate,box-shadow] duration-500 ease-[var(--ease-cine)] hover:-translate-y-1 hover:shadow-[0_18px_40px_-18px_rgba(20,17,13,0.25)] md:p-9",
                   lead
                     ? "border-[var(--accent)] bg-secondary"
                     : "border-[var(--line)] bg-[var(--bg)]",
@@ -108,7 +108,7 @@ export function CivicInternProgram() {
                 <Photo
                   src={photo.src}
                   alt={photo.alt}
-                  className="[filter:grayscale(30%)] transition-[transform,filter] duration-700 ease-[var(--ease-cine)] group-hover:scale-[1.03] group-hover:[filter:grayscale(0%)]"
+                  className="[filter:grayscale(30%)] transition-[scale,filter] duration-700 ease-[var(--ease-cine)] will-change-[scale] group-hover:scale-[1.03] group-hover:[filter:grayscale(0%)]"
                 />
               </div>
               <figcaption className="mt-3 text-sm text-[var(--muted)]">

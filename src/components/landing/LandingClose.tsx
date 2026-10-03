@@ -71,7 +71,7 @@ function Folder({ f }: { f: (typeof FOLDERS)[number] }) {
         {f.peek === "paper" && (
           <div
             aria-hidden
-            className="absolute right-7 top-0 h-6 w-[52%] -rotate-1 bg-[#f4f1ea] shadow-[0_-2px_8px_rgba(0,0,0,0.25)] transition-transform duration-300 group-hover:-translate-y-1.5"
+            className="absolute right-7 top-0 h-6 w-[52%] -rotate-1 bg-[#f4f1ea] shadow-[0_-2px_8px_rgba(0,0,0,0.25)] transition-[translate,scale,rotate] duration-300 group-hover:-translate-y-1.5"
           >
             <div className="mx-2.5 mt-1.5 h-[2px] bg-[#c9c2b0]" />
             <div className="mx-2.5 mt-1 h-[2px] w-2/3 bg-[#d8d2c2]" />
@@ -83,7 +83,7 @@ function Folder({ f }: { f: (typeof FOLDERS)[number] }) {
             src={asset(f.img!)}
             alt=""
             aria-hidden
-            className="absolute right-7 top-0 h-7 w-[52%] rotate-[1.2deg] object-cover object-top shadow-[0_-2px_8px_rgba(0,0,0,0.3)] transition-transform duration-300 group-hover:-translate-y-1.5"
+            className="absolute right-7 top-0 h-7 w-[52%] rotate-[1.2deg] object-cover object-top shadow-[0_-2px_8px_rgba(0,0,0,0.3)] transition-[translate,scale,rotate] duration-300 group-hover:-translate-y-1.5"
           />
         )}
         {/* tab */}

@@ -41,7 +41,7 @@ export function LeadershipCTA() {
                 className="group inline-flex items-center gap-3 border border-[rgba(212,175,106,0.5)] bg-[var(--bg-2)] px-7 py-4 text-base font-medium text-[var(--accent)] transition-all duration-300 hover:border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--bg)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
               >
                 Email Jadon
-                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight className="h-4 w-4 transition-[translate,scale,rotate] duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </Magnetic>
 
@@ -54,7 +54,7 @@ export function LeadershipCTA() {
                 className="group inline-flex items-center gap-3 border border-[var(--line)] px-7 py-4 text-base font-medium text-[var(--muted)] transition-all duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
               >
                 {PROFILE.links.instagramHandle}
-                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight className="h-4 w-4 transition-[translate,scale,rotate] duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </Magnetic>
 
@@ -65,7 +65,7 @@ export function LeadershipCTA() {
                 className="group inline-flex items-center gap-3 border border-[var(--line)] px-7 py-4 text-base font-medium text-[var(--muted)] transition-all duration-300 hover:border-[var(--accent)] hover:text-[var(--accent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
               >
                 About Jadon
-                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight className="h-4 w-4 transition-[translate,scale,rotate] duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </Magnetic>
           </div>

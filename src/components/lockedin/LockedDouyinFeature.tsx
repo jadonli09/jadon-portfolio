@@ -248,7 +248,7 @@ export function LockedDouyinFeature() {
                   className="group inline-flex items-center gap-3 border border-[var(--accent-2)] px-6 py-3 font-mono text-sm uppercase tracking-[0.2em] text-[var(--accent-2)] transition-all duration-300 hover:bg-[var(--accent-2)] hover:text-[var(--bg)]"
                 >
                   Watch on DouYin
-                  <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <ArrowUpRight className="size-4 transition-[translate,scale,rotate] duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
               </Magnetic>
             </Reveal>

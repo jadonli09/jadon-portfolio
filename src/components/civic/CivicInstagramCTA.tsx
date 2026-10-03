@@ -41,7 +41,7 @@ export function CivicInstagramCTA() {
                 className="group inline-flex h-12 items-center gap-3 rounded-md bg-primary px-8 text-base font-medium text-primary-foreground transition-colors duration-300 hover:bg-[var(--accent)] hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 {PROFILE.links.instagramHandle}
-                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight className="h-4 w-4 transition-[translate,scale,rotate] duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </Magnetic>
           </div>

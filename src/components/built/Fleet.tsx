@@ -89,7 +89,7 @@ function Detail({ project }: { project: Project }) {
           data-cursor-hover
           draggable={false}
           aria-label={`Visit ${project.domain}`}
-          className="ml-1 inline-flex min-h-10 items-center gap-1.5 rounded-full bg-white px-4 py-2 text-base font-semibold text-black transition-transform duration-150 active:scale-95"
+          className="ml-1 inline-flex min-h-10 items-center gap-1.5 rounded-full bg-white px-4 py-2 text-base font-semibold text-black transition-[translate,scale,rotate] duration-150 active:scale-95"
         >
           {/* The detail column is 11rem on a phone — too narrow for a long
               domain at a readable size, so the pill says what it does there. */}

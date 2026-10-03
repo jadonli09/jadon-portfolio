@@ -122,7 +122,7 @@ function CarMeetCollage() {
 function StatCard({ value, label }: { value: string; label: string }) {
   return (
     <div
-      className="group relative flex h-full flex-col items-center justify-center rounded-md px-4 py-5 text-center transition-transform duration-300 hover:-translate-y-1 md:px-5"
+      className="group relative flex h-full flex-col items-center justify-center rounded-md px-4 py-5 text-center transition-[translate,scale,rotate] duration-300 hover:-translate-y-1 md:px-5"
       style={{
         background: "linear-gradient(180deg, #1b1610 0%, #120e09 100%)",
         border: "2px solid rgba(212,175,106,0.55)",

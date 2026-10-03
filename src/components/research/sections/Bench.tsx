@@ -37,7 +37,7 @@ export function Bench() {
                 <Photo
                   src={f.src}
                   alt={f.alt}
-                  className="transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+                  className="transition-[translate,scale,rotate] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                 />
               </div>
               <figcaption className="mt-3 text-[0.95rem] leading-[1.5] text-[var(--muted)]">

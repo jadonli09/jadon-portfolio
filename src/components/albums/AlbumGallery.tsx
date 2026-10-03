@@ -34,7 +34,7 @@ export function AlbumGallery() {
                     alt={photo.caption}
                     loading="lazy"
                     decoding="async"
-                    className="h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                    className="h-auto w-full transition-[translate,scale,rotate] duration-700 ease-out group-hover:scale-[1.03]"
                   />
                 </div>
                 <figcaption className="mt-2 text-sm leading-snug text-[var(--muted)] transition-colors group-hover:text-[var(--fg)]">

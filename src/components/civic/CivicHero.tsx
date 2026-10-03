@@ -42,8 +42,9 @@ export function CivicHero() {
 
         <div className="relative mx-auto aspect-[3/4] w-full max-w-[22rem] overflow-hidden bg-secondary md:max-w-none">
           <img
-            src={asset("/img/civics-jadon-picture.jpg")}
-            alt={`${PROFILE.name} portrait`}
+            src={asset("/img/prism-project-with-mayor.jpg")}
+            alt={`${PROFILE.name} with Mayor Raj Salwan at the PRISM Project booth`}
+            style={{ objectPosition: "54% 50%" }}
             className="absolute inset-0 h-full w-full object-cover transition-[scale] duration-700 ease-[var(--ease-cine)] hover:scale-[1.04]"
           />
         </div>

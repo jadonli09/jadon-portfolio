@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { ClipCard } from "@/components/civic/ClipCard";
-import { CivicPressPhoto } from "@/components/civic/CivicPressPhoto";
+import { Photo } from "@/components/primitives/Photo";
 import { PosterHeading } from "@/components/ui/poster-heading";
 import { CIVIC } from "@/lib/data";
 import { revealUp } from "@/lib/motion";
@@ -42,7 +42,7 @@ function LeadFeature({ story }: { story: Story }) {
         </p>
 
         <RevealGroup
-          className="-mx-6 mt-10 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:px-0 md:pb-0"
+          className="-mx-6 mt-8 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:px-0 md:pb-0"
           stagger={0.06}
         >
           {CIVIC.sweetTomatoesReels.map((reel) => (
@@ -66,23 +66,29 @@ function SecondFeature({ story }: { story: Story }) {
   return (
     <Reveal delay={0.05}>
       <article className="border border-[var(--line)] bg-[var(--bg)] p-6 md:border-l-8 md:border-l-[var(--accent)] md:p-10">
-        <h3 className="font-grotesk text-3xl font-bold uppercase leading-tight tracking-[-1px] md:text-5xl md:tracking-[-3px]">
-          {story.title}
-        </h3>
-        <p className="mt-2 text-base text-[var(--muted)]">{MAYOR.dateline}</p>
-        <div className="mt-6 grid grid-cols-1 items-start gap-6 md:grid-cols-[minmax(0,1fr)_20rem] md:gap-10">
-          <p className="max-w-[62ch] text-base leading-relaxed text-[var(--fg)] md:text-lg">{MAYOR.body}</p>
-          <CivicPressPhoto
-            src={MAYOR.photo.src}
-            alt="Jadon's editing timeline for a Mayor video"
-            caption={MAYOR.photo.caption}
-            variant="frame"
-            aspect="4 / 3"
-          />
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_19rem] md:gap-10">
+          <div>
+            <h3 className="font-grotesk text-3xl font-bold uppercase leading-tight tracking-[-1px] md:text-5xl md:tracking-[-3px]">
+              {story.title}
+            </h3>
+            <p className="mt-2 text-base text-[var(--muted)]">{MAYOR.dateline}</p>
+            <p className="mt-6 max-w-[62ch] text-base leading-relaxed text-[var(--fg)] md:text-lg">{MAYOR.body}</p>
+          </div>
+          {/* the edit bay — stretches to the height of the story beside it */}
+          <figure className="relative m-0 aspect-[4/3] overflow-hidden border border-[var(--line)] bg-[var(--bg-2)] md:aspect-auto">
+            <Photo
+              src={MAYOR.photo.src}
+              alt="Jadon's editing timeline for a Mayor video"
+              className="absolute inset-0"
+            />
+            <figcaption className="absolute inset-x-0 bottom-0 bg-[var(--bg)]/85 px-3 py-2 text-sm text-[var(--fg)] backdrop-blur">
+              {MAYOR.photo.caption}
+            </figcaption>
+          </figure>
         </div>
 
         <RevealGroup
-          className="-mx-6 mt-8 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:px-0 md:pb-0"
+          className="-mx-6 mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:px-0 md:pb-0"
           stagger={0.06}
         >
           {CIVIC.mayorReels.map((reel) => (

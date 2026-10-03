@@ -69,7 +69,7 @@ function HighlightRoleCard({ role }: { role: Role }) {
                 const inner = (
                   <>
                     <div className="relative aspect-[4/3] overflow-hidden border border-[rgba(212,175,106,0.35)]">
-                      <Photo src={m.src} alt={m.label} className="object-cover transition-transform duration-700 group-hover/m:scale-[1.04]" />
+                      <Photo src={m.src} alt={m.label} className="object-cover transition-[translate,scale,rotate] duration-700 group-hover/m:scale-[1.04]" />
                       {m.kind === "reel" && (
                         <span className="absolute inset-0 flex items-center justify-center">
                           <span aria-hidden className="flex size-9 items-center justify-center rounded-full bg-[rgba(12,10,8,0.7)] text-sm text-[var(--accent)] backdrop-blur-sm">▶</span>
@@ -125,7 +125,7 @@ function SupportingRoleCard({ role }: { role: Role }) {
         hidden: { opacity: 0, y: 20 },
         show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] } },
       }}
-      className="group relative flex flex-col overflow-hidden border border-[rgba(212,175,106,0.35)] bg-[var(--bg-2)] transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-[var(--accent)]"
+      className="group relative flex flex-col overflow-hidden border border-[rgba(212,175,106,0.35)] bg-[var(--bg-2)] transition-[border-color,translate,scale,rotate] duration-300 hover:-translate-y-1 hover:border-[var(--accent)]"
       onClick={() => setTapOpen((v) => !v)}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
@@ -286,7 +286,7 @@ export function ElectedOffices() {
               className="group block"
             >
               <div className="relative aspect-[16/10] overflow-hidden border-b border-[rgba(212,175,106,0.25)]">
-                <Photo src={LEADERSHIP.site.shot} alt="msjhsasb.org — the rebuilt MSJHS ASB website" className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]" />
+                <Photo src={LEADERSHIP.site.shot} alt="msjhsasb.org — the rebuilt MSJHS ASB website" className="object-cover object-top transition-[translate,scale,rotate] duration-700 group-hover:scale-[1.03]" />
               </div>
               <p className="px-5 pt-5 font-anton text-[1.4rem] uppercase leading-none tracking-tight text-[var(--accent)]">
                 {LEADERSHIP.site.name}

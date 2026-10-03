@@ -69,7 +69,7 @@ export function LockedFollowCTA() {
                 className="group inline-flex items-center gap-3 bg-[var(--accent)] px-8 py-4 font-mono text-base uppercase tracking-[0.14em] text-[var(--bg)] transition-all duration-300 hover:brightness-110"
               >
                 Follow {PROFILE.links.instagramHandle}
-                <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight className="size-4 transition-[translate,scale,rotate] duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </Magnetic>
 

@@ -33,7 +33,7 @@ export function ReelTile({ code, url, index }: ReelTileProps) {
           aria-label={`Watch reel on Instagram`}
         >
           Watch on Instagram
-          <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-px group-hover:-translate-y-px" />
+          <ArrowUpRight className="size-4 transition-[translate,scale,rotate] duration-200 group-hover:translate-x-px group-hover:-translate-y-px" />
         </a>
       </div>
 

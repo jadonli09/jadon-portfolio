@@ -46,9 +46,9 @@ function FeedTile({ src, caption, url }: { src: string; caption: string; url: st
         src={asset(src)}
         alt={`Voices of Fremont — ${caption}`}
         loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-cine)] group-hover:scale-[1.06]"
+        className="h-full w-full object-cover transition-[translate,scale,rotate] duration-700 ease-[var(--ease-cine)] group-hover:scale-[1.06]"
       />
-      <div className="absolute inset-x-0 bottom-0 translate-y-full bg-[var(--fg)]/85 px-2 py-1.5 transition-transform duration-500 ease-[var(--ease-cine)] group-hover:translate-y-0">
+      <div className="absolute inset-x-0 bottom-0 translate-y-full bg-[var(--fg)]/85 px-2 py-1.5 transition-[translate,scale,rotate] duration-500 ease-[var(--ease-cine)] group-hover:translate-y-0">
         <p className="truncate text-sm leading-snug text-[var(--bg)]">{caption}</p>
       </div>
       <ArrowUpRight className="absolute right-1.5 top-1.5 h-3 w-3 text-white opacity-0 drop-shadow transition-opacity duration-300 group-hover:opacity-100" />
@@ -95,7 +95,7 @@ export function CivicFeaturedPress() {
               <img
                 src={asset("/embeds/vof-logo.jpg")}
                 alt="Voices of Fremont logo"
-                className="h-12 w-12 shrink-0 rounded-md border bg-white object-contain p-1 shadow-sm transition-transform duration-500 ease-[var(--ease-cine)] group-hover:-rotate-3"
+                className="h-12 w-12 shrink-0 rounded-md border bg-white object-contain p-1 shadow-sm transition-[translate,scale,rotate] duration-500 ease-[var(--ease-cine)] group-hover:-rotate-3"
               />
               <span className="flex items-center gap-2 text-base font-medium">
                 <Clapperboard className="size-4 shrink-0 text-[var(--accent)]" />

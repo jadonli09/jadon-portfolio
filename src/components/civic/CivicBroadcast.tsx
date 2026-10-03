@@ -99,7 +99,7 @@ export function CivicBroadcast() {
                   />
                   <span className="flex items-center gap-2 font-mono text-sm text-[var(--muted)] transition-colors group-hover:text-[var(--fg)]">
                     {e.dur}
-                    <ArrowUpRight className="size-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    <ArrowUpRight className="size-3.5 transition-[translate,scale,rotate] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </span>
                 </a>
               ))}

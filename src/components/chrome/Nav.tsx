@@ -50,9 +50,9 @@ export function Nav() {
           >
             <span className="hidden sm:inline">{open ? "Close" : "Menu"}</span>
             <span className="relative flex h-4 w-6 flex-col justify-between">
-              <span className={`h-[1.5px] w-full bg-white transition-transform duration-300 ${open ? "translate-y-[7px] rotate-45" : ""}`} />
+              <span className={`h-[1.5px] w-full bg-white transition-[translate,scale,rotate] duration-300 ${open ? "translate-y-[7px] rotate-45" : ""}`} />
               <span className={`h-[1.5px] w-full bg-white transition-opacity duration-200 ${open ? "opacity-0" : ""}`} />
-              <span className={`h-[1.5px] w-full bg-white transition-transform duration-300 ${open ? "-translate-y-[7px] -rotate-45" : ""}`} />
+              <span className={`h-[1.5px] w-full bg-white transition-[translate,scale,rotate] duration-300 ${open ? "-translate-y-[7px] -rotate-45" : ""}`} />
             </span>
           </button>
         </div>

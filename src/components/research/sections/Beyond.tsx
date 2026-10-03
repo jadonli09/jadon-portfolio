@@ -62,7 +62,7 @@ function ProgramCard({
             <Photo
               src={photo.src}
               alt={photo.alt}
-              className="transition-[transform,filter] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [filter:grayscale(45%)] group-hover:scale-[1.05] group-hover:[filter:grayscale(0%)]"
+              className="transition-[translate,scale,rotate,filter] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [filter:grayscale(45%)] group-hover:scale-[1.05] group-hover:[filter:grayscale(0%)]"
             />
           ) : null}
 

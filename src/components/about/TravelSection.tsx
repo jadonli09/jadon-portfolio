@@ -541,7 +541,7 @@ export function TravelSection() {
                 >
                   {s.home ? (
                     <span
-                      className="block h-3 w-3 rotate-45 bg-[var(--fg)] transition-transform duration-300"
+                      className="block h-3 w-3 rotate-45 bg-[var(--fg)] transition-[translate,scale,rotate] duration-300"
                       style={{
                         transform: `rotate(45deg) scale(${isActive ? 1.5 : 1})`,
                       }}
