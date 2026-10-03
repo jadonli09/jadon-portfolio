@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { motion } from "motion/react";
-import { ArrowUpRight, Radio } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { PosterHeading } from "@/components/ui/poster-heading";
 import { ReelCard } from "@/components/civic/IgEmbed";
@@ -26,9 +26,9 @@ const TAGS = ["Drone at Homecoming", "Homecoming Recap", "Cinematic Promo", "Tea
 
 /** Short cinematic cuts he directed — widely complimented. Embedded from IG. */
 const CUTS = [
-  { title: "Winter Ball Promo", tag: "Teaser · 0:30", reel: "DSglzCBEeN2" },
-  { title: "Prom Promo", tag: "K-drama · 500+ likes in a day", reel: "DXvK5pNthck" },
-  { title: "Charity Fashion Show Promo", tag: "Event promo", reel: "DWX7JmHDKzJ" },
+  { title: "Winter Ball Promo", tag: "A 30-second teaser", reel: "DSglzCBEeN2" },
+  { title: "Prom Promo", tag: "K-drama style, 500+ likes in a day", reel: "DXvK5pNthck" },
+  { title: "Charity Fashion Show Promo", reel: "DWX7JmHDKzJ" },
 ] as const;
 
 /* ── Main section ──────────────────────────────────────────────── */
@@ -37,9 +37,7 @@ export function CivicBroadcast() {
   return (
     <section className="mx-auto max-w-7xl px-5 py-12 md:px-9 md:py-16">
       <PosterHeading
-        label="Broadcast · L2 Videography"
         title="The school, on the record"
-        meta="MSJTV · Season 3"
         className="mb-8 md:mb-10"
       />
 
@@ -52,13 +50,8 @@ export function CivicBroadcast() {
               alt="The L2 Videography team in front of the Mission mural"
               className="aspect-[4/3] w-full object-cover object-[center_38%]"
             />
-            <figcaption className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 border-t border-[var(--line)] bg-[var(--bg)]/85 px-3 py-2 backdrop-blur">
-              <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-                L2 Vid — the team behind MSJTV
-              </span>
-              <span className="flex items-center gap-1.5 font-mono text-[0.56rem] uppercase tracking-[0.2em] text-[var(--accent)]">
-                <Radio className="size-3" /> On air
-              </span>
+            <figcaption className="absolute inset-x-0 bottom-0 border-t border-[var(--line)] bg-[var(--bg)]/85 px-3 py-2 text-sm text-[var(--fg)] backdrop-blur">
+              L2 Vid, the team behind MSJTV
             </figcaption>
           </figure>
         </Reveal>
@@ -83,15 +76,15 @@ export function CivicBroadcast() {
               <strong className="text-[var(--fg)]">directs the cinematic short films</strong> the committee is known
               for. MSJTV is only one of L2 Vid&apos;s jobs; the initiatives below are ones he started this year.
             </p>
-            <p className="text-[0.82rem] leading-relaxed text-[var(--muted)]">
-              <span className="font-semibold text-[var(--accent)]">Anchors</span> · Jadon Li &amp; Hanna R.
+            <p className="text-sm leading-relaxed text-[var(--muted)]">
+              <span className="font-semibold text-[var(--accent)]">Anchors:</span> Jadon Li &amp; Hanna R.
               (juniors), Luis H. &amp; Jennifer L. (seniors).
             </p>
             <div className="flex flex-wrap gap-2">
               {TAGS.map((t) => (
                 <span
                   key={t}
-                  className="border border-[var(--line)] bg-[var(--bg-2)] px-2.5 py-1 font-mono text-[0.58rem] uppercase tracking-wide text-[var(--muted)]"
+                  className="border border-[var(--line)] bg-[var(--bg-2)] px-2.5 py-1 text-sm text-[var(--muted)]"
                 >
                   {t}
                 </span>
@@ -100,20 +93,6 @@ export function CivicBroadcast() {
 
             {/* Season 3 — episode guide, links out to YouTube */}
             <div className="mt-1">
-              <div className="mb-1 flex items-center justify-between">
-                <span className="font-mono text-[0.55rem] uppercase tracking-[0.2em] text-[var(--muted)]/70">
-                  Season 3 · episodes
-                </span>
-                <a
-                  href={CHANNEL}
-                  target="_blank"
-                  rel="noreferrer"
-                  data-cursor-hover
-                  className="font-mono text-[0.55rem] uppercase tracking-[0.18em] text-[var(--muted)] transition-colors hover:text-[var(--accent)]"
-                >
-                  @msjtvbroadcast ↗
-                </a>
-              </div>
               {EPISODES.map((e) => (
                 <a
                   key={e.id}
@@ -121,17 +100,17 @@ export function CivicBroadcast() {
                   target="_blank"
                   rel="noreferrer"
                   data-cursor-hover
-                  className="group grid grid-cols-[auto_1fr_auto] items-center gap-3 border-t border-[var(--line)] py-2 transition-colors hover:bg-[var(--bg-2)]"
+                  className="group grid grid-cols-[auto_1fr_auto] items-center gap-3 border-t border-[var(--line)] py-2.5 transition-colors hover:bg-[var(--bg-2)]"
                 >
-                  <span className="font-mono text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-[var(--accent)]">
-                    S3 · E{e.n}
+                  <span className="text-base font-semibold text-[var(--accent)]">
+                    Season 3, Episode {e.n}
                   </span>
                   <span
                     aria-hidden
                     className="h-px"
                     style={{ background: "repeating-linear-gradient(90deg, var(--line) 0 3px, transparent 3px 7px)" }}
                   />
-                  <span className="flex items-center gap-2 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)] transition-colors group-hover:text-[var(--fg)]">
+                  <span className="flex items-center gap-2 font-mono text-sm text-[var(--muted)] transition-colors group-hover:text-[var(--fg)]">
                     {e.dur}
                     <ArrowUpRight className="size-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </span>
@@ -145,12 +124,7 @@ export function CivicBroadcast() {
       {/* Cinematic cuts — IG reels in themed clip frames */}
       <div className="mt-12 md:mt-16">
         <Reveal>
-          <div className="mb-5 flex flex-wrap items-center gap-3">
-            <span className="text-base font-medium tracking-wider md:text-lg">CINEMATIC CUTS</span>
-            <span className="font-mono text-[0.62rem] uppercase tracking-[0.24em] text-[var(--muted)]">
-              short films he directed
-            </span>
-          </div>
+          <h3 className="mb-5 text-base font-medium tracking-wider md:text-lg">CINEMATIC CUTS</h3>
         </Reveal>
         <RevealGroup
           className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3"
@@ -159,7 +133,7 @@ export function CivicBroadcast() {
         >
           {CUTS.map((c) => (
             <motion.div key={c.reel} variants={revealUp}>
-              <ReelCard reel={c.reel} title={c.title} tag={c.tag} />
+              <ReelCard reel={c.reel} title={c.title} tag={"tag" in c ? c.tag : undefined} />
             </motion.div>
           ))}
         </RevealGroup>

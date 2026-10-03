@@ -24,7 +24,7 @@ export function Deeper() {
         >
           <p className="mb-8 max-w-[58ch] text-[1.06rem] leading-[1.65] text-[var(--muted)]">
             Two features matter: the reporter that makes the fungus visible, and the resistance gene
-            that makes a successful transformation selectable. Hover any feature to read it.
+            that makes a successful transformation selectable.
           </p>
           <PlasmidRing />
           <div className="mt-10 max-w-[62ch] border-l-2 border-[var(--accent)] pl-5">

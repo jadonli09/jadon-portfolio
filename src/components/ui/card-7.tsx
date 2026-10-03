@@ -104,7 +104,7 @@ export function InteractiveProductCard({
         <div className="flex items-start justify-between rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-md">
           <div className="flex flex-col">
             <h3 className="text-xl font-bold text-white">{title}</h3>
-            <p className="text-xs text-white/70">{description}</p>
+            <p className="text-sm text-white/75">{description}</p>
           </div>
           {logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element

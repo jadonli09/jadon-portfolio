@@ -123,8 +123,6 @@ export function NotebookShowcase() {
           </div>
         </div>
         <div className={styles.footnote}>
-          <p className={styles.desktopHint}>Double-click any word to define it.</p>
-          <p className={styles.touchHint}>Tap any word to define it.</p>
           <form data-lookup className={styles.lookup} onSubmit={(event) => {
             event.preventDefault();
             if (query.trim()) define(query.trim(), event.currentTarget);

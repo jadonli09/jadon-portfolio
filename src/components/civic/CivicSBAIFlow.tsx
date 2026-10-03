@@ -4,7 +4,6 @@
 import { motion } from "motion/react";
 import {
   ArrowRight,
-  ArrowDownRight,
   ArrowUpRight,
   FileText,
   Users,
@@ -27,42 +26,36 @@ const SBAI_STEPS = [
     icon: Users,
     label: "Connection",
     detail: "Tr. Sherry introduced Jadon to Luke Wu, whose family boba shop had been hit by serial ADA litigation — sued over a table a few centimeters too low.",
-    tag: "Origin",
   },
   {
     n: "02",
     icon: BookOpen,
     label: "Cold Outreach",
     detail: "Jadon cold-emailed professors across Bay Area universities until Prof. Durazo at SF University agreed to advise the project.",
-    tag: "Prof. Durazo · SF University",
   },
   {
     n: "03",
     icon: FileText,
     label: "Op-Ed Published",
     detail: "They co-wrote and published an op-ed in the San Mateo Daily Journal, putting the predatory ADA litigation crisis on record for the first time locally.",
-    tag: "San Mateo Daily Journal",
   },
   {
     n: "04",
     icon: Building2,
     label: "Chamber Meetings",
     detail: "Met with Chamber of Commerce policy managers across the Bay to build institutional support and share the story of affected small-business owners.",
-    tag: "Bay Area Chambers",
   },
   {
     n: "05",
     icon: Mic,
     label: "City Council",
     detail: "Presented the case directly to the Fremont City Council — public testimony, formal record, civic accountability.",
-    tag: "Fremont City Council",
   },
   {
     n: "06",
     icon: Scale,
     label: "SB 84 Push",
     detail: "Continued the fight alongside Luke Wu and Arissa around SB 84 — hitting a roadblock in Assemblymember Ash Kalra, who was adamant against letting it pass the judiciary.",
-    tag: "SB 84 · Assembly Judiciary",
   },
 ] as const;
 
@@ -74,9 +67,7 @@ export function CivicSBAIFlow() {
     <section className="mx-auto max-w-7xl px-5 py-16 md:px-9 md:py-20">
       {/* Poster section heading */}
       <PosterHeading
-        label="Deep Dive"
         title="Small Business Accessibility"
-        meta="2025 – present"
         className="mb-10 md:mb-16"
       />
 
@@ -92,9 +83,6 @@ export function CivicSBAIFlow() {
           <div className="mt-6 max-w-3xl border-l-2 border-[var(--accent)] pl-5">
             <p className="font-serif-i text-lg italic leading-relaxed text-[var(--fg)] md:text-xl">
               &ldquo;{SBAI_PULLQUOTE}&rdquo;
-            </p>
-            <p className="mt-2 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-              — Luke Wu&apos;s story · the inciting case
             </p>
           </div>
         </Reveal>
@@ -127,29 +115,14 @@ export function CivicSBAIFlow() {
                   </div>
 
                   <div className="flex-1">
-                    <div className="mb-1 flex flex-wrap items-center gap-3">
-                      <span className="font-mono text-[0.6rem] text-[var(--accent)]">{step.n}</span>
-                      <span className="font-grotesk text-sm font-semibold uppercase tracking-wide text-[var(--fg)]">
-                        {step.label}
-                      </span>
-                      <span className="ml-auto font-mono text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">
-                        {step.tag}
-                      </span>
-                    </div>
+                    <h3 className="mb-1 font-grotesk text-base font-semibold uppercase tracking-wide text-[var(--fg)]">
+                      {step.label}
+                    </h3>
                     <p className="text-sm leading-relaxed text-[var(--muted)]">{step.detail}</p>
 
                     {/* The receipt — the published op-ed, embedded where it happened */}
                     {step.n === "03" && (
                       <div className="mt-4 max-w-md">
-                        <div className="mb-2 flex items-center gap-2">
-                          <span className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-[var(--accent)]">
-                            As published
-                          </span>
-                          <ArrowDownRight className="size-3 text-[var(--accent)]" />
-                          <span className="font-mono text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">
-                            {CIVIC.opEd.date}
-                          </span>
-                        </div>
                         <a
                           href={CIVIC.opEd.url}
                           target="_blank"
@@ -163,13 +136,13 @@ export function CivicSBAIFlow() {
                             loading="lazy"
                             className="w-full transition-transform duration-700 ease-[var(--ease-cine)] group-hover/clip:scale-[1.02]"
                           />
-                          <div className="flex items-center justify-between gap-3 border-t border-[var(--line)] bg-[var(--fg)] px-3 py-2">
-                            <p className="truncate font-mono text-[0.56rem] uppercase tracking-widest text-[var(--bg)]">
-                              {CIVIC.opEd.byline}
+                          <div className="flex items-center justify-between gap-3 border-t border-[var(--line)] bg-[var(--fg)] px-3 py-2.5">
+                            <p className="min-w-0 text-sm leading-snug text-[var(--bg)]">
+                              {CIVIC.opEd.byline}, {CIVIC.opEd.date}
                             </p>
-                            <p className="flex shrink-0 items-center gap-1.5 font-mono text-[0.56rem] uppercase tracking-widest text-[var(--bg)]">
+                            <p className="flex shrink-0 items-center gap-1.5 text-base font-semibold text-[var(--bg)]">
                               Read it
-                              <ArrowUpRight className="h-3 w-3 transition-transform duration-300 group-hover/clip:translate-x-0.5 group-hover/clip:-translate-y-0.5" />
+                              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/clip:translate-x-0.5 group-hover/clip:-translate-y-0.5" />
                             </p>
                           </div>
                         </a>
@@ -196,27 +169,20 @@ export function CivicSBAIFlow() {
           {/* Key people card */}
           <Reveal delay={0.22}>
             <div className="border border-[var(--line)] bg-[var(--bg)]">
-              <div className="border-b border-[var(--line)] px-5 py-3">
-                <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--accent)]">
-                  People involved
-                </p>
-              </div>
               {[
-                { name: "Luke Wu", role: "Co-advocate · boba shop owner" },
-                { name: "Arissa", role: "Co-advocate · Year 2" },
-                { name: "Prof. Durazo", role: "Faculty advisor · SF University" },
-                { name: "Tr. Sherry", role: "Connector · original introduction" },
-                { name: "Ash Kalra", role: "Assemblymember · opposed SB 84" },
+                { name: "Luke Wu", role: "Co-advocate, boba shop owner" },
+                { name: "Arissa", role: "Co-advocate, year 2" },
+                { name: "Prof. Durazo", role: "Faculty advisor, SF University" },
+                { name: "Tr. Sherry", role: "Made the original introduction" },
+                { name: "Ash Kalra", role: "Assemblymember, opposed SB 84" },
               ].map((p, i) => (
                 <div
                   key={p.name}
                   className={`flex items-start justify-between gap-4 px-5 py-3 ${i !== 4 ? "border-b border-[var(--line)]" : ""}`}
                 >
                   <div>
-                    <p className="font-grotesk text-sm font-medium text-[var(--fg)]">{p.name}</p>
-                    <p className="font-mono text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">
-                      {p.role}
-                    </p>
+                    <p className="font-grotesk text-base font-medium text-[var(--fg)]">{p.name}</p>
+                    <p className="text-sm text-[var(--muted)]">{p.role}</p>
                   </div>
                 </div>
               ))}
@@ -227,20 +193,17 @@ export function CivicSBAIFlow() {
           <Reveal delay={0.28}>
             <div className="grid grid-cols-2 border border-[var(--line)]">
               {[
-                { label: "Op-Ed", note: "San Mateo Daily Journal", val: "Published" },
-                { label: "Chambers", note: "Bay Area outreach", val: "Multiple" },
-                { label: "SB 84", note: "Assembly judiciary", val: "Ongoing" },
-                { label: "City Council", note: "Public testimony", val: "Presented" },
+                { label: "Op-ed", val: "Published" },
+                { label: "Bay Area chambers", val: "Multiple" },
+                { label: "SB 84", val: "Ongoing" },
+                { label: "City Council", val: "Presented" },
               ].map((s, i) => (
                 <div
                   key={s.label}
                   className={`px-4 py-5 ${i % 2 === 0 ? "border-r border-[var(--line)]" : ""} ${i < 2 ? "border-b border-[var(--line)]" : ""}`}
                 >
                   <p className="font-anton text-2xl leading-none text-[var(--accent)]">{s.val}</p>
-                  <p className="mt-1 font-grotesk text-xs font-semibold text-[var(--fg)]">{s.label}</p>
-                  <p className="mt-0.5 font-mono text-[0.56rem] uppercase tracking-widest text-[var(--muted)]">
-                    {s.note}
-                  </p>
+                  <p className="mt-1.5 font-grotesk text-sm font-semibold text-[var(--fg)]">{s.label}</p>
                 </div>
               ))}
             </div>

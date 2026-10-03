@@ -20,7 +20,6 @@ export const metadata: Metadata = {
 
 const CHANNELS = [
   {
-    index: "01",
     label: "Email",
     handle: PROFILE.email,
     href: `mailto:${PROFILE.email}`,
@@ -28,7 +27,6 @@ const CHANNELS = [
     external: false,
   },
   {
-    index: "02",
     label: "Instagram",
     handle: PROFILE.links.instagramHandle,
     href: PROFILE.links.instagram,
@@ -36,7 +34,6 @@ const CHANNELS = [
     external: true,
   },
   {
-    index: "03",
     label: "LinkedIn",
     handle: "jadon-li",
     href: PROFILE.links.linkedin,
@@ -44,7 +41,6 @@ const CHANNELS = [
     external: true,
   },
   {
-    index: "04",
     label: "GitHub",
     handle: `@${PROFILE.links.githubUser}`,
     href: PROFILE.links.github,
@@ -101,34 +97,23 @@ export default function ContactPage() {
               cutoutUrl={asset("/img/contact-cutout.webp")}
               title="Jadon Li"
               description="Fremont, CA"
-              price="@li_locked.in"
               className="relative md:max-w-[360px] lg:max-w-[380px]"
             />
           </div>
 
           {/* Right — the action */}
           <div className="order-2 flex flex-1 flex-col justify-center py-6 md:order-none md:py-10">
-            <Reveal>
-              <p className="eyebrow">Let&apos;s build something</p>
-            </Reveal>
-
             <KineticHeadline
               as="h1"
               text="Let's talk."
               delay={0.05}
               balance={false}
-              className="mt-2 font-anton leading-[0.88] tracking-tighter text-[clamp(2.8rem,9vw,6rem)] md:mt-3"
+              className="font-anton leading-[0.88] tracking-tighter text-[clamp(2.8rem,9vw,6rem)]"
             />
 
             <Reveal delay={0.25} className="mt-3 max-w-lg md:mt-4">
               <p className="font-serif-i text-base italic leading-snug text-[var(--muted)] md:text-lg">
-                Civic storyteller · bio researcher · builder · student leader.
-                <span
-                  className="mt-1.5 block font-mono text-[0.64rem] not-italic uppercase tracking-[0.2em]"
-                  style={{ color: "var(--accent)" }}
-                >
-                  {PROFILE.school} · Fremont, CA · Class of 2027
-                </span>
+                Civic storyteller, bio researcher, builder, and student leader — Class of 2027 at {PROFILE.school}.
               </p>
             </Reveal>
 
@@ -136,42 +121,27 @@ export default function ContactPage() {
             <Reveal delay={0.4} className="mt-6 md:mt-8">
               <div className="flex flex-col">
                 {CHANNELS.map((ch) => (
-                  <ChannelRow key={ch.index} {...ch} />
+                  <ChannelRow key={ch.label} {...ch} />
                 ))}
               </div>
             </Reveal>
 
             {/* Secondary: copy the address directly */}
-            <Reveal
-              delay={0.55}
-              className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 md:mt-6"
-            >
-              <span className="font-mono text-[0.6rem] uppercase tracking-[0.25em] text-[var(--muted)]">
-                or copy it
-              </span>
+            <Reveal delay={0.55} className="mt-5 md:mt-6">
               <EmailCopy />
             </Reveal>
           </div>
         </div>
 
         {/* ── SIGN-OFF BAR ─────────────────────────────────────────── */}
-        <div className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between gap-4 border-t border-[var(--line)] px-5 py-3 md:px-9 md:py-4">
-          <p className="hidden font-mono text-[0.6rem] uppercase tracking-[0.25em] text-[var(--muted)] sm:block">
-            © 2026 — {PROFILE.school} · Fremont, CA
-          </p>
-          <p
-            className="hidden truncate font-serif-i text-sm italic lg:block"
-            style={{ color: "var(--accent-2)" }}
-          >
-            {PROFILE.links.instagramHandle} — Documenting the grind.
-          </p>
+        <div className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-end gap-4 border-t border-[var(--line)] px-5 py-2 md:px-9">
           <Link
             href={next.href}
             data-cursor-hover
-            className="group inline-flex shrink-0 items-center gap-1.5 font-mono text-[0.6rem] uppercase tracking-[0.25em] text-[var(--muted)] transition-colors hover:text-[var(--accent)]"
+            className="group inline-flex shrink-0 items-center gap-2 py-3 text-base font-medium text-[var(--muted)] transition-colors hover:text-[var(--accent)]"
           >
-            Next — {next.title}
-            <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+            Next: {next.title}
+            <ArrowRight className="size-4 transition-[translate] duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
       </section>

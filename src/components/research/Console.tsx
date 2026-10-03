@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ALL_SECTIONS, resolveSection } from "./sections";
 import { jumpTo, toggleMutate } from "./lab/bus";
-import { FUS, FUS_CITATION, FUS_LOG, PROFILE } from "./lab/content";
+import { FUS_CITATION, FUS_LOG, PROFILE } from "./lab/content";
 
 type Line = { text: string; tone: "fg" | "muted" | "accent" };
 
@@ -21,7 +21,6 @@ const HELP: string[] = [
 export function Console() {
   const [open, setOpen] = useState(false);
   const [lines, setLines] = useState<Line[]>([
-    { text: "research console — the page has everything; this just gets you there faster.", tone: "muted" },
     { text: "type `help`, or `ls` to see the sections.", tone: "muted" },
   ]);
   const [value, setValue] = useState("");
@@ -220,7 +219,7 @@ export function Console() {
           setOpen(true);
         }}
         aria-label="Open the research console"
-        className="fixed bottom-5 right-5 z-40 rounded-sm border border-[var(--line)] bg-[var(--bg-2)]/90 px-3 py-2 font-mono text-[0.7rem] text-[var(--muted)] backdrop-blur transition-colors hover:border-[var(--accent)] hover:text-[var(--fg)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+        className="fixed bottom-5 right-5 z-40 rounded-sm border border-[var(--line)] bg-[var(--bg-2)]/90 px-3.5 py-2.5 font-mono text-[1rem] text-[var(--muted)] backdrop-blur transition-colors hover:border-[var(--accent)] hover:text-[var(--fg)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
       >
         &gt;_
       </button>
@@ -241,21 +240,18 @@ export function Console() {
         onClick={(e) => e.stopPropagation()}
         className="fixed inset-x-0 bottom-0 h-[min(60dvh,26rem)] border-t border-[var(--accent)] bg-[#05060a]/97 backdrop-blur"
       >
-        <div className="flex items-center justify-between border-b border-[var(--line)] px-4 py-2">
-          <span className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-[var(--muted)]">
-            {FUS.id}
-          </span>
+        <div className="flex items-center justify-end border-b border-[var(--line)] px-4 py-1">
           <button
             ref={closeButtonRef}
             type="button"
             onClick={() => setOpen(false)}
             onKeyDown={onCloseKeyDown}
-            className="rounded-sm font-mono text-[0.65rem] uppercase tracking-[0.16em] text-[var(--muted)] hover:text-[var(--fg)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+            className="min-h-[2.25rem] rounded-sm px-1 text-[1rem] text-[var(--muted)] hover:text-[var(--fg)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
           >
-            Esc
+            Close
           </button>
         </div>
-        <div ref={scrollRef} className="h-[calc(100%-5.5rem)] overflow-y-auto px-4 py-3 font-mono text-[0.8rem] leading-[1.65]">
+        <div ref={scrollRef} className="h-[calc(100%-5.5rem)] overflow-y-auto px-4 py-3 font-mono text-[0.875rem] leading-[1.65]">
           {lines.map((l, i) => (
             <p
               key={i}
@@ -271,7 +267,7 @@ export function Console() {
             </p>
           ))}
         </div>
-        <div className="flex items-center gap-2 border-t border-[var(--line)] px-4 py-2.5 font-mono text-[0.8rem]">
+        <div className="flex items-center gap-2 border-t border-[var(--line)] px-4 py-2.5 font-mono text-[0.875rem]">
           <span className="text-[var(--accent)]">visitor@research:~$</span>
           <input
             ref={inputRef}

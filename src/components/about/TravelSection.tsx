@@ -93,15 +93,12 @@ export function TravelSection() {
       <div className="mx-auto max-w-6xl px-5 py-20 md:px-9 md:py-28">
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="inline-block bg-[var(--fg)] px-3 py-1 font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--bg)]">
-              Passport
-            </p>
-            <h2 className="mt-5 font-anton text-4xl uppercase leading-[0.95] tracking-tight md:text-6xl">
+            <h2 className="font-anton text-4xl uppercase leading-[0.95] tracking-tight md:text-6xl">
               Stamps so far<span className="text-[var(--accent)]">.</span>
             </h2>
           </div>
           <p className="font-hand max-w-[16rem] rotate-[-1.5deg] text-2xl leading-tight text-[var(--muted)]">
-            {stops.length - 1} stops and counting — hover a pin
+            {stops.length - 1} stops and counting
           </p>
         </div>
 
@@ -228,23 +225,19 @@ export function TravelSection() {
                 <p className="font-hand absolute bottom-2.5 left-4 text-xl leading-none text-[var(--fg)]">
                   {current.place}
                 </p>
-                <p className="absolute bottom-4 right-4 font-mono text-[0.52rem] uppercase tracking-widest text-[var(--muted)]">
-                  {current.region}
-                </p>
               </motion.div>
             </AnimatePresence>
 
-            {current.note && (
-              <motion.p
-                key={`${current.place}-note`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4, delay: 0.1 }}
-                className="mt-6 border-l-2 border-[var(--accent)] pl-4 text-sm leading-relaxed text-[var(--muted)]"
-              >
-                {current.note}
-              </motion.p>
-            )}
+            <motion.div
+              key={`${current.place}-note`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              className="mt-6 border-l-2 border-[var(--accent)] pl-4 text-sm leading-relaxed text-[var(--muted)]"
+            >
+              <p className="font-semibold text-[var(--fg)]">{current.region}</p>
+              {current.note && <p className="mt-1">{current.note}</p>}
+            </motion.div>
           </div>
         </div>
 
@@ -257,7 +250,7 @@ export function TravelSection() {
               onClick={() => setActive(i)}
               aria-pressed={active === i}
               className={[
-                "border px-3 py-1.5 font-mono text-[0.6rem] uppercase tracking-[0.18em] transition-colors duration-200",
+                "border px-4 py-2 text-base transition-colors duration-200",
                 active === i
                   ? "border-[var(--fg)] bg-[var(--fg)] text-[var(--bg)]"
                   : "border-[var(--line)] bg-[var(--bg)] text-[var(--muted)] hover:border-[var(--fg)] hover:text-[var(--fg)]",

@@ -42,7 +42,7 @@ export function Nav() {
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}
             aria-label={open ? "Close menu" : "Open menu"}
-            className="group flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] transition-opacity duration-300 hover:opacity-60"
+            className="group flex items-center gap-3 py-2 text-base font-medium transition-opacity duration-300 hover:opacity-60"
           >
             <span className="hidden sm:inline">{open ? "Close" : "Menu"}</span>
             <span className="relative flex h-4 w-6 flex-col justify-between">

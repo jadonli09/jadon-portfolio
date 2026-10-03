@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { World } from "@/components/chrome/World";
 import { Footer } from "@/components/chrome/Footer";
 import { AchievementsHero } from "@/components/achievements/AchievementsHero";
-import { AchievementsTicker } from "@/components/achievements/AchievementsTicker";
 import { ScoreBoard } from "@/components/achievements/ScoreBoard";
 import { TrophyCase } from "@/components/achievements/TrophyCase";
 
@@ -24,16 +23,13 @@ export default function AchievementsPage() {
       {/* 1. Hero — plain title + bright graphic */}
       <AchievementsHero />
 
-      {/* 2. Ticker — pace setter */}
-      <AchievementsTicker />
-
-      {/* 3. Scores — SAT counter, PSAT/ACT, AP-5 medallions */}
+      {/* 2. Scores — SAT counter, PSAT/ACT, AP-5 medallions */}
       <ScoreBoard />
 
-      {/* 4. The archive — the interactive constellation (centerpiece) */}
+      {/* 3. The archive — the interactive constellation (centerpiece) */}
       <TrophyCase />
 
-      {/* 5. Footer */}
+      {/* 4. Footer */}
       <Footer />
     </World>
   );

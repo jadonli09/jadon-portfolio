@@ -10,7 +10,6 @@ import {
   type ReactNode,
 } from "react";
 import { useReducedMotion, useScroll, useMotionValueEvent } from "motion/react";
-import { cn } from "@/lib/cn";
 
 /* ─────────────────────────── context ─────────────────────────── */
 
@@ -32,27 +31,6 @@ const Ctx = createContext<BoardCtx>({
 });
 
 export const useBoard = () => useContext(Ctx);
-
-/* ─────────────────────────── tape label ───────────────────────── */
-
-/** Masking-tape strip — the board's section eyebrow. */
-export function BoardLabel({ children, className }: { children: ReactNode; className?: string }) {
-  return (
-    <span
-      className={cn(
-        "inline-block -rotate-1 bg-[#e3d9bd]/95 px-4 py-1.5 font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[#3d3526] shadow-[0_8px_20px_rgba(0,0,0,0.5)]",
-        className,
-      )}
-      style={{
-        clipPath: "polygon(0.8% 0%, 99.4% 4%, 100% 88%, 98.8% 100%, 1% 97%, 0% 14%)",
-        backgroundImage:
-          "linear-gradient(90deg, rgba(255,255,255,0.3), rgba(255,255,255,0) 26%, rgba(0,0,0,0.04) 88%, rgba(0,0,0,0.08))",
-      }}
-    >
-      {children}
-    </span>
-  );
-}
 
 /* ─────────────────────────── the wall ─────────────────────────── */
 

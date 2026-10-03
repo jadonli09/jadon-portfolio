@@ -76,7 +76,7 @@ export function EmailCopy({ className }: { className?: string }) {
         whileTap={{ scale: 0.94 }}
         data-cursor-hover
         className={cn(
-          "relative inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
+          "relative inline-flex size-11 shrink-0 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
           state === "idle" &&
             "border-[var(--line)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--accent)]",
           state === "copied" &&
@@ -95,7 +95,7 @@ export function EmailCopy({ className }: { className?: string }) {
               transition={{ duration: 0.2 }}
               className="absolute"
             >
-              <Check className="size-4" />
+              <Check className="size-5" />
             </motion.span>
           ) : (
             <motion.span
@@ -106,7 +106,7 @@ export function EmailCopy({ className }: { className?: string }) {
               transition={{ duration: 0.2 }}
               className="absolute"
             >
-              <Copy className="size-4" />
+              <Copy className="size-5" />
             </motion.span>
           )}
         </AnimatePresence>
@@ -122,7 +122,7 @@ export function EmailCopy({ className }: { className?: string }) {
             exit={{ opacity: 0, x: -4 }}
             transition={{ duration: 0.25 }}
             className={cn(
-              "font-mono text-[0.68rem] uppercase tracking-widest",
+              "text-sm font-medium",
               state === "copied" ? "text-emerald-400" : "text-[var(--accent-2)]"
             )}
           >

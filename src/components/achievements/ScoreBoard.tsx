@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
+import { motion } from "motion/react";
+import { Reveal } from "@/components/primitives/Reveal";
 import { Counter } from "@/components/primitives/Counter";
 import { SCORES, AP_FIVES } from "@/lib/data";
 import { cn } from "@/lib/cn";
@@ -12,83 +12,54 @@ import { cn } from "@/lib/cn";
 function ApMedallion({ exam }: { exam: string }) {
   const [hovered, setHovered] = useState(false);
 
-  // Shorten subject for the chip face
-  const short = exam.replace("AP ", "").split(" ")[0];
-
   return (
-    <div className="relative">
-      <motion.button
-        data-cursor-hover
-        onHoverStart={() => setHovered(true)}
-        onHoverEnd={() => setHovered(false)}
-        onFocus={() => setHovered(true)}
-        onBlur={() => setHovered(false)}
-        whileHover={{ scale: 1.08, y: -3 }}
-        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-        className="group relative flex flex-col items-center gap-2 focus:outline-none"
-        aria-label={`${exam} — AP Score 5`}
+    <motion.button
+      data-cursor-hover
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
+      whileHover={{ scale: 1.08, y: -3 }}
+      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative flex w-24 flex-col items-center gap-2 focus:outline-none"
+      aria-label={`${exam} — AP Score 5`}
+    >
+      {/* Medallion disc — bright metallic gold on light background */}
+      <div
+        className="relative flex size-14 items-center justify-center rounded-full border-2 md:size-16"
+        style={{
+          background:
+            "radial-gradient(circle at 35% 30%, #f7e589 0%, #d4a820 45%, #a87d10 80%, #7a5c08 100%)",
+          borderColor: hovered ? "#b07c1e" : "#d4a820",
+          boxShadow: hovered
+            ? "0 6px 20px rgba(176,124,30,0.45), 0 2px 6px rgba(176,124,30,0.25), inset 0 1px 3px rgba(255,255,255,0.6)"
+            : "0 4px 14px rgba(176,124,30,0.25), inset 0 1px 2px rgba(255,255,255,0.45)",
+        }}
       >
-        {/* Medallion disc — bright metallic gold on light background */}
+        {/* The "5" — dark text on bright gold */}
+        <span
+          className="font-display text-2xl font-bold leading-none md:text-3xl"
+          style={{ color: "#3a2800", textShadow: "0 1px 2px rgba(255,255,255,0.4)" }}
+        >
+          5
+        </span>
+
+        {/* Specular highlight ring */}
         <div
-          className="relative flex size-14 items-center justify-center rounded-full border-2 md:size-16"
+          className="pointer-events-none absolute inset-0 rounded-full"
           style={{
             background:
-              "radial-gradient(circle at 35% 30%, #f7e589 0%, #d4a820 45%, #a87d10 80%, #7a5c08 100%)",
-            borderColor: hovered ? "#b07c1e" : "#d4a820",
-            boxShadow: hovered
-              ? "0 6px 20px rgba(176,124,30,0.45), 0 2px 6px rgba(176,124,30,0.25), inset 0 1px 3px rgba(255,255,255,0.6)"
-              : "0 4px 14px rgba(176,124,30,0.25), inset 0 1px 2px rgba(255,255,255,0.45)",
+              "linear-gradient(140deg, rgba(255,255,255,0.45) 0%, transparent 45%)",
           }}
-        >
-          {/* The "5" — dark text on bright gold */}
-          <span
-            className="font-display text-2xl font-bold leading-none md:text-3xl"
-            style={{ color: "#3a2800", textShadow: "0 1px 2px rgba(255,255,255,0.4)" }}
-          >
-            5
-          </span>
+          aria-hidden
+        />
+      </div>
 
-          {/* Specular highlight ring */}
-          <div
-            className="pointer-events-none absolute inset-0 rounded-full"
-            style={{
-              background:
-                "linear-gradient(140deg, rgba(255,255,255,0.45) 0%, transparent 45%)",
-            }}
-            aria-hidden
-          />
-        </div>
-
-        {/* Exam abbreviation below disc */}
-        <span className="font-mono text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">
-          {short}
-        </span>
-      </motion.button>
-
-      {/* Full name tooltip */}
-      <AnimatePresence>
-        {hovered && (
-          <motion.div
-            initial={{ opacity: 0, y: 6, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 6, scale: 0.9 }}
-            transition={{ duration: 0.18 }}
-            className="pointer-events-none absolute left-1/2 top-[-3rem] z-20 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--line)] bg-[#fffdf7] px-3 py-1.5"
-            style={{ boxShadow: "0 4px 16px rgba(34,28,16,0.12)" }}
-          >
-            <span className="font-mono text-[0.65rem] uppercase tracking-wider text-[var(--fg)]">
-              {exam}
-            </span>
-            {/* Arrow */}
-            <div
-              className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent"
-              style={{ borderTopColor: "var(--line)" }}
-              aria-hidden
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+      {/* Subject below disc */}
+      <span className="text-balance text-center text-sm leading-tight text-[var(--muted)]">
+        {exam.replace("AP ", "")}
+      </span>
+    </motion.button>
   );
 }
 
@@ -98,7 +69,7 @@ function SubScoreBar({ label, value, max = 800 }: { label: string; value: number
   const pct = (value / max) * 100;
   return (
     <div className="flex items-center gap-4">
-      <span className="w-24 font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
+      <span className="w-20 text-sm text-[var(--muted)]">
         {label}
       </span>
       <div
@@ -114,7 +85,7 @@ function SubScoreBar({ label, value, max = 800 }: { label: string; value: number
           transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
         />
       </div>
-      <span className="font-mono text-xs font-semibold" style={{ color: "var(--accent)" }}>
+      <span className="font-mono text-sm font-semibold" style={{ color: "var(--accent)" }}>
         {value}
       </span>
     </div>
@@ -162,8 +133,8 @@ function ScoreCard({
       )}
 
       <div className="relative">
-        {/* Label */}
-        <p className="eyebrow mb-3">{score.label}</p>
+        {/* Test */}
+        <h3 className="mb-3 font-display text-xl leading-none">{score.label}</h3>
 
         {/* Score number */}
         <div
@@ -177,7 +148,7 @@ function ScoreCard({
         </div>
 
         {/* Note */}
-        <p className="mt-3 font-mono text-xs leading-relaxed text-[var(--muted)]">
+        <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
           {score.note}
         </p>
 
@@ -201,16 +172,11 @@ export function ScoreBoard() {
     <section className="border-b border-[var(--line)]" style={{ background: "rgba(239,232,216,0.4)" }}>
       <div className="mx-auto max-w-7xl px-5 py-16 md:px-9 md:py-24">
         {/* Header */}
-        <RevealGroup className="mb-10">
-          <Reveal>
-            <p className="eyebrow">Standardized Scores</p>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <h2 className="mt-3 font-display text-[2rem] leading-[0.95] tracking-tight md:text-[3rem]">
-              The numbers.
-            </h2>
-          </Reveal>
-        </RevealGroup>
+        <Reveal className="mb-10">
+          <h2 className="font-display text-[2rem] leading-[0.95] tracking-tight md:text-[3rem]">
+            Test scores.
+          </h2>
+        </Reveal>
 
         {/* Scores + AP medallions, all in one place: SAT anchors the left and
             spans both rows; ACT/PSAT sit top-right; the eleven AP fives tuck into
@@ -234,13 +200,8 @@ export function ScoreBoard() {
               className="flex h-full flex-col gap-4 rounded-xl border border-[var(--line)] p-5 md:p-6"
               style={{ background: "#fffdf7", boxShadow: "0 4px 16px rgba(34,28,16,0.05)" }}
             >
-              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                <p className="eyebrow">AP Exam Scores</p>
-                <p className="font-mono text-[0.56rem] uppercase tracking-[0.22em] text-[var(--muted)]">
-                  {AP_FIVES.length === 11 ? "eleven" : AP_FIVES.length} fives · 5/5 · hover for subject
-                </p>
-              </div>
-              <div className="flex flex-1 flex-wrap items-center gap-x-5 gap-y-4 md:gap-x-7">
+              <h3 className="font-display text-xl leading-none">AP exams</h3>
+              <div className="flex flex-1 flex-wrap items-start gap-x-3 gap-y-5 md:gap-x-4">
                 {AP_FIVES.map((exam) => (
                   <ApMedallion key={exam} exam={exam} />
                 ))}

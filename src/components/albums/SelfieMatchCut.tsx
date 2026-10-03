@@ -73,35 +73,31 @@ export function SelfieMatchCut() {
       <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-[1fr_minmax(300px,420px)] md:gap-16">
         {/* copy */}
         <div>
-          <p className="font-mono text-[0.62rem] uppercase tracking-[0.3em] text-[var(--muted)]">{total} selfies · Summer 2026</p>
-          <h2 className="mt-4 font-anton text-4xl uppercase leading-[0.95] tracking-tight md:text-6xl">
+          <h2 className="font-anton text-4xl uppercase leading-[0.95] tracking-tight md:text-6xl">
             Summer in selfies<span className="text-[var(--accent)]">.</span>
           </h2>
           <p className="mt-6 max-w-md text-sm leading-relaxed text-[var(--muted)] md:text-base">
             Every selfie from the summer before senior year, in the order they were taken — SFO to DC to Amherst to Boston to New York, June 20 to August 11 — cut on a beat.
           </p>
-          <p className="mt-4 font-mono text-[0.62rem] uppercase tracking-[0.2em] text-[var(--muted)]">
-            {reduce ? "step with the arrows" : "hover to pause · click to step · ← → keys"}
-          </p>
 
           {/* transport */}
           <div className="mt-8 flex items-center gap-3">
-            <button data-cursor-hover onClick={() => step(-1)} aria-label="previous selfie" className="flex size-9 items-center justify-center border border-[var(--line)] text-[var(--fg)] transition-colors hover:border-[var(--fg)]">
-              <SkipBack className="size-3.5" />
+            <button data-cursor-hover onClick={() => step(-1)} aria-label="previous selfie" className="flex size-11 items-center justify-center border border-[var(--line)] text-[var(--fg)] transition-colors hover:border-[var(--fg)]">
+              <SkipBack className="size-4" />
             </button>
             <button
               data-cursor-hover
               onClick={() => setPlaying((p) => !p)}
               aria-label={playing ? "pause" : "play"}
-              className="flex h-9 items-center gap-2 border border-[var(--fg)] bg-[var(--fg)] px-4 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-[var(--bg)] transition-opacity hover:opacity-80"
+              className="flex h-11 items-center gap-2 border border-[var(--fg)] bg-[var(--fg)] px-5 text-base font-medium text-[var(--bg)] transition-opacity hover:opacity-80"
             >
-              {playing ? <Pause className="size-3.5" /> : <Play className="size-3.5" />}
+              {playing ? <Pause className="size-4" /> : <Play className="size-4" />}
               {playing ? "Pause" : "Play"}
             </button>
-            <button data-cursor-hover onClick={() => step(1)} aria-label="next selfie" className="flex size-9 items-center justify-center border border-[var(--line)] text-[var(--fg)] transition-colors hover:border-[var(--fg)]">
-              <SkipForward className="size-3.5" />
+            <button data-cursor-hover onClick={() => step(1)} aria-label="next selfie" className="flex size-11 items-center justify-center border border-[var(--line)] text-[var(--fg)] transition-colors hover:border-[var(--fg)]">
+              <SkipForward className="size-4" />
             </button>
-            <span className="ml-2 font-mono text-[0.7rem] tabular-nums text-[var(--muted)]">
+            <span className="ml-2 font-mono text-sm tabular-nums text-[var(--muted)]">
               <span className="text-[var(--fg)]">{String(i + 1).padStart(2, "0")}</span> / {total}
             </span>
           </div>
@@ -157,18 +153,10 @@ export function SelfieMatchCut() {
             />
           </AnimatePresence>
 
-          {/* rec strip */}
-          <div className="pointer-events-none absolute inset-x-0 top-0 flex items-center justify-between px-3 py-2 font-mono text-[0.58rem] uppercase tracking-[0.22em] text-white/85">
-            <span className="flex items-center gap-1.5">
-              <span className={cn("size-1.5 rounded-full bg-[var(--accent)]", playing && inView && !hover && !reduce && "animate-pulse")} />
-              {playing && !hover ? "cut" : "hold"}
-            </span>
-            <span className="tabular-nums">{String(i + 1).padStart(2, "0")} / {total}</span>
-          </div>
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/70 to-transparent px-3 pb-2.5 pt-8 font-mono text-[0.58rem] uppercase tracking-[0.22em] text-white/85">
-            <span>{fmtDate(cur.taken)}</span>
-            <span>{fmtTime(cur.taken)} · full frame</span>
-          </div>
+          {/* when it was taken */}
+          <p className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-2.5 pt-8 text-sm tabular-nums text-white/90">
+            {fmtDate(cur.taken)}, {fmtTime(cur.taken)}
+          </p>
         </div>
       </div>
     </section>

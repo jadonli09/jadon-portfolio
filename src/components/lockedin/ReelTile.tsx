@@ -22,21 +22,18 @@ export function ReelTile({ code, url, index }: ReelTileProps) {
         ease: [0.16, 1, 0.3, 1],
       }}
     >
-      {/* Intentional frame top bar */}
-      <div className="flex items-center justify-between border-b border-[var(--line)] px-3.5 py-2.5">
-        <span className="font-mono text-[0.6rem] uppercase tracking-[0.25em] text-[var(--accent)]">
-          @li_locked.in
-        </span>
+      {/* Frame top bar — the live link out */}
+      <div className="flex items-center justify-end border-b border-[var(--line)] px-4 py-2.5">
         <a
           href={url}
           target="_blank"
           rel="noreferrer"
           data-cursor-hover
-          className="group flex items-center gap-1 font-mono text-[0.55rem] uppercase tracking-widest text-[var(--muted)] transition-colors duration-200 hover:text-[var(--accent-2)]"
+          className="group flex items-center gap-1 py-1 font-grotesk text-base text-[var(--muted)] transition-colors duration-200 hover:text-[var(--accent-2)]"
           aria-label={`Watch reel on Instagram`}
         >
           Watch on Instagram
-          <ArrowUpRight className="size-2.5 transition-transform duration-200 group-hover:translate-x-px group-hover:-translate-y-px" />
+          <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-px group-hover:-translate-y-px" />
         </a>
       </div>
 

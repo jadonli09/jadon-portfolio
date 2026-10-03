@@ -18,7 +18,7 @@ import { cn } from "@/lib/cn";
 
      · It feels interactive without asking for a click. The reader's own scroll
        drives the product through its features.
-     · It forces the copy short. A beat is a two-word label and one line —
+     · It forces the copy short. A beat is one line —
        there is no room for a paragraph, so the paragraph does not get written.
 
    Below `lg` there is no pinning: a sticky column inside a single-column
@@ -200,14 +200,13 @@ export function ScrollStage({
           <Frame beats={beats} active={0} name={name} aspect={b.aspect} />
         </div>
         <div>
-          <p className="t-label text-[var(--accent)]">{b.label}</p>
           {/*
             A single beat gets the big size. There is only one line in this
             section, so at `t-head` it left a third of the row empty to its
             right — the line has to be large enough to hold the space its own
             layout gives it.
           */}
-          <p className="t-title mt-3 max-w-2xl">{b.line}</p>
+          <p className="t-title max-w-2xl">{b.line}</p>
           {aside}
         </div>
         </div>
@@ -273,8 +272,7 @@ export function ScrollStage({
                     animate={{ opacity: !pinned || active === i ? 1 : 0.32 }}
                     transition={{ duration: 0.24, ease: EASE_OUT }}
                   >
-                    <p className="t-label text-[var(--accent)]">{b.label}</p>
-                    <p className="t-head mt-2.5 max-w-sm">{b.line}</p>
+                    <p className="t-head max-w-sm">{b.line}</p>
                   </motion.div>
                 </div>
               ))}

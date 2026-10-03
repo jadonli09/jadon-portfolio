@@ -7,7 +7,7 @@ import { Counter } from "@/components/primitives/Counter";
 /**
  * Gym scoreboard. The career-numbers band styled as the box hanging over
  * every high-school court: bezelled housing, corner bolts, side vents,
- * glowing LED digits, a blinking FINAL lamp and a lit BONUS dot.
+ * glowing LED digits and a blinking lamp.
  */
 
 type StatItem =
@@ -17,7 +17,6 @@ type StatItem =
 const STATS: StatItem[] = [
   { kind: "text", value: "FIRST 5", label: "Opening Lineup" },
   { kind: "text", value: "NCS", label: "Section Champions" },
-  { kind: "counter", value: 569, suffix: "K", label: "DouYin Likes" },
   { kind: "text", value: ".500", label: "JV League Record" },
 ];
 
@@ -43,7 +42,7 @@ function StatCell({ stat, index }: { stat: StatItem; index: number }) {
   return (
     <motion.div
       ref={ref}
-      className="relative flex flex-col items-center justify-center px-4 py-7 md:px-8 md:py-9"
+      className="relative flex flex-col items-center justify-center px-2 py-7 md:px-8 md:py-9"
       initial={{ opacity: 0 }}
       animate={inView ? { opacity: 1 } : {}}
       transition={{ duration: 0.6, delay: index * 0.12 }}
@@ -52,7 +51,7 @@ function StatCell({ stat, index }: { stat: StatItem; index: number }) {
       {!isLast && (
         <span
           aria-hidden
-          className="pointer-events-none absolute right-0 top-[15%] hidden h-[70%] w-px bg-black sm:block"
+          className="pointer-events-none absolute right-0 top-[15%] h-[70%] w-px bg-black"
           style={{ boxShadow: "1px 0 0 rgba(255,255,255,0.05)" }}
         />
       )}
@@ -74,7 +73,7 @@ function StatCell({ stat, index }: { stat: StatItem; index: number }) {
       </p>
 
       {/* Engraved label plate */}
-      <p className="mt-3 border border-white/10 bg-black/40 px-2.5 py-1 text-center font-mono text-[0.55rem] uppercase tracking-[0.2em] text-white/70">
+      <p className="mt-3 border border-white/10 bg-black/40 px-3 py-1 text-center font-mono text-sm uppercase tracking-[0.08em] text-white/80">
         {stat.label}
       </p>
     </motion.div>
@@ -110,38 +109,23 @@ export function CourtStatLine() {
 
           {/* Header strip */}
           <div className="flex items-center justify-between border-b border-black bg-[#101014] px-5 py-2.5 md:px-10">
-            <span className="font-mono text-[0.58rem] uppercase tracking-[0.3em] text-white/55">
-              Mission San Jose — Warriors
+            <span className="font-mono text-sm uppercase tracking-[0.12em] text-white/70">
+              Mission San Jose Warriors
             </span>
-            <span className="inline-flex items-center gap-2">
-              <motion.span
-                className="size-1.5 rounded-full bg-[var(--accent)]"
-                animate={{ opacity: [1, 0.15, 1] }}
-                transition={{ duration: 1.3, repeat: Infinity }}
-                aria-hidden
-              />
-              <span className="font-mono text-[0.58rem] font-bold uppercase tracking-[0.3em] text-[var(--accent)]" style={LED_GLOW}>
-                Final
-              </span>
-            </span>
+            <motion.span
+              className="size-2 rounded-full bg-[var(--accent)]"
+              style={{ boxShadow: "0 0 8px rgba(255,91,31,0.9)" }}
+              animate={{ opacity: [1, 0.15, 1] }}
+              transition={{ duration: 1.3, repeat: Infinity }}
+              aria-hidden
+            />
           </div>
 
           {/* LED stat modules */}
-          <div className="grid grid-cols-2 sm:grid-cols-4">
+          <div className="grid grid-cols-3">
             {STATS.map((stat, i) => (
               <StatCell key={stat.label} stat={stat} index={i} />
             ))}
-          </div>
-
-          {/* Footer strip */}
-          <div className="flex items-center justify-between border-t border-black bg-[#101014] px-5 py-2 md:px-10">
-            <span className="font-mono text-[0.55rem] uppercase tracking-[0.28em] text-white/45">
-              NCS Championship · 2026
-            </span>
-            <span className="inline-flex items-center gap-1.5 font-mono text-[0.55rem] uppercase tracking-[0.28em] text-white/45">
-              Bonus
-              <span className="size-1.5 rounded-full bg-[var(--accent)]" style={{ boxShadow: "0 0 8px rgba(255,91,31,0.9)" }} aria-hidden />
-            </span>
           </div>
         </div>
       </div>

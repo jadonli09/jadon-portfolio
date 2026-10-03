@@ -77,10 +77,11 @@ function FilterPill({
     <motion.button
       onClick={onClick}
       data-cursor-hover
+      aria-pressed={active}
       whileTap={{ scale: 0.94 }}
       className={cn(
-        "relative flex items-center gap-2.5 rounded-full border px-5 py-2.5",
-        "font-mono text-[0.72rem] uppercase tracking-widest",
+        "relative flex items-center gap-2.5 rounded-full border px-5 py-3",
+        "text-base font-medium",
         "transition-all duration-200",
         active
           ? "border-transparent text-white"
@@ -107,7 +108,7 @@ function FilterPill({
       {label}
       <span
         className={cn(
-          "inline-flex min-w-[1.45rem] items-center justify-center rounded-full px-1.5 text-[0.6rem] font-bold",
+          "inline-flex min-w-[1.6rem] items-center justify-center rounded-full px-1.5 text-sm font-bold tabular-nums",
           active ? "bg-black/20 text-white" : "bg-[var(--line)] text-[var(--muted)]",
         )}
       >
@@ -270,7 +271,7 @@ function ConstellationView({
         <div
           // edge-aware: left-third dots grow right, right-third grow left, middle centred —
           // so the card never runs off a narrow phone screen.
-          className="pointer-events-none absolute z-10 w-[180px] sm:w-[210px]"
+          className="pointer-events-none absolute z-10 w-[220px] sm:w-[260px]"
           style={{
             left: `${(detail.x / VB) * 100}%`,
             top: `${(detail.y / VB) * 100}%`,
@@ -286,13 +287,13 @@ function ConstellationView({
               boxShadow: "0 10px 30px rgba(34,28,16,0.18)",
             }}
           >
-            <span className="font-mono text-[0.55rem] uppercase tracking-[0.2em]" style={{ color: detail.color }}>
-              {detail.t.year} · {CAT_META[detail.t.cat].label}
+            <span className="text-sm font-semibold" style={{ color: detail.color }}>
+              {CAT_META[detail.t.cat].label}, {detail.t.year}
             </span>
-            <p className="mt-1 font-display text-sm leading-snug" style={{ color: "var(--fg)" }}>
+            <p className="mt-1 font-display text-base leading-snug" style={{ color: "var(--fg)" }}>
               {detail.t.title}
             </p>
-            <p className="mt-1 font-mono text-[0.62rem] leading-relaxed text-[var(--muted)]">
+            <p className="mt-1.5 text-sm leading-snug text-[var(--muted)]">
               {detail.t.detail}
             </p>
           </div>
@@ -325,8 +326,6 @@ export function TrophyCase() {
     return TROPHIES.filter((t) => t.cat === cat).length;
   }
 
-  const activeCatColor =
-    activeFilter !== "all" ? CAT_META[activeFilter as TrophyCat].color : null;
   const anyFilter = activeFilter !== "all" || focusYear !== null;
 
   return (
@@ -336,12 +335,11 @@ export function TrophyCase() {
         {/* Section header */}
         <Reveal className="mb-10">
           <div>
-            <p className="eyebrow">the archive</p>
-            <h2 className="mt-3 font-display text-[2rem] leading-[0.95] tracking-tight md:text-[3.2rem]">
+            <h2 className="font-display text-[2rem] leading-[0.95] tracking-tight md:text-[3.2rem]">
               Every experience and achievement.
             </h2>
-            <p className="mt-2 max-w-xl font-mono text-xs leading-relaxed text-[var(--muted)]">
-              {TROPHIES.length} entries · 7 domains, as one constellation. Bigger star, bigger accomplishment — hover one to read it, and filter by domain or year to light up its shape.
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-[var(--muted)] md:text-lg">
+              The bigger the star, the bigger the accomplishment.
             </p>
           </div>
         </Reveal>
@@ -351,58 +349,52 @@ export function TrophyCase() {
 
           {/* LEFT — the tags */}
           <Reveal delay={0.1}>
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-6">
               {/* by domain */}
-              <div>
-                <p className="mb-3 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-[var(--muted)]/70">by domain</p>
-                <div className="flex flex-wrap gap-2.5">
+              <div role="group" aria-label="Filter by domain" className="flex flex-wrap gap-2.5">
+                <FilterPill
+                  id="all"
+                  label="All"
+                  color={null}
+                  count={countFor("all")}
+                  active={activeFilter === "all"}
+                  onClick={() => setActiveFilter("all")}
+                />
+                {ALL_CATS.map((cat) => (
                   <FilterPill
-                    id="all"
-                    label="All"
-                    color={null}
-                    count={countFor("all")}
-                    active={activeFilter === "all"}
-                    onClick={() => setActiveFilter("all")}
+                    key={cat}
+                    id={cat}
+                    label={CAT_META[cat].label}
+                    color={CAT_META[cat].color}
+                    count={countFor(cat)}
+                    active={activeFilter === cat}
+                    onClick={() => setActiveFilter(cat)}
                   />
-                  {ALL_CATS.map((cat) => (
-                    <FilterPill
-                      key={cat}
-                      id={cat}
-                      label={CAT_META[cat].label}
-                      color={CAT_META[cat].color}
-                      count={countFor(cat)}
-                      active={activeFilter === cat}
-                      onClick={() => setActiveFilter(cat)}
-                    />
-                  ))}
-                </div>
+                ))}
               </div>
 
               {/* by year */}
-              <div>
-                <p className="mb-3 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-[var(--muted)]/70">by year</p>
-                <div className="flex flex-wrap gap-2.5">
-                  {YEARS.map((y) => {
-                    const active = focusYear === y;
-                    return (
-                      <button
-                        key={y}
-                        onClick={() => setFocusYear((p) => (p === y ? null : y))}
-                        data-cursor-hover
-                        aria-pressed={active}
-                        className={cn(
-                          "rounded-full border px-4 py-2 font-mono text-[0.68rem] uppercase tracking-widest transition-all duration-200",
-                          active
-                            ? "border-transparent text-white"
-                            : "border-[var(--line)] bg-[#fffdf7] text-[var(--muted)] hover:text-[var(--fg)]",
-                        )}
-                        style={active ? { background: "var(--accent)", boxShadow: "0 2px 8px rgba(176,124,30,0.3)" } : undefined}
-                      >
-                        {y}
-                      </button>
-                    );
-                  })}
-                </div>
+              <div role="group" aria-label="Filter by year" className="flex flex-wrap gap-2.5">
+                {YEARS.map((y) => {
+                  const active = focusYear === y;
+                  return (
+                    <button
+                      key={y}
+                      onClick={() => setFocusYear((p) => (p === y ? null : y))}
+                      data-cursor-hover
+                      aria-pressed={active}
+                      className={cn(
+                        "rounded-full border px-5 py-3 text-base font-medium tabular-nums transition-all duration-200",
+                        active
+                          ? "border-transparent text-white"
+                          : "border-[var(--line)] bg-[#fffdf7] text-[var(--muted)] hover:text-[var(--fg)]",
+                      )}
+                      style={active ? { background: "var(--accent)", boxShadow: "0 2px 8px rgba(176,124,30,0.3)" } : undefined}
+                    >
+                      {y}
+                    </button>
+                  );
+                })}
               </div>
 
               {/* active filter + clear */}
@@ -413,26 +405,17 @@ export function TrophyCase() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -4 }}
                     transition={{ duration: 0.25 }}
-                    className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-[var(--line)] pt-5"
+                    className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[var(--line)] pt-5"
                   >
-                    <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">Showing</span>
-                    {activeFilter !== "all" && activeCatColor && (
-                      <span className="font-mono text-[0.6rem] uppercase tracking-widest" style={{ color: activeCatColor }}>
-                        {CAT_META[activeFilter as TrophyCat].label}
-                      </span>
-                    )}
-                    {focusYear && (
-                      <span className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--accent)]">{focusYear}</span>
-                    )}
-                    <span className="font-mono text-[0.6rem] text-[var(--muted)]">
-                      · {filtered.length} {filtered.length === 1 ? "entry" : "entries"}
+                    <span className="text-base text-[var(--muted)]">
+                      {filtered.length} {filtered.length === 1 ? "entry" : "entries"}
                     </span>
                     <button
                       onClick={() => { setActiveFilter("all"); setFocusYear(null); }}
                       data-cursor-hover
-                      className="font-mono text-[0.58rem] uppercase tracking-widest text-[var(--muted)] transition-colors hover:text-[var(--fg)]"
+                      className="rounded-full border border-[var(--line)] bg-[#fffdf7] px-5 py-3 text-base font-medium text-[var(--muted)] transition-colors hover:text-[var(--fg)]"
                     >
-                      ✕ Clear
+                      Clear filters
                     </button>
                   </motion.div>
                 )}
@@ -452,17 +435,13 @@ export function TrophyCase() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="py-8 text-center font-mono text-sm text-[var(--muted)]"
+                    className="py-8 text-center text-base text-[var(--muted)]"
                   >
                     No entries match that domain in that year.
                   </motion.p>
                 )}
               </AnimatePresence>
 
-              {/* Hover-to-read hint */}
-              <p className="mt-6 text-center font-mono text-[0.66rem] text-[var(--muted)]">
-                Hover a star to read it · the bigger the dot, the bigger the accomplishment
-              </p>
             </div>
           </Reveal>
         </div>

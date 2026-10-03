@@ -15,13 +15,7 @@ type Role = (typeof LEADERSHIP.roles)[number];
  * Hero role card — for ASB President and Class President ×3 (highlight=true).
  * Large, dramatic, editorial. Expands to reveal the narrative note on click.
  */
-function HighlightRoleCard({
-  role,
-  index,
-}: {
-  role: Role;
-  index: number;
-}) {
+function HighlightRoleCard({ role }: { role: Role }) {
   return (
     <TiltCard max={5} className="h-full">
       <motion.div
@@ -47,27 +41,15 @@ function HighlightRoleCard({
           }}
         />
 
-        {/* Index + tag row */}
-        <div className="relative z-10 flex items-center justify-between">
-          <span className="font-mono text-[0.55rem] uppercase tracking-[0.3em] text-[var(--muted)] opacity-60">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <span className="border border-[rgba(212,175,106,0.3)] px-2.5 py-1 font-mono text-[0.55rem] uppercase tracking-widest text-[var(--accent)]">
-            {role.tag}
-          </span>
-        </div>
-
         {/* Title */}
-        <div className="relative z-10 mt-8 md:mt-12">
+        <div className="relative z-10">
           <p
             className="font-anton uppercase leading-[1] tracking-tight text-[var(--accent)]"
             style={{ fontSize: "clamp(2.4rem, 6vw, 4.5rem)" }}
           >
             {role.title}
           </p>
-          <p className="mt-2 font-mono text-[0.65rem] uppercase tracking-widest text-[var(--muted)]">
-            {role.window}
-          </p>
+          <p className="mt-3 text-base text-[var(--muted)]">{role.window}</p>
         </div>
 
         {/* Reveal note — the narrative */}
@@ -90,12 +72,12 @@ function HighlightRoleCard({
                       <Photo src={m.src} alt={m.label} className="object-cover transition-transform duration-700 group-hover/m:scale-[1.04]" />
                       {m.kind === "reel" && (
                         <span className="absolute inset-0 flex items-center justify-center">
-                          <span className="flex size-8 items-center justify-center rounded-full bg-[rgba(12,10,8,0.7)] text-[0.6rem] text-[var(--accent)] backdrop-blur-sm">▶</span>
+                          <span aria-hidden className="flex size-9 items-center justify-center rounded-full bg-[rgba(12,10,8,0.7)] text-sm text-[var(--accent)] backdrop-blur-sm">▶</span>
                         </span>
                       )}
                     </div>
-                    <p className="mt-1.5 truncate font-mono text-[0.55rem] uppercase tracking-[0.18em] text-[var(--muted)] group-hover/m:text-[var(--accent)]">
-                      {m.kind === "reel" ? "▶ " : ""}{m.label}
+                    <p className="mt-1.5 text-sm leading-snug text-[var(--muted)] group-hover/m:text-[var(--accent)]">
+                      {m.label}
                     </p>
                   </>
                 );
@@ -123,7 +105,7 @@ function HighlightRoleCard({
  * Supporting role card — the three club offices. Photo on top with the title
  * always legible; hover (or tap) dims the print and brings the note up over it.
  */
-function SupportingRoleCard({ role, index }: { role: Role; index: number }) {
+function SupportingRoleCard({ role }: { role: Role }) {
   const [photoHover, setPhotoHover] = useState(false);
   const [descHover, setDescHover] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -131,7 +113,6 @@ function SupportingRoleCard({ role, index }: { role: Role; index: number }) {
   const photo = "photo" in role ? role.photo : undefined;
   const photoAlt = "photoAlt" in role ? role.photoAlt : role.title;
   const crew = LEADERSHIP.crews.find((c) => role.title.startsWith(c.club) || role.title.startsWith(c.club.replace("MSJ ", "")));
-  const stat = crew?.stat;
 
   // hovering (or tapping/focusing) the picture: saturate the original print.
   const printActive = photoHover || descHover || focused || tapOpen;
@@ -179,14 +160,6 @@ function SupportingRoleCard({ role, index }: { role: Role; index: number }) {
             style={{ pointerEvents: "none" }}
           >
             <Photo src={crew.photo} alt={crew.photoAlt} className="object-cover" style={{ objectPosition: "50% 30%" }} />
-            <motion.span
-              initial={false}
-              animate={{ opacity: crewOpen ? 1 : 0 }}
-              transition={{ duration: 0.35, delay: crewOpen ? 0.15 : 0 }}
-              className="absolute bottom-3 left-4 font-mono text-[0.52rem] uppercase tracking-[0.28em] text-[var(--accent)] [text-shadow:0_1px_6px_rgba(0,0,0,0.9)]"
-            >
-              The officers
-            </motion.span>
           </motion.div>
         )}
         <span aria-hidden className="absolute left-0 top-0 z-20 h-6 w-6 border-l-2 border-t-2 border-[var(--accent)] opacity-0 transition-opacity duration-300 group-hover:opacity-80" />
@@ -196,13 +169,12 @@ function SupportingRoleCard({ role, index }: { role: Role; index: number }) {
       <div className="flex flex-1 flex-col px-5 py-4">
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
           <div className="min-w-0">
-            <span className="block font-mono text-[0.55rem] uppercase tracking-[0.3em] text-[var(--muted)]">{String(index + 1).padStart(2, "0")}</span>
-            <p className="relative mt-1 inline-block whitespace-nowrap font-anton text-[1.4rem] uppercase leading-none tracking-tight text-[var(--fg)] transition-colors duration-300 group-hover:text-[var(--accent)] md:text-[1.45rem]">
+            <p className="relative inline-block whitespace-nowrap font-anton text-[1.4rem] uppercase leading-none tracking-tight text-[var(--fg)] transition-colors duration-300 group-hover:text-[var(--accent)] md:text-[1.45rem]">
               {role.title}
               <motion.span aria-hidden initial={false} animate={{ scaleX: printActive ? 1 : 0 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }} className="absolute -bottom-1 left-0 h-px w-full origin-left bg-[var(--accent)]" />
             </p>
           </div>
-          <span className="shrink-0 border border-[rgba(212,175,106,0.35)] px-2 py-1 font-mono text-[0.55rem] uppercase tracking-widest text-[var(--accent)]">
+          <span className="shrink-0 border border-[rgba(212,175,106,0.35)] px-2 py-1 text-sm leading-tight text-[var(--accent)]">
             {role.window}
           </span>
         </div>
@@ -211,12 +183,7 @@ function SupportingRoleCard({ role, index }: { role: Role; index: number }) {
           onMouseEnter={() => setDescHover(true)}
           onMouseLeave={() => setDescHover(false)}
         >
-          <p className="text-[0.82rem] leading-relaxed text-[var(--fg)]">{role.note}</p>
-          {stat && (
-            <p className="mt-3 font-mono text-[0.6rem] uppercase tracking-[0.22em] text-[var(--accent)]">
-              <span className="font-anton text-base normal-case tracking-normal">{stat.value}</span> · {stat.label}
-            </p>
-          )}
+          <p className="text-sm leading-relaxed text-[var(--fg)]">{role.note}</p>
         </div>
       </div>
     </motion.div>
@@ -229,10 +196,9 @@ function SupportingRoleCard({ role, index }: { role: Role; index: number }) {
 function SophomoreArcCallout() {
   return (
     <Reveal>
-      <div className="relative flex flex-wrap items-baseline gap-x-5 gap-y-1 overflow-hidden border border-[rgba(212,175,106,0.25)] bg-[var(--bg-2)] px-6 py-4 md:px-7">
+      <div className="relative overflow-hidden border border-[rgba(212,175,106,0.25)] bg-[var(--bg-2)] px-6 py-4 md:px-7">
         {/* Vertical gold bar on the left */}
         <span aria-hidden className="absolute bottom-0 left-0 top-0 w-[3px] bg-[var(--accent)] opacity-70" />
-        <p className="eyebrow pl-3 text-[var(--accent)]">The arc</p>
         <p className="pl-3 font-anton text-[1.3rem] uppercase leading-none tracking-tight text-[var(--fg)] md:text-[1.7rem]">
           Lost by&nbsp;~10 votes as a sophomore. <span className="text-[var(--accent)]">Ran back. Won.</span>
         </p>
@@ -272,8 +238,8 @@ export function ElectedOffices() {
         stagger={0.1}
         delayChildren={0.05}
       >
-        {highlighted.map((role, i) => (
-          <HighlightRoleCard key={role.title} role={role} index={i} />
+        {highlighted.map((role) => (
+          <HighlightRoleCard key={role.title} role={role} />
         ))}
       </RevealGroup>
 
@@ -299,10 +265,9 @@ export function ElectedOffices() {
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
                 style={{ background: "linear-gradient(to top, rgba(12,10,8,0.85) 0%, transparent 100%)" }}
               />
-              <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-4 pb-3">
-                <p className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--accent)]">The ASB Officers · 2026–2027</p>
-                <p className="font-mono text-[0.55rem] uppercase tracking-[0.2em] text-[var(--fg)] opacity-80">L → R · {LEADERSHIP.officers}</p>
-              </div>
+              <p className="absolute inset-x-0 bottom-0 px-4 pb-3 text-sm leading-snug text-[var(--fg)]">
+                <span className="text-[var(--accent)]">The ASB officers</span>, left to right: {LEADERSHIP.officers}
+              </p>
               <span aria-hidden className="absolute left-0 top-0 h-6 w-6 border-l-2 border-t-2 border-[var(--accent)] opacity-70" />
               <span aria-hidden className="absolute bottom-0 right-0 h-6 w-6 border-b-2 border-r-2 border-[var(--accent)] opacity-70" />
             </div>
@@ -323,33 +288,31 @@ export function ElectedOffices() {
               <div className="relative aspect-[16/10] overflow-hidden border-b border-[rgba(212,175,106,0.25)]">
                 <Photo src={LEADERSHIP.site.shot} alt="msjhsasb.org — the rebuilt MSJHS ASB website" className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]" />
               </div>
-              <div className="flex items-baseline justify-between gap-3 px-5 pt-5">
-                <p className="font-anton text-[1.4rem] uppercase leading-none tracking-tight text-[var(--accent)]">{LEADERSHIP.site.name}</p>
-                <span className="font-mono text-[0.55rem] uppercase tracking-widest text-[var(--muted)] transition-colors group-hover:text-[var(--accent)]">Open ↗</span>
-              </div>
+              <p className="px-5 pt-5 font-anton text-[1.4rem] uppercase leading-none tracking-tight text-[var(--accent)]">
+                {LEADERSHIP.site.name}
+                <span aria-hidden className="ml-2 text-[var(--muted)] transition-colors group-hover:text-[var(--accent)]">↗</span>
+              </p>
             </a>
             <div className="flex flex-1 flex-col px-5 pb-5">
               <p className="mt-3 text-sm leading-relaxed text-[var(--fg)] opacity-75">{LEADERSHIP.site.body}</p>
 
               {/* Hermes — the bot behind the club schedule */}
               <div className="mt-5 flex gap-4 border-t border-[rgba(212,175,106,0.25)] pt-5">
-                <div className="flex shrink-0 flex-col gap-2" style={{ width: 112 }}>
-                  <div className="overflow-hidden border border-[rgba(212,175,106,0.35)]" style={{ width: 112 }}>
-                    <Photo src={LEADERSHIP.hermes.shot} alt="A Hermes club-schedule story on @msjclubs — the day's meetings, room and time" className="h-auto object-contain" style={{ width: 112, maxWidth: "100%" }} />
-                  </div>
-                  <Link
-                    href={LEADERSHIP.hermes.cta.href}
-                    data-cursor-hover
-                    className="inline-flex items-center justify-center whitespace-nowrap border border-[rgba(212,175,106,0.5)] px-2 py-2 font-mono text-[0.55rem] uppercase tracking-[0.1em] text-[var(--accent)] transition-colors duration-300 hover:bg-[var(--accent)] hover:text-[#0c0a08]"
-                  >
-                    {LEADERSHIP.hermes.cta.label}
-                  </Link>
+                <div className="shrink-0 self-start overflow-hidden border border-[rgba(212,175,106,0.35)]" style={{ width: 112 }}>
+                  <Photo src={LEADERSHIP.hermes.shot} alt="A Hermes club-schedule story on @msjclubs — the day's meetings, room and time" className="h-auto object-contain" style={{ width: 112, maxWidth: "100%" }} />
                 </div>
                 <div className="min-w-0">
                   <p className="font-anton text-[1.15rem] uppercase leading-none tracking-tight text-[var(--fg)]">
-                    {LEADERSHIP.hermes.name} <span className="font-mono text-[0.55rem] normal-case tracking-widest text-[var(--muted)]">{LEADERSHIP.hermes.handle}</span>
+                    {LEADERSHIP.hermes.name}
                   </p>
-                  <p className="mt-2 text-[0.8rem] leading-relaxed text-[var(--fg)] opacity-70">{LEADERSHIP.hermes.body}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-[var(--fg)] opacity-70">{LEADERSHIP.hermes.body}</p>
+                  <Link
+                    href={LEADERSHIP.hermes.cta.href}
+                    data-cursor-hover
+                    className="mt-4 inline-flex items-center justify-center border border-[rgba(212,175,106,0.5)] px-4 py-2 text-base text-[var(--accent)] transition-colors duration-300 hover:bg-[var(--accent)] hover:text-[#0c0a08]"
+                  >
+                    {LEADERSHIP.hermes.cta.label}
+                  </Link>
                 </div>
               </div>
             </div>
@@ -365,12 +328,8 @@ export function ElectedOffices() {
             stagger={0.1}
             delayChildren={0.05}
           >
-            {supporting.map((role, i) => (
-              <SupportingRoleCard
-                key={role.title}
-                role={role}
-                index={highlighted.length + i}
-              />
+            {supporting.map((role) => (
+              <SupportingRoleCard key={role.title} role={role} />
             ))}
           </RevealGroup>
         </div>

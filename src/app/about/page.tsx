@@ -9,7 +9,6 @@ import { SkySection } from "@/components/about/SkySection";
 import { KitchenSection } from "@/components/about/KitchenSection";
 import { TravelSection } from "@/components/about/TravelSection";
 import { JournalSection } from "@/components/about/JournalSection";
-import { PROFILE } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "About",
@@ -49,10 +48,7 @@ export default function AboutPage() {
       <section className="border-t-4 border-[var(--accent)] bg-[#171511] text-[#ebeae6]">
         <div className="mx-auto max-w-6xl px-5 py-20 text-center md:px-9 md:py-32">
           <Reveal>
-            <p className="font-mono text-[0.62rem] uppercase tracking-[0.34em] text-[#8a877f]">
-              {PROFILE.links.instagramHandle} is the camera — this was the person
-            </p>
-            <p className="mt-6 font-anton text-[2.6rem] uppercase leading-[0.95] tracking-tight md:text-[5.5rem]">
+            <p className="font-anton text-[2.6rem] uppercase leading-[0.95] tracking-tight md:text-[5.5rem]">
               It all points one direction —
               <br />
               <span className="text-[var(--accent)]">the pursuit of happiness.</span>

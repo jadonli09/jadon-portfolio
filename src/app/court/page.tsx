@@ -31,7 +31,7 @@ export default function CourtPage() {
       {/* 2. Courtside LED ad board */}
       <CourtTicker />
 
-      {/* 2b. Gym scoreboard — FIRST 5 · NCS · 569k · .500 JV */}
+      {/* 2b. Gym scoreboard — FIRST 5 · NCS · .500 JV */}
       <CourtStatLine />
 
       {/* 3. Career timeline — the seams of the ball, game photos embedded per era */}

@@ -97,19 +97,6 @@ export function LockedHero() {
         className="relative z-10 mx-auto max-w-7xl px-5 md:px-9"
         style={{ y: parallaxY, opacity: parallaxOpacity }}
       >
-        {/* Eyebrow */}
-        <Reveal>
-          <div className="mb-6 flex items-center gap-4">
-            <span className="eyebrow text-[#ffb43d]">07 — The Pursuit</span>
-            <span
-              className="h-px flex-1 opacity-30"
-              style={{ background: SEASON_GRADIENT }}
-              aria-hidden
-            />
-            <span className="eyebrow">{PROFILE.links.instagramHandle}</span>
-          </div>
-        </Reveal>
-
         {/* Main headline — word-by-word kinetic */}
         <h1 className="sr-only">One year, documented. Still locked in.</h1>
         <KineticHeadline
@@ -172,7 +159,7 @@ export function LockedHero() {
                     duration={2.0}
                   />
                 </p>
-                <p className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-[var(--muted)]">
+                <p className="font-grotesk text-sm text-[var(--muted)] md:text-base">
                   {m.label}
                 </p>
               </div>
@@ -189,7 +176,7 @@ export function LockedHero() {
                 target="_blank"
                 rel="noreferrer"
                 data-cursor-hover
-                className="group inline-flex items-center gap-3 border border-[var(--accent)] px-6 py-3 font-mono text-sm uppercase tracking-[0.2em] text-[var(--accent)] transition-all duration-300 hover:bg-[var(--accent)] hover:text-[var(--bg)]"
+                className="group inline-flex items-center gap-3 border border-[var(--accent)] px-6 py-3 font-mono text-base uppercase tracking-[0.14em] text-[var(--accent)] transition-all duration-300 hover:bg-[var(--accent)] hover:text-[var(--bg)]"
               >
                 {PROFILE.links.instagramHandle}
                 <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

@@ -188,6 +188,8 @@ export function HeroCarousel({
   const step = cardW + gap;
   const pad = Math.max(16, Math.round(box.w * PAD));
   const label = Math.max(11, Math.round(box.h * LABEL));
+  // facts / dates / credit — never below the 14px caption floor
+  const small = Math.max(14, label);
   /** Hover wins over focus, so pointing at a neighbour previews that one. */
   const shown = hovered ?? index;
 
@@ -365,7 +367,7 @@ export function HeroCarousel({
             type="button"
             onClick={onBack}
             className="opacity-90 transition-opacity hover:opacity-100"
-            style={{ fontSize: label * 1.15 }}
+            style={{ fontSize: Math.max(16, label * 1.15) }}
           >
             <span aria-hidden>↖</span> Back
           </button>
@@ -373,7 +375,7 @@ export function HeroCarousel({
         {brand ? (
           <div
             className="font-semibold tracking-[0.06em]"
-            style={{ fontSize: label * 1.35 }}
+            style={{ fontSize: Math.max(16, label * 1.35) }}
           >
             {brand}
           </div>
@@ -383,7 +385,7 @@ export function HeroCarousel({
             type="button"
             onClick={onMenu}
             className="opacity-90 transition-opacity hover:opacity-100"
-            style={{ fontSize: label * 1.15 }}
+            style={{ fontSize: Math.max(16, label * 1.15) }}
           >
             Menu <span aria-hidden>☰</span>
           </button>
@@ -433,8 +435,8 @@ export function HeroCarousel({
           {active.credit ? (
             <motion.p
               key={`credit-${index}`}
-              className="col-span-2 row-start-2 font-mono uppercase tracking-[0.12em] opacity-80"
-              style={{ fontSize: label }}
+              className="col-span-2 row-start-2 opacity-80"
+              style={{ fontSize: small }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.8 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -463,8 +465,8 @@ export function HeroCarousel({
               {active.meta.map((fact, i) => (
                 <motion.span
                   key={`${index}-${fact}`}
-                  className="whitespace-nowrap font-mono uppercase tracking-[0.14em] opacity-80"
-                  style={{ fontSize: label }}
+                  className="whitespace-nowrap opacity-80"
+                  style={{ fontSize: small }}
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 0.8, y: 0 }}
                   transition={
@@ -560,8 +562,8 @@ export function HeroCarousel({
                     </span>
                     {item.caption.when ? (
                       <span
-                        className="shrink-0 font-mono uppercase tracking-[0.12em] opacity-60"
-                        style={{ fontSize: label }}
+                        className="shrink-0 tabular-nums opacity-70"
+                        style={{ fontSize: small }}
                       >
                         {item.caption.when}
                       </span>
@@ -602,14 +604,7 @@ export function HeroCarousel({
           width: box.w * RAIL,
         }}
       >
-        <div
-          className="flex justify-between font-mono tabular-nums opacity-80"
-          style={{ fontSize: label }}
-        >
-          <span>{String(index + 1).padStart(2, "0")}</span>
-          <span>{String(items.length).padStart(2, "0")}</span>
-        </div>
-        <div className="relative mt-2 h-px w-full bg-white/25">
+        <div className="relative h-px w-full bg-white/25">
           <motion.div
             className="absolute inset-y-0 bg-white"
             style={{ width: `${100 / items.length}%` }}

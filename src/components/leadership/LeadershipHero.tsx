@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
-import { Reveal } from "@/components/primitives/Reveal";
 import { Photo } from "@/components/primitives/Photo";
 
 /** Gold line that animates in from the left — reusable accent. */
@@ -25,7 +24,6 @@ const TERM_PANELS = [
     src: "/img/classofficer-freshman.jpg",
     alt: "Freshman class officers in Santa hats by the school calendar mural",
     year: "9th",
-    label: "Freshman slate",
     pos: "50% 42%",
     lift: "md:translate-y-6",
   },
@@ -33,7 +31,6 @@ const TERM_PANELS = [
     src: "/img/classofficer-sophomore.jpg",
     alt: "Sophomore class officers on the rally stage, Jadon on the mic",
     year: "10th",
-    label: "On the mic",
     pos: "22% 38%",
     lift: "md:translate-y-3",
   },
@@ -41,7 +38,6 @@ const TERM_PANELS = [
     src: "/img/classofficer-junior.jpg",
     alt: "Junior class officers with the 'Never Second, 2027' sign",
     year: "11th",
-    label: "Never second",
     pos: "50% 40%",
     lift: "md:translate-y-0",
   },
@@ -49,7 +45,7 @@ const TERM_PANELS = [
     src: "/img/gw-05.jpg",
     alt: "The ASB officers on stage at the Green & White Assembly, Jadon on the mic",
     year: "12th",
-    label: "ASB President",
+    role: "ASB President",
     pos: "50% 38%",
     lift: "md:-translate-y-3",
   },
@@ -102,14 +98,11 @@ function TermFrame({
             style={{ background: "linear-gradient(to top, rgba(12,10,8,0.7) 0%, transparent 100%)" }}
           />
 
-          {/* Year tab */}
-          <span className="absolute left-0 top-0 bg-[var(--accent)] px-2 py-1 font-mono text-[0.55rem] font-bold uppercase tracking-[0.2em] text-[#0c0a08]">
-            {panel.year}
-          </span>
         </div>
       </div>
-      <figcaption className="mt-1.5 px-0.5 font-mono text-[0.5rem] uppercase tracking-[0.22em] text-[var(--muted)] md:text-[0.55rem]">
-        {panel.label}
+      <figcaption className="mt-1.5 px-0.5 text-sm leading-snug text-[var(--muted)]">
+        {panel.year}
+        {panel.role && <span className="text-[var(--accent)]"> — {panel.role}</span>}
       </figcaption>
     </motion.figure>
   );
@@ -142,9 +135,7 @@ function MastheadTriptych({ parallaxY }: { parallaxY?: MotionValue<number> }) {
       >
         <span aria-hidden className="absolute inset-1.5 rounded-full border border-[rgba(245,236,216,0.5)]" />
         <p className="font-anton text-lg leading-none text-[#f5ecd8] md:text-2xl">4×</p>
-        <p className="mt-0.5 px-1.5 font-mono text-[0.4rem] uppercase tracking-[0.15em] text-[rgba(245,236,216,0.85)] md:px-2 md:text-[0.5rem] md:tracking-[0.2em]">
-          elected
-        </p>
+        <span className="sr-only">elected</span>
       </motion.div>
     </motion.div>
   );
@@ -166,16 +157,8 @@ export function LeadershipHero() {
 
   return (
     <section ref={sectionRef} className="relative mx-auto max-w-7xl px-5 pb-0 pt-36 md:px-9 md:pt-44">
-      {/* Eyebrow + grid line */}
-      <Reveal>
-        <div className="flex items-center justify-between gap-4">
-          <span className="eyebrow text-[var(--accent)]">04 — Leadership &amp; Events</span>
-          <span className="eyebrow hidden text-[var(--muted)] sm:block">ASB President · Class of 2027 · MSJ</span>
-        </div>
-      </Reveal>
-
       {/* Thick gold top rule */}
-      <GoldRule delay={0.15} className="mt-3 w-full" />
+      <GoldRule delay={0.15} className="w-full" />
 
       {/* ── The masthead composition ───────────────────────────────── */}
       <div className="relative mt-6 md:mt-8">

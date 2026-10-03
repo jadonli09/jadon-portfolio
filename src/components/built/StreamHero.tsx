@@ -154,16 +154,7 @@ export function StreamHero() {
         />
 
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-5 text-center md:px-9">
-          <motion.p
-            className="t-label"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, ease: EASE_OUT }}
-          >
-            03 — Things I&apos;ve built
-          </motion.p>
-
-          <h1 className="t-display mt-5 text-balance">
+          <h1 className="t-display text-balance">
             <Line delay={0.08} className="text-[1.2em]">
               Ship it.
             </Line>
@@ -192,7 +183,7 @@ export function StreamHero() {
           <motion.dl
             /*
               A row at every width. Stacked on a phone, three capsules ran
-              taller than the corridor itself and pushed the eyebrow off the
+              taller than the corridor itself and pushed the headline off the
               top of the screen — on the one layout where the stream has the
               least room to spare.
             */
@@ -210,7 +201,7 @@ export function StreamHero() {
                 <dt className="t-num text-[1.35rem] leading-none sm:text-[1.75rem] md:text-[2.1rem]">
                   <StatFigure value={s.value} />
                 </dt>
-                <dd className="t-small vibrant text-[0.68rem] leading-tight sm:text-[0.75rem] md:text-[0.8rem]">
+                <dd className="t-small vibrant leading-tight md:text-[0.9375rem]">
                   {s.label}
                 </dd>
               </LiquidGlass>

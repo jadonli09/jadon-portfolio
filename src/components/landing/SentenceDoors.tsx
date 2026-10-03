@@ -4,11 +4,11 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
-import { SENTENCE_DOORS, SENTENCE_TICKER, type SentenceDoor } from "@/lib/data";
+import { SENTENCE_DOORS, type SentenceDoor } from "@/lib/data";
 import { asset } from "@/lib/base";
 import { cn } from "@/lib/cn";
 import { EASE } from "@/lib/motion";
-import { BoardLabel, useBoard } from "@/components/landing/BoardSurface";
+import { useBoard } from "@/components/landing/BoardSurface";
 
 const D = SENTENCE_DOORS;
 
@@ -36,7 +36,7 @@ const DOORS = Object.values(D) as SentenceDoor[];
  * Every door word is a physically pinned paper tag — pin head, paper, tilt,
  * arrow — with a red thread running down to its evidence on the record.
  * Hover (or first tap) floods the background with that world's photo and
- * opens a stat peek; click (or second tap) enters.
+ * opens a peek card; click (or second tap) enters.
  */
 export function SentenceDoors() {
   const { activeWorld, setActiveWorld, registerSource } = useBoard();
@@ -76,10 +76,6 @@ export function SentenceDoors() {
       />
 
       <div className="relative z-10 mx-auto w-full max-w-6xl px-5 py-16 md:px-9 md:py-20">
-        <div className="mb-9">
-          <BoardLabel>Who he is · in one sentence</BoardLabel>
-        </div>
-
         <div className="lg:grid lg:grid-cols-[7fr_4.6fr] lg:items-center lg:gap-12 xl:gap-16">
           <div>
         <motion.h2
@@ -114,21 +110,6 @@ export function SentenceDoors() {
             </span>
           ))}
         </motion.h2>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: reduce ? 0 : 1.6, duration: 0.8 }}
-          className="mt-9 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-[#8a8a99]"
-        >
-          {SENTENCE_TICKER.map((s, i) => (
-            <span key={s} className="flex items-center gap-4">
-              {i > 0 && <span aria-hidden>·</span>}
-              {s}
-            </span>
-          ))}
-        </motion.div>
           </div>
 
           {/* the case card — hover a word, read what it means */}
@@ -165,19 +146,15 @@ function DoorCard({ door }: { door: SentenceDoor | null }) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={asset(door.photo)} alt="" className="aspect-[16/10] w-full object-cover xl:aspect-[4/3]" />
               <div className="px-1.5">
-                <p className="mt-5 font-mono text-[0.66rem] font-bold uppercase tracking-[0.22em]" style={{ color: door.accent }}>
-                  {door.num} · {door.kicker}
-                </p>
-                <h3 className="font-display mt-2.5 text-balance text-[1.8rem] leading-[1.1] tracking-tight text-[#1d1b16] xl:text-[2.05rem]">
+                <h3 className="font-display mt-5 text-balance text-[1.8rem] leading-[1.1] tracking-tight text-[#1d1b16] xl:text-[2.05rem]">
                   {door.title}
                 </h3>
                 <p className="font-display mt-3.5 text-pretty text-[1rem] leading-relaxed text-[#3d3a33] xl:text-[1.05rem]">{door.lede}</p>
-                <p className="mt-4 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-[#8a8273]">{door.peek}</p>
                 <span
-                  className="mt-5 flex items-center gap-1.5 font-mono text-[0.7rem] font-bold uppercase tracking-[0.2em] transition-transform duration-300 group-hover:translate-x-1.5"
+                  className="font-display mt-5 flex items-center gap-2 text-[1.05rem] font-bold transition-[translate] duration-300 group-hover:translate-x-1.5"
                   style={{ color: door.accent }}
                 >
-                  {door.cta} <ArrowRight className="size-4" />
+                  {door.cta} <ArrowRight className="size-[1.1rem]" />
                 </span>
               </div>
             </Link>
@@ -191,8 +168,7 @@ function DoorCard({ door }: { door: SentenceDoor | null }) {
             transition={{ duration: 0.3 }}
             className="w-full border-2 border-dashed border-white/15 px-8 py-14 text-center"
           >
-            <p className="font-mono text-[0.62rem] uppercase tracking-[0.25em] text-[#8a8a99]">The seven doors</p>
-            <p className="font-display mt-4 text-xl leading-relaxed text-[#cfcfd8]">
+            <p className="font-display text-xl leading-relaxed text-[#cfcfd8]">
               Hover any pinned word —<br />
               this card shows the world behind it.
             </p>
@@ -274,7 +250,7 @@ function Door({ door, rot }: { door: SentenceDoor; rot: number }) {
       <span
         ref={peekRef}
         aria-hidden={!open}
-        className="pointer-events-none absolute left-1/2 top-[118%] z-20 block w-60 -translate-x-1/2 rounded-[2px] border border-white/20 bg-[#0e0e14]/95 p-2.5 font-mono text-[0.6rem] not-italic normal-case tracking-wide text-[#f4f1ea] shadow-2xl transition-all duration-300 lg:hidden"
+        className="pointer-events-none absolute left-1/2 top-[118%] z-20 block w-64 -translate-x-1/2 rounded-[2px] border border-white/20 bg-[#0e0e14]/95 p-3 not-italic normal-case tracking-normal text-[#f4f1ea] shadow-2xl transition-all duration-300 lg:hidden"
         style={{ opacity: open ? 1 : 0, transform: `translateX(calc(-50% + ${shift}px)) translateY(${open ? 0 : 6}px)` }}
       >
         <span
@@ -283,12 +259,8 @@ function Door({ door, rot }: { door: SentenceDoor; rot: number }) {
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={asset(door.photo)} alt="" className="mb-2 h-20 w-full rounded-sm object-cover" />
-        <span className="font-display block text-balance text-[0.95rem] font-bold leading-tight">{door.title}</span>
-        <span className="font-display mt-1 block text-pretty text-[0.74rem] leading-snug">{door.desc}</span>
-        <span className="mt-1.5 block text-[0.55rem] text-[#9a9aa8]">{door.peek}</span>
-        <span className="mt-1.5 flex items-center gap-1.5 font-bold" style={{ color: door.color }}>
-          enter <ArrowRight className="size-3" />
-        </span>
+        <span className="font-display block text-balance text-base font-bold leading-tight">{door.title}</span>
+        <span className="font-display mt-1.5 block text-pretty text-sm leading-snug">{door.desc}</span>
       </span>
     </Link>
   );

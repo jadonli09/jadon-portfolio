@@ -234,7 +234,7 @@ function ResearchScan({ phase }: { phase: Phase }) {
         transition={{ duration: 0.55, ease: "easeInOut" }}
       />
       {/* boot log */}
-      <div className="absolute left-1/2 top-1/2 w-[min(34rem,86vw)] -translate-x-1/2 -translate-y-1/2 font-mono text-[0.78rem] leading-7 text-[#bcff46]">
+      <div className="absolute left-1/2 top-1/2 w-[min(34rem,86vw)] -translate-x-1/2 -translate-y-1/2 font-mono text-sm leading-7 text-[#bcff46]">
         {LOG.map((line, i) => (
           <motion.p key={line} initial={{ opacity: 0, x: -8 }} animate={{ opacity: i === 0 ? 1 : 0.85, x: 0 }} transition={{ delay: 0.12 + i * 0.1, duration: 0.18 }}>
             {line}
@@ -283,14 +283,6 @@ function BuiltTiles({ phase }: { phase: Phase }) {
           />
         ))}
       </div>
-      <motion.p
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 font-mono text-[0.65rem] uppercase tracking-[0.3em] text-[#f0a05a]"
-        initial={{ opacity: 0 }}
-        animate={phase === "enter" ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ delay: phase === "enter" ? 0.42 : 0, duration: 0.25 }}
-      >
-        building · ship it, then ship the next one
-      </motion.p>
     </div>
   );
 }
@@ -318,26 +310,13 @@ function LockedRec({ phase }: { phase: Phase }) {
           <motion.span className="inline-block h-2.5 w-2.5 rounded-full bg-[#e8385c]" animate={{ opacity: [1, 0.15, 1] }} transition={{ duration: 0.8, repeat: Infinity }} />
           REC <span className="text-[#8a8a99]">00:00:{secs}:{frames}</span>
         </div>
-        <div className="absolute right-2 top-2 font-mono text-xs tracking-[0.2em] text-[#b48cff]">DAY 372 · 4K</div>
         {/* autofocus square — hunts, then locks */}
         <motion.div
           className="absolute left-1/2 top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 border"
           initial={{ scale: 1.5, opacity: 0, borderColor: "#f4f1ea88" }}
           animate={{ scale: [1.5, 0.92, 1], opacity: 1, borderColor: ["#f4f1ea88", "#f4f1ea88", "#7cfc9b"] }}
           transition={{ duration: 0.5, delay: 0.16, times: [0, 0.7, 1], ease: "easeOut" }}
-        >
-          <motion.span
-            className="absolute -bottom-6 left-1/2 -translate-x-1/2 font-mono text-[0.6rem] tracking-[0.25em] text-[#7cfc9b]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-          >
-            AF·LOCK
-          </motion.span>
-        </motion.div>
-        <p className="absolute bottom-2 left-1/2 -translate-x-1/2 font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[#8a8a99]">
-          one year, documented
-        </p>
+        />
       </motion.div>
       {/* shutter blink on exit */}
       {phase === "exit" && (
@@ -400,14 +379,6 @@ function AboutDawn({ phase }: { phase: Phase }) {
           <line x1="760" y1="60" x2="760" y2="18" stroke="#1c1208" strokeWidth="6" />
           <line x1="760" y1="24" x2="788" y2="32" stroke="#1c1208" strokeWidth="5" />
         </motion.svg>
-        <motion.p
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 font-mono text-[0.62rem] uppercase tracking-[0.35em] text-[#3b2a08]"
-          initial={{ opacity: 0 }}
-          animate={phase === "enter" ? { opacity: 0.85 } : { opacity: 0 }}
-          transition={{ delay: phase === "enter" ? 0.45 : 0, duration: 0.3 }}
-        >
-          every birthday, same mountain
-        </motion.p>
       </motion.div>
     </div>
   );

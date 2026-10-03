@@ -15,8 +15,8 @@ function DarkroomProgress() {
   const { active, progress } = useProgress();
   if (!active) return null;
   return (
-    <p className="animate-pulse font-mono text-[0.62rem] uppercase tracking-[0.25em] text-[var(--muted)]">
-      Developing the roll — {Math.round(progress)}%
+    <p className="animate-pulse text-sm tabular-nums text-[var(--muted)]">
+      Loading photos — {Math.round(progress)}%
     </p>
   );
 }
@@ -34,7 +34,7 @@ function ModeToggle({
   onChange: (float: boolean) => void;
 }) {
   const segment =
-    "relative z-10 flex items-center justify-center gap-2 rounded-full px-4 py-2.5 font-mono text-[0.62rem] uppercase tracking-[0.22em] transition-colors duration-300 md:px-5";
+    "relative z-10 flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-base font-medium transition-colors duration-300 md:px-6";
 
   return (
     <div className="rounded-full border border-[var(--line)] bg-[var(--bg-2)]/85 p-1 shadow-2xl backdrop-blur-md">
@@ -56,7 +56,7 @@ function ModeToggle({
               : "text-[var(--bg)]"
           }`}
         >
-          <MousePointer2 className="h-3.5 w-3.5" aria-hidden />
+          <MousePointer2 className="h-4 w-4" aria-hidden />
           Cursor
         </button>
         <button
@@ -69,7 +69,7 @@ function ModeToggle({
               : "text-[var(--muted)] hover:text-[var(--fg)]"
           }`}
         >
-          <Orbit className="h-3.5 w-3.5" aria-hidden />
+          <Orbit className="h-4 w-4" aria-hidden />
           Float
         </button>
       </div>
@@ -151,13 +151,9 @@ export function AlbumImmersive({ className = "" }: { className?: string }) {
               <ModeToggle float={float} onChange={setFloat} />
             </div>
 
-            {/* Navigation hint + load progress */}
-            <div className="pointer-events-none absolute inset-x-0 bottom-8 flex flex-col items-center gap-2 text-center font-mono text-[0.62rem] uppercase tracking-[0.25em]">
+            {/* Texture load progress */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-8 flex justify-center text-center">
               <DarkroomProgress />
-              <p className="text-[var(--muted)]">
-                Scroll or use arrow keys · auto-play resumes after 3s · Esc to
-                exit
-              </p>
             </div>
           </div>,
           document.body

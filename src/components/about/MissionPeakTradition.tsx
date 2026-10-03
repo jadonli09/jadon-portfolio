@@ -53,10 +53,7 @@ export function MissionPeakTradition() {
         {/* ── header ── */}
         <div className="mb-14 flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="inline-block bg-[var(--fg)] px-3 py-1 font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--bg)]">
-              The tradition
-            </p>
-            <h2 className="mt-5 font-anton text-4xl uppercase leading-[0.95] tracking-tight md:text-7xl">
+            <h2 className="font-anton text-4xl uppercase leading-[0.95] tracking-tight md:text-7xl">
               Mission Peak,
               <br />
               every birthday<span className="text-[var(--accent)]">.</span>
@@ -72,8 +69,8 @@ export function MissionPeakTradition() {
         <div className="grid gap-10 lg:grid-cols-[0.38fr_0.62fr] lg:items-end">
           {/* readout */}
           <div>
-            <p className="font-mono text-[0.62rem] uppercase tracking-[0.3em] text-[var(--muted)]">
-              Climb № {active + 1} · age {Number(current.year) - BIRTH_YEAR}
+            <p className="text-base text-[var(--muted)]">
+              Climb {active + 1}, at age {Number(current.year) - BIRTH_YEAR} — bottom to summit
             </p>
             <motion.p
               key={current.time}
@@ -85,9 +82,6 @@ export function MissionPeakTradition() {
             >
               {current.time}
             </motion.p>
-            <p className="mt-1 font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--muted)]">
-              bottom → summit · min&apos;sec
-            </p>
             <motion.p
               key={current.year}
               initial={{ opacity: 0, y: 8 }}
@@ -153,18 +147,6 @@ export function MissionPeakTradition() {
                       transition={{ duration: 0.4, ease: EASE, delay: 0.25 * i + 0.3 }}
                       style={{ transformOrigin: `${px(i)}px ${py(c.seconds)}px` }}
                     />
-                    {/* time label above the active dot */}
-                    {isActive && (
-                      <text
-                        x={px(i)}
-                        y={py(c.seconds) - 18}
-                        textAnchor="middle"
-                        className="font-mono"
-                        style={{ fontSize: 13, fill: "var(--fg)", fontVariantNumeric: "tabular-nums" }}
-                      >
-                        {c.time}
-                      </text>
-                    )}
                     {/* invisible fat hit area */}
                     <circle
                       cx={px(i)}
@@ -183,8 +165,7 @@ export function MissionPeakTradition() {
                       textAnchor="middle"
                       className="font-mono"
                       style={{
-                        fontSize: 11,
-                        letterSpacing: "0.14em",
+                        fontSize: 16,
                         fill: isActive ? "var(--fg)" : "var(--muted)",
                       }}
                     >
@@ -194,20 +175,17 @@ export function MissionPeakTradition() {
                 );
               })}
             </svg>
-            <p className="mt-4 font-mono text-[0.6rem] uppercase tracking-[0.26em] text-[var(--muted)]">
-              Higher on the ridge = faster ascent · tap a year
+            <p className="mt-6 text-sm text-[var(--muted)]">
+              Higher on the ridge means a faster climb.
             </p>
           </div>
         </div>
 
         {/* ── summit polaroids, one per year ── */}
         <div className="mt-20">
-          <div className="mb-8 flex items-baseline gap-4">
-            <h3 className="font-anton text-2xl uppercase tracking-tight md:text-3xl">
-              From the summit
-            </h3>
-            <p className="font-hand text-xl text-[var(--muted)]">one frame per year</p>
-          </div>
+          <h3 className="mb-8 font-anton text-2xl uppercase tracking-tight md:text-3xl">
+            From the summit
+          </h3>
 
           <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-6">
             {climbs.map((c, i) => {
@@ -252,7 +230,7 @@ export function MissionPeakTradition() {
                       </div>
                     )}
                     {c.pr && (
-                      <span className="absolute right-1.5 top-1.5 bg-[var(--accent)] px-1.5 py-0.5 font-mono text-[0.5rem] uppercase tracking-widest text-white">
+                      <span className="absolute right-1.5 top-1.5 bg-[var(--accent)] px-2 py-0.5 text-sm font-semibold leading-tight text-white">
                         PR
                       </span>
                     )}
@@ -269,10 +247,6 @@ export function MissionPeakTradition() {
               );
             })}
           </div>
-
-          <p className="mt-8 max-w-md border-l-2 border-[var(--accent)] pl-4 font-mono text-[0.62rem] uppercase tracking-[0.24em] leading-relaxed text-[var(--muted)]">
-            Six climbs and counting — the 2027 frame gets taken the morning he turns eighteen.
-          </p>
         </div>
       </div>
     </section>

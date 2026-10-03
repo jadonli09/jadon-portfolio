@@ -40,7 +40,6 @@ function CrewCard({ crew, index }: { crew: Crew; index: number }) {
           src={crew.photo}
           alt={crew.photoAlt}
           monogram={crew.monogram}
-          note="officer photo en route"
           tone="paper"
         />
       </div>

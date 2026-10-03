@@ -22,10 +22,10 @@ export function DeepDiveBar({ id }: { id: WorldId }) {
       <Link
         href="/#doors"
         data-cursor-hover
-        className="group inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--bg-2)]/80 px-4 py-2.5 font-mono text-[0.62rem] uppercase tracking-[0.2em] text-[var(--muted)] backdrop-blur transition-colors hover:border-[var(--accent)] hover:text-[var(--fg)]"
+        className="group inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--bg-2)]/80 px-5 py-3 text-base font-medium text-[var(--muted)] backdrop-blur transition-colors hover:border-[var(--accent)] hover:text-[var(--fg)]"
       >
-        <ArrowLeft className="size-3.5 transition-transform duration-300 group-hover:-translate-x-1" />
-        One person
+        <ArrowLeft className="size-4 transition-[translate] duration-300 group-hover:-translate-x-1" />
+        Home
       </Link>
     </motion.div>
   );

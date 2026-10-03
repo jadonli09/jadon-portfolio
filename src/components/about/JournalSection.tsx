@@ -16,7 +16,6 @@ type Book = {
   title: string;
   author: string;
   covers: { src: string; alt: string }[]; // two covers = a fanned pair
-  note: string;
   lean: number; // resting tilt on the shelf
 };
 
@@ -25,14 +24,12 @@ const FAVORITES: Book[] = [
     title: "The Three-Body Problem",
     author: "Liu Cixin",
     covers: [{ src: "/img/books/three-body.jpg", alt: "The Three-Body Problem — cover" }],
-    note: "no. 1",
     lean: -3,
   },
   {
     title: "Sunrise on the Reaping",
     author: "Suzanne Collins",
     covers: [{ src: "/img/books/sunrise-reaping.jpg", alt: "Sunrise on the Reaping — cover" }],
-    note: "no. 2",
     lean: 2,
   },
   {
@@ -42,7 +39,6 @@ const FAVORITES: Book[] = [
       { src: "/img/books/the-circle.jpg", alt: "The Circle — cover" },
       { src: "/img/books/the-every.jpg", alt: "The Every — cover" },
     ],
-    note: "no. 3 — a double",
     lean: -2,
   },
 ];
@@ -61,11 +57,6 @@ function ShelfBook({ book, index }: { book: Book; index: number }) {
       className="group relative flex flex-col items-center"
       data-cursor-hover
     >
-      {/* number sticker */}
-      <span className="absolute -top-3 left-1/2 z-10 flex h-6 w-6 -translate-x-1/2 items-center justify-center bg-[var(--accent)] font-mono text-[0.6rem] text-white shadow-[2px_2px_0_rgba(23,21,17,0.25)]">
-        {index + 1}
-      </span>
-
       <motion.div
         variants={{ lifted: { y: -12, rotate: 0, scale: 1.04 } }}
         transition={{ duration: 0.35, ease: EASE }}
@@ -98,12 +89,7 @@ function ShelfBook({ book, index }: { book: Book; index: number }) {
       <p className="mt-4 max-w-[8.5rem] text-center font-anton text-sm uppercase leading-tight tracking-tight">
         {book.title}
       </p>
-      <p className="mt-1 font-mono text-[0.52rem] uppercase tracking-widest text-[var(--muted)]">
-        {book.author}
-      </p>
-      <p className="font-hand mt-1 text-lg leading-none text-[var(--accent)] opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        {book.note}
-      </p>
+      <p className="mt-1 text-center text-sm text-[var(--muted)]">{book.author}</p>
     </motion.div>
   );
 }
@@ -172,7 +158,7 @@ export function JournalSection() {
               <LoopArrow className="w-12 -scale-y-100 rotate-180" delay={0.3} />
             </div>
             <p className="font-hand mt-2 rotate-[-1deg] text-2xl text-[var(--muted)]">
-              the all-time top 3 — pick one up
+              the all-time top 3
             </p>
 
             <div className="relative mt-12">

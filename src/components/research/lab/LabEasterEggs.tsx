@@ -99,7 +99,7 @@ export function LabEasterEggs() {
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 20, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 320, damping: 26 }}
-            className={`max-w-xs rounded-lg border bg-[var(--bg-2)]/95 px-4 py-2.5 font-mono text-[0.7rem] leading-snug shadow-[0_18px_40px_-18px_rgba(0,0,0,0.9)] backdrop-blur ${TONE_CLASS[t.tone]}`}
+            className={`max-w-xs rounded-lg border bg-[var(--bg-2)]/95 px-4 py-2.5 font-mono text-[0.875rem] leading-snug shadow-[0_18px_40px_-18px_rgba(0,0,0,0.9)] backdrop-blur ${TONE_CLASS[t.tone]}`}
           >
             {t.text}
           </motion.div>

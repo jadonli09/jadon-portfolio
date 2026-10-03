@@ -145,7 +145,7 @@ export function Dock() {
                   onClick={() => go(s.id)}
                   onKeyDown={(e) => onKeyDown(e, i)}
                   className={cn(
-                    "relative rounded-full px-3.5 py-2 text-[0.8rem] font-medium tracking-[-0.005em] transition-[color,scale] duration-150 ease-[var(--ease-out)] active:scale-95 md:px-4 md:text-[0.85rem]",
+                    "relative rounded-full px-3 py-2 text-base font-medium tracking-[-0.005em] transition-[color,scale] duration-150 ease-[var(--ease-out)] active:scale-95 md:px-4",
                     on ? "text-white" : "text-[var(--muted)] hover:text-[var(--fg)]",
                   )}
                 >

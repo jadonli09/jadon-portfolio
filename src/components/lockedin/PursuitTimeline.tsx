@@ -130,11 +130,8 @@ function MomentVideoCard({
           >
             {dayLabel(m.day)}
           </p>
-          <p className="mt-3 font-mono text-[0.62rem] uppercase tracking-[0.3em] text-[var(--muted)]">
+          <p className="mt-3 font-grotesk text-sm text-[var(--muted)] md:text-base">
             {m.date}
-          </p>
-          <p className="mt-1.5 font-mono text-[0.62rem] uppercase tracking-[0.3em] text-[var(--muted)] opacity-80">
-            <span style={{ color: accent }}>{m.views}</span> plays
           </p>
         </div>
 
@@ -152,8 +149,8 @@ function MomentVideoCard({
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Mobile date row */}
-          <p className="mb-3 font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--muted)] md:hidden">
-            <span style={{ color: accent }}>{dayLabel(m.day)}</span> · {m.date}
+          <p className="mb-3 font-grotesk text-sm text-[var(--muted)] md:hidden">
+            <span style={{ color: accent }}>{dayLabel(m.day)}</span>, {m.date}
           </p>
 
           <div
@@ -162,30 +159,6 @@ function MomentVideoCard({
             onMouseEnter={hoverIn}
             onMouseLeave={hoverOut}
           >
-            {/* Frame top bar */}
-            <div
-              className="flex items-center justify-between border-b px-3.5 py-2.5"
-              style={{ borderColor: `color-mix(in srgb, ${accent} 30%, transparent)` }}
-            >
-              <span
-                className="font-mono text-[0.58rem] uppercase tracking-[0.25em]"
-                style={{ color: accent }}
-              >
-                {playing ? "● playing" : "▶ plays here"}
-              </span>
-              <a
-                href={reelUrl(m.code)}
-                target="_blank"
-                rel="noreferrer"
-                data-cursor-hover
-                className="flex items-center gap-1 font-mono text-[0.52rem] uppercase tracking-widest text-[var(--muted)] transition-colors duration-200 hover:text-[var(--fg)]"
-                aria-label={`Watch "${m.title}" on Instagram`}
-              >
-                IG
-                <ArrowUpRight className="size-2.5" />
-              </a>
-            </div>
-
             {/* Video */}
             <div
               className={cn("relative w-full cursor-pointer", landscape ? "aspect-video" : "aspect-[9/16]")}
@@ -250,14 +223,25 @@ function MomentVideoCard({
               <h3 className="font-anton text-xl uppercase leading-tight text-[var(--fg)] md:text-2xl">
                 {m.title}
               </h3>
-              <p className="mt-1.5 font-grotesk text-[0.82rem] italic leading-relaxed text-[var(--muted)]">
+              <p className="mt-1.5 font-grotesk text-sm italic leading-relaxed text-[var(--muted)]">
                 “{m.caption}”
               </p>
-              <div className="mt-3 flex items-center gap-4 font-mono text-[0.58rem] uppercase tracking-[0.2em] text-[var(--muted)]">
+              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 font-grotesk text-sm text-[var(--muted)]">
                 <span>
                   <span style={{ color: accent }}>{m.views}</span> plays
                 </span>
                 <span>{m.likes} likes</span>
+                <a
+                  href={reelUrl(m.code)}
+                  target="_blank"
+                  rel="noreferrer"
+                  data-cursor-hover
+                  className="group/ig ml-auto inline-flex items-center gap-1 py-1 text-base text-[var(--fg)]/80 transition-colors duration-200 hover:text-[var(--fg)]"
+                  aria-label={`Watch "${m.title}" on Instagram`}
+                >
+                  Instagram
+                  <ArrowUpRight className="size-4 transition-transform duration-200 group-hover/ig:translate-x-px group-hover/ig:-translate-y-px" />
+                </a>
               </div>
             </div>
           </div>
@@ -331,9 +315,9 @@ function LogRow({
             }}
           >
             {/* Header: day chip · date ······ plays */}
-            <div className="flex items-center gap-2.5">
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
               <span
-                className="rounded-full border px-2 py-[0.2rem] font-mono text-[0.52rem] uppercase tracking-[0.22em]"
+                className="rounded-full border px-2.5 py-0.5 font-grotesk text-sm"
                 style={{
                   color: accent,
                   borderColor: `color-mix(in srgb, ${accent} 45%, transparent)`,
@@ -341,11 +325,11 @@ function LogRow({
               >
                 {dayLabel(m.day)}
               </span>
-              <span className="font-mono text-[0.55rem] uppercase tracking-[0.22em] text-[var(--muted)]">
+              <span className="font-grotesk text-sm text-[var(--muted)]">
                 {m.date}
               </span>
               {m.views && (
-                <span className="ml-auto font-mono text-[0.55rem] uppercase tracking-[0.18em] text-[var(--muted)]">
+                <span className="ml-auto font-grotesk text-sm text-[var(--muted)]">
                   <span style={{ color: accent }}>{m.views}</span> plays
                 </span>
               )}
@@ -369,8 +353,8 @@ function QuoteBlock({ m, accent }: { m: PursuitQuoteMoment; accent: string }) {
       <SpineDot accent={accent} />
       <Reveal>
         <div className="pl-14 md:mx-auto md:max-w-2xl md:pl-8 md:pt-14 md:text-center">
-          <p className="font-mono text-[0.58rem] uppercase tracking-[0.28em] text-[var(--muted)]">
-            <span style={{ color: accent }}>{dayLabel(m.day)}</span> · {m.date}
+          <p className="font-grotesk text-sm text-[var(--muted)]">
+            <span style={{ color: accent }}>{dayLabel(m.day)}</span>, {m.date}
           </p>
           <a
             href={reelUrl(m.code)}
@@ -440,8 +424,8 @@ function ChapterBlock({
 
         <div className="relative pl-14 md:pl-0 md:text-center">
           <Reveal>
-            <p className="font-mono text-[0.62rem] uppercase tracking-[0.34em] text-[var(--muted)]">
-              <span style={{ color: ch.accent }}>Chapter {ch.num}</span> — {ch.range}
+            <p className="font-grotesk text-sm text-[var(--muted)] md:text-base">
+              <span style={{ color: ch.accent }}>Chapter {Number(ch.num)}</span> — {ch.range}
             </p>
           </Reveal>
           <div className="mt-5" style={{ fontSize: "clamp(2.6rem, 7.5vw, 5.5rem)", lineHeight: 0.92 }}>
@@ -504,10 +488,7 @@ export function PursuitTimeline() {
         <div className="relative pt-10 md:pt-16">
           <Reveal>
             <div className="pl-14 md:pl-0 md:text-center">
-              <p className="font-mono text-[0.62rem] uppercase tracking-[0.34em] text-[var(--accent)]">
-                ● REC — Day 001 · Jun 6, 2025
-              </p>
-              <p className="mt-3 font-grotesk text-sm text-[var(--muted)] md:text-base">
+              <p className="font-grotesk text-sm text-[var(--muted)] md:text-base">
                 One year. Five chapters. Every date, caption, and play count below is real.
               </p>
             </div>
@@ -534,18 +515,15 @@ export function PursuitTimeline() {
           />
           <div className="pt-24 pl-14 md:pl-0 md:text-center">
             <Reveal>
-              <p className="font-mono text-[0.62rem] uppercase tracking-[0.34em] text-[var(--muted)]">
-                Day 369 — <span className="text-[var(--accent)]">to be continued</span>
-              </p>
               <a
                 href={PROFILE.links.instagram}
                 target="_blank"
                 rel="noreferrer"
                 data-cursor-hover
-                className="group mt-4 inline-flex items-center gap-2 font-grotesk text-sm text-[var(--fg)]/85 transition-colors hover:text-[var(--fg)] md:text-base"
+                className="group inline-flex items-center gap-2 font-grotesk text-base text-[var(--fg)]/85 transition-colors hover:text-[var(--fg)] md:text-lg"
               >
                 The next chapter is posting now — {PROFILE.links.instagramHandle}
-                <ArrowUpRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </Reveal>
           </div>

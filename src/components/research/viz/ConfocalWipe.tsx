@@ -35,8 +35,8 @@ export function ConfocalWipe() {
 
   return (
     <figure className="m-0 border border-[var(--line)] bg-[var(--bg-2)]">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--line)] px-4 py-2.5">
-        <div className="flex gap-1" role="group" aria-label="Strain">
+      <div className="border-b border-[var(--line)] px-4 py-2.5">
+        <div className="flex flex-wrap gap-1" role="group" aria-label="Strain">
           {ORDER.map((k) => (
             <button
               key={k}
@@ -44,7 +44,7 @@ export function ConfocalWipe() {
               onClick={() => setStrain(k)}
               aria-pressed={strain === k}
               className={cn(
-                "rounded-sm border px-4 py-2.5 font-mono text-[0.85rem] transition-colors",
+                "rounded-sm border px-4 py-2.5 font-mono text-[1rem] transition-colors",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
                 strain === k
                   ? "border-[var(--accent)] bg-[var(--accent)] text-[#10040a]"
@@ -55,7 +55,6 @@ export function ConfocalWipe() {
             </button>
           ))}
         </div>
-        <span className="text-[0.92rem] text-[var(--muted)]">Drag it, or use ← →</span>
       </div>
 
       <div
@@ -106,10 +105,10 @@ export function ConfocalWipe() {
           className="absolute inset-0 h-full w-full object-cover"
           style={{ clipPath: `inset(0 0 0 ${pct}%)` }}
         />
-        <span className="pointer-events-none absolute bottom-2.5 left-2.5 rounded-sm bg-black/70 px-2.5 py-1.5 font-mono text-[0.8rem] text-[#c6cedb]">
+        <span className="pointer-events-none absolute bottom-2.5 left-2.5 rounded-sm bg-black/70 px-2.5 py-1.5 font-mono text-[0.875rem] text-[#c6cedb]">
           Brightfield
         </span>
-        <span className="pointer-events-none absolute bottom-2.5 right-2.5 rounded-sm bg-black/70 px-2.5 py-1.5 font-mono text-[0.8rem] text-[var(--accent)]">
+        <span className="pointer-events-none absolute bottom-2.5 right-2.5 rounded-sm bg-black/70 px-2.5 py-1.5 font-mono text-[0.875rem] text-[var(--accent)]">
           RFP merge
         </span>
         <div

@@ -14,7 +14,7 @@ const WORK_PHOTOS = [
   {
     src: asset("/img/speaking-at-rally.jpg"),
     alt: "Speaking at a rally in Fremont",
-    caption: "Rally · 500+ turnout",
+    caption: "Rally, 500+ turnout",
   },
   {
     src: asset("/img/editing-for-mayor-timeline.jpg"),
@@ -32,21 +32,16 @@ const SERVICES = ["/ CIVIC VIDEO", "/ PODCAST DIRECTION", "/ OP-ED & CAMPAIGNS"]
 
 /**
  * The portrait, whole. The frame carries the photo's own 3:4 ratio so nothing
- * is cropped off it; the location strip is a sibling column, not an overlay.
+ * is cropped off it.
  */
 function Portrait() {
   return (
-    <div className="group flex bg-secondary">
-      <div className="relative aspect-[3/4] min-w-0 flex-1 overflow-hidden">
-        <img
-          src={asset("/img/civics-jadon-picture.jpg")}
-          alt={`${PROFILE.name} portrait`}
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-cine)] group-hover:scale-[1.04]"
-        />
-      </div>
-      <div className="shrink-0 rotate-180 p-2 text-left text-xs font-medium tracking-widest [writing-mode:vertical-rl]">
-        BASED IN FREMONT, CALIFORNIA
-      </div>
+    <div className="group relative aspect-[3/4] overflow-hidden bg-secondary">
+      <img
+        src={asset("/img/civics-jadon-picture.jpg")}
+        alt={`${PROFILE.name} portrait`}
+        className="absolute inset-0 h-full w-full object-cover transition-[scale] duration-700 ease-[var(--ease-cine)] group-hover:scale-[1.04]"
+      />
     </div>
   );
 }
@@ -81,14 +76,7 @@ export function HeroSection04() {
   return (
     <section className="relative overflow-hidden pb-12 pt-32 md:pb-16 md:pt-36">
       <div className="relative z-20 mx-auto max-w-7xl px-6">
-        <Reveal delay={0.4}>
-          <div className="flex items-baseline justify-between border-b border-primary/15 pb-4 font-mono text-xs font-medium tracking-[0.2em] md:text-sm">
-            <span>EST. 2025</span>
-            <span className="tracking-[0.4em]">{PROFILE.name.toUpperCase()}</span>
-          </div>
-        </Reveal>
-
-        <div className="mt-7 grid gap-x-14 gap-y-10 md:mt-9 lg:grid-cols-[minmax(0,1fr)_18rem] xl:grid-cols-[minmax(0,1fr)_20rem]">
+        <div className="grid gap-x-14 gap-y-10 md:mt-9 lg:grid-cols-[minmax(0,1fr)_18rem] xl:grid-cols-[minmax(0,1fr)_20rem]">
           {/* ── left: the headline, the services, the promise ── */}
           <div className="min-w-0">
             <div className="relative">

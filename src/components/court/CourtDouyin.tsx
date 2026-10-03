@@ -4,10 +4,10 @@ import { useRef } from "react";
 import { motion, useInView } from "motion/react";
 import { TiltCard } from "@/components/primitives/TiltCard";
 import { Counter } from "@/components/primitives/Counter";
-import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
+import { Reveal } from "@/components/primitives/Reveal";
 import { COURT } from "@/lib/data";
 import { RimNet, NetMesh } from "@/components/court/BallMotifs";
-import { ExternalLink, Heart, MessageCircle } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 /** Glass backboard mount — shooter's square framing the clip, rim + net hung beneath. */
 function Backboard({ children }: { children: React.ReactNode }) {
@@ -28,34 +28,16 @@ function Backboard({ children }: { children: React.ReactNode }) {
       {/* Rim + net, hung off the board */}
       <RimNet className="-mt-1 w-28 text-[var(--accent)] drop-shadow-[0_6px_14px_rgba(255,91,31,0.25)] md:w-32" />
 
-      {/* Live tally plate — exact counts pulled from the DouYin share API */}
-      <div className="mt-3 flex items-stretch border border-[var(--line)] bg-black/50">
-        <div className="flex items-center gap-2 px-4 py-2">
-          <Heart className="size-3.5 fill-[var(--accent)] text-[var(--accent)]" aria-hidden />
-          <span className="font-anton text-base leading-none text-[var(--fg)]">{COURT.douyin.likes}</span>
-          <span className="font-mono text-[0.5rem] uppercase tracking-[0.18em] text-[var(--muted)]">Likes</span>
-        </div>
-        <span className="w-px bg-[var(--line)]" aria-hidden />
-        <div className="flex items-center gap-2 px-4 py-2">
-          <MessageCircle className="size-3.5 text-[var(--accent)]" aria-hidden />
-          <span className="font-anton text-base leading-none text-[var(--fg)]">{COURT.douyin.comments}</span>
-          <span className="font-mono text-[0.5rem] uppercase tracking-[0.18em] text-[var(--muted)]">Comments</span>
-        </div>
-      </div>
-      <span className="mt-1.5 font-mono text-[0.5rem] uppercase tracking-[0.25em] text-[var(--muted)]">
-        DouYin · {COURT.douyin.statsAsOf}
-      </span>
-
       {/* Guaranteed path to the clip if the embed is blocked for a visitor */}
       <a
         href={COURT.douyin.url}
         target="_blank"
         rel="noopener noreferrer"
         data-cursor-hover
-        className="mt-3 inline-flex items-center gap-2 border border-[var(--accent)] px-4 py-2 font-mono text-[0.6rem] uppercase tracking-[0.25em] text-[var(--accent)] transition-colors duration-300 hover:bg-[var(--accent)] hover:text-black"
+        className="mt-4 inline-flex items-center gap-2 border border-[var(--accent)] px-5 py-2.5 font-mono text-base uppercase tracking-[0.12em] text-[var(--accent)] transition-colors duration-300 hover:bg-[var(--accent)] hover:text-black"
       >
         Watch on DouYin
-        <ExternalLink className="size-3" />
+        <ExternalLink className="size-4" aria-hidden />
       </a>
     </div>
   );
@@ -140,15 +122,6 @@ export function CourtDouyin() {
       />
 
       <div className="relative mx-auto max-w-7xl px-5 md:px-9">
-        {/* Section eyebrow */}
-        <Reveal>
-          <div className="mb-10 flex items-center gap-4 md:mb-14">
-            <span className="eyebrow text-[var(--accent)]">Going Global</span>
-            <span className="h-px flex-1 bg-[var(--line)]" aria-hidden />
-            <span className="eyebrow text-[var(--muted)] hidden sm:block">China · DouYin · 网红</span>
-          </div>
-        </Reveal>
-
         {/* Main two-column layout */}
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16 lg:gap-24 lg:items-center">
           {/* Left: video frame */}
@@ -182,49 +155,10 @@ export function CourtDouyin() {
               <p className="font-grotesk text-sm leading-relaxed text-[var(--muted)] md:text-base">
                 No setup. No broadcast deal. Just Jadon in a Chinese gym, going against a local
                 sports influencer. The clip got picked up, reposted by a 3.7M-follower hoops
-                account on DouYin — China's leading short-video platform — and hit{" "}
-                <span className="text-[var(--fg)] font-semibold">569,000+ likes</span>. A gym
+                account on DouYin — China's leading short-video platform — and drew{" "}
+                <span className="text-[var(--fg)] font-semibold">{COURT.douyin.comments} comments</span>. A gym
                 moment that crossed a continent.
               </p>
-            </Reveal>
-
-            {/* Stat pills */}
-            <RevealGroup className="flex flex-wrap gap-3" stagger={0.08} delayChildren={0.6}>
-              {[
-                { label: "Platform", value: "DouYin" },
-                { label: "Likes", value: "569k+" },
-                { label: "Reposted By", value: "3.7M acct" },
-                { label: "Reach", value: "Global" },
-              ].map((pill) => (
-                <motion.div
-                  key={pill.label}
-                  className="border border-[var(--line)] px-4 py-2 hover:border-[var(--accent)] transition-colors duration-300"
-                  data-cursor-hover
-                  whileHover={{ scale: 1.03 }}
-                >
-                  <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-                    {pill.label}
-                  </p>
-                  <p className="mt-0.5 font-anton text-lg leading-none text-[var(--fg)]">
-                    {pill.value}
-                  </p>
-                </motion.div>
-              ))}
-            </RevealGroup>
-
-            {/* Chinese character decorative block */}
-            <Reveal delay={0.75}>
-              <div className="flex items-center gap-4">
-                <span
-                  className="font-grotesk text-5xl font-black leading-none text-[var(--accent)] opacity-20 select-none"
-                  aria-hidden
-                >
-                  网红
-                </span>
-                <p className="font-mono text-[0.62rem] uppercase tracking-widest text-[var(--muted)]">
-                  Internet celebrity / influencer — the person he balled against
-                </p>
-              </div>
             </Reveal>
           </div>
         </div>

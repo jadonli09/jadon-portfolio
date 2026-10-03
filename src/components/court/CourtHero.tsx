@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { Reveal } from "@/components/primitives/Reveal";
 import { Photo } from "@/components/primitives/Photo";
-import { COURT, PROFILE } from "@/lib/data";
+import { COURT } from "@/lib/data";
 import { HalfCourt } from "@/components/court/BallMotifs";
 import { cn } from "@/lib/cn";
 
@@ -149,18 +149,9 @@ export function CourtHero() {
 
       {/* Main content — sits above the photo */}
       <motion.div
-        className="relative z-10 mx-auto max-w-7xl px-5 md:px-9"
+        className="relative z-10 mx-auto max-w-7xl px-5 pb-28 md:px-9 md:pb-36"
         style={{ y: parallaxY, opacity: parallaxOpacity }}
       >
-        {/* Eyebrow */}
-        <Reveal>
-          <div className="mb-6 flex items-center gap-4">
-            <span className="eyebrow text-[var(--accent)]">05 — The Court</span>
-            <span className="h-px flex-1 bg-[var(--accent)] opacity-30" aria-hidden />
-            <span className="eyebrow">{PROFILE.school}</span>
-          </div>
-        </Reveal>
-
         {/* Championship headline */}
         <div className="relative">
           <h1 className="sr-only">NCS Champions 2026</h1>
@@ -214,34 +205,6 @@ export function CourtHero() {
           <p className="mt-6 font-grotesk text-base leading-relaxed text-[var(--muted)] md:text-lg lg:max-w-lg">
             {COURT.intro}
           </p>
-        </Reveal>
-
-        {/* Orange divider */}
-        <motion.div
-          className="mt-10 h-[2px] bg-[var(--accent)] md:mt-14"
-          initial={{ scaleX: 0, originX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          aria-hidden
-        />
-
-        {/* Stats row */}
-        <Reveal delay={0.85}>
-          <div className="mt-6 flex flex-wrap gap-8 font-mono text-[0.65rem] uppercase tracking-[0.28em] text-[var(--muted)] md:mt-8 md:gap-12">
-            <span>
-              Varsity Basketball&nbsp;<span className="text-[var(--fg)]">MSJ</span>
-            </span>
-            <span>
-              NCS&nbsp;<span className="text-[var(--fg)]">Section Champions</span>
-            </span>
-            <span>
-              Started&nbsp;<span className="text-[var(--fg)]">First Five</span>
-            </span>
-            <span>
-              First in&nbsp;<span className="text-[var(--fg)]">District History</span>
-            </span>
-          </div>
         </Reveal>
       </motion.div>
 

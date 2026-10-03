@@ -5,8 +5,6 @@ import { CIVIC } from "@/lib/data";
 export function CivicAwardsTicker() {
   const tickerItems = [
     ...CIVIC.awards,
-    "20k views per mayor video",
-    "500k+ views in under a month",
     "18k Palm Ave Park promo views",
     "32k FUSD families reached",
   ];
@@ -27,7 +25,7 @@ export function CivicAwardsTicker() {
         items={tickerItems}
         sep="▸"
         durationSec={42}
-        className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-white"
+        className="font-grotesk text-sm font-semibold uppercase tracking-wide text-white"
       />
     </div>
   );

@@ -57,7 +57,7 @@ export function Closing({ githubUser }: { githubUser: string }) {
                 <span className="t-sub">{p.name}</span>
 
                 <span className="ml-auto flex items-center gap-3">
-                  <span className="t-small hidden text-[0.8rem] sm:inline">
+                  <span className="t-small hidden sm:inline">
                     {p.domain}
                   </span>
                   <ArrowUpRight className="lean size-4 text-[var(--muted)]" />
@@ -74,7 +74,7 @@ export function Closing({ githubUser }: { githubUser: string }) {
             target="_blank"
             rel="noreferrer noopener"
             data-cursor-hover
-            className="mt-10 inline-flex min-h-11 items-center gap-2 whitespace-nowrap text-sm font-medium underline-offset-4 hover:underline"
+            className="mt-10 inline-flex min-h-11 items-center gap-2 whitespace-nowrap text-base font-medium underline-offset-4 hover:underline"
           >
             The code, on GitHub <ArrowUpRight className="size-4 shrink-0" />
           </a>

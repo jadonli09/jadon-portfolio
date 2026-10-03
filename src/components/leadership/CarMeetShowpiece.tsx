@@ -7,7 +7,7 @@ import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { Photo } from "@/components/primitives/Photo";
 import { LEADERSHIP } from "@/lib/data";
 
-/** Single photo tile with hover caption and grayscale→color reveal. */
+/** Single photo tile with optional hover caption and grayscale→color reveal. */
 function PhotoTile({
   src,
   alt,
@@ -17,7 +17,7 @@ function PhotoTile({
 }: {
   src: string;
   alt: string;
-  caption: string;
+  caption?: string;
   className?: string;
   /** optional link — the tile becomes an anchor */
   href?: string;
@@ -51,16 +51,16 @@ function PhotoTile({
       />
 
       {/* Caption — slides up on hover */}
-      <motion.div
-        className="absolute inset-x-0 bottom-0 px-3 pb-3"
-        initial={{ y: 6, opacity: 0 }}
-        animate={{ y: hovered ? 0 : 6, opacity: hovered ? 1 : 0 }}
-        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--accent)]">
-          {caption}
-        </p>
-      </motion.div>
+      {caption && (
+        <motion.div
+          className="absolute inset-x-0 bottom-0 px-3 pb-3"
+          initial={{ y: 6, opacity: 0 }}
+          animate={{ y: hovered ? 0 : 6, opacity: hovered ? 1 : 0 }}
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <p className="text-base font-medium text-[var(--accent)]">{caption}</p>
+        </motion.div>
+      )}
 
       {/* Gold corner accent on hover */}
       <motion.span
@@ -86,7 +86,7 @@ function CarMeetCollage() {
       <PhotoTile
         src="/img/carmeet1.jpg"
         alt="Yellow McLaren front-on at the MSJ Car Meet"
-        caption="@msjmeets — open on Instagram ↗"
+        caption="@msjmeets on Instagram ↗"
         className="w-[58%] flex-shrink-0"
         href="https://www.instagram.com/msjmeets/"
       />
@@ -96,28 +96,23 @@ function CarMeetCollage() {
         <PhotoTile
           src="/img/carmeet2.jpg"
           alt="Cars lined up in the lot at the MSJ Car Meet"
-          caption="60+ cars on the lot"
           className="flex-1"
         />
         <PhotoTile
           src="/img/carmeet3.jpg"
           alt="Crowd and cars at the MSJ Car Meet event"
-          caption="~200 attendees"
           className="flex-1"
         />
         <PhotoTile
           src="/img/carmeet4.jpg"
           alt="Event atmosphere at MSJ Car Meet"
-          caption="Nov 8, 2025"
           className="flex-1"
         />
       </div>
 
       {/* Floating "first in MSJ history" badge */}
       <div className="absolute -right-2 -top-2 z-10 border border-[var(--accent)] bg-[var(--bg)] px-3 py-1.5 shadow-lg">
-        <p className="font-mono text-[0.55rem] uppercase tracking-widest text-[var(--accent)]">
-          First in MSJ History
-        </p>
+        <p className="text-sm font-semibold text-[var(--accent)]">First in MSJ history</p>
       </div>
     </div>
   );
@@ -146,7 +141,7 @@ function StatCard({ value, label }: { value: string; label: string }) {
       <p className="font-anton text-[2.2rem] leading-none tracking-wide text-[var(--accent)] md:text-[3rem]">
         {value}
       </p>
-      <p className="mt-2 font-mono text-[0.62rem] uppercase tracking-[0.22em] text-[var(--muted)] md:text-[0.68rem]">
+      <p className="mt-2 text-sm text-[var(--muted)]">
         {label}
       </p>
     </div>
@@ -181,17 +176,12 @@ export function CarMeetShowpiece() {
       <Reveal>
         <div>
           <HazardStripe />
-          <div
-            className="flex flex-wrap items-center justify-between gap-3 px-5 py-2.5 md:px-9"
+          <p
+            className="px-5 py-2.5 text-sm font-semibold text-[#f5ecd8] md:px-9"
             style={{ background: "var(--accent-2)" }}
           >
-            <span className="font-mono text-[0.6rem] font-bold uppercase tracking-[0.3em] text-[#f5ecd8]">
-              Notable event · {carMeet.date}
-            </span>
-            <span className="font-mono text-[0.6rem] font-bold uppercase tracking-[0.3em] text-[#f5ecd8]">
-              @msjmeets
-            </span>
-          </div>
+            {carMeet.date}
+          </p>
           <HazardStripe />
         </div>
       </Reveal>

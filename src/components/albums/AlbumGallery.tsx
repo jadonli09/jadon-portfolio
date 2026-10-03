@@ -17,8 +17,8 @@ export function AlbumGallery() {
             <h2 className="font-anton text-4xl uppercase leading-none tracking-tight md:text-6xl">
               Every Frame
             </h2>
-            <span className="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-[var(--muted)]">
-              The full roll · {photos.length} frames
+            <span className="text-base text-[var(--muted)]">
+              {photos.length} photos
             </span>
           </div>
         </Reveal>
@@ -37,7 +37,7 @@ export function AlbumGallery() {
                     className="h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                   />
                 </div>
-                <figcaption className="mt-2 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[var(--muted)] transition-colors group-hover:text-[var(--fg)]">
+                <figcaption className="mt-2 text-sm leading-snug text-[var(--muted)] transition-colors group-hover:text-[var(--fg)]">
                   {photo.caption}
                 </figcaption>
               </figure>

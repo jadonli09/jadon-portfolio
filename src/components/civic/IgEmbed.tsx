@@ -50,22 +50,20 @@ export function IgEmbed({ reel, className }: { reel: string; className?: string 
 
 /**
  * Themed wrapper around an IG reel — an editorial "clip" frame with a captioned
- * header (play glyph + title + tag) so the embed matches the page rather than
- * sitting as a bare Instagram card.
+ * header (play glyph + title, optional one-line note) so the embed matches the
+ * page rather than sitting as a bare Instagram card.
  */
 export function ReelCard({ reel, title, tag }: { reel: string; title: string; tag?: string }) {
   return (
     <figure className="group overflow-hidden border border-[var(--line)] bg-[var(--bg-2)] shadow-[0_8px_30px_rgba(20,17,13,0.08)] transition-transform duration-300 hover:-translate-y-1">
-      <figcaption className="flex items-center justify-between gap-3 border-b border-[var(--line)] px-3 py-2">
-        <span className="flex min-w-0 items-center gap-2 font-display text-sm font-semibold leading-tight">
-          <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]">
-            <Play className="size-2.5 translate-x-px fill-white text-white" strokeWidth={0} />
-          </span>
-          <span className="truncate">{title}</span>
+      <figcaption className="flex items-start gap-2 border-b border-[var(--line)] px-3 py-2.5">
+        <span className="mt-px flex size-5 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]">
+          <Play className="size-2.5 translate-x-px fill-white text-white" strokeWidth={0} />
         </span>
-        {tag ? (
-          <span className="shrink-0 font-mono text-[0.5rem] uppercase tracking-[0.16em] text-[var(--accent)]">{tag}</span>
-        ) : null}
+        <span className="min-w-0">
+          <span className="block truncate font-display text-base font-semibold leading-tight">{title}</span>
+          {tag ? <span className="mt-0.5 block text-sm leading-snug text-[var(--muted)]">{tag}</span> : null}
+        </span>
       </figcaption>
       <div className="bg-[var(--bg)] p-2.5">
         <IgEmbed reel={reel} />

@@ -19,23 +19,19 @@ import { PROJECTS, type Project } from "@/lib/data";
    a crop of it — and each `accent` is a colour lifted from that screenshot, so
    the backdrop swings to whatever you are pointing at.
 
-   `PROJECTS` order IS display order and is the source of the numbering; the
-   presentation copy lives in `built-story.ts`. Do not sort here.
+   `PROJECTS` order IS display order; the presentation copy lives in
+   `built-story.ts`. Do not sort here.
    ──────────────────────────────────────────────────────────────────── */
 
 const FLEET = PROJECTS.filter((p) => p.tier === 3);
 
-/** Tier 3 starts at 04 because three chapters precede the strip. */
-const OFFSET = PROJECTS.filter((p) => p.tier < 3).length;
-
-const ITEMS: HeroCarouselItem[] = FLEET.map((p, i) => {
+const ITEMS: HeroCarouselItem[] = FLEET.map((p) => {
   const card = FLEET_CARDS[p.slug];
   return {
     id: p.slug,
     title: card.title,
     image: asset(`/embeds/fleet/${p.slug}.jpg`),
     href: p.url,
-    credit: `${String(i + OFFSET + 1).padStart(2, "0")} — ${p.tagline.toUpperCase()}`,
     meta: card.facts,
     accent: card.accent,
     // The domain belongs to the action above the strip; captions identify the product.
@@ -63,9 +59,12 @@ function Detail({ project }: { project: Project }) {
   const stats = project.stats.filter((stat) => stat.value !== "Live");
   return (
     <div className="flex flex-col items-start gap-4 sm:items-end">
-      {project.slug === "msjhs-asb" && (
-        <p className="text-sm text-white/80">Rebuilt with Kaiwei Parks.</p>
-      )}
+      {/* The tagline says what the product is, as a sentence rather than
+          the old tracked-out, numbered credit line under the title. */}
+      <p className="text-sm text-white/85 sm:text-right sm:text-base">
+        {project.tagline}
+        {project.slug === "msjhs-asb" ? " Rebuilt with Kaiwei Parks." : null}
+      </p>
       {stats.length ? (
         <div className="flex flex-wrap items-baseline gap-x-7 gap-y-2 sm:justify-end">
           {stats.map((s) => (
@@ -73,7 +72,7 @@ function Detail({ project }: { project: Project }) {
               <span className="text-[1.35rem] font-semibold leading-none tracking-[-0.03em] tabular-nums">
                 {s.value}
               </span>
-              <span className="text-[0.75rem] opacity-70">{s.label}</span>
+              <span className="text-sm opacity-75">{s.label}</span>
             </span>
           ))}
         </div>
@@ -89,9 +88,14 @@ function Detail({ project }: { project: Project }) {
           rel="noreferrer noopener"
           data-cursor-hover
           draggable={false}
-          className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-[0.78rem] font-semibold text-black transition-transform duration-150 active:scale-95"
+          aria-label={`Visit ${project.domain}`}
+          className="ml-1 inline-flex min-h-10 items-center gap-1.5 rounded-full bg-white px-4 py-2 text-base font-semibold text-black transition-transform duration-150 active:scale-95"
         >
-          {project.domain} <ArrowUpRight className="size-3.5" />
+          {/* The detail column is 11rem on a phone — too narrow for a long
+              domain at a readable size, so the pill says what it does there. */}
+          <span className="sm:hidden">Visit</span>
+          <span className="hidden sm:inline">{project.domain}</span>
+          <ArrowUpRight className="size-4" />
         </a>
       </div>
     </div>

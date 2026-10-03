@@ -100,10 +100,6 @@ export function Opening() {
             </article>
           ))}
         </div>
-
-        <p className="mt-7 text-[0.98rem] text-[var(--muted)]">
-          Hover a poster to read it close up. Click for full size.
-        </p>
       </div>
     </section>
   );

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ALL_SECTIONS, GROUPS, type SectionId } from "./sections";
 import { jumpTo } from "./lab/bus";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 export function ResearchNav() {
@@ -158,10 +159,8 @@ export function ResearchNav() {
           aria-expanded={sheet}
           className="flex w-full items-center justify-between px-4 py-2.5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
         >
-          <span className="text-[0.85rem] text-[var(--fg)]">{activeLabel}</span>
-          <span className="font-mono text-[0.65rem] tabular-nums text-[var(--muted)]">
-            {index + 1} / {ALL_SECTIONS.length}
-          </span>
+          <span className="text-[1rem] text-[var(--fg)]">{activeLabel}</span>
+          <ChevronDown aria-hidden="true" className="size-4 text-[var(--muted)]" />
         </button>
       </div>
 

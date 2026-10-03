@@ -22,14 +22,14 @@ const SIZES = {
     card: "left-0 top-12 h-36 w-60",
     rest: (i: number) => ({ x: i * 24, y: -i * 24, rotate: 0, scale: 1 }),
     open: (i: number) => ({ x: i * 88, y: -i * 26, rotate: (i - 1) * 4, scale: 1.02 }),
-    caption: "text-[0.55rem]",
+    caption: "text-sm",
   },
   compact: {
     frame: "h-28 w-[21rem]",
     card: "left-0 top-1 h-24 w-36",
     rest: (i: number) => ({ x: i * 15, y: -i * 4, rotate: 0, scale: 1 }),
     open: (i: number) => ({ x: i * 64, y: -i * 3, rotate: (i - 1) * 3, scale: 1.02 }),
-    caption: "text-[0.5rem]",
+    caption: "text-sm",
   },
 } as const;
 
@@ -77,7 +77,7 @@ export function PhotoStack({
           >
             <p
               className={cn(
-                "truncate font-mono uppercase tracking-widest text-[var(--bg)]",
+                "line-clamp-2 font-medium leading-tight text-[var(--bg)]",
                 s.caption,
               )}
             >

@@ -39,14 +39,6 @@ export function AlbumsHero() {
       </div>
 
       <div className="pointer-events-none relative z-10 flex flex-col items-center px-5 text-center">
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: EASE }}
-          className="font-mono text-[0.65rem] uppercase tracking-[0.35em] text-[var(--accent)]"
-        >
-          The contact sheet · every world, one roll
-        </motion.p>
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -55,14 +47,6 @@ export function AlbumsHero() {
         >
           ALBUMS
         </motion.h1>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-4 max-w-md font-mono text-xs uppercase tracking-[0.2em] text-[var(--muted)]"
-        >
-          Move the cursor — the originals follow
-        </motion.p>
       </div>
 
       {/* View-mode switch — CURSOR (trail) vs FLOAT (3D flythrough), pinned
@@ -75,15 +59,6 @@ export function AlbumsHero() {
       >
         <AlbumImmersive />
       </motion.div>
-
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="pointer-events-none absolute bottom-24 left-1/2 z-10 -translate-x-1/2 font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--muted)] md:bottom-8"
-      >
-        Scroll for the albums ↓
-      </motion.span>
     </section>
   );
 }

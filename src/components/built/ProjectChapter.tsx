@@ -30,6 +30,21 @@ import { cn } from "@/lib/cn";
    fill alone.
    ──────────────────────────────────────────────────────────────────── */
 
+const MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+/** "04/11/2026" → "April 11, 2026", "08/2026" → "August 2026", "Summer 2026" → "in summer 2026". */
+function launchedPhrase(raw?: string) {
+  if (!raw) return null;
+  const full = raw.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (full) return `${MONTHS[Number(full[1]) - 1]} ${Number(full[2])}, ${full[3]}`;
+  const month = raw.match(/^(\d{2})\/(\d{4})$/);
+  if (month) return `${MONTHS[Number(month[1]) - 1]} ${month[2]}`;
+  return raw.toLowerCase().startsWith("summer") ? `in ${raw.toLowerCase()}` : raw;
+}
+
 /** A portrait screen is tall enough that the section's facts can sit beside it. */
 function isPortrait(aspect?: string) {
   if (!aspect) return false;
@@ -70,23 +85,14 @@ export function ProjectChapter({
     !stage && story.beats.length === 1 && isPortrait(story.beats[0].aspect);
 
   /*
-    The eyebrow no longer prints the product's name: the name is the heading
-    directly beneath it now, and a chapter that says "ACORNPREP" twice in two
-    lines is just noise. What is left is the position in the sequence and the
-    date, which the heading does not carry.
+    No eyebrow. The sequence number was ornament, and the launch date reads
+    better as the end of the lede sentence than as tracked-out micro type.
   */
+  const launched = launchedPhrase(project.launched);
   const header = (
     <div>
       <Rise>
-        <p className="t-label flex items-center gap-3">
-          <span className="tabular-nums">{String(index).padStart(2, "0")}</span>
-          <span className="h-px w-8 bg-[var(--line-2)]" />
-          <span>{project.launched ?? project.domain}</span>
-        </p>
-      </Rise>
-
-      <Rise delay={0.03}>
-        <h2 className="t-title mt-4 flex items-center gap-3 md:gap-4">
+        <h2 className="t-title flex items-center gap-3 md:gap-4">
           {project.logo ? (
             /*
               The product's real mark, pulled from its own site. Decorative:
@@ -127,13 +133,16 @@ export function ProjectChapter({
       />
 
       <Rise delay={0.05}>
-        <p className={cn("t-body mt-3", project.slug === "acornprep" ? "max-w-none" : "max-w-xl")}>{story.lede}</p>
+        <p className={cn("t-body mt-3", project.slug === "acornprep" ? "max-w-none" : "max-w-xl")}>
+          {story.lede}
+          {launched ? ` Launched ${launched}.` : null}
+        </p>
         <a
           href={project.url}
           target="_blank"
           rel="noreferrer noopener"
           data-cursor-hover
-          className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium hover:underline underline-offset-4"
+          className="mt-3 inline-flex min-h-11 items-center gap-2 text-base font-medium hover:underline underline-offset-4"
         >
           {project.domain} <ArrowUpRight className="size-4" />
         </a>
@@ -155,7 +164,7 @@ export function ProjectChapter({
           <p className="t-num text-[1.65rem] leading-none">
             <StatFigure value={s.value} />
           </p>
-          <p className="t-small text-[0.75rem] leading-tight">{s.label}</p>
+          <p className="t-small leading-tight">{s.label}</p>
         </div>
       ))}
 

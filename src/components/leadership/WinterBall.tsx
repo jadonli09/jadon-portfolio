@@ -9,15 +9,14 @@ import { LEADERSHIP } from "@/lib/data";
 /* On the world's asphalt: gold type, white prints. */
 const INK = "var(--fg)";
 const INK_SOFT = "var(--muted)";
-const GOLD_DEEP = "var(--accent)";
 const OXBLOOD = "var(--accent)";
 const PRINT_INK = "#1a140d";
 
 const DANCE_CARD = [
-  { n: "I", label: "Non-alcoholic drink bar", note: "Mocktails mixed on the spot — people were gutted when it ran out." },
-  { n: "II", label: "Game tables, borrowed", note: "Poker & roulette lent by MPPFA's fundraising lead. Acquired, not purchased." },
-  { n: "III", label: "Gym-floor mat", note: "Lent by Newark Memorial — protected the floor for the night." },
-  { n: "IV", label: "Student-interest poll", note: "The data that convinced a wary administration." },
+  { label: "Non-alcoholic drink bar", note: "Mocktails mixed on the spot — people were gutted when it ran out." },
+  { label: "Game tables, borrowed", note: "Poker & roulette lent by MPPFA's fundraising lead. Acquired, not purchased." },
+  { label: "Gym-floor mat", note: "Lent by Newark Memorial — protected the floor for the night." },
+  { label: "Student-interest poll", note: "The data that convinced a wary administration." },
 ];
 
 /** Winter Ball polaroids — from the night itself. */
@@ -57,7 +56,7 @@ function Polaroid({
         style={{ background: "rgba(212,175,106,0.4)", backdropFilter: "blur(1px)" }}
       />
       <div className="relative aspect-square overflow-hidden bg-[#ece1c8]">
-        <SlotPhoto src={src} alt={`Winter Ball — ${caption}`} monogram="WB" note="photo en route" tone="paper" />
+        <SlotPhoto src={src} alt={`Winter Ball — ${caption}`} monogram="WB" tone="paper" />
       </div>
       <figcaption className="font-hand mt-2 text-center text-lg leading-none" style={{ color: PRINT_INK }}>
         {caption}
@@ -96,11 +95,8 @@ export function WinterBall() {
               <p className="mt-3 max-w-md font-serif-i text-base italic leading-relaxed md:text-lg" style={{ color: INK_SOFT }}>
                 {winterBall.date} — the first since before COVID; no precedent, no playbook.
               </p>
-              <p className="mt-8 font-mono text-[0.6rem] uppercase tracking-[0.35em]" style={{ color: GOLD_DEEP }}>
-                Programme of the evening
-              </p>
             </Reveal>
-            <RevealGroup className="mt-5" stagger={0.07} delayChildren={0.05}>
+            <RevealGroup className="mt-8" stagger={0.07} delayChildren={0.05}>
               {DANCE_CARD.map((d) => (
                 <motion.div
                   key={d.label}
@@ -108,20 +104,15 @@ export function WinterBall() {
                     hidden: { opacity: 0, x: -14 },
                     show: { opacity: 1, x: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } },
                   }}
-                  className="flex items-baseline gap-5 py-2.5"
+                  className="py-2.5"
                   style={{ borderBottom: "1px solid var(--line)" }}
                 >
-                  <span className="w-8 shrink-0 text-right font-display text-base font-semibold" style={{ color: OXBLOOD }}>
-                    {d.n}
-                  </span>
-                  <div>
-                    <p className="font-display text-lg font-semibold leading-snug md:text-xl" style={{ color: INK }}>
-                      {d.label}
-                    </p>
-                    <p className="mt-0.5 font-serif-i text-sm italic leading-relaxed" style={{ color: INK_SOFT }}>
-                      {d.note}
-                    </p>
-                  </div>
+                  <p className="font-display text-lg font-semibold leading-snug md:text-xl" style={{ color: INK }}>
+                    {d.label}
+                  </p>
+                  <p className="mt-0.5 font-serif-i text-sm italic leading-relaxed" style={{ color: INK_SOFT }}>
+                    {d.note}
+                  </p>
                 </motion.div>
               ))}
             </RevealGroup>
@@ -132,7 +123,7 @@ export function WinterBall() {
                 target="_blank"
                 rel="noreferrer"
                 data-cursor-hover
-                className="group inline-flex items-center gap-3 px-7 py-3.5 font-mono text-[0.65rem] uppercase tracking-[0.25em] transition-all duration-300"
+                className="group inline-flex items-center gap-3 px-7 py-3.5 text-base font-medium transition-all duration-300"
                 style={{ border: `2px solid ${OXBLOOD}`, color: OXBLOOD }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = "var(--accent)";
@@ -167,11 +158,10 @@ export function WinterBall() {
                   style={{ border: `3px double ${OXBLOOD}`, color: OXBLOOD, background: "var(--bg-2)", boxShadow: "0 10px 24px rgba(0,0,0,0.5)" }}
                 >
                   <span aria-hidden className="absolute inset-2 rounded-full" style={{ border: `1px solid ${OXBLOOD}` }} />
-                  <p className="font-mono text-[0.5rem] uppercase tracking-[0.3em]">Attendance</p>
                   <p className="font-anton text-4xl leading-none md:text-5xl">
                     <Counter to={350} duration={2} />
                   </p>
-                  <p className="mt-1 font-mono text-[0.5rem] uppercase tracking-[0.3em]">students</p>
+                  <p className="mt-1 text-sm">students</p>
                 </div>
               </Reveal>
             </div>

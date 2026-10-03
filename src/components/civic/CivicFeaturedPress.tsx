@@ -25,9 +25,9 @@ const VOF_FEED = [
 
 /** The few stats worth keeping — shown as a scannable graphic, not a list. */
 const STATS = [
-  { k: "Format", v: "~7 min", sub: "+ short-form" },
-  { k: "Reach", v: "50k", sub: "views / month" },
-  { k: "On air", v: "Fall '25", sub: "monthly" },
+  { v: "~7 min", sub: "episodes, plus short-form" },
+  { v: "50k", sub: "views a month" },
+  { v: "Monthly", sub: "on air since fall 2025" },
 ] as const;
 
 /** The actual reel — content-frame poster (never black); on click it swaps to
@@ -53,12 +53,6 @@ function VofReel() {
           <Play className="size-7 translate-x-0.5 fill-white text-white" strokeWidth={0} />
         </span>
       </span>
-      <span className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 border-t border-white/15 bg-black/55 px-3 py-2 backdrop-blur">
-        <span className="font-mono text-[0.55rem] uppercase tracking-[0.2em] text-white/90">
-          Voices of Fremont · the reel
-        </span>
-        <span className="font-mono text-[0.55rem] uppercase tracking-[0.2em] text-white">Watch ▶</span>
-      </span>
     </button>
   );
 }
@@ -82,8 +76,8 @@ function FeedTile({ src, caption, url }: { src: string; caption: string; url: st
         loading="lazy"
         className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-cine)] group-hover:scale-[1.06]"
       />
-      <div className="absolute inset-x-0 bottom-0 translate-y-full bg-[var(--fg)]/85 px-2 py-1 transition-transform duration-500 ease-[var(--ease-cine)] group-hover:translate-y-0">
-        <p className="truncate font-mono text-[0.5rem] uppercase tracking-widest text-[var(--bg)]">{caption}</p>
+      <div className="absolute inset-x-0 bottom-0 translate-y-full bg-[var(--fg)]/85 px-2 py-1.5 transition-transform duration-500 ease-[var(--ease-cine)] group-hover:translate-y-0">
+        <p className="truncate text-sm leading-snug text-[var(--bg)]">{caption}</p>
       </div>
       <ArrowUpRight className="absolute right-1.5 top-1.5 h-3 w-3 text-white opacity-0 drop-shadow transition-opacity duration-300 group-hover:opacity-100" />
     </motion.a>
@@ -99,9 +93,7 @@ export function CivicFeaturedPress() {
   return (
     <section className="mx-auto max-w-7xl px-5 py-12 md:px-9 md:py-16">
       <PosterHeading
-        label="Press & Access"
         title="A Podcast at the State Level"
-        meta="California · 2025"
         className="mb-10 md:mb-14"
       />
 
@@ -137,9 +129,7 @@ export function CivicFeaturedPress() {
             {/* Director / Editor credit */}
             <div className="flex items-center gap-2.5 border-l-2 border-[var(--accent)] pl-3">
               <Clapperboard className="size-4 shrink-0 text-[var(--accent)]" />
-              <p className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[var(--fg)]">
-                Directed &amp; edited by Jadon Li
-              </p>
+              <p className="text-sm font-medium text-[var(--fg)]">Directed &amp; edited by Jadon Li</p>
             </div>
 
             {/* Origin + younger-audience messaging */}
@@ -160,34 +150,19 @@ export function CivicFeaturedPress() {
             {/* Stats — scannable graphic */}
             <div className="grid grid-cols-3 overflow-hidden rounded-md border border-[var(--line)] bg-[var(--bg-2)]">
               {STATS.map((s, i) => (
-                <div key={s.k} className={cn("px-3 py-4 text-center", i > 0 && "border-l border-[var(--line)]")}>
-                  <p className="font-mono text-[0.52rem] uppercase tracking-[0.2em] text-[var(--muted)]">{s.k}</p>
-                  <p className="mt-1.5 font-anton text-2xl leading-none text-[var(--accent)] md:text-3xl">{s.v}</p>
-                  <p className="mt-1 font-mono text-[0.52rem] uppercase tracking-widest text-[var(--muted)]">{s.sub}</p>
+                <div key={s.v} className={cn("px-3 py-4 text-center", i > 0 && "border-l border-[var(--line)]")}>
+                  <p className="font-anton text-2xl leading-none text-[var(--accent)] md:text-3xl">{s.v}</p>
+                  <p className="mt-1.5 text-sm leading-snug text-[var(--muted)]">{s.sub}</p>
                 </div>
               ))}
             </div>
 
             {/* From the feed — fills the space beside the reel */}
-            <div className="mt-1">
-              <div className="mb-3 flex items-center gap-3">
-                <span className="text-sm font-medium tracking-wider">FROM THE FEED</span>
-                <a
-                  href={CIVIC.vofInstagram}
-                  target="_blank"
-                  rel="noreferrer"
-                  data-cursor-hover
-                  className="font-mono text-[0.58rem] uppercase tracking-[0.24em] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--accent)]"
-                >
-                  {CIVIC.vofHandle} ↗
-                </a>
-              </div>
-              <RevealGroup className="grid grid-cols-3 gap-3" stagger={0.05} delayChildren={0.05}>
-                {VOF_FEED.map((post) => (
-                  <FeedTile key={post.src} src={post.src} caption={post.caption} url={post.url} />
-                ))}
-              </RevealGroup>
-            </div>
+            <RevealGroup className="mt-1 grid grid-cols-3 gap-3" stagger={0.05} delayChildren={0.05}>
+              {VOF_FEED.map((post) => (
+                <FeedTile key={post.src} src={post.src} caption={post.caption} url={post.url} />
+              ))}
+            </RevealGroup>
           </div>
         </Reveal>
       </div>
@@ -203,7 +178,6 @@ export function CivicFeaturedPress() {
             aspect="16 / 9"
           />
           <div>
-            <p className="eyebrow mb-2 text-base text-[var(--accent)]">Also in the room</p>
             <h3 className="font-display text-2xl font-semibold leading-tight md:text-3xl">
               Met the Governor &amp; California First Partner
             </h3>

@@ -24,15 +24,7 @@ export function CivicInternProgram() {
       className="relative scroll-mt-24 border-t border-[var(--line)] py-16 md:py-24"
     >
       <div className="mx-auto max-w-7xl px-5 md:px-9">
-        <div className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-2 md:mb-10">
-          <div className="h-[2px] w-10 bg-[var(--accent)]" />
-          <span className="font-mono text-[0.72rem] uppercase tracking-[0.28em] text-[var(--muted)]">
-            {p.org}
-          </span>
-          <div className="ml-auto font-mono text-[0.72rem] uppercase tracking-[0.2em] text-[var(--muted)]">
-            {p.window}
-          </div>
-        </div>
+        <div className="mb-6 h-[2px] w-10 bg-[var(--accent)] md:mb-8" />
 
         <Reveal>
           <h2 className="font-grotesk text-3xl font-bold uppercase leading-[0.98] tracking-[-1px] text-[var(--fg)] md:text-6xl md:tracking-[-4px]">
@@ -68,7 +60,7 @@ export function CivicInternProgram() {
                   </span>
                   <span
                     className={cn(
-                      "font-mono text-[0.78rem] uppercase tracking-[0.22em]",
+                      "text-base font-semibold",
                       lead ? "text-[var(--accent)]" : "text-[var(--muted)]",
                     )}
                   >
@@ -90,12 +82,8 @@ export function CivicInternProgram() {
                     <Counter to={y.stat.value} duration={1.3} />
                   </p>
                   <div className="pb-1.5">
-                    <p className="font-mono text-[0.8rem] uppercase tracking-[0.16em] text-[var(--fg)]">
-                      {y.stat.label}
-                    </p>
-                    <p className="mt-0.5 font-mono text-[0.74rem] uppercase tracking-[0.14em] text-[var(--muted)]">
-                      {y.stat.note}
-                    </p>
+                    <p className="text-base font-semibold text-[var(--fg)]">{y.stat.label}</p>
+                    <p className="mt-0.5 text-sm text-[var(--muted)]">{y.stat.note}</p>
                   </div>
                 </div>
 
@@ -123,7 +111,7 @@ export function CivicInternProgram() {
                   className="[filter:grayscale(30%)] transition-[transform,filter] duration-700 ease-[var(--ease-cine)] group-hover:scale-[1.03] group-hover:[filter:grayscale(0%)]"
                 />
               </div>
-              <figcaption className="mt-3 font-mono text-[0.78rem] uppercase tracking-[0.14em] text-[var(--muted)]">
+              <figcaption className="mt-3 text-sm text-[var(--muted)]">
                 {photo.caption}
               </figcaption>
             </figure>

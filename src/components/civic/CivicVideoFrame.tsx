@@ -75,14 +75,14 @@ export function CivicVideoFrame({
             strokeWidth={0}
           />
         </motion.div>
-        <span className="font-mono text-[0.62rem] uppercase tracking-[0.28em] text-[var(--muted)]">
+        <span className="text-sm text-[var(--muted)]">
           {label}
         </span>
       </div>
 
       {/* Caption bar */}
       <div className="absolute bottom-0 left-0 right-0 border-t border-[var(--line)] bg-[var(--bg)] px-4 py-2.5">
-        <p className="font-mono text-[0.65rem] uppercase tracking-widest text-[var(--muted)]">
+        <p className="text-sm text-[var(--muted)]">
           {caption}
         </p>
       </div>

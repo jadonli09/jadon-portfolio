@@ -6,7 +6,6 @@ import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 type ChannelRowProps = {
-  index: string;
   label: string;
   handle: string;
   href: string;
@@ -22,7 +21,6 @@ type ChannelRowProps = {
  * to avoid ref type conflicts with motion.a.
  */
 export function ChannelRow({
-  index,
   label,
   handle,
   href,
@@ -95,14 +93,6 @@ export function ChannelRow({
 
         {/* Content */}
         <span className="relative z-10 flex w-full items-center gap-4 md:gap-6">
-          {/* Index */}
-          <motion.span
-            className="w-7 shrink-0 font-mono text-[0.62rem] uppercase tracking-widest"
-            style={{ color: mutedColor }}
-          >
-            {index}
-          </motion.span>
-
           {/* Icon circle */}
           <motion.span
             className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--line)]"
@@ -121,7 +111,7 @@ export function ChannelRow({
 
           {/* Handle — visible md+ */}
           <motion.span
-            className="ml-3 hidden font-mono text-xs tracking-wide md:inline"
+            className="ml-3 hidden font-mono text-base md:inline"
             style={{ color: mutedColor }}
           >
             {handle}
@@ -129,7 +119,7 @@ export function ChannelRow({
 
           {/* Arrow */}
           <motion.span
-            className="ml-auto shrink-0 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+            className="ml-auto shrink-0 transition-[translate] duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
             style={{ color: textColor }}
           >
             <ArrowUpRight className="size-5 md:size-7" />

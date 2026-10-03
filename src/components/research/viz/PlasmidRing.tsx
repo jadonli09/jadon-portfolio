@@ -48,6 +48,15 @@ FUS_PLASMID.features
 // no single "correct" reading order around a closed loop.
 const LINEAR_ORDER: Feature[] = [...FUS_PLASMID.features].sort((a, b) => rel(a.start) - rel(b.start));
 
+// Linear-view labels: mono glyphs are ~0.6em wide, so a label's half-width is
+// predictable; clamp its centre so the outermost ones ("GFP (fragment)") stay
+// inside the viewBox instead of being clipped at the right edge.
+const LINEAR_FONT = 9;
+function labelX(name: string, centre: number) {
+  const half = (name.length * LINEAR_FONT * 0.6) / 2;
+  return Math.min(W - 2 - half, Math.max(2 + half, centre));
+}
+
 function arcPath(cx: number, cy: number, r: number, a0: number, a1: number) {
   const x0 = cx + r * Math.cos(a0);
   const y0 = cy + r * Math.sin(a0);
@@ -123,9 +132,9 @@ export function PlasmidRing() {
                     style={{ cursor: "pointer", filter }}
                   />
                   <text
-                    x={(x0 + x1) / 2}
+                    x={labelX(f.name, (x0 + x1) / 2)}
                     y={labelY}
-                    fontSize="7.5"
+                    fontSize={LINEAR_FONT}
                     fill={KIND_COLOR[f.kind]}
                     textAnchor="middle"
                     fontFamily="monospace"
@@ -138,10 +147,10 @@ export function PlasmidRing() {
             {/* the cut is both ends of the linear molecule — mark it at each edge */}
             <line x1={10} y1={38} x2={10} y2={58} stroke="var(--hot)" strokeWidth={2} />
             <line x1={W - 10} y1={38} x2={W - 10} y2={58} stroke="var(--hot)" strokeWidth={2} />
-            <text x={2} y={14} fontSize="6.5" fill="var(--hot)" textAnchor="start" fontFamily="monospace">
+            <text x={2} y={14} fontSize="8" fill="var(--hot)" textAnchor="start" fontFamily="monospace">
               {FUS_PLASMID.cut.name}
             </text>
-            <text x={W - 2} y={14} fontSize="6.5" fill="var(--hot)" textAnchor="end" fontFamily="monospace">
+            <text x={W - 2} y={14} fontSize="8" fill="var(--hot)" textAnchor="end" fontFamily="monospace">
               {FUS_PLASMID.cut.name}
             </text>
           </svg>
@@ -166,7 +175,7 @@ export function PlasmidRing() {
                   <text
                     x={CX + (R + 26) * Math.cos(a)}
                     y={CY + (R + 26) * Math.sin(a)}
-                    fontSize="7"
+                    fontSize="8.5"
                     fill="var(--muted)"
                     textAnchor="middle"
                     dominantBaseline="middle"
@@ -200,9 +209,9 @@ export function PlasmidRing() {
                     style={{ cursor: "pointer", filter }}
                   />
                   <text
-                    x={CX + (R - 30) * Math.cos(mid)}
-                    y={CY + (R - 30) * Math.sin(mid)}
-                    fontSize={f.kind === "reporter" ? "9" : "7.5"}
+                    x={CX + (R - 34) * Math.cos(mid)}
+                    y={CY + (R - 34) * Math.sin(mid)}
+                    fontSize={f.kind === "reporter" ? "11" : "9"}
                     fontWeight={f.kind === "reporter" ? 700 : 500}
                     fill={KIND_COLOR[f.kind]}
                     textAnchor="middle"
@@ -228,7 +237,7 @@ export function PlasmidRing() {
       </div>
 
       <div className="flex min-w-0 flex-col gap-4">
-        <p className="font-mono text-[0.7rem] tracking-[0.14em] text-[var(--muted)]">
+        <p className="font-mono text-[0.95rem] text-[var(--muted)]">
           {FUS_PLASMID.name} · {FUS_PLASMID.bp.toLocaleString()} bp
         </p>
         <div className="min-h-[4.5rem]" aria-live="polite">
@@ -242,7 +251,7 @@ export function PlasmidRing() {
           onClick={() => setLinear((v) => !v)}
           aria-pressed={linear}
           className={cn(
-            "self-start rounded-sm border px-3 py-2 font-mono text-[0.65rem] tracking-[0.12em] transition-colors",
+            "min-h-[2.75rem] self-start rounded-sm border px-4 py-2.5 text-[1rem] transition-colors",
             "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
             linear
               ? "border-[var(--hot)] text-[var(--hot)]"

@@ -15,7 +15,6 @@ import { Sparkle } from "@/components/about/Doodles";
 
 type VideoEntry = { src: string; poster: string; label: string };
 
-const FEASTS = ["Thanksgiving", "New Year's", "Lunar New Year"] as const;
 const ROTATIONS = [-1.6, 1.2, -1];
 
 function VideoPrint({ v, index }: { v: VideoEntry; index: number }) {
@@ -101,9 +100,6 @@ function VideoPrint({ v, index }: { v: VideoEntry; index: number }) {
       </div>
 
       <p className="font-hand absolute bottom-2 left-4 text-xl text-[var(--fg)]">{v.label}</p>
-      <p className="absolute bottom-3.5 right-4 font-mono text-[0.52rem] uppercase tracking-widest text-[var(--muted)]">
-        {FEASTS[index] ?? "feast night"}
-      </p>
     </motion.div>
   );
 }
@@ -114,15 +110,13 @@ export function KitchenSection() {
       <div className="mx-auto max-w-6xl px-5 py-20 md:px-9 md:py-28">
         <div className="mb-12 grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
           <div className="relative">
-            <p className="inline-block bg-[var(--fg)] px-3 py-1 font-mono text-[0.6rem] uppercase tracking-[0.3em] text-[var(--bg)]">
-              JL Kitchens
-            </p>
-            <h2 className="mt-5 font-anton text-4xl uppercase leading-[0.95] tracking-tight md:text-6xl">
+            <h2 className="font-anton text-4xl uppercase leading-[0.95] tracking-tight md:text-6xl">
               Feast nights<span className="text-[var(--accent)]">.</span>
             </h2>
             <Sparkle className="absolute -right-2 top-0 hidden w-7 md:block" delay={0.4} />
             <p className="mt-5 max-w-xl text-base leading-relaxed text-[var(--muted)]">
-              Biweekly cooking with Samay — an outlet from rigorous courses,{" "}
+              <span className="font-semibold text-[var(--fg)]">JL Kitchens</span> is biweekly
+              cooking with Samay — an outlet from rigorous courses,{" "}
               <span className="marker text-[var(--fg)]">immersed in sound, taste, and smell</span>.
               Designed dinner menus for Thanksgiving, New Year&apos;s, and Lunar New Year.
             </p>
@@ -140,10 +134,6 @@ export function KitchenSection() {
             <VideoPrint key={v.src} v={v} index={i} />
           ))}
         </div>
-
-        <p className="mt-10 max-w-md border-l-2 border-[var(--accent)] pl-4 font-mono text-[0.62rem] uppercase tracking-[0.24em] leading-relaxed text-[var(--muted)]">
-          Filmed at the actual feast nights — 1,657 food photos in the camera roll.
-        </p>
       </div>
     </section>
   );

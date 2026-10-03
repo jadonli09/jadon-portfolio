@@ -42,7 +42,7 @@ export function ProductCanvas({
       {/* ── Chrome bar ── */}
       <div className="canvas-bar">
         {live ? <span className="live-dot shrink-0" aria-hidden /> : null}
-        <span className="t-small vibrant truncate text-[0.8rem]">{domain}</span>
+        <span className="t-small vibrant truncate">{domain}</span>
         <a
           href={url}
           target="_blank"
@@ -84,7 +84,7 @@ export function ProductCanvas({
               className="plate-scrim absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent"
             />
             <span aria-hidden className="absolute inset-x-0 bottom-0 flex justify-center">
-              <span className="plate surface-chrome vibrant mb-6 inline-flex items-center gap-1.5 px-4 py-2 text-[0.8rem]">
+              <span className="plate surface-chrome vibrant mb-6 inline-flex items-center gap-1.5 px-4 py-2 text-base">
                 Visit live <ArrowUpRight className="size-3.5" />
               </span>
             </span>

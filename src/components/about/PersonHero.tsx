@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { Photo } from "@/components/primitives/Photo";
 import { EASE } from "@/lib/motion";
-import { LoopArrow, Scribble, Sparkle } from "@/components/about/Doodles";
+import { Scribble, Sparkle } from "@/components/about/Doodles";
 
 /**
  * Scrapbook hero — huge ink headline, marker-highlighted intro,
@@ -23,20 +23,11 @@ export function PersonHero() {
       <div className="grid grid-cols-1 items-start gap-14 md:grid-cols-[1.15fr_0.85fr] md:gap-10">
         {/* ── text column ── */}
         <div className="relative">
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
-            className="inline-block border border-[var(--fg)] bg-[var(--bg)] px-3 py-1 font-mono text-[0.62rem] uppercase tracking-[0.3em]"
-          >
-            06 — The Person
-          </motion.p>
-
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.08 }}
-            className="mt-7 font-anton text-[4.2rem] uppercase leading-[0.92] tracking-tight md:text-[7.5rem]"
+            className="font-anton text-[4.2rem] uppercase leading-[0.92] tracking-tight md:text-[7.5rem]"
           >
             Hello,
             <br />
@@ -67,22 +58,6 @@ export function PersonHero() {
           >
             &ldquo;documenting the grind is the job — this is everything off the clock&rdquo;
           </motion.p>
-
-          {/* scroll chip, like the reference's black square */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.7 }}
-            className="mt-12 flex items-center gap-4"
-          >
-            <span className="flex h-10 w-10 items-center justify-center bg-[var(--fg)] text-[var(--bg)]">
-              ↓
-            </span>
-            <span className="font-mono text-[0.62rem] uppercase tracking-[0.3em] text-[var(--muted)]">
-              Scroll down
-            </span>
-            <LoopArrow className="hidden w-20 -scale-x-100 md:block" delay={1.1} />
-          </motion.div>
         </div>
 
         {/* ── portrait column ── */}
@@ -105,9 +80,6 @@ export function PersonHero() {
             </div>
             <p className="font-hand absolute bottom-3 left-4 text-xl text-[var(--fg)]">
               Jadon · Fremont, CA
-            </p>
-            <p className="absolute bottom-4 right-4 font-mono text-[0.55rem] uppercase tracking-widest text-[var(--muted)]">
-              est. 2009
             </p>
           </div>
 

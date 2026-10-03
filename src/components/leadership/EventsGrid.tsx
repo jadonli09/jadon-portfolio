@@ -82,10 +82,10 @@ function LedgerRow({
               {event.title}
             </span>
             <span
-              className="mt-1.5 block font-mono text-[0.58rem] uppercase tracking-[0.25em]"
-              style={{ color: inverted ? "rgba(12,10,8,0.65)" : "var(--muted)" }}
+              className="mt-1.5 block text-sm"
+              style={{ color: inverted ? "rgba(12,10,8,0.7)" : "var(--muted)" }}
             >
-              {event.window} · {isOpen ? "— close" : "+ open"}
+              {event.window}
             </span>
           </span>
 
@@ -116,9 +116,9 @@ function LedgerRow({
                 <NoteText text={event.note} />
               </p>
 
-              {/* Line-item facts — sub-ledger cells */}
+              {/* Line-item facts — sub-ledger cells (skip any the row's metric already states) */}
               <div className="mt-5 flex flex-wrap gap-2.5">
-                {event.facts.map((f) => (
+                {event.facts.filter((f) => !event.metric.includes(f.value)).map((f) => (
                   <div
                     key={f.label}
                     className="border-l-2 border-[var(--accent)] bg-[var(--bg-2)] py-2 pl-3.5 pr-5"
@@ -126,7 +126,7 @@ function LedgerRow({
                     <p className="font-anton text-xl leading-none text-[var(--accent)] md:text-2xl">
                       {f.value}
                     </p>
-                    <p className="mt-1 font-mono text-[0.52rem] uppercase tracking-[0.22em] text-[var(--muted)]">
+                    <p className="mt-1.5 text-sm text-[var(--muted)]">
                       {f.label}
                     </p>
                   </div>
@@ -140,7 +140,7 @@ function LedgerRow({
                   target="_blank"
                   rel="noreferrer"
                   data-cursor-hover
-                  className="mt-5 inline-flex items-center gap-2.5 border border-[rgba(212,175,106,0.5)] bg-[var(--bg-2)] px-4 py-2.5 font-mono text-[0.6rem] uppercase tracking-[0.2em] text-[var(--accent)] transition-colors duration-300 hover:bg-[var(--accent)] hover:text-[#0c0a08]"
+                  className="mt-5 inline-flex items-center gap-2.5 border border-[rgba(212,175,106,0.5)] bg-[var(--bg-2)] px-4 py-2.5 text-base text-[var(--accent)] transition-colors duration-300 hover:bg-[var(--accent)] hover:text-[#0c0a08]"
                 >
                   <span aria-hidden>▶</span>
                   {event.video.label}

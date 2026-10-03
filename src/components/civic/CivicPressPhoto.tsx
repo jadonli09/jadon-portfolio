@@ -66,11 +66,11 @@ export function CivicPressPhoto({
             style={{ background: "rgba(20,17,13,0.72)", backdropFilter: "blur(2px)" }}
           >
             <div className="flex items-end justify-between gap-4">
-              <p className="font-mono text-[0.62rem] uppercase tracking-[0.28em] text-white/80">
+              <p className="text-sm leading-snug text-white/90">
                 {caption}
               </p>
               {subCaption && (
-                <p className="shrink-0 font-mono text-[0.58rem] uppercase tracking-widest text-white/40">
+                <p className="shrink-0 text-sm text-white/60">
                   {subCaption}
                 </p>
               )}
@@ -115,11 +115,11 @@ export function CivicPressPhoto({
 
         {/* Caption bar */}
         <div className="border-t border-[var(--line)] px-4 py-2.5 md:px-5 md:py-3">
-          <p className="font-mono text-[0.62rem] uppercase tracking-widest text-[var(--muted)]">
+          <p className="text-sm leading-snug text-[var(--muted)]">
             {caption}
           </p>
           {subCaption && (
-            <p className="mt-0.5 font-mono text-[0.58rem] uppercase tracking-widest text-[var(--accent)]">
+            <p className="mt-0.5 text-sm text-[var(--accent)]">
               {subCaption}
             </p>
           )}

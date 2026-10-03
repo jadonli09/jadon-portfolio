@@ -36,7 +36,7 @@ export function HermesFlow({ shot }: { shot: string }) {
     <div ref={ref} className={styles.flow}>
       <div className={styles.inputs}>
         <motion.div {...arrival(0)}>
-          <div className={styles.step}><Users size={18} /><span>01 · Watch the accounts</span></div>
+          <div className={styles.step}><Users size={18} /><span>Watch the accounts</span></div>
           <div className={styles.accounts}>
             {HANDLES.map((handle) => (
               <div className={styles.account} key={handle}>
@@ -51,7 +51,7 @@ export function HermesFlow({ shot }: { shot: string }) {
         <div className={styles.connector} aria-hidden><span /><ArrowDown size={18} /></div>
 
         <motion.div {...arrival(1)}>
-          <div className={styles.step}><ScanLine size={18} /><span>02 · Pull out the details</span></div>
+          <div className={styles.step}><ScanLine size={18} /><span>Pull out the details</span></div>
           <div className={styles.sheet}>
             <div className={styles.sheetTitle}><CalendarDays size={16} /> Events, ready for the calendar</div>
             <table>
@@ -75,7 +75,7 @@ export function HermesFlow({ shot }: { shot: string }) {
       </motion.div>
 
       <motion.figure className={styles.output} {...arrival(2)}>
-        <div className={styles.step}><CalendarDays size={18} /><span>03 · Publish the day</span></div>
+        <div className={styles.step}><CalendarDays size={18} /><span>Publish the day</span></div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={asset(shot)} alt="A Hermes daily schedule story as posted to @msjclubs"
           loading="lazy" decoding="async" draggable={false} className={styles.story} />

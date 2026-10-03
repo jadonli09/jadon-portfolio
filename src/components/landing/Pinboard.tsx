@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { PINBOARD, PIN_LETTER_TEXT, type PinItem } from "@/lib/data";
 import { asset } from "@/lib/base";
 import { cn } from "@/lib/cn";
-import { BoardLabel, useBoard } from "@/components/landing/BoardSurface";
+import { useBoard } from "@/components/landing/BoardSurface";
 
 /** Which world a pin belongs to, from its destination — lights the matching thread + word. */
 const HREF_WORLD: Record<string, string> = {
@@ -24,19 +24,15 @@ const worldOf = (item: PinItem) =>
 /**
  * The record, pinned: a dense overlapping collage of achievements in physical
  * styles (polaroids, plaques, seals, tickets, notes, newsprint…) sitting
- * directly on the evidence board. Hover lifts an object above its neighbours
- * and reveals where it links; world-tagged pins glow when their thread (or
+ * directly on the evidence board. Hover lifts an object above its neighbours;
+ * world-tagged pins glow when their thread (or
  * sentence word) is hot. Desktop is an absolutely-placed wall; mobile reflows
  * into a tight 2-column collage.
  */
 export function Pinboard() {
   return (
-    <section id="record" className="relative scroll-mt-24 pb-20 pt-6 md:pb-24 md:pt-8">
+    <section id="record" className="relative scroll-mt-24 pb-20 pt-10 md:pb-24 md:pt-14">
       <div className="mx-auto max-w-7xl px-5 md:px-9">
-        <div className="mb-10 text-center">
-          <BoardLabel className="rotate-1">The record · pinned</BoardLabel>
-        </div>
-
         {/* desktop wall — no frame; the board surface IS the background */}
         <div className="relative hidden md:block" style={{ height: 600 }}>
           {PINBOARD.map((it, i) => (
@@ -95,14 +91,6 @@ function Pinned({ item, index }: { item: PinItem; index: number }) {
         />
         <PinBody item={item} />
       </div>
-      {item.go && (
-        <span
-          className="pointer-events-none absolute -bottom-5 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#07070a]/90 px-2.5 py-1 font-mono text-[0.55rem] uppercase tracking-[0.14em] text-[#e8b15a] transition-opacity duration-200"
-          style={{ opacity: hot ? 1 : 0 }}
-        >
-          {item.go}
-        </span>
-      )}
     </motion.div>
   );
   return (
@@ -159,8 +147,7 @@ function PinBody({ item }: { item: PinItem }) {
     case "letter":
       return (
         <div className="font-display bg-[#f9f5ea] p-[1.1rem] text-[#1f1d18] shadow-[0_14px_34px_rgba(0,0,0,0.72)]">
-          <p className="font-mono text-[0.56rem] font-bold uppercase tracking-[0.2em] text-[#b04a32]">Who is he?</p>
-          <p className="mt-2 text-[0.8rem] leading-[1.62]">{PIN_LETTER_TEXT}</p>
+          <p className="text-[0.9rem] leading-[1.6]">{PIN_LETTER_TEXT}</p>
           <p className="font-hand mt-2.5 text-xl leading-none">— Jadon</p>
         </div>
       );
@@ -179,7 +166,7 @@ function PinBody({ item }: { item: PinItem }) {
       return (
         <div className="rounded border border-[#e8b15a66] bg-gradient-to-br from-[#15151d] to-[#0e0e14] px-4 py-3 shadow-[0_10px_26px_rgba(0,0,0,0.6),inset_0_0_18px_rgba(232,177,90,0.05)]">
           <p className="font-anton text-2xl leading-none" style={{ color: item.accent }}>{item.value}</p>
-          <p className="mt-1 font-mono text-[0.5rem] uppercase tracking-[0.12em] text-[#9a9aa8]">{item.label}</p>
+          <p className="font-display mt-1.5 max-w-[11rem] text-sm leading-snug text-[#b8b8c4]">{item.label}</p>
         </div>
       );
     case "seal":
@@ -188,12 +175,12 @@ function PinBody({ item }: { item: PinItem }) {
           className="font-display flex aspect-square w-full flex-col items-center justify-center rounded-full text-center font-bold text-[#26231d] shadow-[0_10px_26px_rgba(0,0,0,0.66),inset_0_0_0_3px_rgba(0,0,0,0.13),inset_0_0_0_6px_rgba(255,255,255,0.16)]"
           style={{ background: "radial-gradient(circle at 35% 30%, #e8e4da, #9a948a)" }}
         >
-          <span className="text-base leading-none">{item.value}</span>
-          <span className="mt-0.5 px-2 font-mono text-[0.42rem] tracking-[0.1em]">{item.text}</span>
+          <span className="text-xl leading-none">{item.value}</span>
+          <span className="mt-1 px-2 text-sm leading-tight">{item.text}</span>
         </div>
       ) : (
         <div
-          className="font-display flex aspect-square w-full items-center justify-center rounded-full p-3 text-center text-[0.56rem] font-bold leading-[1.45] text-[#241a04] shadow-[0_10px_26px_rgba(0,0,0,0.66),inset_0_0_0_3px_rgba(0,0,0,0.13),inset_0_0_0_6px_rgba(255,255,255,0.16)]"
+          className="font-display flex aspect-square w-full items-center justify-center rounded-full p-4 text-center text-sm font-bold leading-[1.25] text-[#241a04] shadow-[0_10px_26px_rgba(0,0,0,0.66),inset_0_0_0_3px_rgba(0,0,0,0.13),inset_0_0_0_6px_rgba(255,255,255,0.16)]"
           style={{ background: "radial-gradient(circle at 35% 30%, #d9a83f, #7d5a10)" }}
         >
           {item.text}
@@ -202,8 +189,8 @@ function PinBody({ item }: { item: PinItem }) {
     case "ticket":
       return (
         <div className="rounded-sm border-[1.5px] border-dashed bg-[#14141b] px-3 py-2.5 shadow-[0_10px_26px_rgba(0,0,0,0.6)]" style={{ borderColor: `${item.accent}88` }}>
-          <p className="font-mono text-[0.62rem] font-bold tracking-wide" style={{ color: item.accent }}>{item.text}</p>
-          <p className="mt-0.5 font-mono text-[0.54rem] text-[#9a9aa8]">{item.label}</p>
+          <p className="font-mono text-sm font-bold leading-snug" style={{ color: item.accent }}>{item.text}</p>
+          <p className="font-display mt-1 text-sm leading-snug text-[#b8b8c4]">{item.label}</p>
         </div>
       );
     case "note":
@@ -218,13 +205,13 @@ function PinBody({ item }: { item: PinItem }) {
     case "news":
       return (
         <div className="bg-[#ece6d8] px-3.5 py-3 text-[#23211c] shadow-[0_10px_26px_rgba(0,0,0,0.66)]">
-          <p className="font-display text-[0.84rem] font-bold leading-[1.25]">{item.hed}</p>
-          <p className="mt-1.5 border-t border-[#c9c2b0] pt-1 font-mono text-[0.46rem] uppercase tracking-[0.14em] text-[#6a6458]">{item.src}</p>
+          <p className="font-display text-[0.95rem] font-bold leading-[1.25]">{item.hed}</p>
+          <p className="font-display mt-2 border-t border-[#c9c2b0] pt-1.5 text-sm leading-snug text-[#5a5448]">{item.src}</p>
         </div>
       );
     case "receipt":
       return (
-        <div className="bg-[#fbf8ef] px-3 py-2.5 font-mono text-[0.55rem] leading-[1.8] text-[#2a2722] shadow-[0_10px_26px_rgba(0,0,0,0.6)]">
+        <div className="bg-[#fbf8ef] px-3 py-2.5 font-mono text-[0.8rem] leading-[1.6] text-[#2a2722] shadow-[0_10px_26px_rgba(0,0,0,0.6)]">
           {item.lines!.map((l, i) => (
             <p key={i} className="whitespace-pre">{l}</p>
           ))}
@@ -237,12 +224,12 @@ function PinBody({ item }: { item: PinItem }) {
           style={{ clipPath: "polygon(0 0, 100% 0, 100% 72%, 50% 100%, 0 72%)" }}
         >
           <p className="font-anton text-lg leading-none">{item.value}</p>
-          <p className="mt-0.5 font-mono text-[0.46rem] uppercase tracking-[0.1em]">{item.label}</p>
+          <p className="font-display mt-1 text-sm font-semibold leading-tight">{item.label}</p>
         </div>
       );
     case "index":
       return (
-        <div className="font-display border-t-4 border-[#b07c1e] bg-[#fdfbf4] px-3 py-2.5 text-[0.68rem] leading-[1.65] text-[#26231d] shadow-[0_10px_26px_rgba(0,0,0,0.6)]">
+        <div className="font-display border-t-4 border-[#b07c1e] bg-[#fdfbf4] px-3 py-2.5 text-[0.9rem] leading-[1.5] text-[#26231d] shadow-[0_10px_26px_rgba(0,0,0,0.6)]">
           {item.text}
         </div>
       );

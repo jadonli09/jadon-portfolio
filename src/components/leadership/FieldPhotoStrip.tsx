@@ -38,7 +38,7 @@ function FieldPhoto({
         animate={{ filter: hovered ? "grayscale(0%)" : "grayscale(70%)" }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
-        <SlotPhoto src={src} alt={alt} monogram="ASB" note="photo en route" className="object-cover" />
+        <SlotPhoto src={src} alt={alt} monogram="ASB" className="object-cover" />
       </motion.div>
 
       {/* Bottom gradient scrim */}

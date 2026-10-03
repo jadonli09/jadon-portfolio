@@ -5,7 +5,6 @@ import { Play, ArrowDownRight } from "lucide-react";
 import { Reveal } from "@/components/primitives/Reveal";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { CivicPressPhoto } from "@/components/civic/CivicPressPhoto";
-import { Counter } from "@/components/primitives/Counter";
 import { PosterHeading } from "@/components/ui/poster-heading";
 import { asset } from "@/lib/base";
 import { CIVIC } from "@/lib/data";
@@ -23,7 +22,6 @@ const STORY_PHOTOS: Record<string, { src: string; caption: string }> = {
 const STORY_DETAIL: Record<
   string,
   {
-    byline: string;
     dateline: string;
     pullQuote?: string;
     whoWhat?: { label: string; val: string }[];
@@ -31,23 +29,14 @@ const STORY_DETAIL: Record<
   }
 > = {
   "The Mayor's Videographer": {
-    byline: "Jadon Li · @li_locked.in",
-    dateline: "Jun 2025 – present · Fremont, CA",
+    dateline: "Fremont, CA, since June 2025",
     pullQuote:
       "The Mayor saw his @li_locked.in channel and called. Now Jadon edits every event for the Mayor's Instagram.",
-    whoWhat: [
-      { label: "Client", val: "Mayor Salwan · City of Fremont" },
-      { label: "Rate", val: "$50 / video flat" },
-      { label: "First invoice", val: "$600" },
-      { label: "Before", val: "~1k views / video" },
-      { label: "After", val: "~20k views / video" },
-    ],
     extraBody:
       "The Mayor spotted Jadon's @li_locked.in channel and reached out directly. Jadon films civic events and onstage talks, edits the footage, and delivers final cuts for the Mayor's Instagram. Per-video reach is up roughly sixteen-fold since he started, and the account's following has quadrupled.",
   },
   "Reviving Sweet Tomatoes": {
-    byline: "Jadon Li · @li_locked.in",
-    dateline: "2025 · Fremont, CA → Tucson, AZ",
+    dateline: "Fremont, CA to Tucson, AZ, 2025",
     pullQuote:
       "He contacted the realty company, made the pitch, then emailed the Sweet Tomatoes location in Tucson about expansion.",
     whoWhat: [
@@ -62,8 +51,7 @@ const STORY_DETAIL: Record<
       "The video that made him viral. He tracked down the realty company that owned the old Sweet Tomatoes location, then learned a Chinese couple had already bought it to open a Chinese food court. Jadon argued the location and local demographic wouldn't support it — and pitched a Sweet-Tomatoes-style restaurant instead. The owners were receptive. Working with the Mayor, they emailed the surviving Sweet Tomatoes in Tucson about Bay Area expansion.",
   },
   "Stories of Fremont": {
-    byline: "Jadon Li · Akash Sethi · Brittany Lu",
-    dateline: "Jun 2025 – · Fremont, CA",
+    dateline: "Fremont, CA, since June 2025",
     pullQuote:
       "Met Akash Sethi — a law student — at a City Council meeting. That's how documentary crews form.",
     whoWhat: [
@@ -76,8 +64,7 @@ const STORY_DETAIL: Record<
       "Jadon met Akash Sethi at a City Council meeting. Together with Brittany Lu, they created a video series telling the stories of interesting Fremont people — to show that there are many inspiring career paths beyond the conventional. First interview: Darlene, director of Fremont's number-one daycare, who went from fashion-aspiring college student to successful childcare entrepreneur.",
   },
   "Small Business Accessibility": {
-    byline: "Jadon Li · Luke Wu · Arissa",
-    dateline: "2025 – · Bay Area, CA",
+    dateline: "Bay Area, CA, since 2025",
     pullQuote:
       "A boba shop sued over a table a few centimeters too low. Jadon ran outreach, cold-emailed professors, got an advisor, and published an op-ed.",
     whoWhat: [
@@ -92,8 +79,7 @@ const STORY_DETAIL: Record<
       "Connected via Tr. Sherry to Luke Wu, whose family boba shop was hit by serial ADA litigation — sued over a table a few centimeters too low. Jadon ran outreach, cold-emailing professors until Prof. Durazo at SF University agreed to advise. They published an op-ed in the San Mateo Daily Journal, met with Chamber of Commerce policy managers across the Bay, and presented at City Council. Year 2 continued with Luke and Arissa around SB 84 — which hit a roadblock in Ash Kalra, adamant against letting it pass the assembly judiciary.",
   },
   "HG Nguyen for D7": {
-    byline: "Jadon Li · Benjamin Jin",
-    dateline: "Jun 2025 – · San Jose, CA",
+    dateline: "San Jose, CA, since June 2025",
     pullQuote:
       "Led social media and video for a San Jose D7 City Council campaign — door-knocking, content, and website help.",
     whoWhat: [
@@ -106,8 +92,7 @@ const STORY_DETAIL: Record<
       "An initiative led by Benjamin Jin. Jadon ran social media and publicity — video editing intro and donation clips, event coverage, and website design help — alongside door-knocking for the HG Nguyen City Council campaign in San Jose District 7.",
   },
   "Voices of Fremont": {
-    byline: "Jadon Li · Director & Editor",
-    dateline: "Fall 2025 – · Fremont, CA",
+    dateline: "Fremont, CA, since fall 2025",
     pullQuote:
       "The Mayor called directly. He wanted an outlet to talk to the city. Jadon built it.",
     whoWhat: [
@@ -133,13 +118,6 @@ function LeadFeature({ story }: { story: Story }) {
         {/* Red rule accent */}
         <div className="mb-5 h-[2px] w-16 bg-[var(--accent)]" />
 
-        {/* Label row */}
-        <div className="mb-3 flex flex-wrap items-center gap-4">
-          <span className="eyebrow text-[var(--accent)]">Lead Story</span>
-          <span className="eyebrow">{story.window}</span>
-          <span className="eyebrow ml-auto opacity-60">{story.handle}</span>
-        </div>
-
         {/* Headline — oversized poster grotesk */}
         <KineticHeadline
           as="h2"
@@ -148,16 +126,9 @@ function LeadFeature({ story }: { story: Story }) {
           delay={0.05}
         />
 
-        {/* Byline + dateline */}
+        {/* Dateline */}
         {detail && (
-          <div className="mt-4 flex flex-wrap items-center gap-4 border-b border-[var(--line)] pb-4">
-            <span className="font-mono text-[0.62rem] uppercase tracking-widest text-[var(--muted)]">
-              By {detail.byline}
-            </span>
-            <span className="font-mono text-[0.62rem] uppercase tracking-widest text-[var(--muted)] opacity-60">
-              {detail.dateline}
-            </span>
-          </div>
+          <p className="mt-4 border-b border-[var(--line)] pb-4 text-sm text-[var(--muted)]">{detail.dateline}</p>
         )}
 
         {/* Body with drop-cap styling + extra detail */}
@@ -183,20 +154,13 @@ function LeadFeature({ story }: { story: Story }) {
             {/* Who/what credential row */}
             {detail?.whoWhat && (
               <div className="border border-[var(--line)]">
-                <div className="border-b border-[var(--line)] px-4 py-2">
-                  <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--accent)]">
-                    Who / What / Where
-                  </p>
-                </div>
                 {detail.whoWhat.map((w, i) => (
                   <div
                     key={`${w.label}-${w.val}`}
                     className={`flex justify-between gap-4 px-4 py-2.5 ${i !== (detail.whoWhat?.length ?? 0) - 1 ? "border-b border-[var(--line)]" : ""}`}
                   >
-                    <span className="font-mono text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">
-                      {w.label}
-                    </span>
-                    <span className="text-right font-mono text-[0.62rem] text-[var(--fg)]">{w.val}</span>
+                    <span className="text-sm text-[var(--muted)]">{w.label}</span>
+                    <span className="text-right text-sm text-[var(--fg)]">{w.val}</span>
                   </div>
                 ))}
               </div>
@@ -211,13 +175,10 @@ function LeadFeature({ story }: { story: Story }) {
               THE SAGA, IN FOUR PARTS
             </span>
             <ArrowDownRight className="size-5 text-[var(--accent)]" />
-            <span className="ml-3 hidden font-mono text-[0.6rem] uppercase tracking-[0.28em] text-[var(--muted)] sm:block">
-              @li_locked.in · Jul – Aug 2025
-            </span>
           </div>
 
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-            {CIVIC.sweetTomatoesReels.map((reel, i) => (
+            {CIVIC.sweetTomatoesReels.map((reel) => (
               <a
                 key={reel.url}
                 href={reel.url}
@@ -233,10 +194,6 @@ function LeadFeature({ story }: { story: Story }) {
                   loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-cine)] group-hover:scale-[1.05]"
                 />
-                {/* Episode number */}
-                <span className="absolute left-2.5 top-2 font-mono text-xs font-semibold tracking-widest text-white drop-shadow">
-                  {String(i + 1).padStart(2, "0")} / 04
-                </span>
                 {/* Play glyph */}
                 <span className="absolute inset-0 flex items-center justify-center">
                   <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--fg)]/70 backdrop-blur-sm transition-transform duration-500 ease-[var(--ease-cine)] group-hover:scale-110">
@@ -244,31 +201,26 @@ function LeadFeature({ story }: { story: Story }) {
                   </span>
                 </span>
                 {/* Caption strip with real stats */}
-                <div className="absolute inset-x-0 bottom-0 bg-[var(--fg)]/85 px-2.5 py-1.5">
-                  <p className="truncate font-mono text-[0.58rem] uppercase tracking-widest text-[var(--bg)]">
+                <div className="absolute inset-x-0 bottom-0 bg-[var(--fg)]/85 px-2.5 py-2">
+                  <p className="truncate text-sm font-medium leading-snug text-[var(--bg)]">
                     &ldquo;{reel.caption}&rdquo;
                   </p>
-                  <p className="mt-0.5 font-mono text-[0.52rem] uppercase tracking-widest text-[var(--bg)]/70">
-                    {reel.likes} likes · {reel.comments} comments · {reel.date}
+                  <p className="mt-0.5 text-sm leading-snug text-[var(--bg)]/75">
+                    {reel.likes} likes, {reel.comments} comments
+                    <br />
+                    {reel.date}
                   </p>
                 </div>
               </a>
             ))}
           </div>
         </div>
-
-        {/* Bottom rule */}
-        <div className="mt-8 border-t border-[var(--line)] pt-4">
-          <p className="eyebrow">
-            The campaign that put {story.handle.toLowerCase()} on the map
-          </p>
-        </div>
       </article>
     </Reveal>
   );
 }
 
-/** Mayor's Videographer — second hero story, with animated before/after counter. */
+/** Mayor's Videographer — second hero story, with the rate + first invoice beside it. */
 function SecondFeature({ story }: { story: Story }) {
   const photo = STORY_PHOTOS[story.title];
   const detail = STORY_DETAIL[story.title];
@@ -280,20 +232,12 @@ function SecondFeature({ story }: { story: Story }) {
         <div className="hidden w-2 shrink-0 bg-[var(--accent)] md:block" />
 
         <div className="flex-1 p-7 md:p-10">
-          {/* Label row */}
-          <div className="mb-3 flex flex-wrap items-center gap-4">
-            <span className="eyebrow text-[var(--accent)]">Videography · Paid</span>
-            <span className="eyebrow">{story.window}</span>
-          </div>
-
           <h2 className="font-grotesk text-3xl font-bold uppercase leading-tight tracking-[-1px] md:text-5xl md:tracking-[-3px]">
             {story.title}
           </h2>
 
           {detail && (
-            <p className="mt-1.5 font-mono text-xs text-[var(--muted)]">
-              {detail.byline}&nbsp;·&nbsp;{detail.dateline}
-            </p>
+            <p className="mt-2 text-sm text-[var(--muted)]">{detail.dateline}</p>
           )}
 
           {/* Pull-quote */}
@@ -306,41 +250,9 @@ function SecondFeature({ story }: { story: Story }) {
           )}
 
           <div className="mt-5 grid grid-cols-1 gap-6 md:grid-cols-[1fr_auto]">
-            <div>
-              <p className="max-w-xl text-base leading-relaxed text-[var(--fg)] md:text-lg">
-                {detail?.extraBody ?? story.body}
-              </p>
-
-              {/* Who/what credential row */}
-              {detail?.whoWhat && (
-                <div className="mt-5 border border-[var(--line)]">
-                  <div className="border-b border-[var(--line)] px-4 py-2">
-                    <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--accent)]">
-                      Credential row
-                    </p>
-                  </div>
-                  <div className="grid grid-cols-2 md:grid-cols-3">
-                    {detail.whoWhat.map((w, i) => {
-                      const len = detail.whoWhat!.length;
-                      const isLastRow = i >= len - (len % 3 === 0 ? 3 : len % 3);
-                      return (
-                      <div
-                        key={`${w.label}-${w.val}`}
-                        className={`px-4 py-3 ${i % 3 !== 2 ? "border-r border-[var(--line)]" : ""} ${!isLastRow ? "border-b border-[var(--line)]" : ""}`}
-                      >
-                        <p className="font-mono text-[0.56rem] uppercase tracking-widest text-[var(--muted)]">
-                          {w.label}
-                        </p>
-                        <p className="mt-0.5 font-mono text-[0.65rem] font-medium text-[var(--fg)]">
-                          {w.val}
-                        </p>
-                      </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
+            <p className="max-w-xl text-base leading-relaxed text-[var(--fg)] md:text-lg">
+              {detail?.extraBody ?? story.body}
+            </p>
 
             {/* Press photo — editing session */}
             {photo && (
@@ -356,43 +268,13 @@ function SecondFeature({ story }: { story: Story }) {
           </div>
         </div>
 
-        {/* Stat sidebar — animated counter before → after */}
+        {/* Stat sidebar — the paid gig, in two numbers */}
         <div className="shrink-0 border-t border-[var(--line)] p-7 md:w-52 md:border-l md:border-t-0 md:p-8">
-          <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-            Before
-          </p>
-          <p className="mt-1 font-anton text-3xl leading-none text-[var(--muted)]">~1k</p>
-          <p className="mt-0.5 font-mono text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">
-            views / video
-          </p>
-
-          <div className="my-4 flex items-center gap-2">
-            <div className="h-px flex-1 bg-[var(--accent)]" />
-            <span className="font-mono text-[0.6rem] text-[var(--accent)]">→</span>
-            <div className="h-px flex-1 bg-[var(--accent)]" />
-          </div>
-
-          <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-            After
-          </p>
-          <p className="mt-1 font-anton text-4xl leading-none text-[var(--accent)]">
-            <Counter to={10} suffix="k" duration={1.6} />
-          </p>
-          <p className="mt-0.5 font-mono text-[0.58rem] uppercase tracking-widest text-[var(--muted)]">
-            views / video
-          </p>
-
-          <div className="mt-6 border-t border-[var(--line)] pt-5">
-            <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-              Rate
-            </p>
-            <p className="mt-1 font-display text-xl font-semibold">$50<span className="text-sm font-normal text-[var(--muted)]">/video</span></p>
-          </div>
+          <p className="text-sm text-[var(--muted)]">Rate</p>
+          <p className="mt-1 font-display text-xl font-semibold">$50<span className="text-sm font-normal text-[var(--muted)]">/video</span></p>
 
           <div className="mt-4 border-t border-[var(--line)] pt-4">
-            <p className="font-mono text-[0.6rem] uppercase tracking-widest text-[var(--muted)]">
-              First invoice
-            </p>
+            <p className="text-sm text-[var(--muted)]">First invoice</p>
             <p className="mt-1 font-display text-2xl font-semibold text-[var(--accent)]">$600</p>
           </div>
         </div>
@@ -410,9 +292,7 @@ export function CivicStories() {
     <section className="mx-auto max-w-7xl px-5 py-16 md:px-9 md:py-24">
       {/* Poster section masthead */}
       <PosterHeading
-        label="The Stories"
         title="From the Field"
-        meta="Fremont, CA · 2025"
         className="mb-10 md:mb-16"
       />
 

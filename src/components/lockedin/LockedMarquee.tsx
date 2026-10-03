@@ -31,7 +31,7 @@ export function LockedMarquee() {
         items={THEMES}
         sep="✦"
         durationSec={22}
-        className="font-mono text-[0.72rem] uppercase tracking-[0.3em] text-[var(--accent)]"
+        className="font-mono text-sm uppercase tracking-[0.22em] text-[var(--accent)] md:text-base"
       />
     </div>
   );

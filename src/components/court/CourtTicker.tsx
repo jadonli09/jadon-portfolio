@@ -4,12 +4,10 @@ const TICKER_ITEMS = [
   "NCS CHAMPIONS 2026",
   "FIRST IN DISTRICT HISTORY",
   "STARTED FIRST FIVE",
-  "569K LIKES ON DOUYIN",
   "MSJ VARSITY BASKETBALL",
   "FIRST IN SCHOOL HISTORY",
   "FREMONT DISTRICT TITLE",
   "AAU ROOTS — GRADES 3–9",
-  ".500 JV RECORD",
   "BENCH ENERGY DRIVES SYNERGY",
   "MAYOR + CITY RECOGNITION",
   "BROKEN ARM — STILL A-TEAM",
@@ -43,7 +41,7 @@ export function CourtTicker() {
         items={TICKER_ITEMS}
         sep="●"
         durationSec={36}
-        className="font-mono text-[0.7rem] font-bold uppercase tracking-[0.22em] text-[var(--accent)] [text-shadow:0_0_5px_rgba(255,91,31,0.9),0_0_18px_rgba(255,91,31,0.4)]"
+        className="font-mono text-sm font-bold uppercase tracking-[0.16em] text-[var(--accent)] [text-shadow:0_0_5px_rgba(255,91,31,0.9),0_0_18px_rgba(255,91,31,0.4)]"
       />
     </div>
   );

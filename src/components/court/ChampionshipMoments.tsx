@@ -57,17 +57,17 @@ function PressClipping() {
       <Tape className="-top-3 right-6 rotate-6" />
 
       {/* Masthead row */}
-      <div className="flex items-baseline justify-between gap-4 border-b-2 border-[#1c1a16] pb-2">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b-2 border-[#1c1a16] pb-2">
         {/* Fraunces referenced directly — the .font-display helper can't resolve
             its var under @theme inline, which silently falls back to sans. */}
         <span
-          className="whitespace-nowrap text-xs font-black uppercase tracking-[0.08em] sm:text-sm md:text-base"
+          className="whitespace-nowrap text-sm font-black uppercase tracking-[0.08em] md:text-base"
           style={{ fontFamily: "var(--font-fraunces), Georgia, serif" }}
         >
           {p.outlet}
         </span>
-        <span className="font-mono text-[0.55rem] uppercase tracking-[0.2em] text-[#6b6557]">
-          {p.section} · {p.date}
+        <span className="font-grotesk text-sm text-[#6b6557]">
+          {p.date}
         </span>
       </div>
 
@@ -85,7 +85,7 @@ function PressClipping() {
       </p>
 
       {/* Box score strip */}
-      <div className="mt-5 flex items-stretch border-y border-[#1c1a16]/30 font-mono text-[0.62rem] uppercase tracking-[0.14em]">
+      <div className="mt-5 flex items-stretch border-y border-[#1c1a16]/30 font-mono text-sm uppercase tracking-[0.06em]">
         <div className="flex items-center gap-3 py-2 pr-4">
           <span className="font-bold">MSJ</span>
           <span className="font-anton text-xl tracking-normal">{p.score.msj}</span>
@@ -95,17 +95,17 @@ function PressClipping() {
           <span>{p.score.oppName}</span>
           <span className="font-anton text-xl tracking-normal text-[#6b6557]">{p.score.opp}</span>
         </div>
-        <span className="my-2 ml-auto hidden items-center text-[#6b6557] sm:flex">
+        <span className="my-2 ml-auto hidden items-center text-right normal-case tracking-normal text-[#6b6557] sm:flex">
           {p.score.venue}
         </span>
       </div>
 
       {/* Byline + link */}
       <div className="mt-4 flex items-center justify-between gap-4">
-        <span className="font-grotesk text-xs italic text-[#6b6557]">By {p.byline}</span>
-        <span className="inline-flex items-center gap-1.5 font-mono text-[0.6rem] font-bold uppercase tracking-[0.2em] text-[#b3400f] transition-colors duration-300 group-hover:text-[#1c1a16]">
-          Read the full story
-          <ExternalLink className="size-3" />
+        <span className="font-grotesk text-sm italic text-[#6b6557]">By {p.byline}</span>
+        <span className="inline-flex items-center gap-1.5 font-mono text-base font-bold uppercase tracking-[0.08em] text-[#b3400f] transition-colors duration-300 group-hover:text-[#1c1a16]">
+          Read the story
+          <ExternalLink className="size-4" aria-hidden />
         </span>
       </div>
     </motion.a>
@@ -207,7 +207,7 @@ function ChampionshipBanner({
                 style={{ background: "linear-gradient(to top, rgba(11,11,12,0.9) 0%, transparent 100%)" }}
                 aria-hidden
               />
-              <p className="absolute inset-x-0 bottom-0 px-4 pb-3 font-mono text-[0.58rem] uppercase tracking-widest text-white/80">
+              <p className="absolute inset-x-0 bottom-0 px-4 pb-3 font-grotesk text-sm leading-snug text-white/90">
                 {sub}
               </p>
             </div>
@@ -236,22 +236,12 @@ export function ChampionshipMoments() {
       aria-label="Championship moments — banners raised to the rafters"
     >
       <div className="mx-auto max-w-7xl px-5 pt-16 md:px-9 md:pt-20">
-        {/* Section header */}
-        <Reveal>
-          <div className="flex items-baseline justify-between border-b border-[var(--line)] pb-4">
-            <span className="eyebrow text-[var(--accent)]">Raised to the Rafters</span>
-            <span className="eyebrow hidden text-[var(--muted)] sm:block">NCS · 2026</span>
-          </div>
-        </Reveal>
-
-        <div className="mt-5 md:mt-6">
-          <KineticHeadline
-            as="h2"
-            text="Beyond the Final Buzzer."
-            className="font-anton text-[2.2rem] uppercase leading-none tracking-tight text-[var(--fg)] md:text-[4rem]"
-            delay={0.05}
-          />
-        </div>
+        <KineticHeadline
+          as="h2"
+          text="Beyond the Final Buzzer."
+          className="font-anton text-[2.2rem] uppercase leading-none tracking-tight text-[var(--fg)] md:text-[4rem]"
+          delay={0.05}
+        />
 
         {/* ── The rafter beam ── */}
         <div className="relative mt-12 md:mt-16">
@@ -288,28 +278,12 @@ export function ChampionshipMoments() {
           </div>
         </div>
 
-        {/* Beneath the banners: the pull-quote + the morning paper */}
-        <div className="mx-auto mt-14 grid max-w-5xl grid-cols-1 items-center gap-10 md:mt-20 md:grid-cols-[0.85fr_1.15fr] md:gap-14">
-          <Reveal delay={0.1}>
-            <div className="border-l-4 border-[var(--accent)] pl-4">
-              <p className="font-mono text-xs uppercase tracking-widest text-[var(--muted)]">
-                First title in school &amp; district history
-              </p>
-              <p className="mt-1 font-anton text-lg uppercase leading-tight text-[var(--fg)] md:text-xl">
-                NCS Section Champions · 2026 — hanging in the gym forever.
-              </p>
-              <p className="mt-4 font-mono text-[0.6rem] uppercase tracking-[0.25em] text-[var(--muted)]">
-                And the morning paper said it best →
-              </p>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.2}>
-            <div className="px-2 pt-4 md:px-0">
-              <PressClipping />
-            </div>
-          </Reveal>
-        </div>
+        {/* Beneath the banners: the morning paper */}
+        <Reveal delay={0.1}>
+          <div className="mx-auto mt-14 max-w-2xl px-2 pt-4 md:mt-20 md:px-0">
+            <PressClipping />
+          </div>
+        </Reveal>
       </div>
 
       {/* Bottom divider */}

@@ -16,38 +16,33 @@ import { cn } from "@/lib/cn";
  * Game photos from each era are embedded directly in the cards.
  */
 
-type EraPhoto = { src: string; alt: string; tag: string; pos: string };
+type EraPhoto = { src: string; alt: string; pos: string };
 
 /** Game photo per era, keyed by role. `pos` = object-position keeping the player in frame. */
 const ERA_PHOTOS: Record<string, EraPhoto> = {
   "AAU Basketball": {
     src: "/img/aau-basketball.jpg",
     alt: "Jadon driving baseline in a Trust AAU jersey, #27",
-    tag: "AAU · Trust №27",
     pos: "22% 40%",
   },
   "Freshman Co-Captain": {
     src: "/img/frosh-bbal.jpg",
     alt: "Jadon pushing the break for MSJ Freshman basketball, #20",
-    tag: "Frosh · №20",
     pos: "center 30%",
   },
   "JV Co-Captain": {
     src: "/img/jv-bbal.jpg",
     alt: "Jadon surveying the defense for MSJ JV basketball, #12",
-    tag: "JV · №12",
     pos: "center 32%",
   },
   "Varsity · started first 5": {
     src: "/img/var-bbal2.jpg",
     alt: "Jadon attacking off the dribble for MSJ Varsity, #20",
-    tag: "Varsity · №20",
     pos: "center 32%",
   },
   "NCS Champion": {
     src: "/img/var-bbal1.jpg",
     alt: "Jadon extending for a layup through contact in the NCS title season",
-    tag: "Title Run · №20",
     pos: "center 28%",
   },
 };
@@ -174,13 +169,6 @@ function NodeCard({
             <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="pointer-events-none absolute inset-0 h-full w-full opacity-35" aria-hidden>
               <path d="M -8 88 Q 50 66 108 88" stroke="var(--accent)" strokeWidth="1.5" fill="none" vectorEffect="non-scaling-stroke" />
             </svg>
-
-            {/* Era tag chip — scoreboard plate */}
-            <div className="absolute bottom-0 left-0 bg-[var(--accent)] px-2.5 py-1">
-              <span className="font-mono text-[0.55rem] font-bold uppercase tracking-[0.18em] text-black">
-                {photo.tag}
-              </span>
-            </div>
           </div>
         )}
 
@@ -210,46 +198,6 @@ function NodeCard({
           <p className="mt-3 font-grotesk text-sm leading-relaxed text-[var(--muted)]">
             {item.note}
           </p>
-
-          {/* Tags row */}
-          <div className="mt-4 flex flex-wrap gap-2">
-            {isChampion && (
-              <div className="inline-flex items-center gap-1.5 border border-[var(--accent)] px-3 py-1">
-                <BallIcon className="size-3" />
-                <span className="font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[var(--accent)]">
-                  NCS Title · School &amp; District First
-                </span>
-              </div>
-            )}
-            {item.role === "JV Co-Captain" && (
-              <div className="inline-flex items-center gap-1.5 border border-[var(--muted)] px-3 py-1">
-                <span className="font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[var(--muted)]">
-                  .500 League Record
-                </span>
-              </div>
-            )}
-            {item.role === "AAU Basketball" && (
-              <div className="inline-flex items-center gap-1.5 border border-[var(--muted)] px-3 py-1">
-                <span className="font-mono text-[0.58rem] uppercase tracking-[0.22em] text-[var(--muted)]">
-                  Hopkins A-Team · 8th Grade
-                </span>
-              </div>
-            )}
-            {item.role === "Varsity Summer League" && (
-              <div className="inline-flex items-center gap-1.5 border border-orange-400/50 px-3 py-1">
-                <span className="font-mono text-[0.58rem] uppercase tracking-[0.22em] text-orange-400">
-                  3 Tournaments · Bay Club
-                </span>
-              </div>
-            )}
-            {item.role.includes("Varsity · started") && (
-              <div className="inline-flex items-center gap-1.5 border border-orange-400/50 px-3 py-1">
-                <span className="font-mono text-[0.58rem] uppercase tracking-[0.22em] text-orange-400">
-                  Bench Energy = Team Synergy
-                </span>
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </>
@@ -370,9 +318,6 @@ function SwishFinish() {
         <BallIcon className="size-7 md:size-8" />
       </motion.div>
       <RimNet className="-mt-3 w-24 text-[var(--accent)] opacity-80 md:w-28" />
-      <span className="mt-3 font-mono text-[0.58rem] uppercase tracking-[0.3em] text-[var(--muted)]">
-        And the ball goes in.
-      </span>
     </div>
   );
 }
@@ -402,14 +347,9 @@ export function CourtTimeline() {
       <div className="relative mb-16 grid grid-cols-1 gap-8 md:mb-20 md:grid-cols-2 md:gap-12">
         <Reveal>
           <div>
-            <span className="eyebrow text-[var(--accent)]">The Journey — Seam by Seam</span>
-            <h2 className="mt-3 font-anton text-[clamp(2.4rem,8vw,5.5rem)] uppercase leading-none tracking-tight text-[var(--fg)]">
+            <h2 className="font-anton text-[clamp(2.4rem,8vw,5.5rem)] uppercase leading-none tracking-tight text-[var(--fg)]">
               Career<br />Timeline
             </h2>
-            <p className="mt-4 flex items-center gap-3 font-mono text-[0.6rem] uppercase tracking-[0.28em] text-[var(--muted)]">
-              <BallIcon className="size-4" />
-              Six chapters stitched around one ball
-            </p>
           </div>
         </Reveal>
 

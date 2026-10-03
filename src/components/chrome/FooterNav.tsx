@@ -41,9 +41,8 @@ export function FooterNav() {
 
   return (
     <nav aria-label="Continue to another chapter" className="mb-14">
-      <p className="eyebrow">Where to next</p>
       {/* on non-chapter pages all 7 doors show — widen the row so none orphans */}
-      <div className={`mt-5 grid grid-cols-2 gap-3 ${doors.length === 7 ? "sm:grid-cols-4 lg:grid-cols-7" : "sm:grid-cols-3 lg:grid-cols-6"}`}>
+      <div className={`grid grid-cols-2 gap-3 ${doors.length === 7 ? "sm:grid-cols-4 lg:grid-cols-7" : "sm:grid-cols-3 lg:grid-cols-6"}`}>
         {doors.map((door) => (
           <Link
             key={door.id}
@@ -57,19 +56,16 @@ export function FooterNav() {
                 src={asset(door.photo)}
                 alt=""
                 loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover saturate-[0.35] transition-[filter,transform] duration-500 group-hover:scale-[1.04] group-hover:saturate-100 group-focus-visible:saturate-100"
+                className="absolute inset-0 h-full w-full object-cover saturate-[0.35] transition-[filter,scale] duration-500 group-hover:scale-[1.04] group-hover:saturate-100 group-focus-visible:saturate-100"
               />
               <span
                 className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
                 style={{ boxShadow: `inset 0 0 0 1.5px ${door.accent}` }}
               />
-              <span className="absolute left-2 top-1.5 font-mono text-[0.55rem] tracking-[0.2em] text-white/85 [text-shadow:0_1px_4px_rgba(0,0,0,0.8)]">
-                {door.num}
-              </span>
             </span>
-            <span className="mt-2 flex items-baseline justify-between gap-2">
-              <span className="truncate font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[var(--fg)]">{door.word}</span>
-              <span className="shrink-0 font-mono text-[0.58rem] text-[var(--muted)] transition-transform duration-300 group-hover:translate-x-0.5">↗</span>
+            <span className="mt-2.5 flex items-baseline justify-between gap-2">
+              <span className="font-display text-base leading-tight text-[var(--fg)]">{door.word}</span>
+              <span aria-hidden className="shrink-0 text-base text-[var(--muted)] transition-[translate] duration-300 group-hover:translate-x-0.5">↗</span>
             </span>
           </Link>
         ))}
@@ -80,9 +76,9 @@ export function FooterNav() {
             key={x.href}
             href={x.href}
             data-cursor-hover
-            className="border border-[var(--line)] bg-[var(--bg)]/40 px-5 py-3 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-[var(--fg)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+            className="border border-[var(--line)] bg-[var(--bg)]/40 px-5 py-3.5 text-base font-medium text-[var(--fg)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
           >
-            {x.label} →
+            {x.label} <span aria-hidden>→</span>
           </Link>
         ))}
       </div>

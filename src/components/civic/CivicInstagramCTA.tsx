@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/primitives/Reveal";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { Magnetic } from "@/components/primitives/Magnetic";
@@ -9,7 +9,7 @@ import { PROFILE } from "@/lib/data";
 
 /**
  * Closing dispatch CTA — hero-04 bookend: dashed grid, centered poster
- * headline, mono uppercase deck, magnetic Instagram button.
+ * headline, one-line deck, magnetic Instagram button.
  */
 export function CivicInstagramCTA() {
   return (
@@ -17,15 +17,6 @@ export function CivicInstagramCTA() {
       <DashedGrid fade="bottom" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
-        <Reveal>
-          <div className="mb-6 flex items-center justify-center gap-2">
-            <span className="text-base font-medium tracking-wider md:text-lg">
-              FOLLOW THE DISPATCH
-            </span>
-            <ArrowDownRight className="size-5 text-[var(--accent)]" />
-          </div>
-        </Reveal>
-
         <KineticHeadline
           as="h2"
           text="The Story Doesn't End Here"
@@ -34,12 +25,8 @@ export function CivicInstagramCTA() {
         />
 
         <Reveal delay={0.2}>
-          <p className="mx-auto mt-8 max-w-2xl font-mono text-sm font-medium tracking-wide md:text-base">
-            500K+ VIEWS IN UNDER A MONTH.
-            <br />
-            CIVIC VIDEO, BEHIND-THE-SCENES DISPATCHES,
-            <br />
-            AND THE GRIND — ALL ON INSTAGRAM
+          <p className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-[var(--muted)] md:text-lg">
+            Civic video, behind-the-scenes dispatches, and the grind, all on Instagram.
           </p>
         </Reveal>
 
@@ -51,7 +38,7 @@ export function CivicInstagramCTA() {
                 target="_blank"
                 rel="noreferrer"
                 data-cursor-hover
-                className="group inline-flex h-11 items-center gap-3 rounded-md bg-primary px-8 font-mono text-xs uppercase tracking-widest text-primary-foreground transition-colors duration-300 hover:bg-[var(--accent)] hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                className="group inline-flex h-12 items-center gap-3 rounded-md bg-primary px-8 text-base font-medium text-primary-foreground transition-colors duration-300 hover:bg-[var(--accent)] hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 {PROFILE.links.instagramHandle}
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
