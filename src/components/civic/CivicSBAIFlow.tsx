@@ -7,9 +7,7 @@ import {
   ArrowUpRight,
   FileText,
   Users,
-  Mic,
   BookOpen,
-  Building2,
   Scale,
 } from "lucide-react";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
@@ -18,48 +16,33 @@ import { asset } from "@/lib/base";
 import { CIVIC } from "@/lib/data";
 import { EASE } from "@/lib/motion";
 
-/** Local detail constants — SBAI op-ed journey. */
+/** The initiative, in four moves. */
 const SBAI_STEPS = [
   {
     n: "01",
     icon: Users,
-    label: "Connection",
-    detail: "Tr. Sherry introduced Jadon to Luke Wu, whose family boba shop had been hit by serial ADA litigation — sued over a table a few centimeters too low.",
+    label: "The case",
+    detail: "Luke Wu's family boba shop was sued over a table a few centimeters too low — one of a wave of serial ADA lawsuits.",
   },
   {
     n: "02",
     icon: BookOpen,
-    label: "Cold Outreach",
-    detail: "Jadon cold-emailed professors across Bay Area universities until Prof. Durazo at SF University agreed to advise the project.",
+    label: "An advisor",
+    detail: "Jadon cold-emailed professors until Prof. Durazo at SF University agreed to advise.",
   },
   {
     n: "03",
     icon: FileText,
-    label: "Op-Ed Published",
-    detail: "They co-wrote and published an op-ed in the San Mateo Daily Journal, putting the predatory ADA litigation crisis on record for the first time locally.",
+    label: "On the record",
+    detail: "An op-ed in the San Mateo Daily Journal, then the case in front of Chamber of Commerce policy managers and the Fremont City Council.",
   },
   {
     n: "04",
-    icon: Building2,
-    label: "Chamber Meetings",
-    detail: "Met with Chamber of Commerce policy managers across the Bay to build institutional support and share the story of affected small-business owners.",
-  },
-  {
-    n: "05",
-    icon: Mic,
-    label: "City Council",
-    detail: "Presented the case directly to the Fremont City Council — public testimony, formal record, civic accountability.",
-  },
-  {
-    n: "06",
     icon: Scale,
-    label: "SB 84 Push",
-    detail: "Continued the fight alongside Luke Wu and Arissa around SB 84 — hitting a roadblock in Assemblymember Ash Kalra, who was adamant against letting it pass the judiciary.",
+    label: "SB 84",
+    detail: "Year two, with Luke and Arissa: pushing SB 84, stalled by Assemblymember Ash Kalra in the judiciary committee.",
   },
 ] as const;
-
-const SBAI_PULLQUOTE =
-  "A family's boba shop was sued over a table a few centimeters too low. That's the story that started it all.";
 
 export function CivicSBAIFlow() {
   return (
@@ -69,18 +52,6 @@ export function CivicSBAIFlow() {
         title="Small Business Accessibility"
         className="mb-6 md:mb-8"
       />
-
-      {/* Headline + inciting pull-quote — full-width intro above the columns */}
-      <div className="mb-10 md:mb-12">
-
-        <Reveal delay={0.1}>
-          <div className="max-w-3xl border-l-2 border-[var(--accent)] pl-5">
-            <p className="font-serif-i text-lg italic leading-relaxed text-[var(--fg)] md:text-xl">
-              &ldquo;{SBAI_PULLQUOTE}&rdquo;
-            </p>
-          </div>
-        </Reveal>
-      </div>
 
       <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_380px] md:gap-16">
         {/* Left — the flow, with the published artifact embedded at step 03 */}
@@ -166,12 +137,11 @@ export function CivicSBAIFlow() {
                 { name: "Luke Wu", role: "Co-advocate, boba shop owner" },
                 { name: "Arissa", role: "Co-advocate, year 2" },
                 { name: "Prof. Durazo", role: "Faculty advisor, SF University" },
-                { name: "Tr. Sherry", role: "Made the original introduction" },
                 { name: "Ash Kalra", role: "Assemblymember, opposed SB 84" },
               ].map((p, i) => (
                 <div
                   key={p.name}
-                  className={`flex items-start justify-between gap-4 px-5 py-3 ${i !== 4 ? "border-b border-[var(--line)]" : ""}`}
+                  className={`flex items-start justify-between gap-4 px-5 py-3 ${i !== 3 ? "border-b border-[var(--line)]" : ""}`}
                 >
                   <div>
                     <p className="font-grotesk text-base font-medium text-[var(--fg)]">{p.name}</p>

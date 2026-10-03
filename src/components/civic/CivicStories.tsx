@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { ClipCard } from "@/components/civic/ClipCard";
+import { CivicPressPhoto } from "@/components/civic/CivicPressPhoto";
 import { PosterHeading } from "@/components/ui/poster-heading";
 import { CIVIC } from "@/lib/data";
 import { revealUp } from "@/lib/motion";
@@ -16,6 +17,7 @@ const SWEET_TOMATOES = {
 
 const MAYOR = {
   dateline: "Fremont, CA, since June 2025",
+  photo: { src: "/img/editing-for-mayor-timeline.jpg", caption: "Cutting a Mayor video on the timeline" },
   body: "The Mayor spotted Jadon's @li_locked.in channel and reached out directly. Jadon films civic events and onstage talks, edits the footage, and delivers final cuts for the Mayor's Instagram — more than 60 videos to date. Per-video reach is up roughly sixteen-fold since he started, and the account's following has quadrupled.",
 };
 
@@ -59,7 +61,7 @@ function LeadFeature({ story }: { story: Story }) {
   );
 }
 
-/** The Mayor's Videographer — the story, then a few of the cuts on the Mayor's feed. */
+/** The Mayor's Videographer — the story, the edit bay, then his most-viewed cuts. */
 function SecondFeature({ story }: { story: Story }) {
   return (
     <Reveal delay={0.05}>
@@ -68,7 +70,16 @@ function SecondFeature({ story }: { story: Story }) {
           {story.title}
         </h3>
         <p className="mt-2 text-base text-[var(--muted)]">{MAYOR.dateline}</p>
-        <p className="mt-6 max-w-[62ch] text-base leading-relaxed text-[var(--fg)] md:text-lg">{MAYOR.body}</p>
+        <div className="mt-6 grid grid-cols-1 items-start gap-6 md:grid-cols-[minmax(0,1fr)_20rem] md:gap-10">
+          <p className="max-w-[62ch] text-base leading-relaxed text-[var(--fg)] md:text-lg">{MAYOR.body}</p>
+          <CivicPressPhoto
+            src={MAYOR.photo.src}
+            alt="Jadon's editing timeline for a Mayor video"
+            caption={MAYOR.photo.caption}
+            variant="frame"
+            aspect="4 / 3"
+          />
+        </div>
 
         <RevealGroup
           className="-mx-6 mt-8 flex snap-x snap-mandatory gap-3 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:px-0 md:pb-0"

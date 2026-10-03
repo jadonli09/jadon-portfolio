@@ -2,42 +2,26 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { DashedGrid } from "@/components/ui/dashed-grid";
-import { PhotoStack } from "@/components/ui/photo-stack";
 import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { Reveal } from "@/components/primitives/Reveal";
 import { asset } from "@/lib/base";
 import { CIVIC, PROFILE } from "@/lib/data";
 
-const WORK_PHOTOS = [
-  { src: asset("/img/speaking-at-rally.jpg"), alt: "Speaking at a rally in Fremont", caption: "Rally, 500+ turnout" },
-  { src: asset("/img/editing-for-mayor-timeline.jpg"), alt: "Editing timeline for a mayor video", caption: "Editing for the Mayor" },
-  {
-    src: asset("/img/voices-of-fremont-with-jennifersiebalnewsom.jpg"),
-    alt: "Voices of Fremont with Jennifer Siebel Newsom",
-    caption: "With the First Partner",
-  },
-];
-
 /**
  * The civic poster: the headline, one sentence, one way to reach him, and the
- * portrait. On desktop the work photos fan out in the rag beside CIVIC.
+ * portrait.
  */
 export function CivicHero() {
   return (
     <section className="relative overflow-hidden pb-10 pt-28 md:pb-16 md:pt-36">
       <div className="relative z-20 mx-auto grid max-w-7xl gap-x-14 gap-y-10 px-6 md:grid-cols-[minmax(0,1fr)_17rem] lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="min-w-0 md:self-end">
-          <div className="relative">
-            <KineticHeadline
-              as="h1"
-              text="CIVIC STORYTELLER"
-              balance={false}
-              className="relative z-20 max-w-[12ch] font-grotesk text-[12.8vw] font-bold leading-[0.82] tracking-[-0.045em] text-primary md:text-[min(8vw,7.5rem)] md:tracking-[-0.065em] xl:text-[min(8.6vw,7.75rem)]"
-            />
-            <div className="absolute -right-6 top-3 z-30 hidden lg:block xl:-right-10">
-              <PhotoStack photos={WORK_PHOTOS} variant="compact" />
-            </div>
-          </div>
+          <KineticHeadline
+            as="h1"
+            text="CIVIC STORYTELLER"
+            balance={false}
+            className="max-w-[12ch] font-grotesk text-[12.8vw] font-bold leading-[0.82] tracking-[-0.045em] text-primary md:text-[min(8vw,7.5rem)] md:tracking-[-0.065em] xl:text-[min(8.6vw,7.75rem)]"
+          />
 
           <Reveal>
             <p className="mt-8 max-w-[38ch] text-lg leading-relaxed text-[var(--fg)] md:mt-12 md:text-xl">

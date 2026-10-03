@@ -741,7 +741,7 @@ export const CIVIC = {
       label: "Views per Mayor video",
       note: "Up from about 1k when he started. The Mayor's following grew from 1.5k to 6.6k.",
     },
-    { value: 2, suffix: "M+", label: "Views on @li_locked.in", note: "All time." },
+    { value: 2, suffix: "M+", label: "Views on @li_locked.in", note: "All time, since the account started in June 2025. 1.39M came in year one alone, across 83 reels." },
     {
       value: 1,
       suffix: " of 20",
@@ -755,12 +755,13 @@ export const CIVIC = {
       note: "Most of last year's, shot and cut by him.",
     },
   ],
-  /** Example cuts from @rajsalwan — views read off the live reels tab on 2026-10-03. */
+  /** The Mayor's four most-viewed reels on @rajsalwan — read off all 84 on the
+   *  reels tab on 2026-10-03. */
   mayorReels: [
-    { url: "https://www.instagram.com/reel/Dd33ZWqBpcO/", title: "18 acres on Crystalline Drive, preserved", views: "32.2k", poster: "/embeds/mayor-Dd33ZWqBpcO.jpg" },
-    { url: "https://www.instagram.com/reel/Dd6fSiwRhPH/", title: "Are AI data centers coming to Fremont?", views: "18.3k", poster: "/embeds/mayor-Dd6fSiwRhPH.jpg" },
-    { url: "https://www.instagram.com/reel/DS8D_4ZD8dI/", title: "Fremont's 2025, in highlights", views: "11.7k", poster: "/embeds/mayor-DS8D_4ZD8dI.jpg" },
-    { url: "https://www.instagram.com/reel/DUtJJUVDhGQ/", title: "AI runs on hardware built in Fremont", views: "8.5k", poster: "/embeds/mayor-DUtJJUVDhGQ.jpg" },
+    { url: "https://www.instagram.com/reel/Db3IWGMOs00/", title: "That building off 680 at Auto Mall", views: "119k", poster: "/embeds/mayor-Db3IWGMOs00.jpg" },
+    { url: "https://www.instagram.com/reel/Da-ty8zOq_V/", title: "The real story of the Cabrillo Shopping Center", views: "112k", poster: "/embeds/mayor-Da-ty8zOq_V.jpg" },
+    { url: "https://www.instagram.com/reel/DbI1PnxuR-a/", title: "What's next for the old Fry's", views: "75.1k", poster: "/embeds/mayor-DbI1PnxuR-a.jpg" },
+    { url: "https://www.instagram.com/reel/DblJRRnO_kB/", title: "When will the City fix Peralta?", views: "64.7k", poster: "/embeds/mayor-DblJRRnO_kB.jpg" },
   ],
   stories: [
     {
