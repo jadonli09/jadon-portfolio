@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { World } from "@/components/chrome/World";
 import { Footer } from "@/components/chrome/Footer";
-import { HeroSection04 } from "@/components/ui/hero-04";
+import { CivicHero } from "@/components/civic/CivicHero";
 import { CivicMetricsBand } from "@/components/civic/CivicMetricsBand";
-import { CivicAwardsTicker } from "@/components/civic/CivicAwardsTicker";
 import { CivicFeaturedPress } from "@/components/civic/CivicFeaturedPress";
 import { CivicBroadcast } from "@/components/civic/CivicBroadcast";
 import { CivicStories } from "@/components/civic/CivicStories";
@@ -27,38 +26,35 @@ export const metadata: Metadata = {
 export default function CivicPage() {
   return (
     <World id="civic">
-      {/* 1. Poster hero — oversized headline, dashed-grid backdrop (hero-04 theme) */}
-      <HeroSection04 />
+      {/* 1. Poster hero — headline, one sentence, portrait */}
+      <CivicHero />
 
-      {/* 2. Animated metrics band */}
+      {/* 2. The numbers */}
       <CivicMetricsBand />
 
-      {/* 3. Awards ticker — red band, pace-setting accent */}
-      <CivicAwardsTicker />
-
-      {/* 3b. Jennifer Siebel Newsom press feature + podcast origin deep-dive (Voices of Fremont) */}
-      <CivicFeaturedPress />
-
-      {/* 3c. MSJTV broadcast + Leadership II "L2 Vid" — anchor desk + Season 3 embeds */}
-      <CivicBroadcast />
-
-      {/* 4. Editorial stories section — all six stories with deep bylines/detail */}
+      {/* 3. From the field — the Mayor's videographer, then the Sweet Tomatoes campaign */}
       <CivicStories />
+
+      {/* 4. Voices of Fremont — the podcast he built for the Mayor */}
+      <CivicFeaturedPress />
 
       {/* 5. The mayor's intern program — intern, then one of three leads */}
       <CivicInternProgram />
 
-      {/* 6. Small Business Accessibility Initiative — process flow deep dive */}
+      {/* 6. Small Business Accessibility Initiative — process flow */}
       <CivicSBAIFlow />
 
-      {/* 7. Commission pull-quote callout */}
+      {/* 7. Seats: the Youth Advisory Commission, then the national stage */}
       <CivicCommission />
       <CivicNational />
 
-      {/* 8. Instagram CTA — magnetic interaction */}
+      {/* 8. The school — MSJTV and the cinematic cuts */}
+      <CivicBroadcast />
+
+      {/* 9. Instagram CTA */}
       <CivicInstagramCTA />
 
-      {/* 9. Footer */}
+      {/* 10. Footer */}
       <Footer />
     </World>
   );

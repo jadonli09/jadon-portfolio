@@ -5,8 +5,9 @@ import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { PosterHeading } from "@/components/ui/poster-heading";
-import { ReelCard } from "@/components/civic/IgEmbed";
+import { ClipCard } from "@/components/civic/ClipCard";
 import { asset } from "@/lib/base";
+import { CIVIC } from "@/lib/data";
 import { EASE, revealUp } from "@/lib/motion";
 
 /* ── Data — MSJTV / Leadership II "L2 Vid" ─────────────────────── */
@@ -21,14 +22,11 @@ const EPISODES = [
   { n: 4, id: "QVekfQ1pPbc", dur: "5:28" },
 ] as const;
 
-/** What L2 Vid makes — compact chips. */
-const TAGS = ["Drone at Homecoming", "Homecoming Recap", "Cinematic Promo", "Teacher Interviews"] as const;
-
-/** Short cinematic cuts he directed — widely complimented. Embedded from IG. */
+/** Short cinematic cuts he directed — posters link out to the reels on IG. */
 const CUTS = [
-  { title: "Winter Ball Promo", tag: "A 30-second teaser", reel: "DSglzCBEeN2" },
-  { title: "Prom Promo", tag: "K-drama style, 500+ likes in a day", reel: "DXvK5pNthck" },
-  { title: "Charity Fashion Show Promo", reel: "DWX7JmHDKzJ" },
+  { title: "Winter Ball promo", tag: "A 30-second teaser", reel: "DSglzCBEeN2" },
+  { title: "Prom promo", tag: "K-drama style, 500+ likes in a day", reel: "DXvK5pNthck" },
+  { title: "Charity fashion show promo", reel: "DWX7JmHDKzJ" },
 ] as const;
 
 /* ── Main section ──────────────────────────────────────────────── */
@@ -64,33 +62,22 @@ export function CivicBroadcast() {
               target="_blank"
               rel="noreferrer"
               data-cursor-hover
-              className="group inline-flex w-fit items-center gap-2 text-lg font-semibold tracking-wide transition-colors duration-300 hover:text-[var(--accent)]"
+              className="group inline-flex w-fit items-center gap-2 font-grotesk text-2xl font-bold uppercase tracking-[-1px] transition-colors duration-300 hover:text-[var(--accent)]"
             >
-              / MSJTV
+              MSJTV
               <ArrowUpRight className="h-4 w-4 opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100" />
             </a>
-            <p className="text-sm leading-relaxed text-[var(--muted)]">
+            <p className="text-base leading-relaxed text-[var(--muted)]">
               As part of <strong className="text-[var(--fg)]">L2 Videography</strong>, Jadon{" "}
               <strong className="text-[var(--fg)]">directs and edits MSJTV</strong>{" "}— the school&apos;s monthly
               broadcast of events, recaps, and opportunities — and{" "}
               <strong className="text-[var(--fg)]">directs the cinematic short films</strong>{" "}the committee is known
               for. MSJTV is only one of L2 Vid&apos;s jobs; the initiatives below are ones he started this year.
             </p>
-            <p className="text-sm leading-relaxed text-[var(--muted)]">
+            <p className="text-base leading-relaxed text-[var(--muted)]">
               <span className="font-semibold text-[var(--accent)]">Anchors:</span>{" "}Jadon Li &amp; Hanna R.
               (juniors), Luis H. &amp; Jennifer L. (seniors).
             </p>
-            <div className="flex flex-wrap gap-2">
-              {TAGS.map((t) => (
-                <span
-                  key={t}
-                  className="border border-[var(--line)] bg-[var(--bg-2)] px-2.5 py-1 text-sm text-[var(--muted)]"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
-
             {/* Season 3 — episode guide, links out to YouTube */}
             <div className="mt-1">
               {EPISODES.map((e) => (
@@ -121,19 +108,29 @@ export function CivicBroadcast() {
         </Reveal>
       </div>
 
-      {/* Cinematic cuts — IG reels in themed clip frames */}
+      {/* Cinematic cuts — posters that open the reels on Instagram */}
       <div className="mt-12 md:mt-16">
         <Reveal>
-          <h3 className="mb-5 text-base font-medium tracking-wider md:text-lg">CINEMATIC CUTS</h3>
+          <h3 className="font-grotesk text-2xl font-bold uppercase tracking-[-1px] md:text-3xl">Cinematic cuts</h3>
+          <p className="mt-2 max-w-[60ch] text-base leading-relaxed text-[var(--muted)]">
+            {CIVIC.awards.slice(0, 2).join(". ")}.
+          </p>
         </Reveal>
         <RevealGroup
-          className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          data-lenis-prevent
+          className="-mx-5 mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3"
           stagger={0.08}
           delayChildren={0.05}
         >
           {CUTS.map((c) => (
-            <motion.div key={c.reel} variants={revealUp}>
-              <ReelCard reel={c.reel} title={c.title} tag={"tag" in c ? c.tag : undefined} />
+            <motion.div key={c.reel} variants={revealUp} className="w-[80%] shrink-0 snap-start sm:w-auto">
+              <ClipCard
+                href={`https://www.instagram.com/reel/${c.reel}/`}
+                poster={`/embeds/cut-${c.reel}.jpg`}
+                title={c.title}
+                meta={"tag" in c ? c.tag : undefined}
+                aspect="16 / 9"
+              />
             </motion.div>
           ))}
         </RevealGroup>

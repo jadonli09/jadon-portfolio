@@ -13,7 +13,6 @@ import {
   Scale,
 } from "lucide-react";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
-import { KineticHeadline } from "@/components/primitives/KineticHeadline";
 import { PosterHeading } from "@/components/ui/poster-heading";
 import { asset } from "@/lib/base";
 import { CIVIC } from "@/lib/data";
@@ -68,19 +67,14 @@ export function CivicSBAIFlow() {
       {/* Poster section heading */}
       <PosterHeading
         title="Small Business Accessibility"
-        className="mb-10 md:mb-16"
+        className="mb-6 md:mb-8"
       />
 
       {/* Headline + inciting pull-quote — full-width intro above the columns */}
       <div className="mb-10 md:mb-12">
-        <KineticHeadline
-          as="h2"
-          text="From a Boba Shop to City Council."
-          className="font-grotesk text-[2rem] font-bold uppercase leading-[0.94] tracking-[-2px] md:text-[3.2rem] md:tracking-[-3px]"
-          delay={0.05}
-        />
-        <Reveal delay={0.15}>
-          <div className="mt-6 max-w-3xl border-l-2 border-[var(--accent)] pl-5">
+
+        <Reveal delay={0.1}>
+          <div className="max-w-3xl border-l-2 border-[var(--accent)] pl-5">
             <p className="font-serif-i text-lg italic leading-relaxed text-[var(--fg)] md:text-xl">
               &ldquo;{SBAI_PULLQUOTE}&rdquo;
             </p>
@@ -118,7 +112,7 @@ export function CivicSBAIFlow() {
                     <h3 className="mb-1 font-grotesk text-base font-semibold uppercase tracking-wide text-[var(--fg)]">
                       {step.label}
                     </h3>
-                    <p className="text-sm leading-relaxed text-[var(--muted)]">{step.detail}</p>
+                    <p className="text-base leading-relaxed text-[var(--muted)]">{step.detail}</p>
 
                     {/* The receipt — the published op-ed, embedded where it happened */}
                     {step.n === "03" && (
@@ -165,7 +159,7 @@ export function CivicSBAIFlow() {
         </div>
 
         {/* Right — credential rail (sticky so it tracks the longer flow) */}
-        <div className="flex flex-col gap-6 md:sticky md:top-28 md:self-start">
+        <div className="hidden flex-col gap-6 md:sticky md:top-28 md:flex md:self-start">
           {/* Key people card */}
           <Reveal delay={0.22}>
             <div className="border border-[var(--line)] bg-[var(--bg)]">
@@ -189,25 +183,6 @@ export function CivicSBAIFlow() {
             </div>
           </Reveal>
 
-          {/* Outcome stat block */}
-          <Reveal delay={0.28}>
-            <div className="grid grid-cols-2 border border-[var(--line)]">
-              {[
-                { label: "Op-ed", val: "Published" },
-                { label: "Bay Area chambers", val: "Multiple" },
-                { label: "SB 84", val: "Ongoing" },
-                { label: "City Council", val: "Presented" },
-              ].map((s, i) => (
-                <div
-                  key={s.label}
-                  className={`px-4 py-5 ${i % 2 === 0 ? "border-r border-[var(--line)]" : ""} ${i < 2 ? "border-b border-[var(--line)]" : ""}`}
-                >
-                  <p className="font-anton text-2xl leading-none text-[var(--accent)]">{s.val}</p>
-                  <p className="mt-1.5 font-grotesk text-sm font-semibold text-[var(--fg)]">{s.label}</p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
         </div>
       </div>
 

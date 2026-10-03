@@ -1,11 +1,10 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useState } from "react";
 import { motion } from "motion/react";
-import { ArrowUpRight, Clapperboard, Play } from "lucide-react";
+import { ArrowUpRight, Clapperboard } from "lucide-react";
 import { CivicPressPhoto } from "@/components/civic/CivicPressPhoto";
-import { IgEmbed } from "@/components/civic/IgEmbed";
+import { ClipCard } from "@/components/civic/ClipCard";
 import { Reveal, RevealGroup } from "@/components/primitives/Reveal";
 import { PosterHeading } from "@/components/ui/poster-heading";
 import { asset } from "@/lib/base";
@@ -29,33 +28,6 @@ const STATS = [
   { v: "50k", sub: "views a month" },
   { v: "Monthly", sub: "on air since fall 2025" },
 ] as const;
-
-/** The actual reel — content-frame poster (never black); on click it swaps to
- *  the live Instagram embed (with like / comment counts), playing in place. */
-function VofReel() {
-  const [open, setOpen] = useState(false);
-  if (open) return <IgEmbed reel="DSoCK6UDm57" />;
-  return (
-    <button
-      type="button"
-      onClick={() => setOpen(true)}
-      data-cursor-hover
-      aria-label="Play the Voices of Fremont reel"
-      className="group relative block w-full overflow-hidden border border-[var(--line)] shadow-lg"
-    >
-      <img
-        src={asset("/img/vof-reel-poster.jpg")}
-        alt="Voices of Fremont reel — debunking Fremont stereotypes with the Mayor"
-        className="aspect-[9/16] w-full bg-black object-cover"
-      />
-      <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/40 via-transparent to-black/10">
-        <span className="flex size-16 items-center justify-center rounded-full bg-[var(--accent)] shadow-[0_8px_30px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:scale-110">
-          <Play className="size-7 translate-x-0.5 fill-white text-white" strokeWidth={0} />
-        </span>
-      </span>
-    </button>
-  );
-}
 
 /** One @voices_of_fremont feed tile — links straight to its reel. */
 function FeedTile({ src, caption, url }: { src: string; caption: string; url: string }) {
@@ -86,28 +58,33 @@ function FeedTile({ src, caption, url }: { src: string; caption: string; url: st
 
 /**
  * Voices of Fremont — the Mayor's podcast Jadon directs and edits. Lead is the
- * actual reel (inline), the feed fills the column beside it, and the First
+ * actual reel (opens on Instagram), the feed fills the column beside it, and the First
  * Partner beat sits compact at the very bottom.
  */
 export function CivicFeaturedPress() {
   return (
     <section className="mx-auto max-w-7xl px-5 py-12 md:px-9 md:py-16">
       <PosterHeading
-        title="A Podcast at the State Level"
+        title="Voices of Fremont"
         className="mb-10 md:mb-14"
       />
 
       {/* Lead — the reel + editorial column (text, stats, feed) */}
       <div className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,440px)_1fr] md:items-start md:gap-12">
         <Reveal>
-          <VofReel />
+          <ClipCard
+            href="https://www.instagram.com/reel/DSoCK6UDm57/"
+            poster="/img/vof-reel-poster.jpg"
+            title="Debunking Fremont stereotypes, with the Mayor"
+            className="mx-auto max-w-[300px] md:max-w-none"
+          />
         </Reveal>
 
         <Reveal delay={0.12}>
           <div className="flex flex-col gap-6">
             <div className="h-[2px] w-12 bg-[var(--accent)]" />
 
-            {/* Series mark */}
+            {/* Series mark + credit */}
             <a
               href={CIVIC.vofInstagram}
               target="_blank"
@@ -120,26 +97,21 @@ export function CivicFeaturedPress() {
                 alt="Voices of Fremont logo"
                 className="h-12 w-12 shrink-0 rounded-md border bg-white object-contain p-1 shadow-sm transition-transform duration-500 ease-[var(--ease-cine)] group-hover:-rotate-3"
               />
-              <span className="inline-flex items-center gap-2 text-lg font-semibold tracking-wide">
-                / VOICES OF FREMONT
-                <ArrowUpRight className="h-4 w-4 opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100" />
+              <span className="flex items-center gap-2 text-base font-medium">
+                <Clapperboard className="size-4 shrink-0 text-[var(--accent)]" />
+                Directed &amp; edited by Jadon Li
+                <ArrowUpRight className="size-4 opacity-60 transition-[translate,opacity] duration-300 group-hover:translate-x-0.5 group-hover:opacity-100" />
               </span>
             </a>
 
-            {/* Director / Editor credit */}
-            <div className="flex items-center gap-2.5 border-l-2 border-[var(--accent)] pl-3">
-              <Clapperboard className="size-4 shrink-0 text-[var(--accent)]" />
-              <p className="text-sm font-medium text-[var(--fg)]">Directed &amp; edited by Jadon Li</p>
-            </div>
-
             {/* Origin + younger-audience messaging */}
             <div>
-              <p className="text-sm leading-relaxed text-[var(--muted)]">
+              <p className="text-base leading-relaxed text-[var(--muted)]">
                 It started with a call from <strong className="text-[var(--fg)]">the Mayor himself</strong>{" "}— Mayor
                 Salwan wanted a public outlet for city issues and events, and asked Jadon to build it from the ground
                 up: concept, team, format, and distribution.
               </p>
-              <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+              <p className="mt-3 text-base leading-relaxed text-[var(--muted)]">
                 But it isn&apos;t only a platform for the Mayor. The goal is to make civics land with a{" "}
                 <strong className="text-[var(--fg)]">younger audience</strong>{" "}— through modern, short-form content
                 like the reel here, which rides a trend to carry a civic idea and reaches students, not just
@@ -151,7 +123,7 @@ export function CivicFeaturedPress() {
             <div className="grid grid-cols-3 overflow-hidden rounded-md border border-[var(--line)] bg-[var(--bg-2)]">
               {STATS.map((s, i) => (
                 <div key={s.v} className={cn("px-3 py-4 text-center", i > 0 && "border-l border-[var(--line)]")}>
-                  <p className="font-anton text-2xl leading-none text-[var(--accent)] md:text-3xl">{s.v}</p>
+                  <p className="font-grotesk text-2xl font-bold leading-none tracking-[-1px] text-[var(--accent)] md:text-3xl">{s.v}</p>
                   <p className="mt-1.5 text-sm leading-snug text-[var(--muted)]">{s.sub}</p>
                 </div>
               ))}
@@ -178,7 +150,7 @@ export function CivicFeaturedPress() {
             aspect="16 / 9"
           />
           <div>
-            <h3 className="font-display text-2xl font-semibold leading-tight md:text-3xl">
+            <h3 className="font-grotesk text-2xl font-bold uppercase leading-tight tracking-[-1px] md:text-3xl">
               Met the Governor &amp; California First Partner
             </h3>
             <p className="mt-3 text-base leading-relaxed text-[var(--muted)]">

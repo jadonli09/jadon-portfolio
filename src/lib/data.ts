@@ -738,7 +738,7 @@ export const CIVIC = {
     {
       value: 20,
       suffix: "k",
-      label: "Views per mayor video",
+      label: "Views per Mayor video",
       note: "up from ~1k",
       note2: "his following: 1.5k → 6.3k",
     },
@@ -891,8 +891,8 @@ export const CIVIC = {
     image: "/embeds/oped-smdj.jpg",
   },
   awards: [
-    "ACWD Water Clip Contest 2025 — 1st & 3rd place (100+ contestants, two submissions) · $600",
-    "ACWD Water Clips 2026 — 3rd place · $100",
+    "ACWD Water Clip Contest 2025: 1st and 3rd place out of 100+ entries, $600",
+    "ACWD Water Clips 2026: 3rd place, $100",
     "Met the Governor & First Partner — California Love, California Strong",
   ],
 } as const;

@@ -1,11 +1,9 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
-import { motion } from "motion/react";
-import { ArrowUpRight, Play } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { ClipCard } from "@/components/civic/ClipCard";
 import { Reveal } from "@/components/primitives/Reveal";
 import { Counter } from "@/components/primitives/Counter";
-import { asset } from "@/lib/base";
 import { CIVIC } from "@/lib/data";
 
 /**
@@ -17,16 +15,6 @@ export function CivicCommission() {
 
   return (
     <section className="relative overflow-hidden bg-secondary py-16 md:py-24">
-      {/* Background texture — drifting type watermark */}
-      <motion.span
-        aria-hidden
-        className="pointer-events-none absolute -right-8 -top-6 select-none font-grotesk font-bold tracking-[-0.06em] text-[14rem] uppercase leading-none text-[var(--fg)]/[0.04] md:text-[22rem]"
-        animate={{ x: [0, -28, 0] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-      >
-        FYAC
-      </motion.span>
-
       <div className="relative mx-auto max-w-7xl px-5 md:px-9">
         <div className="mb-8 h-[2px] w-10 bg-[var(--accent)] md:mb-12" />
 
@@ -71,40 +59,15 @@ export function CivicCommission() {
               </a>
             </div>
 
-            {/* Off-the-record reel — tilted field clip beside the official record */}
+            {/* The commission, on camera */}
             <div className="md:w-[230px]">
-              <a
+              <ClipCard
                 href={CIVIC.commission.reel.url}
-                target="_blank"
-                rel="noreferrer"
-                data-cursor-hover
-                className="group relative mx-auto block w-full max-w-[220px] -rotate-2 overflow-hidden rounded-md border shadow-lg transition-transform duration-500 ease-[var(--ease-cine)] hover:-translate-y-1.5 hover:rotate-0"
-                style={{ aspectRatio: "9 / 16" }}
-              >
-                <img
-                  src={asset(CIVIC.commission.reel.poster)}
-                  alt={`@li_locked.in reel — ${CIVIC.commission.reel.caption}`}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-700 ease-[var(--ease-cine)] group-hover:scale-[1.05]"
-                />
-                {/* Play glyph */}
-                <span className="absolute inset-0 flex items-center justify-center">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--fg)]/70 backdrop-blur-sm transition-transform duration-500 ease-[var(--ease-cine)] group-hover:scale-110">
-                    <Play className="ml-0.5 h-5 w-5 fill-[var(--bg)] text-[var(--bg)]" />
-                  </span>
-                </span>
-                {/* Caption strip with real stats */}
-                <div className="absolute inset-x-0 bottom-0 bg-[var(--fg)]/85 px-2.5 py-2">
-                  <p className="truncate text-sm font-medium leading-snug text-[var(--bg)]">
-                    {CIVIC.commission.reel.caption}
-                  </p>
-                  <p className="mt-0.5 text-sm leading-snug text-[var(--bg)]/75">
-                    {CIVIC.commission.reel.likes} likes, {CIVIC.commission.reel.comments} comments
-                    <br />
-                    {CIVIC.commission.reel.date}
-                  </p>
-                </div>
-              </a>
+                poster={CIVIC.commission.reel.poster}
+                title={CIVIC.commission.reel.caption}
+                meta={`${CIVIC.commission.reel.likes} likes, ${CIVIC.commission.reel.date}`}
+                className="mx-auto max-w-[220px]"
+              />
             </div>
           </div>
         </Reveal>

@@ -36,15 +36,19 @@ export function RevealGroup({
   className,
   stagger: s = 0.09,
   delayChildren = 0,
+  "data-lenis-prevent": lenisPrevent,
 }: {
   children: React.ReactNode;
   className?: string;
   stagger?: number;
   delayChildren?: number;
+  /** Set on horizontal scrollers so Lenis leaves their wheel/touch alone. */
+  "data-lenis-prevent"?: boolean;
 }) {
   return (
     <motion.div
       className={cn(className)}
+      data-lenis-prevent={lenisPrevent}
       variants={stagger(s, delayChildren)}
       initial="hidden"
       whileInView="show"

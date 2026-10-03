@@ -8,8 +8,8 @@ import { DashedGrid } from "@/components/ui/dashed-grid";
 import { PROFILE } from "@/lib/data";
 
 /**
- * Closing dispatch CTA — hero-04 bookend: dashed grid, centered poster
- * headline, one-line deck, magnetic Instagram button.
+ * Closing dispatch CTA: dashed grid, centered poster headline, one-line deck,
+ * magnetic Instagram button.
  */
 export function CivicInstagramCTA() {
   return (
@@ -47,12 +47,6 @@ export function CivicInstagramCTA() {
           </div>
         </Reveal>
 
-        {/* Sign-off — bookends the hero's name treatment */}
-        <Reveal delay={0.4}>
-          <p className="mt-14 text-4xl font-thin tracking-[6px] text-[var(--muted)]">
-            {PROFILE.name.toUpperCase()}
-          </p>
-        </Reveal>
       </div>
     </section>
   );
