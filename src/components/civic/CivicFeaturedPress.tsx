@@ -135,13 +135,13 @@ export function CivicFeaturedPress() {
             {/* Origin + younger-audience messaging */}
             <div>
               <p className="text-sm leading-relaxed text-[var(--muted)]">
-                It started with a call from <strong className="text-[var(--fg)]">the Mayor himself</strong> — Mayor
+                It started with a call from <strong className="text-[var(--fg)]">the Mayor himself</strong>{" "}— Mayor
                 Salwan wanted a public outlet for city issues and events, and asked Jadon to build it from the ground
                 up: concept, team, format, and distribution.
               </p>
               <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
                 But it isn&apos;t only a platform for the Mayor. The goal is to make civics land with a{" "}
-                <strong className="text-[var(--fg)]">younger audience</strong> — through modern, short-form content
+                <strong className="text-[var(--fg)]">younger audience</strong>{" "}— through modern, short-form content
                 like the reel here, which rides a trend to carry a civic idea and reaches students, not just
                 subscribers.
               </p>
@@ -182,7 +182,7 @@ export function CivicFeaturedPress() {
               Met the Governor &amp; California First Partner
             </h3>
             <p className="mt-3 text-base leading-relaxed text-[var(--muted)]">
-              As part of the <em>California Love, California Strong</em> initiative — civic journalism at the state
+              As part of the <em>California Love, California Strong</em>{" "}initiative — civic journalism at the state
               level, and a direct result of the Voices of Fremont platform.
             </p>
           </div>

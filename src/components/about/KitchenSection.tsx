@@ -115,7 +115,7 @@ export function KitchenSection() {
             </h2>
             <Sparkle className="absolute -right-2 top-0 hidden w-7 md:block" delay={0.4} />
             <p className="mt-5 max-w-xl text-base leading-relaxed text-[var(--muted)]">
-              <span className="font-semibold text-[var(--fg)]">JL Kitchens</span> is biweekly
+              <span className="font-semibold text-[var(--fg)]">JL Kitchens</span>{" "}is biweekly
               cooking with Samay — an outlet from rigorous courses,{" "}
               <span className="marker text-[var(--fg)]">immersed in sound, taste, and smell</span>.
               Designed dinner menus for Thanksgiving, New Year&apos;s, and Lunar New Year.

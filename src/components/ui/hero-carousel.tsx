@@ -369,7 +369,7 @@ export function HeroCarousel({
             className="opacity-90 transition-opacity hover:opacity-100"
             style={{ fontSize: Math.max(16, label * 1.15) }}
           >
-            <span aria-hidden>↖</span> Back
+            <span aria-hidden>↖</span>{" "}Back
           </button>
         ) : null}
         {brand ? (

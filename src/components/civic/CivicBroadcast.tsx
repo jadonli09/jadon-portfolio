@@ -71,13 +71,13 @@ export function CivicBroadcast() {
             </a>
             <p className="text-sm leading-relaxed text-[var(--muted)]">
               As part of <strong className="text-[var(--fg)]">L2 Videography</strong>, Jadon{" "}
-              <strong className="text-[var(--fg)]">directs and edits MSJTV</strong> — the school&apos;s monthly
+              <strong className="text-[var(--fg)]">directs and edits MSJTV</strong>{" "}— the school&apos;s monthly
               broadcast of events, recaps, and opportunities — and{" "}
-              <strong className="text-[var(--fg)]">directs the cinematic short films</strong> the committee is known
+              <strong className="text-[var(--fg)]">directs the cinematic short films</strong>{" "}the committee is known
               for. MSJTV is only one of L2 Vid&apos;s jobs; the initiatives below are ones he started this year.
             </p>
             <p className="text-sm leading-relaxed text-[var(--muted)]">
-              <span className="font-semibold text-[var(--accent)]">Anchors:</span> Jadon Li &amp; Hanna R.
+              <span className="font-semibold text-[var(--accent)]">Anchors:</span>{" "}Jadon Li &amp; Hanna R.
               (juniors), Luis H. &amp; Jennifer L. (seniors).
             </p>
             <div className="flex flex-wrap gap-2">

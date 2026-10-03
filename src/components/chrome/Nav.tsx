@@ -5,10 +5,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence } from "motion/react";
 import { ContactSheet } from "@/components/chrome/ContactSheet";
+import { useHideOnScroll } from "@/components/hooks/useHideOnScroll";
 
 export function Nav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const hidden = useHideOnScroll() && !open;
 
   // Close on route change.
   useEffect(() => setOpen(false), [pathname]);
@@ -28,7 +30,9 @@ export function Nav() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 mix-blend-difference">
+      <header
+        className={`fixed inset-x-0 top-0 z-50 mix-blend-difference transition-[translate] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${hidden ? "-translate-y-full" : ""}`}
+      >
         <div className="flex items-center justify-between px-5 py-4 md:px-9 md:py-6 text-white">
           <Link
             href="/"

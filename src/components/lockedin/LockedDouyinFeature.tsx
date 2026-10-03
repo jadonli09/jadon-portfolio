@@ -208,7 +208,7 @@ export function LockedDouyinFeature() {
             {/* Supporting copy */}
             <Reveal delay={0.35}>
               <p className="font-grotesk text-sm leading-relaxed text-[var(--muted)] md:text-base">
-                Reposted by <span className="text-[var(--fg)]">{douyin.creator}</span> — a 3.7M-follower
+                Reposted by <span className="text-[var(--fg)]">{douyin.creator}</span>{" "}— a 3.7M-follower
                 hoops account — and seen across China. Basketball energy, no borders.
               </p>
             </Reveal>

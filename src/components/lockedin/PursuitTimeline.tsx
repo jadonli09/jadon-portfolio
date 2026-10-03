@@ -228,7 +228,7 @@ function MomentVideoCard({
               </p>
               <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 font-grotesk text-sm text-[var(--muted)]">
                 <span>
-                  <span style={{ color: accent }}>{m.views}</span> plays
+                  <span style={{ color: accent }}>{m.views}</span>{" "}plays
                 </span>
                 <span>{m.likes} likes</span>
                 <a
@@ -330,7 +330,7 @@ function LogRow({
               </span>
               {m.views && (
                 <span className="ml-auto font-grotesk text-sm text-[var(--muted)]">
-                  <span style={{ color: accent }}>{m.views}</span> plays
+                  <span style={{ color: accent }}>{m.views}</span>{" "}plays
                 </span>
               )}
             </div>
@@ -425,7 +425,7 @@ function ChapterBlock({
         <div className="relative pl-14 md:pl-0 md:text-center">
           <Reveal>
             <p className="font-grotesk text-sm text-[var(--muted)] md:text-base">
-              <span style={{ color: ch.accent }}>Chapter {Number(ch.num)}</span> — {ch.range}
+              <span style={{ color: ch.accent }}>Chapter {Number(ch.num)}</span>{" "}— {ch.range}
             </p>
           </Reveal>
           <div className="mt-5" style={{ fontSize: "clamp(2.6rem, 7.5vw, 5.5rem)", lineHeight: 0.92 }}>
