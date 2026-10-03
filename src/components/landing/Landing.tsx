@@ -5,6 +5,11 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { useLenis } from "lenis/react";
 import { ArrowDown } from "lucide-react";
 import { Preloader } from "@/components/hero/Preloader";
+import {
+  HeroEditorial,
+  HeroFacets,
+  HeroReel,
+} from "@/components/landing/HeroVariants";
 import { asset } from "@/lib/base";
 import { BoardSurface } from "@/components/landing/BoardSurface";
 import { SentenceDoors } from "@/components/landing/SentenceDoors";
@@ -29,7 +34,10 @@ function RoleRotator() {
           key={r}
           className="absolute left-0 top-0 text-[var(--accent)]"
           initial={false}
-          animate={{ y: idx === i ? "0%" : idx < i ? "-110%" : "110%", opacity: idx === i ? 1 : 0 }}
+          animate={{
+            y: idx === i ? "0%" : idx < i ? "-110%" : "110%",
+            opacity: idx === i ? 1 : 0,
+          }}
           transition={{ duration: 0.7, ease: EASE }}
         >
           {r}.
@@ -44,15 +52,29 @@ export function Landing() {
   const heroY = useTransform(scrollY, [0, 600], [0, 160]);
   const heroOpacity = useTransform(scrollY, [0, 500], [1, 0]);
   const lenis = useLenis();
+  // Hero options under review: /?hero=facets | editorial | reel (default: the bridge).
+  const [variant, setVariant] = useState<string | null>(null);
+  useEffect(() => {
+    const v = new URLSearchParams(window.location.search).get("hero");
+    if (v) queueMicrotask(() => setVariant(v));
+  }, []);
 
   // Returning from a deep dive (/#chapter) → scroll the reader back to that chapter.
   useEffect(() => {
-    const hash = typeof window !== "undefined" ? window.location.hash.replace("#", "") : "";
+    const hash =
+      typeof window !== "undefined"
+        ? window.location.hash.replace("#", "")
+        : "";
     if (!hash) return;
     const tryScroll = (attempt = 0) => {
       const el = document.getElementById(hash);
       if (el) {
-        if (lenis) lenis.scrollTo(el, { offset: 0, immediate: attempt === 0, duration: 0.9 });
+        if (lenis)
+          lenis.scrollTo(el, {
+            offset: 0,
+            immediate: attempt === 0,
+            duration: 0.9,
+          });
         else el.scrollIntoView();
       } else if (attempt < 20) {
         setTimeout(() => tryScroll(attempt + 1), 60);
@@ -67,98 +89,115 @@ export function Landing() {
     <main className="relative w-full overflow-clip bg-[#07070a] text-[#f4f1ea]">
       <Preloader />
 
-      {/* COLD OPEN — the Golden Gate lookout. Name slides in BEHIND the subject:
+      {variant === "facets" ? (
+        <HeroFacets />
+      ) : variant === "editorial" ? (
+        <HeroEditorial />
+      ) : variant === "reel" ? (
+        <HeroReel />
+      ) : (
+        <>
+          {/* COLD OPEN — the Golden Gate lookout. Name slides in BEHIND the subject:
           photo (back) → ghost watermark → giant name → pixel-aligned cutout (front). */}
-      <section className="relative h-[100svh] min-h-[440px] w-full overflow-hidden">
-        {/* L0 — the scene */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={asset("/img/hero-bridge-v2.jpg")}
-          alt="Jadon at the Golden Gate Bridge lookout"
-          className="absolute inset-0 z-0 h-full w-full object-cover"
-          style={{ objectPosition: "40% 32%" }}
-        />
+          <section className="relative h-[100svh] min-h-[440px] w-full overflow-hidden">
+            {/* L0 — the scene */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={asset("/img/hero-bridge-v2.jpg")}
+              alt="Jadon at the Golden Gate Bridge lookout"
+              className="absolute inset-0 z-0 h-full w-full object-cover"
+              style={{ objectPosition: "40% 32%" }}
+            />
 
-        {/* L1 — ghost watermark in the sky, like a whisper of the name */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 1.4 }}
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-[8%] z-[1] hidden text-center font-anton text-[20vw] leading-none tracking-tight text-white/25 [@media(min-width:768px)_and_(orientation:landscape)_and_(min-height:561px)]:block"
-        >
-          LI_LOCKED.IN
-        </motion.div>
+            {/* L1 — ghost watermark in the sky, like a whisper of the name */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6, duration: 1.4 }}
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 top-[8%] z-[1] hidden text-center font-anton text-[20vw] leading-none tracking-tight text-white/25 [@media(min-width:768px)_and_(orientation:landscape)_and_(min-height:561px)]:block"
+            >
+              LI_LOCKED.IN
+            </motion.div>
 
-        {/* L1.5 — soft scrim band so the name pops (sits under the name + subject) */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-[9%] z-[1] h-[24%] md:landscape:top-auto md:landscape:bottom-0 md:landscape:h-[38%]"
-          style={{ background: "linear-gradient(to bottom, transparent, rgba(13,36,49,0.34) 55%, rgba(13,36,49,0.42))" }}
-        />
+            {/* L1.5 — soft scrim band so the name pops (sits under the name + subject) */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 top-[9%] z-[1] h-[24%] md:landscape:top-auto md:landscape:bottom-0 md:landscape:h-[38%]"
+              style={{
+                background:
+                  "linear-gradient(to bottom, transparent, rgba(13,36,49,0.34) 55%, rgba(13,36,49,0.42))",
+              }}
+            />
 
-        {/* L2 — the giant name, lower third (behind the subject) */}
-        <motion.div
-          style={{ y: heroY, opacity: heroOpacity }}
-          className="pointer-events-none absolute inset-x-0 top-[13%] z-[2] text-center md:landscape:inset-x-auto md:landscape:left-[47%] md:landscape:right-[2%] md:landscape:top-auto md:landscape:bottom-[6%] md:landscape:text-left"
-        >
-          <h1 className="font-anton leading-[0.85] tracking-tight text-white [text-shadow:0_2px_6px_rgba(13,36,49,0.45),0_10px_44px_rgba(13,36,49,0.55)]">
-            <span className="block overflow-hidden whitespace-nowrap pb-[0.05em]">
-              <motion.span
-                className="inline-block text-[min(18vw,16svh)] md:landscape:text-[min(13.5vw,38svh)]"
-                initial={{ y: "112%" }}
-                animate={{ y: 0 }}
-                transition={{ delay: 0.35, duration: 1.1, ease: EASE }}
-              >
-                JADON&nbsp;LI
-              </motion.span>
-            </span>
-          </h1>
-        </motion.div>
+            {/* L2 — the giant name, lower third (behind the subject) */}
+            <motion.div
+              style={{ y: heroY, opacity: heroOpacity }}
+              className="pointer-events-none absolute inset-x-0 top-[13%] z-[2] text-center md:landscape:inset-x-auto md:landscape:left-[47%] md:landscape:right-[2%] md:landscape:top-auto md:landscape:bottom-[6%] md:landscape:text-left"
+            >
+              <h1 className="font-anton leading-[0.85] tracking-tight text-white [text-shadow:0_2px_6px_rgba(13,36,49,0.45),0_10px_44px_rgba(13,36,49,0.55)]">
+                <span className="block overflow-hidden whitespace-nowrap pb-[0.05em]">
+                  <motion.span
+                    className="inline-block text-[min(18vw,16svh)] md:landscape:text-[min(13.5vw,38svh)]"
+                    initial={{ y: "112%" }}
+                    animate={{ y: 0 }}
+                    transition={{ delay: 0.35, duration: 1.1, ease: EASE }}
+                  >
+                    JADON&nbsp;LI
+                  </motion.span>
+                </span>
+              </h1>
+            </motion.div>
 
-        {/* L3 — the subject, pixel-aligned over the photo (same cover + position) */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={asset("/img/hero-cutout-v2.png")}
-          alt=""
-          aria-hidden
-          className="pointer-events-none absolute inset-0 z-[3] h-full w-full object-cover"
-          style={{ objectPosition: "40% 32%" }}
-        />
+            {/* L3 — the subject, pixel-aligned over the photo (same cover + position) */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={asset("/img/hero-cutout-v2.png")}
+              alt=""
+              aria-hidden
+              className="pointer-events-none absolute inset-0 z-[3] h-full w-full object-cover"
+              style={{ objectPosition: "40% 32%" }}
+            />
 
-        {/* L4 — UI: descriptors at left (inspo-style), scroll cue, soft melt into the story paper */}
-        <motion.div
-          initial={{ opacity: 0, x: -14 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.9, duration: 0.9, ease: EASE }}
-          className="absolute bottom-[9%] left-5 z-[4] md:bottom-[8%] md:left-9"
-        >
-          <p className="font-display text-2xl text-white md:text-4xl">
-            <RoleRotator />
-          </p>
-          <p className="mt-3 font-mono text-[clamp(0.45rem,2.35vw,0.55rem)] uppercase tracking-[0.18em] text-white/90 md:text-[0.85rem] md:tracking-[0.28em]">
-            <span className="whitespace-nowrap">{PROFILE.school}</span>
-            <br />
-            <span className="whitespace-nowrap">{PROFILE.city} · {PROFILE.gradeNote}</span>
-          </p>
-        </motion.div>
+            {/* L4 — UI: descriptors at left (inspo-style), scroll cue, soft melt into the story paper */}
+            <motion.div
+              initial={{ opacity: 0, x: -14 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.9, duration: 0.9, ease: EASE }}
+              className="absolute bottom-[9%] left-5 z-[4] md:bottom-[8%] md:left-9"
+            >
+              <p className="font-display text-2xl text-white md:text-4xl">
+                <RoleRotator />
+              </p>
+              <p className="mt-3 font-mono text-[clamp(0.45rem,2.35vw,0.55rem)] uppercase tracking-[0.18em] text-white/90 md:text-[0.85rem] md:tracking-[0.28em]">
+                <span className="whitespace-nowrap">{PROFILE.school}</span>
+                <br />
+                <span className="whitespace-nowrap">
+                  {PROFILE.city} · {PROFILE.gradeNote}
+                </span>
+              </p>
+            </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.3 }}
-          className="absolute bottom-5 right-5 z-[4] flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-widest text-white/90 [text-shadow:0_2px_10px_rgba(13,36,49,0.5)] md:right-9"
-        >
-          Begin <ArrowDown className="size-3.5 animate-bounce" />
-        </motion.div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.3 }}
+              className="absolute bottom-5 right-5 z-[4] flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-widest text-white/90 [text-shadow:0_2px_10px_rgba(13,36,49,0.5)] md:right-9"
+            >
+              Begin <ArrowDown className="size-3.5 animate-bounce" />
+            </motion.div>
 
-        {/* melt into the evidence board below */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[4] h-16"
-          style={{ background: "linear-gradient(to bottom, transparent, #08080c)" }}
-        />
-      </section>
+            {/* melt into the evidence board below */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 bottom-0 z-[4] h-16"
+              style={{
+                background: "linear-gradient(to bottom, transparent, #08080c)",
+              }}
+            />
+          </section>
+        </>
+      )}
 
       {/* THE EVIDENCE BOARD — sentence, record and close on one continuous wall,
           tied together by red threads from each pinned word to its proof. */}
