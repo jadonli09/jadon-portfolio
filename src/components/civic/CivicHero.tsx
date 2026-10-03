@@ -42,9 +42,9 @@ export function CivicHero() {
 
         <div className="relative mx-auto aspect-[3/4] w-full max-w-[22rem] overflow-hidden bg-secondary md:max-w-none">
           <img
-            src={asset("/img/ybvc-03.jpg")}
-            alt={`${PROFILE.name} speaking on stage with a microphone`}
-            style={{ objectPosition: "45% 30%" }}
+            src={asset("/img/homecoming-mic-hero.jpg")}
+            alt={`${PROFILE.name} on the mic at Homecoming`}
+            style={{ objectPosition: "50% 40%" }}
             className="absolute inset-0 h-full w-full object-cover transition-[scale] duration-700 ease-[var(--ease-cine)] hover:scale-[1.04]"
           />
         </div>

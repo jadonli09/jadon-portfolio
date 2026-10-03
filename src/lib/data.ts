@@ -1701,6 +1701,7 @@ export const ALBUMS: Album[] = [
       { src: "/img/gw-06.jpg", caption: "Leadership II — the whole class, first rally of the year" },
       { src: "/img/gw-04.jpg", caption: "Running the rally" },
       { src: "/img/gw-03.jpg", caption: "Hosting with the co-emcee" },
+      { src: "/img/homecoming-mic.jpg", caption: "Homecoming — on the mic" },
       { src: "/img/speaking-at-rally.jpg", caption: "Speaking at the rally" },
       { src: "/img/asb-officers.jpg", caption: "ASB officers", fit: "contain" },
       { src: "/img/asb-with-other-schools.jpg", caption: "With ASB teams from other schools" },
