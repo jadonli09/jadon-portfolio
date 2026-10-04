@@ -7,6 +7,8 @@ import { Cursor } from "@/components/chrome/Cursor";
 import { Nav } from "@/components/chrome/Nav";
 import { Grain } from "@/components/chrome/Grain";
 import { Develop } from "@/components/chrome/Develop";
+import { Gate } from "@/components/chrome/Gate";
+import { GATE_SCRIPT } from "@/lib/gate";
 import { BASE } from "@/lib/base";
 
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", display: "swap" });
@@ -48,7 +50,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         data-cursor="on"
         className={`${fraunces.variable} ${archivo.variable} ${instrument.variable} ${jetbrains.variable} ${anton.variable} ${caveat.variable} antialiased`}
       >
+        <script dangerouslySetInnerHTML={{ __html: GATE_SCRIPT }} />
         <MotionConfig reducedMotion="user">
+          <Gate />
           <Grain />
           <Cursor />
           <Nav />

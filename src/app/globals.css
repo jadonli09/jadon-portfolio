@@ -1021,3 +1021,54 @@ body:has([data-world="built"]) .grain {
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
 }
+
+/* ── THE GATE (lock screen) ───────────────────────────────────── */
+
+/* set by the inline script in layout before first paint */
+html[data-unlocked] [data-gate] { display: none; }
+
+/* a sticker on a keycap: cream, slightly crooked, sinks when pressed */
+.gate-tile {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 13%;
+  border-radius: 22%;
+  background: #f4efe6;
+  rotate: var(--r);
+  box-shadow: 0 6px 0 #b3a797, 0 16px 26px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition:
+    translate 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    rotate 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s,
+    background-color 0.3s;
+}
+.gate-tile:hover { translate: 0 -4px; rotate: 0deg; }
+.gate-tile:active { translate: 0 4px; box-shadow: 0 2px 0 #b3a797, 0 6px 12px rgba(0, 0, 0, 0.45); }
+.gate-tile:focus-visible { outline: 3px solid #f4efe6; outline-offset: 4px; }
+.gate-tile[aria-pressed="true"] {
+  rotate: 0deg;
+  box-shadow: 0 6px 0 #b3a797, 0 0 0 4px var(--c), 0 16px 26px rgba(0, 0, 0, 0.45);
+}
+
+.gate-shake { animation: gate-shake 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97); }
+@keyframes gate-shake {
+  10%, 90% { translate: -2px 0; }
+  20%, 80% { translate: 4px 0; }
+  30%, 50%, 70% { translate: -8px 0; }
+  40%, 60% { translate: 8px 0; }
+}
+
+.gate-blank { animation: gate-blink 1.1s ease-in-out infinite; }
+@keyframes gate-blink { 50% { opacity: 0.25; } }
+
+.gate-bob { animation: gate-bob 2.6s ease-in-out infinite; }
+@keyframes gate-bob { 50% { transform: translateY(-6px); } }
+
+/* the macaron swings from the drone's belly (cover-scene coordinates) */
+.gate-swing { transform-origin: 226px 152px; animation: gate-swing 1.9s ease-in-out infinite alternate; }
+@keyframes gate-swing { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+
+.gate-scene .gate-prop { transform-box: fill-box; transform-origin: center; animation: gate-prop 0.14s linear infinite alternate; }
+@keyframes gate-prop { to { transform: scaleX(0.3); } }
