@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { GATE_KEY } from "@/lib/gate";
+import { GATE_ENABLED, GATE_KEY } from "@/lib/gate";
 
 /**
  * Intro: light rays stream in toward the centre, "LOCKED IN" assembles from
@@ -34,10 +34,10 @@ export function Preloader({ gate = false }: { gate?: boolean }) {
 
   useEffect(() => {
     let seen = false;
-    let locked = true;
+    let locked = GATE_ENABLED;
     try {
       seen = !!sessionStorage.getItem("jl_intro");
-      locked = !localStorage.getItem(GATE_KEY);
+      locked = GATE_ENABLED && !localStorage.getItem(GATE_KEY);
     } catch {}
     if (seen || (locked && !gate)) {
       queueMicrotask(() => setShow(false));
