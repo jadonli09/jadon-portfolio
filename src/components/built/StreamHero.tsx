@@ -1,84 +1,56 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ImageStreamHero, type StreamImage } from "@/components/ui/image-stream-hero";
-import { LiquidGlass, LiquidGlassFilter } from "@/components/ui/liquid-glass";
-import { StatFigure } from "@/components/built/StatFigure";
+import { useLenis } from "lenis/react";
 import { asset } from "@/lib/base";
-import { EASE_OUT } from "@/lib/fluid";
-import { Typewriter } from "@/components/primitives/Typewriter";
+import { EASE_OUT, prefersReducedMotion, scrollTargetFor } from "@/lib/fluid";
 import { cn } from "@/lib/cn";
 import { PROJECTS } from "@/lib/data";
 
 /* ────────────────────────────────────────────────────────────────────
-   StreamHero — twelve real screens rushing the viewer.
+   StreamHero — the headline on the left, a wall of real screens on the right.
 
-   Every card is something that is actually live, at its own shape and whole:
-   AcornPrep's practice, grading, tutor and study surfaces plus its home page;
-   NotebookLI's reader; a Hermes story; and the viewport screenshots of
-   CueSheet, the ASB site, the Youth STEM Journal, MSJ Makes and this site.
-   No stock, no placeholder gradients — the corridor IS the portfolio, and the
-   headline standing in the middle of it is the only thing that isn't a
-   screenshot.
+   Every card is something that is actually live, at its own shape and at full
+   colour: this page is white on purpose so the screenshots carry all of it.
+   Text and screens never share space, so nothing needs a scrim. The wall
+   drifts in two columns; hovering holds it still and names the product, and a
+   click goes to that product's chapter. On a phone the same screens run as
+   one row under the headline.
    ──────────────────────────────────────────────────────────────────── */
 
-/**
- * Every card carries its own shape. `aspect` is the file's real width ÷ height,
- * so nothing is cropped to fit a house format: the tutor screen and the Hermes
- * story ride the corridor as portraits, the browser captures as landscapes.
- *
- * Order matters: the two rails walk this list together, so neighbours in the
- * array end up beside each other in depth. Interleaved by product AND by
- * shape, so no stretch of the corridor is all one colour or all one format.
- */
-const STREAM: StreamImage[] = [
-  { src: "/embeds/stream/acorn-mcq.jpg", aspect: 1.7729, alt: "AcornPrep MCQ practice" },
-  { src: "/embeds/stream/hermes-story.jpg", aspect: 0.5625, alt: "A Hermes schedule story" },
-  { src: "/embeds/stream/cuesheet.jpg", aspect: 1.7131, alt: "CueSheet" },
-  { src: "/embeds/stream/acorn-tutor.jpg", aspect: 0.6663, alt: "AcornPrep AI tutor" },
-  { src: "/embeds/stream/asb.jpg", aspect: 1.6, alt: "MSJHS ASB" },
-  { src: "/embeds/stream/notebook-reader.jpg", aspect: 1.4299, alt: "NotebookLI reader" },
-  { src: "/embeds/stream/acorn-frq.jpg", aspect: 1.7927, alt: "AcornPrep free-response grading" },
-  { src: "/embeds/stream/msjmakes.jpg", aspect: 1.6, alt: "MSJ Makes" },
-  { src: "/embeds/stream/acorn-tips.jpg", aspect: 1.5534, alt: "AcornPrep study modes" },
-  { src: "/embeds/stream/ysj.jpg", aspect: 1.6, alt: "Youth STEM Journal" },
-  { src: "/embeds/stream/acornprep.jpg", aspect: 1.6, alt: "AcornPrep" },
-  { src: "/embeds/stream/jadonli.jpg", aspect: 1.6, alt: "jadonli.com" },
-].map((i) => ({ ...i, src: asset(i.src) }));
+type Shot = { src: string; aspect: number; slug: string; alt: string };
 
-/**
- * `08` is the length of PROJECTS rather than a
- * literal, so adding a ninth product cannot leave a stale number on the page.
- *
- * "People using them" is the whole fleet, not AcornPrep alone: ~500 on
- * AcornPrep, ~1,500 on the ASB site, ~100 on MSJ Makes, and the remainder
- * across CueSheet, the Journal and NotebookLI. AcornPrep's own 500+ still
- * appears once, in its chapter — this is the sum, which is a different claim.
- */
-const TELEMETRY = [
-  { value: String(PROJECTS.length).padStart(2, "0"), label: "Products" },
-  { value: "2,200+", label: "Users" },
+/** `aspect` is the file's real width ÷ height, so nothing is cropped to a house format. */
+const SHOTS: Record<string, Shot> = {
+  mcq: { src: "/embeds/stream/acorn-mcq.jpg", aspect: 1.7729, slug: "acornprep", alt: "AcornPrep MCQ practice" },
+  story: { src: "/embeds/stream/hermes-story.jpg", aspect: 0.5625, slug: "hermes", alt: "A Hermes schedule story" },
+  cuesheet: { src: "/embeds/stream/cuesheet.jpg", aspect: 1.7131, slug: "cuesheet", alt: "CueSheet" },
+  tutor: { src: "/embeds/stream/acorn-tutor.jpg", aspect: 0.6663, slug: "acornprep", alt: "AcornPrep AI tutor" },
+  asb: { src: "/embeds/stream/asb.jpg", aspect: 1.6, slug: "msjhs-asb", alt: "MSJHS ASB" },
+  reader: { src: "/embeds/stream/notebook-reader.jpg", aspect: 1.4299, slug: "notebookli", alt: "NotebookLI reader" },
+  frq: { src: "/embeds/stream/acorn-frq.jpg", aspect: 1.7927, slug: "acornprep", alt: "AcornPrep free-response grading" },
+  makes: { src: "/embeds/stream/msjmakes.jpg", aspect: 1.6, slug: "msj-makes", alt: "MSJ Makes" },
+  tips: { src: "/embeds/stream/acorn-tips.jpg", aspect: 1.5534, slug: "acornprep", alt: "AcornPrep study modes" },
+  ysj: { src: "/embeds/stream/ysj.jpg", aspect: 1.6, slug: "youth-stem-journal", alt: "Youth STEM Journal" },
+  acorn: { src: "/embeds/stream/acornprep.jpg", aspect: 1.6, slug: "acornprep", alt: "AcornPrep" },
+  site: { src: "/embeds/stream/jadonli.jpg", aspect: 1.6, slug: "jadonli-com", alt: "jadonli.com" },
+};
+
+/** One portrait per column, and no product twice in a row. */
+const COLUMNS = [
+  { shots: ["mcq", "story", "asb", "reader", "tips", "site"], seconds: 64, reverse: false },
+  { shots: ["cuesheet", "tutor", "makes", "frq", "ysj", "acorn"], seconds: 76, reverse: true },
 ];
+const ROW = ["acorn", "story", "cuesheet", "reader", "tutor", "asb", "mcq", "makes", "ysj", "frq", "site", "tips"];
+
+const NAME = Object.fromEntries(PROJECTS.map((p) => [p.slug, p.name]));
 
 /** One masked line of the display headline. */
-function Line({
-  children,
-  delay,
-  className,
-}: {
-  children: React.ReactNode;
-  delay: number;
-  className?: string;
-}) {
+function Line({ children, delay, className }: { children: React.ReactNode; delay: number; className?: string }) {
   return (
     // Size lands here, not on the inner text: the clip box and its em-based
     // padding have to scale with the line, or a larger line gets cropped.
-    <span
-      className={cn(
-        "block overflow-hidden pb-[0.09em] -mb-[0.09em]",
-        className
-      )}
-    >
+    <span className={cn("block overflow-hidden pb-[0.09em] -mb-[0.09em]", className)}>
       <motion.span
         className="block"
         initial={{ transform: "translateY(105%)" }}
@@ -92,135 +64,94 @@ function Line({
 }
 
 export function StreamHero() {
+  const lenis = useLenis();
+
+  /** Same jump the Dock makes: an absolute target, because Lenis's own `scrollTo(el)` lands short inside World. */
+  const jump = (e: React.MouseEvent, slug: string) => {
+    const el = document.getElementById(slug);
+    if (!el) return;
+    e.preventDefault();
+    // The more-projects strip focuses whichever card the hash names, so the
+    // hash has to change even though the scroll is ours. Cleared first so a
+    // second click on the same product still re-focuses it.
+    for (const hash of ["", `#${slug}`]) {
+      history.replaceState(null, "", `${location.pathname}${location.search}${hash}`);
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
+    }
+    if (lenis) lenis.scrollTo(scrollTargetFor(el));
+    else window.scrollTo({ top: scrollTargetFor(el), behavior: prefersReducedMotion() ? "auto" : "smooth" });
+  };
+
+  /** A track holds its shots twice so the loop can wrap; the second copy is for the eye only. */
+  const card = (id: string, copy: number, row: boolean) => {
+    const s = SHOTS[id];
+    return (
+      <div key={`${id}-${copy}`} className={row ? "shrink-0 pr-3" : "pb-4"}>
+        <a
+          href={`#${s.slug}`}
+          onClick={(e) => jump(e, s.slug)}
+          aria-hidden={copy > 0}
+          tabIndex={copy > 0 ? -1 : undefined}
+          aria-label={`${NAME[s.slug]}: jump to it`}
+          className="stream-card group"
+          style={row ? { height: "9.5rem", aspectRatio: s.aspect } : { aspectRatio: s.aspect }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={asset(s.src)} alt={s.alt} draggable={false} className="h-full w-full object-cover" />
+          <span className="stream-name">{NAME[s.slug]}</span>
+        </a>
+      </div>
+    );
+  };
+
   return (
-    <section className="relative">
-      <ImageStreamHero
-        images={STREAM}
-        cards={10}
-        speed={22}
-        axis={50}
-        /*
-          Retuned for mixed aspects. Card WIDTH now follows each image, and the
-          widest here is 1.79 — so at the old exit a landscape card measured
-          107cqw across and its inner edge crossed the axis, straight through
-          the headline. The rails are pushed out and the exit pulled in until
-          the widest card still clears the middle:
-
-            railExit − (1.79 × exitHeight) / 2  =  70 − 37.6  =  32.4cqw
-        */
-        path={{ exitHeight: 42, railExit: 70 }}
-        className="h-[60svh] min-h-[30rem] w-full bg-[var(--bg)] md:h-[70svh] md:min-h-[36rem]"
-      >
-        {/*
-          The corridor converges on the vanishing point, so the middle of the
-          frame is the one place it is never busy — which is exactly where the
-          headline goes. The scrim is a soft radial rather than a flat wash so
-          the cards stay bright at the edges where they are largest.
-        */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            // Tight enough to clear the headline and no more. A wide scrim
-            // whites out the cards at the sides, which are the largest and the
-            // only ones you can actually read — the whole point of the shot.
-            //
-            // Drawn tight around the HEADLINE, which is the only thing here
-            // that needs bare paper behind it. It used to reach far enough
-            // down to bleach the band the glass sits in — so the panes had a
-            // white wall behind them and read as plain cards. The figures
-            // don't need it: making text legible over busy content is the one
-            // job the glass is for, and the sentence below has already fallen
-            // clear of the stream.
-            //
-            // Wide and SHORT. The headline runs nearly the full frame, so a
-            // narrow ellipse left its last two words hanging over the cards;
-            // the height is what has to stay small, not the width.
-            background:
-              "radial-gradient(64% 22% at 50% 35%, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.9) 52%, rgba(255,255,255,0) 100%)",
-          }}
-        />
-        {/* Fades tie the corridor into the white page above and below. Eased,
-            not linear, and deeper than they were: a two-stop gradient put a
-            visible shoulder partway down where the fade looked like it stopped.
-            See `.scrim-*` in globals.css. */}
-        <div
-          aria-hidden
-          className="scrim-down pointer-events-none absolute inset-x-0 top-0 h-32 md:h-40"
-        />
-        <div
-          aria-hidden
-          className="scrim-up pointer-events-none absolute inset-x-0 bottom-0 h-40 md:h-52"
-        />
-
-        <div className="relative z-10 flex h-full flex-col items-center justify-center px-5 text-center md:px-9">
-          <h1 className="t-display text-balance">
+    <section className="relative overflow-hidden">
+      <div className="mx-auto grid max-w-7xl gap-10 px-5 pt-28 md:px-9 md:pt-36 lg:h-[min(90svh,54rem)] lg:min-h-[38rem] lg:grid-cols-2 lg:items-center lg:gap-14 lg:pt-0">
+        <div>
+          <h1 className="t-display">
             <Line delay={0.08} className="text-[1.2em]">
               Ship it.
             </Line>
-            <Line delay={0.16} className="text-[0.62em]">
+            <Line delay={0.16} className="text-[0.6em] lg:whitespace-nowrap lg:text-[0.5em]">
               <span className="text-[var(--muted)]">Then ship the next one.</span>
             </Line>
           </h1>
-
-          {/*
-            The figures, as three panes of glass.
-
-            One divided card was the wrong object: dividers make a table, and a
-            table on a white page is a card, not a lens. Three separate capsules
-            float — the corridor shows between them, each one catches its own
-            light, and each drops its own shadow.
-
-            They sit HERE, between the headline and the sentence, because
-            this is the band of the corridor the cards actually cross. Below
-            the sentence the stream has already thinned to nothing, and glass
-            over blank paper is just a white card — which is what this was.
-
-            Transform-only entrance, on purpose. Fading these in by animating
-            opacity on the wrapper would make it a backdrop root for the frame
-            of the animation and flash the glass clear — see `liquid-glass.tsx`.
-          */}
-          <motion.dl
-            /*
-              A row at every width. Stacked on a phone, three capsules ran
-              taller than the corridor itself and pushed the headline off the
-              top of the screen — on the one layout where the stream has the
-              least room to spare.
-            */
-            className="mt-8 flex w-full max-w-[37rem] gap-3 sm:gap-4 md:mt-12"
-            initial={{ transform: "translateY(18px)" }}
-            animate={{ transform: "translateY(0px)" }}
-            transition={{ duration: 0.65, ease: EASE_OUT, delay: 0.4 }}
+          <motion.p
+            className="t-body mt-7 text-[1.25rem] md:mt-9 md:text-[1.375rem]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.45 }}
           >
-            {TELEMETRY.map((s) => (
-              <LiquidGlass
-                key={s.label}
-                className="min-w-0 flex-1"
-                contentClassName="flex h-full flex-col items-center gap-1 px-2 py-3 sm:px-5 md:py-3.5"
-              >
-                <dt className="t-num text-[1.35rem] leading-none sm:text-[1.75rem] md:text-[2.1rem]">
-                  <StatFigure value={s.value} />
-                </dt>
-                <dd className="t-small vibrant leading-tight md:text-[0.9375rem]">
-                  {s.label}
-                </dd>
-              </LiquidGlass>
-            ))}
-          </motion.dl>
-          {/* The line types itself in rather than fading — one entrance, not
-              two competing ones. */}
-          <Typewriter
-            className="t-body mt-9 max-w-lg text-balance md:mt-10"
-            text="Built to solve problems, launched to serve the community."
-            delay={420}
-          />
-
+            <span className="t-num">{PROJECTS.length}</span> products,{" "}
+            <span className="t-num">2,200+</span> people using them.
+          </motion.p>
         </div>
-      </ImageStreamHero>
 
-      {/* One displacement map for the page, mounted beside the only thing
-          using it. */}
-      <LiquidGlassFilter />
+        {/* THE WALL — two columns drifting opposite ways */}
+        <motion.div
+          className="stream-wall stream-fade-y hidden h-full grid-cols-2 gap-4 overflow-hidden lg:grid"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          {COLUMNS.map((col, i) => (
+            <div
+              key={i}
+              className="stream-track"
+              style={{ animation: `stream-up ${col.seconds}s linear infinite ${col.reverse ? "reverse" : ""}` }}
+            >
+              {[0, 1].map((copy) => col.shots.map((id) => card(id, copy, false)))}
+            </div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* THE ROW — the same screens, one line, for narrow screens */}
+      <div className="stream-wall stream-fade-x mt-10 overflow-hidden py-4 lg:hidden">
+        <div className="stream-track flex w-max" style={{ animation: "stream-left 70s linear infinite" }}>
+          {[0, 1].map((copy) => ROW.map((id) => card(id, copy, true)))}
+        </div>
+      </div>
     </section>
   );
 }
