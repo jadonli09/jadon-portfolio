@@ -1,5 +1,5 @@
-/** The lock screen's switch. Off for now: flip to `true` to put the site back behind the sticker puzzle. */
-export const GATE_ENABLED = false;
+/** The lock screen's switch. On: the site sits behind the sticker puzzle. Flip to `false` to switch it off. */
+export const GATE_ENABLED = true;
 
 /** localStorage flag set once the lock screen has been solved. */
 export const GATE_KEY = "jl_unlocked";
