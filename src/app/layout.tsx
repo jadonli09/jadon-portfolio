@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Archivo, Instrument_Serif, JetBrains_Mono, Anton, Caveat } from "next/font/google";
 import { MotionConfig } from "motion/react";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { Cursor } from "@/components/chrome/Cursor";
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Develop />
           <SmoothScroll>{children}</SmoothScroll>
         </MotionConfig>
+        <Analytics />
       </body>
     </html>
   );
