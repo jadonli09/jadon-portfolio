@@ -27,7 +27,7 @@ export function CivicMetricsBand() {
               className="group relative overflow-hidden bg-secondary p-6 outline-none md:p-8"
             >
               <p className="font-grotesk text-4xl font-bold leading-none tracking-[-2px] text-[var(--fg)] sm:text-5xl sm:tracking-[-3px] md:text-6xl md:tracking-[-4px]">
-                <Counter to={m.value} suffix={m.suffix} duration={1.6} />
+                <Counter to={m.value} suffix={m.suffix} decimals={"decimals" in m ? m.decimals : undefined} duration={1.6} />
               </p>
               <p className="mt-3 text-base font-semibold leading-tight text-[var(--fg)] [overflow-wrap:anywhere]">
                 {m.label}

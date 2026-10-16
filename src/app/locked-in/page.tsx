@@ -12,7 +12,7 @@ export const metadata: Metadata = {
  * The Locked In world — a streaming title page, one screen tall. Scrolling rolls
  * the film strip of episodes sideways instead of moving the page; the frame at
  * the gate becomes the billboard and plays. The twenty reels
- * are the native videos in PURSUIT (src/lib/data.ts), in order.
+ * are LOCKED_SEASON in src/lib/data.ts — Jadon’s picks, in posting order.
  */
 export default function LockedInPage() {
   return (
