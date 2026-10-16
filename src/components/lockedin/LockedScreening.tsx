@@ -691,9 +691,9 @@ export function LockedScreening() {
       </div>
 
       {/* Hero: copy left, the episode playing right */}
-      <div className="relative z-10 grid min-h-0 grid-cols-[minmax(0,1fr)] px-5 pt-20 md:px-14 md:pt-24 [@media(max-height:740px)]:pt-16">
-        <div className="relative flex min-h-0 max-w-[min(100%,46rem)] md:max-w-[40vw] flex-col justify-end pb-2">
-          <p className="flex items-center gap-2.5 font-grotesk text-base font-semibold tracking-[0.2em] text-white/90 [@media(max-height:740px)]:hidden">
+      <div className="relative z-10 grid min-h-0 grid-cols-[minmax(0,1fr)] px-5 pt-20 md:px-14 md:pt-24 [@media(max-height:780px)]:pt-16">
+        <div className="relative flex min-h-0 max-w-[min(100%,46rem)] md:max-w-[42vw] flex-col justify-end pb-2">
+          <p className="flex items-center gap-2.5 font-grotesk text-base font-semibold tracking-[0.2em] text-white/90 [@media(max-height:780px)]:hidden">
             <LIMark className="size-8" />
             SERIES
           </p>
@@ -764,7 +764,7 @@ export function LockedScreening() {
                 type="button"
                 onClick={() => setSound((s) => !s)}
                 data-cursor-hover
-                className="inline-flex min-h-12 items-center gap-2.5 rounded-md bg-white px-4 font-grotesk text-[17px] font-bold sm:px-6 text-black transition-opacity duration-200 hover:opacity-80 md:min-h-14 md:px-8 md:text-lg"
+                className="inline-flex min-h-12 items-center gap-2.5 rounded-md bg-white px-4 font-grotesk text-[17px] font-bold sm:px-6 text-black transition-opacity duration-200 hover:opacity-80 md:min-h-14 md:px-6 md:text-lg xl:px-8"
               >
                 {sound ? (
                   <VolumeX className="size-6" />
@@ -785,7 +785,7 @@ export function LockedScreening() {
               target="_blank"
               rel="noreferrer"
               data-cursor-hover
-              className="inline-flex min-h-12 items-center gap-2 rounded-md bg-[rgba(109,109,110,0.7)] px-4 font-grotesk sm:px-6 text-[17px] font-bold text-white transition-colors duration-200 hover:bg-[rgba(109,109,110,0.45)] md:min-h-14 md:px-8 md:text-lg"
+              className="inline-flex min-h-12 items-center gap-2 rounded-md bg-[rgba(109,109,110,0.7)] px-4 font-grotesk sm:px-6 text-[17px] font-bold text-white transition-colors duration-200 hover:bg-[rgba(109,109,110,0.45)] md:min-h-14 md:px-6 md:text-lg xl:px-8"
             >
               <span className="hidden sm:inline">Watch on</span> Instagram{" "}
               <ArrowUpRight className="size-6" />
