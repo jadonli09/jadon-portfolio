@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Locked In — Control Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#07090d; --panel:#0f131a; --fg:#e8edf3; --muted:#8a94a3; --live:#ff2e3b; --tally:#3dff8a; --line:#ffffff14; }
+  * { box-sizing:border-box; margin:0; }
+  body { background:var(--bg); color:var(--fg); font-family:"IBM Plex Sans",sans-serif; min-height:100vh; }
+
+  .room { max-width:1440px; margin:0 auto; padding:32px 24px 0; display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,1.6fr); gap:28px; }
+  h1 { font-family:"Archivo Black"; text-transform:uppercase; font-size:clamp(40px,5vw,76px); line-height:.9; letter-spacing:-.01em; grid-column:1/-1; display:flex; align-items:baseline; gap:20px; flex-wrap:wrap; }
+  h1 .onair { font-family:"IBM Plex Sans"; font-weight:600; font-size:17px; letter-spacing:.06em; color:#fff; background:var(--live); padding:8px 14px; border-radius:6px; box-shadow:0 0 24px #ff2e3b88; animation:blink 2s steps(1) infinite; }
+  @keyframes blink { 50% { opacity:.55; } }
+
+  /* Program monitor */
+  .program { position:sticky; top:24px; align-self:start; }
+  .pgm { position:relative; aspect-ratio:9/16; max-height:80vh; margin:0 auto; border-radius:14px; overflow:hidden; background:#000; border:3px solid var(--live); box-shadow:0 0 60px -10px #ff2e3b66; }
+  .pgm video { width:100%; height:100%; object-fit:cover; display:block; }
+  .pgm .label { position:absolute; top:12px; left:12px; background:var(--live); color:#fff; font-weight:600; font-size:15px; padding:6px 10px; border-radius:4px; }
+  .pgm .lower { position:absolute; left:0; right:0; bottom:0; padding:90px 18px 18px; background:linear-gradient(transparent, #000c 35%, #000f); }
+  .pgm .lower h2 { font-family:"Archivo Black"; text-transform:uppercase; font-size:26px; line-height:1; }
+  .pgm .lower p { font-size:16px; color:#cfd6df; margin-top:8px; line-height:1.4; }
+  .pgm .lower .row { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; margin-top:14px; gap:12px; }
+  .pgm .lower .views { font-family:"Archivo Black"; font-size:30px; }
+  .pgm .lower .views small { font-family:"IBM Plex Sans"; font-size:15px; color:var(--muted); font-weight:400; margin-left:6px; }
+  .btn { min-height:48px; padding:0 18px; border-radius:8px; border:1px solid #ffffff40; color:#fff; background:#ffffff14; font:500 16px "IBM Plex Sans"; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; white-space:nowrap; }
+  .btn:hover { background:#ffffff2a; }
+
+  /* Monitor wall — 4×3 */
+  .wall { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; align-content:start; }
+  .mon { position:relative; aspect-ratio:9/16; border-radius:10px; overflow:hidden; background:#000; border:2px solid #1d2430; cursor:pointer; padding:0; color:var(--fg); font-family:inherit; transition:border-color .2s, transform .2s; }
+  .mon:hover { transform:translateY(-3px); border-color:#3a4658; }
+  .mon video { width:100%; height:100%; object-fit:cover; display:block; filter:saturate(.75) brightness(.8); transition:filter .2s; }
+  .mon:hover video { filter:none; }
+  .mon::after { content:""; position:absolute; inset:0; pointer-events:none; z-index:1;
+    background:repeating-linear-gradient(0deg, #0000 0 2px, #0000002e 2px 3px); }
+  .mon .tag { position:absolute; left:0; right:0; bottom:0; display:flex; justify-content:space-between; align-items:center; padding:8px 10px; background:#000d; font-size:15px; z-index:2; }
+  .mon .tag b { font-weight:600; }
+  .mon .dot { width:10px; height:10px; border-radius:50%; background:#2a3240; }
+  .mon.on { border-color:var(--live); }
+  .mon.on .dot { background:var(--live); box-shadow:0 0 10px var(--live); }
+  .mon.next { border-color:var(--tally); }
+  .mon.next .dot { background:var(--tally); }
+
+  /* Ticker */
+  .ticker { margin-top:36px; border-top:1px solid var(--line); background:var(--panel); overflow:hidden; white-space:nowrap; }
+  .ticker div { display:inline-block; padding:16px 0; font-size:17px; animation:tick 70s linear infinite; }
+  .ticker span { margin:0 28px; color:var(--muted); }
+  .ticker span b { color:var(--fg); font-weight:600; }
+  @keyframes tick { to { transform:translateX(-50%); } }
+
+  @media (max-width: 900px) {
+    .room { grid-template-columns:1fr; }
+    .program { position:relative; top:0; }
+    .pgm { max-height:70vh; }
+    .wall { grid-template-columns:repeat(3,1fr); gap:8px; }
+    .mon .tag { font-size:14px; padding:6px 8px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .ticker div, h1 .onair { animation:none; } }
+</style>
+</head>
+<body>
+<main class="room">
+  <h1>Locked In, live <span class="onair">ON AIR</span></h1>
+  <section class="program">
+    <div class="pgm" id="pgm">
+      <video id="pv" playsinline loop></video>
+      <span class="label" id="plabel">PGM · CAM 01</span>
+      <div class="lower">
+        <h2 id="ptitle"></h2>
+        <p id="pcap"></p>
+        <div class="row">
+          <div class="views" id="pviews"></div>
+          <button class="btn" id="snd">Sound on</button>
+          <a class="btn" id="pig" target="_blank" rel="noreferrer">Instagram ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="wall" id="wall" aria-label="The twelve, on the monitor wall"></section>
+</main>
+<div class="ticker" aria-hidden="true"><div id="tick"></div></div>
+
+<script src="reels.js"></script>
+<script>
+  const wall = document.getElementById("wall"), pv = document.getElementById("pv");
+  let cur = 0;
+
+  REELS.forEach((r, i) => {
+    const m = document.createElement("button");
+    m.className = "mon";
+    m.innerHTML = `<video src="${VID}${r.slug}.mp4" poster="${VID}${r.slug}.jpg" muted playsinline loop preload="metadata"></video>
+      <span class="tag"><b>CAM ${String(i + 1).padStart(2, "0")}</b><span>${r.views}</span><i class="dot"></i></span>`;
+    m.onclick = () => take(i);
+    wall.appendChild(m);
+  });
+
+  // Wall monitors run muted while on screen — the whole year at once.
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    const v = e.target.querySelector("video");
+    e.isIntersecting ? v.play().catch(() => {}) : v.pause();
+  }), { threshold: .3 });
+  [...wall.children].forEach(m => io.observe(m));
+
+  function take(i) {
+    cur = i; const r = REELS[i];
+    pv.src = `${VID}${r.slug}.mp4`; pv.poster = `${VID}${r.slug}.jpg`;
+    pv.play().catch(() => {});
+    plabel.textContent = `PGM · CAM ${String(i + 1).padStart(2, "0")}`;
+    ptitle.textContent = r.title;
+    pcap.textContent = `Day ${r.day}, ${r.date} — “${r.caption}”`;
+    pviews.innerHTML = `${r.views}<small>plays</small>`;
+    pig.href = `https://www.instagram.com/reel/${r.code}/`;
+    [...wall.children].forEach((m, j) => { m.classList.toggle("on", j === i); m.classList.toggle("next", j === (i + 1) % REELS.length); });
+  }
+  pv.muted = true;
+  snd.onclick = () => { pv.muted = !pv.muted; snd.textContent = pv.muted ? "Sound on" : "Mute"; };
+  // When a reel ends a loop, cut to the next camera (the green tally).
+  pv.addEventListener("timeupdate", () => { if (pv.duration && pv.currentTime > pv.duration - .25 && pv.muted) take((cur + 1) % REELS.length); });
+
+  const items = REELS.map((r, i) => `<span><b>CAM ${String(i + 1).padStart(2, "0")}</b> ${r.title} — ${r.views} plays</span>`).join("");
+  tick.innerHTML = items + items;
+  take(0);
+</script>
+</body>
+</html>

@@ -8,8 +8,8 @@ import { Cursor } from "@/components/chrome/Cursor";
 import { Nav } from "@/components/chrome/Nav";
 import { Grain } from "@/components/chrome/Grain";
 import { Develop } from "@/components/chrome/Develop";
-import { Gate } from "@/components/chrome/Gate";
-import { GATE_ENABLED, GATE_SCRIPT } from "@/lib/gate";
+import { Gates } from "@/components/chrome/Gates";
+import { GATE_CSS, GATE_ENABLED, GATE_SCRIPT } from "@/lib/gate";
 import { BASE } from "@/lib/base";
 
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", display: "swap" });
@@ -52,8 +52,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className={`${fraunces.variable} ${archivo.variable} ${instrument.variable} ${jetbrains.variable} ${anton.variable} ${caveat.variable} antialiased`}
       >
         {GATE_ENABLED && <script dangerouslySetInnerHTML={{ __html: GATE_SCRIPT }} />}
+        {GATE_ENABLED && <style dangerouslySetInnerHTML={{ __html: GATE_CSS }} />}
         <MotionConfig reducedMotion="user">
-          {GATE_ENABLED && <Gate />}
+          {GATE_ENABLED && <Gates />}
           <Grain />
           <Cursor />
           <Nav />

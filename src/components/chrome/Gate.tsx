@@ -412,7 +412,7 @@ export function Gate() {
   return (
     <div
       ref={rootRef}
-      data-gate
+      data-gate="site"
       data-lenis-prevent
       className="fixed inset-0 z-[65] overflow-y-auto overscroll-contain bg-[#120e0c] text-[#f4efe6]"
       style={{

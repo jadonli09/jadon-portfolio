@@ -203,14 +203,6 @@ export const LOCKED = {
     { src: "/vid/cooking-feast1.mp4", poster: "/vid/cooking-feast1.jpg", label: "Feast night" },
     { src: "/vid/cookingfeasts-3.mp4", poster: "/vid/cookingfeasts-3.jpg", label: "Plating up" },
   ],
-  /** Year two — real reels, embedded live (dates + counts render from Instagram).
-   *  Pulled from @li_locked.in on 2026-09-09; one per world the account covers. */
-  yearTwo: [
-    { code: "Dag2u2ixRms", label: "“War is over” — the AP score reaction, and the biggest reel of the account" },
-    { code: "DbjzSAuRMX6", label: "Life in the fume hood — the summer in the Ma Lab" },
-    { code: "DcfGaXINvap", label: "Passing the phone at a pitch competition" },
-    { code: "DZoMW0QpBLc", label: "Making the case for showing up to city hall" },
-  ].map((r) => ({ ...r, url: `https://www.instagram.com/reel/${r.code}/` })),
   douyin: {
     url: "https://www.iesdouyin.com/share/video/7247003661631622458/",
     likes: "569k",
@@ -220,6 +212,98 @@ export const LOCKED = {
     note: "A gym moment in China, reposted by a 3.7M-follower hoops account — 569k likes.",
   },
 } as const;
+
+/* ─────────────────────────── THE SEASON ─────────────────────────── */
+/**
+ * The Locked In page — Jadon's picks from @li_locked.in, as a streaming
+ * "season". Each episode plays from /vid/pursuit/<slug>.mp4 (+ .jpg poster).
+ * Play counts, captions and dates were read off the live account on
+ * 2026-10-15 (dates are Instagram's UTC timestamps). `posterOnly` reels use
+ * licensed music, so Instagram won't serve the video outside its app — the
+ * page shows the cover and links out.
+ */
+export type Episode = {
+  slug: string;
+  code: string;
+  date: string;
+  day: number;
+  title: string;
+  caption?: string;
+  views?: string;
+  aspect?: "landscape";
+  posterOnly?: boolean;
+};
+export type SeasonChapter = {
+  id: string;
+  name: string;
+  /** Album photo behind the billboard while this chapter is on screen. */
+  backdrop: { src: string; pos: string };
+  episodes: Episode[];
+};
+
+export const LOCKED_SEASON: SeasonChapter[] = [
+  {
+    id: "summer",
+    name: "The summer grind",
+    backdrop: { src: "/img/droneshot3.jpg", pos: "50% 60%" },
+    episodes: [
+      { slug: "day1", code: "DKlRbevxIjA", date: "Jun 6, 2025", day: 1, title: "The Summer I Locked In", caption: "junior year is not ready for us (and vice versa)", views: "6.1k" },
+      { slug: "climbing-wall", code: "DLLyxnkJn6F", date: "Jun 21, 2025", day: 16, title: "Palm Avenue Park", caption: "your city, your park, your voice", views: "31.8k" },
+      { slug: "poh-ep1", code: "DLRF6eHxs5T", date: "Jun 23, 2025", day: 18, title: "The Pursuit Of Happiness, Ep. 1", caption: "Introduction and Mayor Salwan", views: "34k" },
+      { slug: "poh-ep4", code: "DLycoVIxus-", date: "Jul 7, 2025", day: 32, title: "The Pursuit Of Happiness, Ep. 4", caption: "Fremont Parks — Lake Elizabeth is such a vibe 🔥", views: "24.9k" },
+      { slug: "ap-scores", code: "DL3npLsRB3q", date: "Jul 8, 2025", day: 33, title: "Checking AP Scores", caption: "we out 🤞🫡", views: "95.2k" },
+    ],
+  },
+  {
+    id: "sweet-tomatoes",
+    name: "The Sweet Tomatoes saga",
+    backdrop: { src: "/img/droneshot2.jpg", pos: "50% 50%" },
+    episodes: [
+      { slug: "sweet-tomatoes", code: "DMl8ytdxtOZ", date: "Jul 26, 2025", day: 51, title: "Lease Sweet Tomatoes For A Week?", caption: "this would lit be a dream could true", views: "339k" },
+      { slug: "st-feasible", code: "DM35ZM7J5gS", date: "Aug 2, 2025", day: 58, title: "How Long Would It Take To Reopen?", caption: "might be feasible…", views: "82.3k" },
+      { slug: "we-got-ts", code: "DNYWKtFR4kZ", date: "Aug 15, 2025", day: 71, title: "Sweet Tomatoes Needs Your Input", caption: "we got ts", views: "25.9k" },
+    ],
+  },
+  {
+    id: "school-year",
+    name: "Junior year",
+    backdrop: { src: "/img/gw-06.jpg", pos: "50% 30%" },
+    episodes: [
+      { slug: "apush-calc", code: "DOfNdiXEasr", date: "Sep 12, 2025", day: 99, title: "APUSH And Calc, Back To It", caption: "could’ve spent another 67 minutes studying 🥲", views: "19.1k" },
+      { slug: "diwali", code: "DQQMzyvAZvy", date: "Oct 25, 2025", day: 142, title: "Happy Diwali", caption: "firecrackers def AI; don’t report us", views: "11.3k" },
+      { slug: "palm-avenue", code: "DRQsMLVkXXH", date: "Nov 20, 2025", day: 168, title: "Designing Palm Avenue Park", caption: "tap in on designing this park 🤙", views: "6.6k" },
+    ],
+  },
+  {
+    id: "seventeen",
+    name: "Seventeen",
+    backdrop: { src: "/img/ny-05.jpg", pos: "50% 55%" },
+    episodes: [
+      { slug: "mission-peak-17", code: "DTCCFMrEVKs", date: "Jan 2, 2026", day: 211, title: "The Birthday Climb", caption: "good morning, 17 🌅", views: "6.1k" },
+      { slug: "mundane", code: "DTrVWZnEd9g", date: "Jan 18, 2026", day: 227, title: "Future Me", caption: "an attempt to create the extraordinary from the mundane", views: "6k" },
+      { slug: "walkout", code: "DUe38VrkTCK", date: "Feb 7, 2026", day: 247, title: "The ICE Walkout", caption: "hundreds of Mission students walked out with signs, chants, and speeches that echoed across campus", views: "19.7k" },
+      { slug: "vancouver", code: "DWIXPEhjWRT", date: "Mar 21, 2026", day: 289, title: "The Vancouver Edit", caption: "canadian side quests 🍁🇨🇦😛", views: "10.2k", aspect: "landscape" },
+      { slug: "multicultural", code: "DXS0-UiiRlm", date: "Apr 19, 2026", day: 318, title: "Multicultural Week", caption: "Zach is still single btw", views: "18.6k" },
+      { slug: "iron-chef", code: "DXk8WxzDZrg", date: "Apr 25, 2026", day: 324, title: "Unsuspecting Chefs", caption: "thank you to all our participants in the 2026 Iron Chef competition 🙏🙏", views: "16.1k" },
+      { slug: "prom-teaser", code: "DXo3at8h0NU", date: "Apr 27, 2026", day: 326, title: "The Best Vid Team In The Bay Area", caption: "stay tuned for Wednesday’s drop 🥹", views: "28.7k", posterOnly: true },
+      { slug: "mcdonalds", code: "DXqPCxtjfdx", date: "Apr 28, 2026", day: 327, title: "The McDonald’s Shift", caption: "putting the fries in the bag 🙏", views: "10.6k" },
+    ],
+  },
+  {
+    id: "year-two",
+    name: "Year two",
+    backdrop: { src: "/img/umass-08.jpg", pos: "50% 45%" },
+    episodes: [
+      { slug: "ro-khanna", code: "DZoMW0QpBLc", date: "Jun 16, 2026", day: 376, title: "With The Mayor And Ro Khanna", caption: "Shape your city and country, for your future. Lock in on civic engagement 🤝", views: "12.6k" },
+      { slug: "war-is-over", code: "Dag2u2ixRms", date: "Jul 8, 2026", day: 398, title: "Checking AP Scores, 2026", caption: "war is over 🥹🥹", views: "695k" },
+      { slug: "ma-lab", code: "DbjzSAuRMX6", date: "Aug 3, 2026", day: 424, title: "Day In The Lab", views: "15.1k" },
+      { slug: "let-me-love-you", code: "DcAIukQNv69", date: "Aug 14, 2026", day: 435, title: "Let Me Love You", caption: "living the moments you know you will miss", views: "7.1k", aspect: "landscape", posterOnly: true },
+      { slug: "nyc", code: "DcPltR3Nltx", date: "Aug 20, 2026", day: 441, title: "The New York Edit", caption: "brand new city", views: "5.7k", aspect: "landscape" },
+      { slug: "green-white", code: "DcXcDnaxdt1", date: "Aug 23, 2026", day: 444, title: "The Green & White Assembly", caption: "my tp white, my video green, msj lit if yk what i mean", views: "21.2k", aspect: "landscape", posterOnly: true },
+      { slug: "senior", code: "Dd-k4PdxS7j", date: "Oct 2, 2026", day: 484, title: "The Senior Edit", views: "18.3k", aspect: "landscape", posterOnly: true },
+    ],
+  },
+];
 
 /* ─────────────────────────── THE PURSUIT ────────────────────────── */
 /**
@@ -235,9 +319,10 @@ export type PursuitVideoMoment = {
   date: string;
   day: number;
   title: string;
-  caption: string;
-  views: string;
-  likes: string;
+  /** Year-two reels pulled without Instagram access carry no caption or counts. */
+  caption?: string;
+  views?: string;
+  likes?: string;
   /** homecoming is the only landscape source */
   aspect?: "landscape";
 };
@@ -516,11 +601,13 @@ export const PURSUIT: { chapters: PursuitChapter[] } = {
           views: "11.1k",
         },
         {
-          kind: "log",
+          kind: "video",
+          slug: "palm-park",
           code: "DRV2WHuiCa2",
           date: "Nov 21, 2025",
           day: 169,
-          text: "….so we designed a better plan — Palm Park parking, part 3",
+          title: "Designing a better plan.",
+          caption: "….so we designed a better plan — Palm Park parking, part 3",
           views: "5.9k",
         },
         {
@@ -614,11 +701,13 @@ export const PURSUIT: { chapters: PursuitChapter[] } = {
           likes: "146",
         },
         {
-          kind: "log",
+          kind: "video",
+          slug: "iron-chef",
           code: "DXk8WxzDZrg",
           date: "Apr 25, 2026",
           day: 324,
-          text: "thank you to all our participants in the 2026 Iron Chef competition 🙏🙏",
+          title: "A 21-course lunch.",
+          caption: "thank you to all our participants in the 2026 Iron Chef competition 🙏🙏",
           views: "15.7k",
         },
         {
@@ -647,6 +736,49 @@ export const PURSUIT: { chapters: PursuitChapter[] } = {
           caption: "circle with points XYZ on circumference….huh?",
           views: "9.6k",
           likes: "207",
+        },
+      ],
+    },
+    {
+      id: "year-two",
+      num: "06",
+      range: "June — August 2026",
+      title: ["Year", "two."],
+      accent: "#4ade9a",
+      narrative:
+        "Day 375 opens with a Congressman on mic: Ro Khanna, on why youth civic engagement matters. Then the AP scores land and become the biggest reel on the account, the camera follows him into a UMass Amherst lab, and a pitch competition gets the pass-the-phone treatment.",
+      moments: [
+        {
+          kind: "video",
+          slug: "ro-khanna",
+          code: "DZoMW0QpBLc",
+          date: "Jun 15, 2026",
+          day: 375,
+          title: "A Congressman, on mic.",
+        },
+        {
+          kind: "video",
+          slug: "war-is-over",
+          code: "Dag2u2ixRms",
+          date: "Jul 7, 2026",
+          day: 397,
+          title: "War is over.",
+        },
+        {
+          kind: "video",
+          slug: "ma-lab",
+          code: "DbjzSAuRMX6",
+          date: "Aug 2, 2026",
+          day: 423,
+          title: "Day in the lab.",
+        },
+        {
+          kind: "video",
+          slug: "pitch",
+          code: "DcfGaXINvap",
+          date: "Aug 25, 2026",
+          day: 446,
+          title: "Passing the phone.",
         },
       ],
     },

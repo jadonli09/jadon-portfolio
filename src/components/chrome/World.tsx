@@ -11,10 +11,13 @@ export function World({
   id,
   children,
   className,
+  homeBar = true,
 }: {
   id: WorldId;
   children: React.ReactNode;
   className?: string;
+  /** Hide the floating Home button (a full-screen page that needs its corners). */
+  homeBar?: boolean;
 }) {
   return (
     <main
@@ -22,7 +25,7 @@ export function World({
       className={cn("relative min-h-screen w-full bg-[var(--bg)] text-[var(--fg)]", className)}
     >
       {children}
-      {id !== "built" && <DeepDiveBar id={id} />}
+      {id !== "built" && homeBar && <DeepDiveBar id={id} />}
     </main>
   );
 }

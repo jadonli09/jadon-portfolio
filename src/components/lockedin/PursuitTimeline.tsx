@@ -106,7 +106,7 @@ function MomentVideoCard({
   const landscape = m.aspect === "landscape";
 
   return (
-    <div className="relative">
+    <div id={`moment-${m.slug}`} className="relative">
       <SpineDot accent={accent} />
       <Connector side={side} accent={accent} />
 
@@ -223,14 +223,18 @@ function MomentVideoCard({
               <h3 className="font-anton text-xl uppercase leading-tight text-[var(--fg)] md:text-2xl">
                 {m.title}
               </h3>
-              <p className="mt-1.5 font-grotesk text-sm italic leading-relaxed text-[var(--muted)]">
-                “{m.caption}”
-              </p>
+              {m.caption && (
+                <p className="mt-1.5 font-grotesk text-sm italic leading-relaxed text-[var(--muted)]">
+                  “{m.caption}”
+                </p>
+              )}
               <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 font-grotesk text-sm text-[var(--muted)]">
-                <span>
-                  <span style={{ color: accent }}>{m.views}</span>{" "}plays
-                </span>
-                <span>{m.likes} likes</span>
+                {m.views && (
+                  <span>
+                    <span style={{ color: accent }}>{m.views}</span>{" "}plays
+                  </span>
+                )}
+                {m.likes && <span>{m.likes} likes</span>}
                 <a
                   href={reelUrl(m.code)}
                   target="_blank"
@@ -489,7 +493,7 @@ export function PursuitTimeline() {
           <Reveal>
             <div className="pl-14 md:pl-0 md:text-center">
               <p className="font-grotesk text-sm text-[var(--muted)] md:text-base">
-                One year. Five chapters. Every date, caption, and play count below is real.
+                Six chapters, Day 001 to Day 446.
               </p>
             </div>
           </Reveal>

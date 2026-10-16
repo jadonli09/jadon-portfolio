@@ -350,14 +350,14 @@
 }
 
 [data-world="lockedin"] {
-  --bg: #0a0a0c; /* feed black */
-  --bg-2: #131318;
-  --fg: #f4f1ea;
-  --muted: #8a8a93;
-  --accent: #ff3d81; /* reel pink */
-  --accent-2: #3df0ff; /* screen cyan */
-  --line: rgba(244, 241, 234, 0.12);
-  --selection: rgba(255, 61, 129, 0.3);
+  --bg: #0b0b0b; /* streaming black */
+  --bg-2: #181818;
+  --fg: #ffffff;
+  --muted: #a3a3a3;
+  --accent: #e50914; /* streaming red */
+  --accent-2: #46d369; /* "plays" green */
+  --line: rgba(255, 255, 255, 0.14);
+  --selection: rgba(229, 9, 20, 0.35);
 }
 
 [data-world="achievements"] {
@@ -1080,7 +1080,7 @@ body:has([data-world="built"]) .grain {
 /* ── THE GATE (lock screen) ───────────────────────────────────── */
 
 /* set by the inline script in layout before first paint */
-html[data-unlocked] [data-gate] { display: none; }
+/* gates hide via GATE_CSS (lib/gate.ts), injected in the layout */
 
 /* a sticker on a keycap: cream, slightly crooked, sinks when pressed */
 .gate-tile {
