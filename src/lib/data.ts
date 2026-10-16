@@ -228,6 +228,8 @@ export type Episode = {
   date: string;
   day: number;
   title: string;
+  /** A shorter title for phones, where the episode line must stay one line. */
+  short?: string;
   caption?: string;
   views?: string;
   aspect?: "landscape";
@@ -249,8 +251,8 @@ export const LOCKED_SEASON: SeasonChapter[] = [
     episodes: [
       { slug: "day1", code: "DKlRbevxIjA", date: "Jun 6, 2025", day: 1, title: "The Summer I Locked In", caption: "junior year is not ready for us (and vice versa)", views: "6.1k" },
       { slug: "climbing-wall", code: "DLLyxnkJn6F", date: "Jun 21, 2025", day: 16, title: "Palm Avenue Park", caption: "your city, your park, your voice", views: "31.8k" },
-      { slug: "poh-ep1", code: "DLRF6eHxs5T", date: "Jun 23, 2025", day: 18, title: "The Pursuit Of Happiness, Ep. 1", caption: "Introduction and Mayor Salwan", views: "34k" },
-      { slug: "poh-ep4", code: "DLycoVIxus-", date: "Jul 7, 2025", day: 32, title: "The Pursuit Of Happiness, Ep. 4", caption: "Fremont Parks — Lake Elizabeth is such a vibe 🔥", views: "24.9k" },
+      { slug: "poh-ep1", code: "DLRF6eHxs5T", date: "Jun 23, 2025", day: 18, title: "The Pursuit Of Happiness, Ep. 1", short: "Pursuit Of Happiness, Ep. 1", caption: "Introduction and Mayor Salwan", views: "34k" },
+      { slug: "poh-ep4", code: "DLycoVIxus-", date: "Jul 7, 2025", day: 32, title: "The Pursuit Of Happiness, Ep. 4", short: "Pursuit Of Happiness, Ep. 4", caption: "Fremont Parks — Lake Elizabeth is such a vibe 🔥", views: "24.9k" },
       { slug: "ap-scores", code: "DL3npLsRB3q", date: "Jul 8, 2025", day: 33, title: "Checking AP Scores", caption: "we out 🤞🫡", views: "95.2k" },
     ],
   },
@@ -259,9 +261,9 @@ export const LOCKED_SEASON: SeasonChapter[] = [
     name: "The Sweet Tomatoes saga",
     backdrop: { src: "/img/droneshot2.jpg", pos: "50% 50%" },
     episodes: [
-      { slug: "sweet-tomatoes", code: "DMl8ytdxtOZ", date: "Jul 26, 2025", day: 51, title: "Lease Sweet Tomatoes For A Week?", caption: "this would lit be a dream could true", views: "339k" },
-      { slug: "st-feasible", code: "DM35ZM7J5gS", date: "Aug 2, 2025", day: 58, title: "How Long Would It Take To Reopen?", caption: "might be feasible…", views: "82.3k" },
-      { slug: "we-got-ts", code: "DNYWKtFR4kZ", date: "Aug 15, 2025", day: 71, title: "Sweet Tomatoes Needs Your Input", caption: "we got ts", views: "25.9k" },
+      { slug: "sweet-tomatoes", code: "DMl8ytdxtOZ", date: "Jul 26, 2025", day: 51, title: "Lease Sweet Tomatoes For A Week?", short: "Lease Sweet Tomatoes?", caption: "this would lit be a dream could true", views: "339k" },
+      { slug: "st-feasible", code: "DM35ZM7J5gS", date: "Aug 2, 2025", day: 58, title: "How Long Would It Take To Reopen?", short: "How Long To Reopen?", caption: "might be feasible…", views: "82.3k" },
+      { slug: "we-got-ts", code: "DNYWKtFR4kZ", date: "Aug 15, 2025", day: 71, title: "Sweet Tomatoes Needs Your Input", short: "Sweet Tomatoes Needs You", caption: "we got ts", views: "25.9k" },
     ],
   },
   {
@@ -269,9 +271,9 @@ export const LOCKED_SEASON: SeasonChapter[] = [
     name: "Junior year",
     backdrop: { src: "/img/gw-06.jpg", pos: "50% 30%" },
     episodes: [
-      { slug: "apush-calc", code: "DOfNdiXEasr", date: "Sep 12, 2025", day: 99, title: "APUSH And Calc, Back To It", caption: "could’ve spent another 67 minutes studying 🥲", views: "19.1k" },
+      { slug: "apush-calc", code: "DOfNdiXEasr", date: "Sep 12, 2025", day: 99, title: "APUSH And Calc, Back To It", short: "APUSH And Calc", caption: "could’ve spent another 67 minutes studying 🥲", views: "19.1k" },
       { slug: "diwali", code: "DQQMzyvAZvy", date: "Oct 25, 2025", day: 142, title: "Happy Diwali", caption: "firecrackers def AI; don’t report us", views: "11.3k" },
-      { slug: "palm-avenue", code: "DRQsMLVkXXH", date: "Nov 20, 2025", day: 168, title: "Designing Palm Avenue Park", caption: "tap in on designing this park 🤙", views: "6.6k" },
+      { slug: "palm-avenue", code: "DRQsMLVkXXH", date: "Nov 20, 2025", day: 168, title: "Designing Palm Avenue Park", short: "Designing Palm Ave", caption: "tap in on designing this park 🤙", views: "6.6k" },
     ],
   },
   {
@@ -285,7 +287,7 @@ export const LOCKED_SEASON: SeasonChapter[] = [
       { slug: "vancouver", code: "DWIXPEhjWRT", date: "Mar 21, 2026", day: 289, title: "The Vancouver Edit", caption: "canadian side quests 🍁🇨🇦😛", views: "10.2k", aspect: "landscape" },
       { slug: "multicultural", code: "DXS0-UiiRlm", date: "Apr 19, 2026", day: 318, title: "Multicultural Week", caption: "Zach is still single btw", views: "18.6k" },
       { slug: "iron-chef", code: "DXk8WxzDZrg", date: "Apr 25, 2026", day: 324, title: "Unsuspecting Chefs", caption: "thank you to all our participants in the 2026 Iron Chef competition 🙏🙏", views: "16.1k" },
-      { slug: "prom-teaser", code: "DXo3at8h0NU", date: "Apr 27, 2026", day: 326, title: "The Best Vid Team In The Bay Area", caption: "stay tuned for Wednesday’s drop 🥹", views: "28.7k", posterOnly: true },
+      { slug: "prom-teaser", code: "DXo3at8h0NU", date: "Apr 27, 2026", day: 326, title: "The Best Vid Team In The Bay Area", short: "Best Vid Team In The Bay", caption: "stay tuned for Wednesday’s drop 🥹", views: "28.7k", posterOnly: true },
       { slug: "mcdonalds", code: "DXqPCxtjfdx", date: "Apr 28, 2026", day: 327, title: "The McDonald’s Shift", caption: "putting the fries in the bag 🙏", views: "10.6k" },
     ],
   },
@@ -294,12 +296,12 @@ export const LOCKED_SEASON: SeasonChapter[] = [
     name: "Year two",
     backdrop: { src: "/img/umass-08.jpg", pos: "50% 45%" },
     episodes: [
-      { slug: "ro-khanna", code: "DZoMW0QpBLc", date: "Jun 16, 2026", day: 376, title: "With The Mayor And Ro Khanna", caption: "Shape your city and country, for your future. Lock in on civic engagement 🤝", views: "12.6k" },
+      { slug: "ro-khanna", code: "DZoMW0QpBLc", date: "Jun 16, 2026", day: 376, title: "With The Mayor And Ro Khanna", short: "The Mayor And Ro Khanna", caption: "Shape your city and country, for your future. Lock in on civic engagement 🤝", views: "12.6k" },
       { slug: "war-is-over", code: "Dag2u2ixRms", date: "Jul 8, 2026", day: 398, title: "Checking AP Scores, 2026", caption: "war is over 🥹🥹", views: "695k" },
       { slug: "ma-lab", code: "DbjzSAuRMX6", date: "Aug 3, 2026", day: 424, title: "Day In The Lab", views: "15.1k" },
       { slug: "let-me-love-you", code: "DcAIukQNv69", date: "Aug 14, 2026", day: 435, title: "Let Me Love You", caption: "living the moments you know you will miss", views: "7.1k", aspect: "landscape", posterOnly: true },
       { slug: "nyc", code: "DcPltR3Nltx", date: "Aug 20, 2026", day: 441, title: "The New York Edit", caption: "brand new city", views: "5.7k", aspect: "landscape" },
-      { slug: "green-white", code: "DcXcDnaxdt1", date: "Aug 23, 2026", day: 444, title: "The Green & White Assembly", caption: "my tp white, my video green, msj lit if yk what i mean", views: "21.2k", aspect: "landscape", posterOnly: true },
+      { slug: "green-white", code: "DcXcDnaxdt1", date: "Aug 23, 2026", day: 444, title: "The Green & White Assembly", short: "Green & White Assembly", caption: "my tp white, my video green, msj lit if yk what i mean", views: "21.2k", aspect: "landscape", posterOnly: true },
       { slug: "senior", code: "Dd-k4PdxS7j", date: "Oct 2, 2026", day: 484, title: "The Senior Edit", views: "18.3k", aspect: "landscape", posterOnly: true },
     ],
   },

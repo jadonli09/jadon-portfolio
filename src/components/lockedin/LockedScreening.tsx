@@ -725,14 +725,15 @@ export function LockedScreening() {
               exit={{ opacity: 0, x: 8 }}
               transition={{ duration: 0.22 }}
             >
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <div className="flex items-center gap-x-3 gap-y-2 whitespace-nowrap max-sm:overflow-hidden sm:flex-wrap">
                 {rank && rank <= 10 && (
                   <span className="flex items-center gap-2 font-grotesk text-base font-semibold text-white md:text-lg">
-                    <span className="flex flex-col items-center rounded-[3px] bg-[var(--accent)] px-1 py-0.5 font-black leading-none">
+                    <span className="flex flex-col items-center rounded-[3px] bg-[var(--accent)] px-1 py-0.5 font-black leading-none max-sm:flex-row max-sm:gap-1 max-sm:px-1.5 max-sm:text-[11px]">
                       <span className="text-[10px] tracking-wide">TOP</span>
                       <span className="text-sm">10</span>
                     </span>
-                    #{rank} most played
+                    #{rank}
+                    <span className="max-sm:hidden"> most played</span>
                   </span>
                 )}
                 {m.views && (
@@ -741,14 +742,16 @@ export function LockedScreening() {
                   </span>
                 )}
                 <span className="font-grotesk text-base text-white/70 md:text-lg">
-                  Day {m.day} · {m.date}
+                  <span className="max-sm:hidden">Day {m.day} · </span>
+                  {m.date}
                 </span>
               </div>
-              <h2 className="mt-2 font-grotesk text-[clamp(1.4rem,3.4vh,2.3rem)] font-bold leading-tight text-white">
+              <h2 className="mt-2 font-grotesk text-xl font-bold leading-tight text-white max-sm:truncate sm:text-[clamp(1.4rem,3.4vh,2.3rem)]">
                 {order === "chrono" && (
                   <span className="text-white/55">E{active + 1} </span>
                 )}
-                {m.title}
+                <span className="sm:hidden">{m.short ?? m.title}</span>
+                <span className="max-sm:hidden">{m.title}</span>
               </h2>
               {m.caption && (
                 <p className="mt-1.5 hidden line-clamp-2 font-grotesk text-lg leading-snug text-white/80 md:block">
