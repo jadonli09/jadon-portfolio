@@ -218,9 +218,9 @@ export const LOCKED = {
  * The Locked In page — Jadon's picks from @li_locked.in, as a streaming
  * "season". Each episode plays from /vid/pursuit/<slug>.mp4 (+ .jpg poster).
  * Play counts, captions and dates were read off the live account on
- * 2026-10-15 (dates are Instagram's UTC timestamps). `posterOnly` reels use
- * licensed music, so Instagram won't serve the video outside its app — the
- * page shows the cover and links out.
+ * 2026-10-15 (dates are Instagram's UTC timestamps). Mark a reel `posterOnly`
+ * when there's no video file for it (Instagram won't serve reels with licensed
+ * music) — the page then shows the cover and links out.
  */
 export type Episode = {
   slug: string;
@@ -287,7 +287,7 @@ export const LOCKED_SEASON: SeasonChapter[] = [
       { slug: "vancouver", code: "DWIXPEhjWRT", date: "Mar 21, 2026", day: 289, title: "The Vancouver Edit", caption: "canadian side quests 🍁🇨🇦😛", views: "10.2k", aspect: "landscape" },
       { slug: "multicultural", code: "DXS0-UiiRlm", date: "Apr 19, 2026", day: 318, title: "Multicultural Week", caption: "Zach is still single btw", views: "18.6k" },
       { slug: "iron-chef", code: "DXk8WxzDZrg", date: "Apr 25, 2026", day: 324, title: "Unsuspecting Chefs", caption: "thank you to all our participants in the 2026 Iron Chef competition 🙏🙏", views: "16.1k" },
-      { slug: "prom-teaser", code: "DXo3at8h0NU", date: "Apr 27, 2026", day: 326, title: "The Best Vid Team In The Bay Area", short: "Best Vid Team In The Bay", caption: "stay tuned for Wednesday’s drop 🥹", views: "28.7k", posterOnly: true },
+      { slug: "prom-teaser", code: "DXo3at8h0NU", date: "Apr 27, 2026", day: 326, title: "The Best Vid Team In The Bay Area", short: "Best Vid Team In The Bay", caption: "stay tuned for Wednesday’s drop 🥹", views: "28.7k" },
       { slug: "mcdonalds", code: "DXqPCxtjfdx", date: "Apr 28, 2026", day: 327, title: "The McDonald’s Shift", caption: "putting the fries in the bag 🙏", views: "10.6k" },
     ],
   },
@@ -299,10 +299,10 @@ export const LOCKED_SEASON: SeasonChapter[] = [
       { slug: "ro-khanna", code: "DZoMW0QpBLc", date: "Jun 16, 2026", day: 376, title: "With The Mayor And Ro Khanna", short: "The Mayor And Ro Khanna", caption: "Shape your city and country, for your future. Lock in on civic engagement 🤝", views: "12.6k" },
       { slug: "war-is-over", code: "Dag2u2ixRms", date: "Jul 8, 2026", day: 398, title: "Checking AP Scores, 2026", caption: "war is over 🥹🥹", views: "695k" },
       { slug: "ma-lab", code: "DbjzSAuRMX6", date: "Aug 3, 2026", day: 424, title: "Day In The Lab", views: "15.1k" },
-      { slug: "let-me-love-you", code: "DcAIukQNv69", date: "Aug 14, 2026", day: 435, title: "Let Me Love You", caption: "living the moments you know you will miss", views: "7.1k", aspect: "landscape", posterOnly: true },
+      { slug: "let-me-love-you", code: "DcAIukQNv69", date: "Aug 14, 2026", day: 435, title: "Let Me Love You", caption: "living the moments you know you will miss", views: "7.1k", aspect: "landscape" },
       { slug: "nyc", code: "DcPltR3Nltx", date: "Aug 20, 2026", day: 441, title: "The New York Edit", caption: "brand new city", views: "5.7k", aspect: "landscape" },
-      { slug: "green-white", code: "DcXcDnaxdt1", date: "Aug 23, 2026", day: 444, title: "The Green & White Assembly", short: "Green & White Assembly", caption: "my tp white, my video green, msj lit if yk what i mean", views: "21.2k", aspect: "landscape", posterOnly: true },
-      { slug: "senior", code: "Dd-k4PdxS7j", date: "Oct 2, 2026", day: 484, title: "The Senior Edit", views: "18.3k", aspect: "landscape", posterOnly: true },
+      { slug: "green-white", code: "DcXcDnaxdt1", date: "Aug 23, 2026", day: 444, title: "The Green & White Assembly", short: "Green & White Assembly", caption: "my tp white, my video green, msj lit if yk what i mean", views: "21.2k", aspect: "landscape" },
+      { slug: "senior", code: "Dd-k4PdxS7j", date: "Oct 2, 2026", day: 484, title: "The Senior Edit", views: "18.3k", aspect: "landscape" },
     ],
   },
 ];
