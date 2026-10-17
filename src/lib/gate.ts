@@ -55,6 +55,7 @@ export const DEFAULT_GATE: GateId | null = "site";
 
 /** Per-page overrides — a different lock, or null for no lock at all. */
 export const ROUTE_GATES: Record<string, GateId | null> = {
+  "/built": null,
   // The video portfolio opens with TKS on its own. To put it back behind the
   // site's sticker lock, delete this line.
   "/locked-in": "tks",
