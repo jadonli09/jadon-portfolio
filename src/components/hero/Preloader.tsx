@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { GATE_ENABLED, GATE_KEY } from "@/lib/gate";
 
 /**
  * Intro: light rays stream in toward the centre, "LOCKED IN" assembles from
@@ -26,20 +25,17 @@ const clamp01 = (t: number) => Math.min(1, Math.max(0, t));
 type Pixel = { tx: number; ty: number; sx: number; sy: number; delay: number; dur: number; amber: boolean };
 type Tile = { x: number; y: number; start: number };
 
-/** `gate`: the copy the lock screen plays. The landing's own copy sits out until the site is unlocked. */
-export function Preloader({ gate = false }: { gate?: boolean }) {
+export function Preloader() {
   const [show, setShow] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let seen = false;
-    let locked = GATE_ENABLED;
     try {
       seen = !!sessionStorage.getItem("jl_intro");
-      locked = GATE_ENABLED && !localStorage.getItem(GATE_KEY);
     } catch {}
-    if (seen || (locked && !gate)) {
+    if (seen) {
       queueMicrotask(() => setShow(false));
       return;
     }
@@ -258,7 +254,7 @@ export function Preloader({ gate = false }: { gate?: boolean }) {
       cancelAnimationFrame(raf);
       cleanupTimer();
     };
-  }, [gate]);
+  }, []);
 
   if (!show) return null;
   return (
