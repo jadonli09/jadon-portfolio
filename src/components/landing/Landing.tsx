@@ -10,6 +10,7 @@ import {
   HeroReel,
 } from "@/components/landing/HeroVariants";
 import { HeroCovers } from "@/components/landing/HeroCovers";
+import { HeroReveal } from "@/components/landing/HeroReveal";
 import { asset } from "@/lib/base";
 import { LandingClose } from "@/components/landing/LandingClose";
 import { Footer } from "@/components/chrome/Footer";
@@ -49,7 +50,7 @@ export function Landing() {
   const heroY = useTransform(scrollY, [0, 600], [0, 160]);
   const heroOpacity = useTransform(scrollY, [0, 500], [1, 0]);
   const lenis = useLenis();
-  // Default hero is the covers; earlier options stay reachable at /?hero=bridge | facets | editorial | reel.
+  // Default hero is the blurred-paragraph reveal; earlier options stay reachable at /?hero=covers | bridge | facets | editorial | reel.
   const [variant, setVariant] = useState<string | null>(null);
   useEffect(() => {
     const v = new URLSearchParams(window.location.search).get("hero");
@@ -185,8 +186,10 @@ export function Landing() {
             />
           </section>
         </>
-      ) : (
+      ) : variant === "covers" ? (
         <HeroCovers />
+      ) : (
+        <HeroReveal />
       )}
 
       {/* THE CLOSE — three more covers */}
