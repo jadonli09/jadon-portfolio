@@ -24,32 +24,31 @@ type Clause = { id: string; after?: string; parts: Piece[] };
 
 const p = (pill: string, label: string, door: DoorKey): Pill => ({ pill, label, door });
 
+/** One pill per world, so every card in the stack has a way in. */
 const PILLS = {
   jadon: p("jadon", "Jadon", "person"),
-  peak: p("peak", "Mission Peak", "person"),
   asb: p("asb", "ASB President", "leads"),
-  mayor: p("mayor", "the Mayor", "films"),
+  mayor: p("mayor", "videographer", "films"),
   red: p("red", "red", "researches"),
   build: p("build", "build", "builds"),
-  ncs: p("ncs", "NCS", "competes"),
   locked: p("locked", "@li_locked.in", "documents"),
+  ncs: p("ncs", "NCS title", "competes"),
 };
 const ALL_PILLS = Object.values(PILLS);
 
 /** The paragraph, in reading order. Every fact here comes from data.ts. */
 const CLAUSES: Clause[] = [
   { id: "l1", parts: ["Hey, I'm ", PILLS.jadon] },
-  { id: "c1", after: "jadon", parts: [" Li, a senior at Mission San Jose High in Fremont. Every birthday since I was twelve, I run ", PILLS.peak] },
-  { id: "c2", after: "peak", parts: [" alone. I've journaled since eighth grade, and I cook feasts with designed menus for my friends."] },
-  { id: "l2", parts: [" I'm the ", PILLS.asb] },
-  { id: "c3", after: "asb", parts: [", after three years as class president. I also film for ", PILLS.mayor] },
-  { id: "c4", after: "mayor", parts: [" of Fremont: civic stories like Voices of Fremont that pull 20k+ views a video."] },
-  { id: "l3", parts: [" In a lab, I made a fungus glow ", PILLS.red] },
-  { id: "c5", after: "red", parts: [", six weeks at UMass Amherst after placing 3rd in comp bio at ACSEF. When I'm not at the bench, I ", PILLS.build] },
-  { id: "c6", after: "build", parts: [": AcornPrep, an AP study app 500+ students use and the #1 result on Google, then NotebookLI."] },
-  { id: "l4", parts: [" On the court, I started for our first ", PILLS.ncs] },
-  { id: "c7", after: "ncs", parts: [" title in school history. And I document all of it on ", PILLS.locked] },
-  { id: "c8", after: "locked", parts: [": 100 reels, 2.3M plays and counting."] },
+  { id: "c1", after: "jadon", parts: [" Li, a senior at Mission San Jose High who runs Mission Peak every birthday."] },
+  { id: "l2", parts: [" I'm ", PILLS.asb] },
+  { id: "c2", after: "asb", parts: [" after three years as class president, and the Mayor of Fremont's ", PILLS.mayor] },
+  { id: "c3", after: "mayor", parts: [": civic stories at 20k+ views a video."] },
+  { id: "l3", parts: [" I made a fungus glow ", PILLS.red] },
+  { id: "c4", after: "red", parts: [" at UMass Amherst, and I ", PILLS.build] },
+  { id: "c5", after: "build", parts: [" things like AcornPrep, an AP app 500+ students use."] },
+  { id: "l4", parts: [" I document it all on ", PILLS.locked] },
+  { id: "c6", after: "locked", parts: [": 2.3M plays and counting. I also started for our school's first ", PILLS.ncs] },
+  { id: "c7", after: "ncs", parts: [" in history."] },
 ];
 
 /** how long a freshly opened clause keeps its world colour */
@@ -85,7 +84,7 @@ export function RevealParagraph({ onPill }: { onPill?: (door: DoorKey) => void }
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 1, ease: EASE }}
-        className="font-grotesk text-[clamp(1.2rem,5vw,1.6rem)] font-medium leading-[1.5] md:text-[1.75rem] lg:text-[min(1.6vw,3.3svh)] tracking-[-0.012em] text-[#f4efe6]"
+        className="font-grotesk text-[clamp(1.2rem,5vw,1.6rem)] font-medium leading-[1.5] md:text-[1.75rem] lg:text-[min(2vw,4.2svh)] tracking-[-0.012em] text-[#f4efe6]"
       >
         {CLAUSES.map((c) => {
           const sharp = isSharp(c);
