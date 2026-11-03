@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { SENTENCE_DOORS } from "@/lib/data";
-import { asset } from "@/lib/base";
 import { EASE } from "@/lib/motion";
 
 /**
@@ -12,28 +11,28 @@ import { EASE } from "@/lib/motion";
  * rest of the paragraph sits blurred around them. Each pill is a button:
  * pressing it brings the clause after it into focus (flashing the world's
  * colour, then settling), and that clause may hold the next pill. Once a
- * pill has been opened it becomes a link into its world. Hovering a pill
- * fades its cover photo in behind the text. The counter tracks how much of
- * the paragraph is open.
+ * pill has been opened it becomes a link into its world. Opening a pill
+ * calls `onPill`, which the covers hero uses to deal that world's card.
+ * The counter tracks how much of the paragraph is open.
  */
 
-type DoorKey = keyof typeof SENTENCE_DOORS;
-type Pill = { pill: string; label: string; door: DoorKey; img: string };
+export type DoorKey = keyof typeof SENTENCE_DOORS;
+type Pill = { pill: string; label: string; door: DoorKey };
 type Piece = string | Pill;
 /** A clause of the paragraph. `after` is the pill that opens it; leads have none. */
 type Clause = { id: string; after?: string; parts: Piece[] };
 
-const p = (pill: string, label: string, door: DoorKey, img: string): Pill => ({ pill, label, door, img });
+const p = (pill: string, label: string, door: DoorKey): Pill => ({ pill, label, door });
 
 const PILLS = {
-  jadon: p("jadon", "Jadon", "person", "/img/covers/person.jpg"),
-  peak: p("peak", "Mission Peak", "person", "/img/missionpeak2026-1.jpg"),
-  asb: p("asb", "ASB President", "leads", "/img/covers/leads.jpg"),
-  mayor: p("mayor", "the Mayor", "films", "/img/covers/films.jpg"),
-  red: p("red", "red", "researches", "/img/covers/researches.jpg"),
-  build: p("build", "build", "builds", "/img/covers/builds.jpg"),
-  ncs: p("ncs", "NCS", "competes", "/img/covers/competes.jpg"),
-  locked: p("locked", "@li_locked.in", "documents", "/img/covers/documents.jpg"),
+  jadon: p("jadon", "Jadon", "person"),
+  peak: p("peak", "Mission Peak", "person"),
+  asb: p("asb", "ASB President", "leads"),
+  mayor: p("mayor", "the Mayor", "films"),
+  red: p("red", "red", "researches"),
+  build: p("build", "build", "builds"),
+  ncs: p("ncs", "NCS", "competes"),
+  locked: p("locked", "@li_locked.in", "documents"),
 };
 const ALL_PILLS = Object.values(PILLS);
 
@@ -56,11 +55,10 @@ const CLAUSES: Clause[] = [
 /** how long a freshly opened clause keeps its world colour */
 const FLASH_MS = 1600;
 
-export function HeroReveal() {
+export function RevealParagraph({ onPill }: { onPill?: (door: DoorKey) => void }) {
   const reduce = useReducedMotion();
   const [open, setOpen] = useState<Set<string>>(() => new Set());
   const [fresh, setFresh] = useState<string | null>(null);
-  const [hover, setHover] = useState<string | null>(null);
   const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => () => {
@@ -82,48 +80,12 @@ export function HeroReveal() {
   const isSharp = (c: Clause) => !c.after || open.has(c.after);
 
   return (
-    <section className="relative flex h-[100svh] min-h-[620px] w-full items-center justify-center overflow-hidden bg-[#0d0b0a] px-4 sm:px-8">
-      {/* the photo behind the hovered pill */}
-      {ALL_PILLS.map((pl) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          key={pl.pill}
-          src={asset(pl.img)}
-          alt=""
-          aria-hidden
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover grayscale transition-opacity duration-700"
-          style={{ opacity: hover === pl.pill ? 0.2 : 0, filter: "blur(2px)" }}
-        />
-      ))}
-      {/* vignette, so the edges stay dark whatever is behind */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{ background: "radial-gradient(75% 70% at 50% 50%, transparent 30%, rgba(13,11,10,0.92) 100%)" }}
-      />
-      {/* film grain */}
-      <svg aria-hidden className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.09] mix-blend-overlay">
-        <filter id="hero-grain">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#hero-grain)" />
-      </svg>
-
-      {/* how much of the paragraph is open */}
-      <p
-        aria-live="polite"
-        className="absolute right-5 top-24 z-[2] font-grotesk text-base tabular-nums text-[#f4efe6]/70 sm:right-8"
-      >
-        <span className="sr-only">Opened </span>
-        {open.size}/{ALL_PILLS.length}
-      </p>
-
+    <div className="relative">
       <motion.p
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 1, ease: EASE }}
-        onMouseLeave={() => setHover(null)}
-        className="relative z-[1] max-w-[58rem] text-center font-grotesk text-[clamp(1.25rem,min(2.3vw,4.2svh),2.1rem)] font-medium leading-[1.45] tracking-[-0.012em] text-[#f4efe6]"
+        className="font-grotesk text-[clamp(1.2rem,5vw,1.6rem)] font-medium leading-[1.5] md:text-[1.75rem] lg:text-[min(1.6vw,3.3svh)] tracking-[-0.012em] text-[#f4efe6]"
       >
         {CLAUSES.map((c) => {
           const sharp = isSharp(c);
@@ -160,19 +122,12 @@ export function HeroReveal() {
                 const door = SENTENCE_DOORS[part.door];
                 const pillClass =
                   "mx-[0.08em] inline-flex h-[1.18em] translate-y-[-0.06em] items-center rounded-full border-[0.055em] px-[0.42em] align-middle text-[0.8em] uppercase leading-none tracking-[0.01em] transition-[background-color,border-color,color,filter,opacity] duration-300";
-                const hoverProps = {
-                  onMouseEnter: () => setHover(part.pill),
-                  onMouseLeave: () => setHover((h) => (h === part.pill ? null : h)),
-                  onFocus: () => setHover(part.pill),
-                  onBlur: () => setHover((h) => (h === part.pill ? null : h)),
-                };
                 if (used) {
                   return (
                     <Link
                       key={part.pill}
                       href={door.href}
                       data-pill={part.pill}
-                      {...hoverProps}
                       className={`${pillClass} border-transparent bg-[#f4efe6]/20 text-[#f4efe6] hover:bg-[var(--pill)] hover:text-[#0d0b0a]`}
                       style={{ ["--pill" as string]: door.color }}
                       aria-label={`${part.label}: ${door.cta}`}
@@ -189,8 +144,10 @@ export function HeroReveal() {
                     disabled={!sharp}
                     tabIndex={sharp ? 0 : -1}
                     aria-expanded={false}
-                    onClick={(e) => reveal(part.pill, e.detail === 0)}
-                    {...hoverProps}
+                    onClick={(e) => {
+                      reveal(part.pill, e.detail === 0);
+                      onPill?.(part.door);
+                    }}
                     className={`${pillClass} cursor-pointer border-current hover:border-[var(--pill)] hover:bg-[var(--pill)] hover:text-[#0d0b0a] disabled:cursor-default`}
                     style={{
                       ["--pill" as string]: door.color,
@@ -207,6 +164,10 @@ export function HeroReveal() {
           );
         })}
       </motion.p>
-    </section>
+      <p aria-live="polite" className="mt-6 font-grotesk text-base tabular-nums text-[#a59c92] lg:mt-8 lg:text-lg">
+        <span className="sr-only">Opened </span>
+        {open.size}/{ALL_PILLS.length}
+      </p>
+    </div>
   );
 }

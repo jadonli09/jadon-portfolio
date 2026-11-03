@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { HERO_COVERS, PROFILE, SENTENCE_DOORS } from "@/lib/data";
 import { asset } from "@/lib/base";
 import { EASE } from "@/lib/motion";
+import { RevealParagraph } from "@/components/landing/HeroReveal";
 
 /**
  * The landing hero: one sentence on the left, a fanned stack of "LOCKED IN"
@@ -14,6 +15,8 @@ import { EASE } from "@/lib/motion";
  * Covers with a `cut` put the subject in front of the masthead. Clicking
  * either card peeking out behind the top one deals it forward.
  * Desktop splits the screen in half: the sentence left, the stack right.
+ * With `reveal`, the left side is the blurred paragraph instead of the
+ * sentence, and opening one of its pills deals that world's cover.
  */
 
 const DUR = 4200;
@@ -34,7 +37,7 @@ const FAN = [
 ];
 const LEAVING = { transform: "translateX(72%) rotate(14deg)", filter: "brightness(1)", opacity: 0 };
 
-export function HeroCovers() {
+export function HeroCovers({ reveal = false }: { reveal?: boolean }) {
   const reduce = useReducedMotion();
   const [cur, setCur] = useState(0);
   const [leaving, setLeaving] = useState<number | null>(null);
@@ -69,6 +72,8 @@ export function HeroCovers() {
     const t = setTimeout(() => show((cur + 1) % N), remaining.current);
     return () => {
       clearTimeout(t);
+      // a new card was dealt: show() already reset the timer, so don't bank the old card's time onto it
+      if (curRef.current !== cur) return;
       remaining.current = Math.max(0, remaining.current - (Date.now() - startedAt.current));
     };
   }, [cur, paused, reduce, show]);
@@ -103,6 +108,10 @@ export function HeroCovers() {
         }}
         className="relative z-[2] px-6 lg:pl-[5.5vw] lg:pr-[2vw]"
       >
+        {reveal ? (
+          <RevealParagraph onPill={(door) => show(COVERS.findIndex((c) => c.door === door))} />
+        ) : (
+          <>
         <h1 className="font-serif text-[clamp(2.1rem,8.6vw,3.2rem)] leading-[1.12] tracking-[-0.005em] text-[#8a8178] md:text-[3.6rem] lg:text-[min(5.5vw,10svh)] lg:leading-[1.08]">
           {COVERS.map((c, i) => {
             const on = i === cur;
@@ -146,6 +155,8 @@ export function HeroCovers() {
         <p className="mt-8 text-center text-[0.95rem] leading-relaxed text-[#a59c92] lg:mt-10 lg:text-left lg:text-xl">
           {PROFILE.school}, {PROFILE.gradeNote} · {PROFILE.city}
         </p>
+          </>
+        )}
       </motion.div>
 
       {/* THE STACK */}
