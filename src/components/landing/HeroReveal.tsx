@@ -29,7 +29,7 @@ const p = (pill: string, label: string, door: DoorKey): Pill => ({ pill, label, 
 const PILLS = {
   jadon: p("jadon", "Jadon", "person"),
   asb: p("asb", "ASB President", "leads"),
-  mayor: p("mayor", "videographer", "films"),
+  mayor: p("mayor", "lead intern", "films"),
   red: p("red", "red", "researches"),
   build: p("build", "build", "builds"),
   locked: p("locked", "@li_locked.in", "documents"),
@@ -38,32 +38,22 @@ const PILLS = {
 const ALL_PILLS = Object.values(PILLS);
 
 /**
- * The paragraph, in reading order, as four stanzas: who, school, the lab and
- * the builds, the camera. Each stanza opens on a sharp lead (no `after`).
- * Every fact here comes from data.ts.
+ * The paragraph, in reading order: who, school, the lab and the builds, the
+ * camera. Each run opens on a sharp lead (no `after`).
  */
 const CLAUSES: Clause[] = [
   { id: "l1", parts: ["Hey, I'm ", PILLS.jadon] },
   { id: "c1", after: "jadon", parts: [" Li, a Mission San Jose senior who runs Mission Peak every birthday."] },
-
-  { id: "l2", parts: ["I'm ", PILLS.asb] },
+  { id: "l2", parts: [" I'm ", PILLS.asb] },
   { id: "c2", after: "asb", parts: [" and a starter on our school's first ", PILLS.ncs] },
   { id: "c3", after: "ncs", parts: [" team."] },
-
-  { id: "l3", parts: ["I engineered a human pathogen to glow ", PILLS.red] },
+  { id: "l3", parts: [" I engineered a human pathogen to glow ", PILLS.red] },
   { id: "c4", after: "red", parts: [" at UMass Amherst, tagging clinical ", { em: "Fusarium oxysporum" }, " with mRFP. I also ", PILLS.build] },
   { id: "c5", after: "build", parts: [" AcornPrep, an AP app 500+ students use."] },
-
-  { id: "l4", parts: ["I document it all on ", PILLS.locked] },
+  { id: "l4", parts: [" I document it all on ", PILLS.locked] },
   { id: "c6", after: "locked", parts: [": 2.3M plays. I'm also the Mayor of Fremont's ", PILLS.mayor] },
-  { id: "c7", after: "mayor", parts: [": 20k+ views a video."] },
+  { id: "c7", after: "mayor", parts: [", filming civic stories at 20k+ views a video."] },
 ];
-/** split at each lead */
-const STANZAS = CLAUSES.reduce<Clause[][]>((acc, c) => {
-  if (!c.after) acc.push([]);
-  acc[acc.length - 1].push(c);
-  return acc;
-}, []);
 
 /** how long a freshly opened clause keeps its world colour */
 const FLASH_MS = 1600;
@@ -100,9 +90,7 @@ export function RevealParagraph({ onPill }: { onPill?: (door: DoorKey) => void }
         transition={{ delay: 0.3, duration: 1, ease: EASE }}
         className="font-grotesk text-[clamp(1.2rem,5vw,1.6rem)] font-medium leading-[1.5] md:text-[1.75rem] lg:text-[min(1.75vw,3.5svh)] tracking-[-0.012em] text-[#f4efe6]"
       >
-        {STANZAS.map((stanza, si) => (
-          <span key={si} className={`block ${si ? "mt-[0.7em]" : ""}`}>
-        {stanza.map((c) => {
+        {CLAUSES.map((c) => {
           const sharp = isSharp(c);
           const flash = fresh !== null && c.after === fresh;
           const color = c.after ? SENTENCE_DOORS[PILLS[c.after as keyof typeof PILLS].door].color : undefined;
@@ -180,8 +168,6 @@ export function RevealParagraph({ onPill }: { onPill?: (door: DoorKey) => void }
             </span>
           );
         })}
-          </span>
-        ))}
       </motion.div>
       <p aria-live="polite" className="mt-6 font-grotesk text-base tabular-nums text-[#a59c92] lg:mt-8 lg:text-lg">
         <span className="sr-only">Opened </span>
