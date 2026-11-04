@@ -31,7 +31,7 @@ const PILLS = {
   asb: p("asb", "ASB President", "leads"),
   mayor: p("mayor", "lead intern", "films"),
   red: p("red", "red", "researches"),
-  build: p("build", "build", "builds"),
+  build: p("build", "AcornPrep", "builds"),
   locked: p("locked", "@li_locked.in", "documents"),
   ncs: p("ncs", "NCS title", "competes"),
 };
@@ -43,16 +43,16 @@ const ALL_PILLS = Object.values(PILLS);
  */
 const CLAUSES: Clause[] = [
   { id: "l1", parts: ["Hey, I'm ", PILLS.jadon] },
-  { id: "c1", after: "jadon", parts: [" Li, a Mission San Jose senior who runs Mission Peak every birthday."] },
-  { id: "l2", parts: [" I'm ", PILLS.asb] },
-  { id: "c2", after: "asb", parts: [" and a starter on our school's first ", PILLS.ncs] },
+  { id: "c1", after: "jadon", parts: [" Li, a Mission San Jose senior. I've journaled since eighth grade and run Mission Peak alone every birthday since I was twelve."] },
+  { id: "l2", parts: [" I serve as ", PILLS.asb] },
+  { id: "c2", after: "asb", parts: [" after three years as elected class president, and started on our school's first ", PILLS.ncs] },
   { id: "c3", after: "ncs", parts: [" team."] },
   { id: "l3", parts: [" I engineered a human pathogen to glow ", PILLS.red] },
-  { id: "c4", after: "red", parts: [" at UMass Amherst, tagging clinical ", { em: "Fusarium oxysporum" }, " with mRFP. I also ", PILLS.build] },
-  { id: "c5", after: "build", parts: [" AcornPrep, an AP app 500+ students use."] },
-  { id: "l4", parts: [" I document it all on ", PILLS.locked] },
-  { id: "c6", after: "locked", parts: [": 2.3M plays. I'm also the Mayor of Fremont's ", PILLS.mayor] },
-  { id: "c7", after: "mayor", parts: [", filming civic stories at 20k+ views a video."] },
+  { id: "c4", after: "red", parts: [" at UMass Amherst, tagging clinical ", { em: "Fusarium oxysporum" }, " with mRFP to study how it interacts with its host. I also turned my eleven AP exams into ", PILLS.build] },
+  { id: "c5", after: "build", parts: [", a study app 500+ students now use."] },
+  { id: "l4", parts: [" I document the whole pursuit on ", PILLS.locked] },
+  { id: "c6", after: "locked", parts: [" (2.3M plays), and as the Mayor of Fremont's ", PILLS.mayor] },
+  { id: "c7", after: "mayor", parts: [", I film my city's stories."] },
 ];
 
 /** how long a freshly opened clause keeps its world colour */
