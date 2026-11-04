@@ -18,7 +18,8 @@ import { EASE } from "@/lib/motion";
 
 export type DoorKey = keyof typeof SENTENCE_DOORS;
 type Pill = { pill: string; label: string; door: DoorKey };
-type Piece = string | Pill;
+/** `{ em }` is set in italics (species names). */
+type Piece = string | { em: string } | Pill;
 /** A clause of the paragraph. `after` is the pill that opens it; leads have none. */
 type Clause = { id: string; after?: string; parts: Piece[] };
 
@@ -36,20 +37,33 @@ const PILLS = {
 };
 const ALL_PILLS = Object.values(PILLS);
 
-/** The paragraph, in reading order. Every fact here comes from data.ts. */
+/**
+ * The paragraph, in reading order, as four stanzas: who, school, the lab and
+ * the builds, the camera. Each stanza opens on a sharp lead (no `after`).
+ * Every fact here comes from data.ts.
+ */
 const CLAUSES: Clause[] = [
   { id: "l1", parts: ["Hey, I'm ", PILLS.jadon] },
   { id: "c1", after: "jadon", parts: [" Li, a senior at Mission San Jose High who runs Mission Peak every birthday."] },
-  { id: "l2", parts: [" I'm ", PILLS.asb] },
-  { id: "c2", after: "asb", parts: [" after three years as class president, and the Mayor of Fremont's ", PILLS.mayor] },
-  { id: "c3", after: "mayor", parts: [": civic stories at 20k+ views a video."] },
-  { id: "l3", parts: [" I engineered a human pathogen to glow ", PILLS.red] },
-  { id: "c4", after: "red", parts: [" at UMass Amherst, transforming a clinical strain of Fusarium oxysporum with mRFP and confirming it by confocal microscopy. I also ", PILLS.build] },
+
+  { id: "l2", parts: ["I'm ", PILLS.asb] },
+  { id: "c2", after: "asb", parts: [" after three years as class president, and I started for our school's first ", PILLS.ncs] },
+  { id: "c3", after: "ncs", parts: [" in history."] },
+
+  { id: "l3", parts: ["I engineered a human pathogen to glow ", PILLS.red] },
+  { id: "c4", after: "red", parts: [" at UMass Amherst, transforming a clinical strain of ", { em: "Fusarium oxysporum" }, " with mRFP and confirming it by confocal microscopy. I also ", PILLS.build] },
   { id: "c5", after: "build", parts: [" things like AcornPrep, an AP app 500+ students use."] },
-  { id: "l4", parts: [" I document it all on ", PILLS.locked] },
-  { id: "c6", after: "locked", parts: [": 2.3M plays and counting. I also started for our school's first ", PILLS.ncs] },
-  { id: "c7", after: "ncs", parts: [" in history."] },
+
+  { id: "l4", parts: ["I document it all on ", PILLS.locked] },
+  { id: "c6", after: "locked", parts: [": 2.3M plays and counting. I'm also the Mayor of Fremont's ", PILLS.mayor] },
+  { id: "c7", after: "mayor", parts: [": civic stories at 20k+ views a video."] },
 ];
+/** split at each lead */
+const STANZAS = CLAUSES.reduce<Clause[][]>((acc, c) => {
+  if (!c.after) acc.push([]);
+  acc[acc.length - 1].push(c);
+  return acc;
+}, []);
 
 /** how long a freshly opened clause keeps its world colour */
 const FLASH_MS = 1600;
@@ -80,13 +94,15 @@ export function RevealParagraph({ onPill }: { onPill?: (door: DoorKey) => void }
 
   return (
     <div className="relative">
-      <motion.p
+      <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 1, ease: EASE }}
-        className="font-grotesk text-[clamp(1.2rem,5vw,1.6rem)] font-medium leading-[1.5] md:text-[1.75rem] lg:text-[min(2vw,4.2svh)] tracking-[-0.012em] text-[#f4efe6]"
+        className="font-grotesk text-[clamp(1.2rem,5vw,1.6rem)] font-medium leading-[1.5] md:text-[1.75rem] lg:text-[min(1.75vw,3.5svh)] tracking-[-0.012em] text-[#f4efe6]"
       >
-        {CLAUSES.map((c) => {
+        {STANZAS.map((stanza, si) => (
+          <span key={si} className={`block ${si ? "mt-[0.7em]" : ""}`}>
+        {stanza.map((c) => {
           const sharp = isSharp(c);
           const flash = fresh !== null && c.after === fresh;
           const color = c.after ? SENTENCE_DOORS[PILLS[c.after as keyof typeof PILLS].door].color : undefined;
@@ -94,16 +110,18 @@ export function RevealParagraph({ onPill }: { onPill?: (door: DoorKey) => void }
           return (
             <span key={c.id}>
               {c.parts.map((part, k) => {
-                if (typeof part === "string") {
+                if (typeof part === "string" || "em" in part) {
+                  const text = typeof part === "string" ? part : part.em;
+                  const italic = typeof part !== "string";
                   // split on spaces so the focus can sweep left to right, word by word
-                  return part.split(/(\s+)/).map((w, j) => {
+                  return text.split(/(\s+)/).map((w, j) => {
                     if (!w) return null;
                     if (/^\s+$/.test(w)) return <Fragment key={`${k}-${j}`}>{w}</Fragment>;
                     const d = word++;
                     return (
                       <span
                         key={`${k}-${j}`}
-                        className="transition-[filter,opacity,color] ease-out"
+                        className={`transition-[filter,opacity,color] ease-out ${italic ? "italic" : ""}`}
                         style={{
                           filter: sharp ? "blur(0px)" : "blur(7px)",
                           opacity: sharp ? 1 : 0.55,
@@ -162,7 +180,9 @@ export function RevealParagraph({ onPill }: { onPill?: (door: DoorKey) => void }
             </span>
           );
         })}
-      </motion.p>
+          </span>
+        ))}
+      </motion.div>
       <p aria-live="polite" className="mt-6 font-grotesk text-base tabular-nums text-[#a59c92] lg:mt-8 lg:text-lg">
         <span className="sr-only">Opened </span>
         {open.size}/{ALL_PILLS.length}
