@@ -433,9 +433,11 @@ export const CIVIC = {
   },
   commission: {
     title: "Fremont Youth Advisory Commission",
-    window: "Nov 2025 – present",
+    role: "Chair",
+    window: "Commissioner since Nov 2025 · Chair since Nov 2026",
     detail:
-      "One of 13 commissioners selected from ~100 applicants for a single open seat. Plans youth-issue events (mental-wellness workshops) and meets council-style the first Monday of every month.",
+      "Selected as one of 13 commissioners from ~100 applicants for a single open seat, then promoted to Chair in November 2026. Runs the commission's council-style meetings the first Monday of every month and its youth-issue events, like the mental-wellness workshops.",
+    photo: { src: "/img/yac-chair.jpg", alt: "Jadon Li with fellow Fremont Youth Advisory Commission members in their meeting room" },
     url: "https://www.fremont.gov/government/departments/city-clerk/boards-commissions-committees/youth-advisory-commission",
     /** The commission, off the record — real reel + stats from @li_locked.in. */
     reel: {
@@ -1194,6 +1196,7 @@ export const TROPHIES: Trophy[] = [
   { year: "2025", title: "Small Business Accessibility Initiative", cat: "civic", w: 4, detail: "Op-ed in the San Mateo Daily Journal; backed SB 84 with Prof. Durazo; presented at City Council." },
   { year: "2025", title: "HG Nguyen for D7 — social media", cat: "civic", w: 3, detail: "Lead videographer/editor for a San Jose council campaign." },
   { year: "2025", title: "Fremont Youth Advisory Commission", cat: "civic", w: 4, detail: "1 of 13 commissioners from ~100 applicants." },
+  { year: "2026", title: "Youth Advisory Commission Chair", cat: "civic", w: 4, detail: "Promoted from commissioner to Chair of Fremont's 13-member Youth Advisory Commission in November 2026." },
   { year: "2025", title: "ACWD Water Clips — 1st", cat: "civic", w: 3, detail: "1st of 100+ entries · $500 (with Pradyun)." },
   { year: "2025", title: "ACWD Water Clips — 3rd", cat: "civic", w: 2, detail: "A second entry placed 3rd · $100." },
   { year: "2025", title: "Met the Governor & First Partner", cat: "civic", w: 3, detail: "At a California Love, California Strong event." },

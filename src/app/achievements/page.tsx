@@ -1,35 +1,19 @@
 import type { Metadata } from "next";
 import { World } from "@/components/chrome/World";
 import { Footer } from "@/components/chrome/Footer";
-import { AchievementsHero } from "@/components/achievements/AchievementsHero";
-import { ScoreBoard } from "@/components/achievements/ScoreBoard";
-import { TrophyCase } from "@/components/achievements/TrophyCase";
+import { ClimbGame } from "@/components/achievements/climb/ClimbGame";
 
 export const metadata: Metadata = {
-  title: "Experiences & Achievements",
+  title: "Achievements",
   description:
-    "Every experience and achievement in one place — ACT 35, SAT 1540, eleven AP fives, NCS Champions, a UMass research summer, USABO, UK Biology Olympiad, and more.",
+    "Every achievement, on the way up Mission Peak — NCS Champions, a UMass research summer, ASB President, Youth Advisory Commission Chair, AcornPrep, SAT 1540, ACT 35, eleven AP fives, and more.",
 };
 
-/**
- * Experiences & Achievements world.
- * Art direction: bright gallery — ivory background, warm shadows,
- * deep-gold accents, a filterable archive of every entry.
- * Server component. Interactive sub-sections carry their own "use client".
- */
+/** Achievements: a walkable climb up Mission Peak, 2021 → the summit. */
 export default function AchievementsPage() {
   return (
     <World id="achievements">
-      {/* 1. Hero — plain title + bright graphic */}
-      <AchievementsHero />
-
-      {/* 2. Scores — SAT counter, PSAT/ACT, AP-5 medallions */}
-      <ScoreBoard />
-
-      {/* 3. The archive — the interactive constellation (centerpiece) */}
-      <TrophyCase />
-
-      {/* 4. Footer */}
+      <ClimbGame />
       <Footer />
     </World>
   );

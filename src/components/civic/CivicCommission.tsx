@@ -3,7 +3,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { ClipCard } from "@/components/civic/ClipCard";
 import { Reveal } from "@/components/primitives/Reveal";
-import { Counter } from "@/components/primitives/Counter";
 import { CIVIC } from "@/lib/data";
 
 /**
@@ -20,12 +19,12 @@ export function CivicCommission() {
           <div className="mb-8 h-[2px] w-10 bg-[var(--accent)]" />
 
           <Reveal>
-            <div className="mb-6 flex items-end gap-3">
+            <div className="mb-6 flex items-end gap-4 md:gap-6">
               <p className="font-grotesk text-[5rem] font-bold leading-none tracking-[-4px] text-[var(--accent)] md:text-[7rem] md:tracking-[-7px]">
-                <Counter to={1} suffix="" duration={1.4} className="" />
+                {commission.role}
               </p>
               <div className="pb-3 md:pb-4">
-                <p className="text-base font-semibold text-[var(--fg)] md:text-lg">of ~13 commissioners</p>
+                <p className="text-base font-semibold text-[var(--fg)] md:text-lg">of the 13-member commission</p>
                 <p className="mt-0.5 text-sm text-[var(--muted)]">{commission.window}</p>
               </div>
             </div>
@@ -41,6 +40,10 @@ export function CivicCommission() {
             <p className="mt-6 max-w-[56ch] border-t border-[var(--line)] pt-6 font-serif-i text-lg italic leading-relaxed text-[var(--fg)] opacity-90 md:text-xl">
               &ldquo;{commission.detail}&rdquo;
             </p>
+            <figure className="mt-8 max-w-[560px] overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={commission.photo.src} alt={commission.photo.alt} className="aspect-[4/3] w-full object-cover" style={{ objectPosition: "50% 55%" }} />
+            </figure>
             <a
               href={commission.url}
               target="_blank"
