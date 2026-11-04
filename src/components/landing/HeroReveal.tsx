@@ -43,7 +43,7 @@ const ALL_PILLS = Object.values(PILLS);
  */
 const CLAUSES: Clause[] = [
   { id: "l1", parts: ["Hey, I'm ", PILLS.jadon] },
-  { id: "c1", after: "jadon", parts: [" Li, a Mission San Jose senior. I've journaled since eighth grade and run Mission Peak alone every birthday since I was twelve."] },
+  { id: "c1", after: "jadon", parts: [" Li, a Mission San Jose senior. Every birthday since I was twelve, I run Mission Peak alone, a yearly journey to reflect on who I've become."] },
   { id: "l2", parts: [" I serve as ", PILLS.asb] },
   { id: "c2", after: "asb", parts: [" after three years as elected class president, and started on our school's first ", PILLS.ncs] },
   { id: "c3", after: "ncs", parts: [" team."] },
