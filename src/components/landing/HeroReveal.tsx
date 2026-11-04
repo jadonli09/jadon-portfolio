@@ -52,7 +52,7 @@ const CLAUSES: Clause[] = [
   { id: "c5", after: "build", parts: [", a study app 500+ students now use."] },
   { id: "l4", parts: [" I document the whole pursuit on ", PILLS.locked] },
   { id: "c6", after: "locked", parts: [" (2.3M plays), and as the Mayor of Fremont's ", PILLS.mayor] },
-  { id: "c7", after: "mayor", parts: [", I film my city's stories."] },
+  { id: "c7", after: "mayor", parts: [", I lead civic engagement initiatives and film my city's stories."] },
 ];
 
 /** how long a freshly opened clause keeps its world colour */
