@@ -1,6 +1,6 @@
 # Stand-in photo credits
 
-Freely licensed images from Wikimedia Commons, used for achievements that have no photo of their own. Resized; otherwise unmodified.
+Freely licensed images from Wikimedia Commons, used for milestones that have no photo of their own. Resized; otherwise unmodified.
 
 - `berkeley-campanile.jpg` — [UC Berkeley Sather Tower.jpg](https://commons.wikimedia.org/wiki/File:UC_Berkeley_Sather_Tower.jpg), CC BY 2.0
 - `journal.jpg` — [Bullet journal page.jpg](https://commons.wikimedia.org/wiki/File:Bullet_journal_page.jpg), CC BY-SA 4.0

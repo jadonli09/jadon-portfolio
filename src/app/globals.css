@@ -360,7 +360,7 @@
   --selection: rgba(229, 9, 20, 0.35);
 }
 
-[data-world="achievements"] {
+[data-world="milestones"] {
   --bg: #f8f4ea; /* bright gallery ivory */
   --bg-2: #efe8d8;
   --fg: #221c10;
@@ -1076,3 +1076,9 @@ body:has([data-world="built"]) .grain {
 }
 .stream-card:hover .stream-name,
 .stream-card:focus-visible .stream-name { opacity: 1; translate: 0 0; }
+
+/* menu spread caption swap */
+@keyframes menu-cap {
+  from { opacity: 0; translate: 0 6px; }
+  to { opacity: 1; translate: 0 0; }
+}

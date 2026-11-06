@@ -32,14 +32,14 @@ function Thumb({ t, color }: { t: Trophy; color: string }) {
   );
 }
 
-/** Every achievement on one page, grouped by domain — the quick read next to the climb. */
+/** Every milestone on one page, grouped by domain — the quick read next to the climb. */
 export function ResumeList() {
   return (
     <section className="mx-auto max-w-6xl px-5 pb-24 pt-28 md:px-9 md:pt-36">
       <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-        <h1 className="font-display text-[3rem] leading-[0.95] tracking-[-0.02em] md:text-[4.75rem]">Achievements</h1>
+        <h1 className="font-display text-[3rem] leading-[0.95] tracking-[-0.02em] md:text-[4.75rem]">Milestones</h1>
         <Link
-          href="/achievements"
+          href="/milestones"
           className="inline-flex h-14 w-fit items-center rounded-full border border-[var(--line)] bg-[var(--bg-2)] px-7 text-[17px] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-2)]"
         >
           Climb Mission Peak instead

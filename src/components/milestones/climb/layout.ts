@@ -90,7 +90,7 @@ export const TERRAIN_PATH = `M0,${WORLD_H} L${sampled(0, WORLD_W, 0).join(" L")}
 /** The walked line itself. */
 export const TRAIL_PATH = `M${sampled(0, SUMMIT_X, -2).join(" L")}`;
 
-/* ── threads: achievements that grew over years ─────────────── */
+/* ── threads: milestones that grew over years ─────────────── */
 
 /** Where each thread entry sits along x. Lantern entries keep their lantern's x;
  *  the rest are spread, in data order, between the lanterns of their year. */

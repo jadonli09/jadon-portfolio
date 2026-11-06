@@ -12,7 +12,7 @@ type Door = (typeof SENTENCE_DOORS)[keyof typeof SENTENCE_DOORS];
 const DOORS: Door[] = Object.values(SENTENCE_DOORS);
 
 const EXTRAS = [
-  { label: "Trophy Case", href: "/achievements" },
+  { label: "Milestones", href: "/milestones" },
   { label: "Albums", href: "/albums" },
   { label: "Contact", href: "/contact" },
 ] as const;

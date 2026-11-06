@@ -1,20 +1,9 @@
 import type { Metadata } from "next";
-import { World } from "@/components/chrome/World";
-import { Footer } from "@/components/chrome/Footer";
-import { ClimbGame } from "@/components/achievements/climb/ClimbGame";
+import { Redirect } from "@/components/chrome/Redirect";
 
-export const metadata: Metadata = {
-  title: "Achievements",
-  description:
-    "Every achievement, on the way up Mission Peak — NCS Champions, a UMass research summer, ASB President, Youth Advisory Commission Chair, AcornPrep, SAT 1540, ACT 35, eleven AP fives, and more.",
-};
+export const metadata: Metadata = { title: "Milestones", robots: { index: false } };
 
-/** Achievements: a walkable climb up Mission Peak, 2021 → the summit. */
-export default function AchievementsPage() {
-  return (
-    <World id="achievements">
-      <ClimbGame />
-      <Footer />
-    </World>
-  );
+/** Old URL — the page now lives at /milestones. */
+export default function OldAchievementsPage() {
+  return <Redirect to="/milestones/" />;
 }

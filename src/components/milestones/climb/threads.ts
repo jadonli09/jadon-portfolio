@@ -1,5 +1,5 @@
 /**
- * Threads — achievements that grew over years rather than happening once.
+ * Threads — milestones that grew over years rather than happening once.
  * Each one is drawn as a glowing line through the mountain under the trail,
  * with a node per stage. Titles must match TROPHIES exactly (checked in layout.ts).
  */

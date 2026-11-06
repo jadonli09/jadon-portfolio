@@ -13,7 +13,7 @@ export type WorldId =
   | "court"
   | "about"
   | "lockedin"
-  | "achievements"
+  | "milestones"
   | "albums"
   | "contact";
 
@@ -1148,7 +1148,7 @@ export const CAT_META: Record<TrophyCat, { label: string; color: string }> = {
 };
 
 /**
- * The full ledger of meaningful achievements & experiences, by year. (AP exam
+ * The full ledger of meaningful milestones & experiences, by year. (AP exam
  * scores live in the Score Board above; one-off/irrelevant entries are omitted.)
  */
 export const TROPHIES: Trophy[] = [

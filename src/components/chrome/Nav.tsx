@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence } from "motion/react";
-import { ContactSheet } from "@/components/chrome/ContactSheet";
+import { MenuIndex } from "@/components/chrome/MenuIndex";
 import { useHideOnScroll } from "@/components/hooks/useHideOnScroll";
 
 export function Nav() {
@@ -59,7 +59,7 @@ export function Nav() {
       </header>
 
       <AnimatePresence>
-        {open && <ContactSheet onClose={() => setOpen(false)} />}
+        {open && <MenuIndex onClose={() => setOpen(false)} />}
       </AnimatePresence>
     </>
   );

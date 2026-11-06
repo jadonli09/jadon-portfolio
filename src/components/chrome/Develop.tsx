@@ -404,7 +404,7 @@ const TRANSITIONS: Record<string, React.ComponentType<{ phase: Phase }>> = {
 /* ───────────────────────────── the shell ───────────────────────────── */
 
 /**
- * Per-world page transitions. `develop:start` (from ContactSheet) names the
+ * Per-world page transitions. `develop:start` (from the menu) names the
  * destination world; that world's transition covers the screen, navigation
  * happens beneath it, and the pathname change flips it to its exit phase,
  * revealing the new page. Plain hard loads get a subtle backdrop develop.

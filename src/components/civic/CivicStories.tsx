@@ -9,7 +9,7 @@ import { PosterHeading } from "@/components/ui/poster-heading";
 import { CIVIC } from "@/lib/data";
 import { revealUp } from "@/lib/motion";
 
-/** The two field stories, told in full — all real, from Jadon's achievement ledger. */
+/** The two field stories, told in full — all real, from Jadon's milestone ledger. */
 const SWEET_TOMATOES = {
   dateline: "Fremont, CA to Tucson, AZ, 2025",
   body: "The video that made him viral. He tracked down the realty company that owned the old Sweet Tomatoes location, then learned a Chinese couple had already bought it to open a Chinese food court. Jadon argued the location and local demographic wouldn't support it — and pitched a Sweet-Tomatoes-style restaurant instead. The owners were receptive. Working with the Mayor, they emailed the surviving Sweet Tomatoes in Tucson about Bay Area expansion.",

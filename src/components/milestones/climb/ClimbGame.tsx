@@ -928,7 +928,7 @@ export function ClimbGame() {
       {/* opening title card */}
       <div ref={introRef} className="pointer-events-none absolute inset-x-0 top-[12%] z-20 flex flex-col items-center px-5 text-center">
         <h1 className="max-w-[18ch] font-serif text-[3.1rem] leading-[0.98] tracking-[-0.01em] md:max-w-none md:text-[5.6rem]" style={{ color: INK }}>
-          Achievements <span style={{ color: MUTED }}>along the climb.</span>
+          A few milestones <span style={{ color: MUTED }}>along the climb.</span>
         </h1>
         <p className="mt-6 text-[20px] leading-snug text-[#d5deea] md:text-[24px]">Hold → to climb Mission Peak with me.</p>
         <button type="button" onClick={() => walkTo(FIRST_CAMP_X)} className={`pointer-events-auto mt-7 h-14 rounded-full px-8 text-[17px] ${pill}`}>
@@ -961,10 +961,10 @@ export function ClimbGame() {
             </button>
           ))}
           <Link
-            href="/achievements/resume"
+            href="/milestones/resume"
             className="ml-1 flex h-11 shrink-0 items-center whitespace-nowrap rounded-full bg-[#ffc94d] px-4 text-base font-medium text-[#0a1a30] transition-colors hover:bg-[#ffd877]"
           >
-            Resume Achievements
+            See the full list
           </Link>
         </nav>
 

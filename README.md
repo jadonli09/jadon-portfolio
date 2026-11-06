@@ -24,13 +24,13 @@ npm run start
 ## Structure
 ```
 src/
-  app/                 # routes: / about civic research built leadership court achievements contact, not-found, opengraph-image
+  app/                 # routes: / about civic research built leadership court milestones contact, not-found, opengraph-image
   components/
     chrome/            # Nav, Cursor, Footer, Grain, World (per-page theme wrapper)
     providers/         # SmoothScroll (Lenis)
     primitives/        # Reveal, KineticHeadline, Counter, Marquee, Magnetic, TiltCard, BrandIcons
     hero/              # WebGL particle hero (code-split) + preloader
-    landing/ about/ civic/ research/ built/ leadership/ court/ achievements/ contact/
+    landing/ about/ civic/ research/ built/ leadership/ court/ milestones/ contact/
   lib/
     data.ts            # single source of truth (all real content)
     motion.ts  cn.ts

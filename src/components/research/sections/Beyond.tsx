@@ -120,7 +120,7 @@ export function Beyond() {
         </ul>
         <p className="mt-7">
           <Link
-            href="/achievements"
+            href="/milestones"
             className="text-[1.05rem] text-[var(--muted)] underline decoration-[var(--line)] underline-offset-[6px] transition-colors hover:text-[var(--fg)] hover:decoration-[var(--accent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
           >
             The full record

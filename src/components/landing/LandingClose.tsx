@@ -10,7 +10,7 @@ import { PROFILE } from "@/lib/data";
 /*
  * The close of the homepage. The hero already opens the seven chapters, so the
  * end only carries what the hero doesn't — and gives each its own shape:
- * Achievements and Albums side by side (one wide photo against a grid of four),
+ * Milestones and Albums side by side (one wide photo against a grid of four),
  * then Say hello as a field of gold.
  */
 
@@ -31,7 +31,7 @@ function Rise({ children, delay = 0, className }: { children: React.ReactNode; d
 
 const solid = "inline-flex h-14 items-center rounded-full px-7 text-[17px] font-semibold transition-[scale,background-color,color] duration-200 active:scale-[0.97]";
 
-/* ── achievements and albums, side by side ─────────────────────────── */
+/* ── milestones and albums, side by side ─────────────────────────── */
 
 const H2 = "font-anton text-[clamp(3rem,5.4vw,5.6rem)] uppercase leading-[0.9] tracking-[-0.01em]";
 const LEDE = "mt-5 max-w-[36ch] text-[18px] leading-relaxed text-[#e6ded3] md:text-[20px]";
@@ -46,23 +46,23 @@ const ALBUM_GRID = [
 
 function Doors() {
   return (
-    <section id="close" aria-label="Achievements and albums" className="scroll-mt-24 px-5 pb-16 pt-16 md:px-9 md:pb-20 md:pt-20">
+    <section id="close" aria-label="Milestones and albums" className="scroll-mt-24 px-5 pb-16 pt-16 md:px-9 md:pb-20 md:pt-20">
       {/* phones read each door top to bottom; desktop lines the two up — words on one row, pictures on the next */}
       <div className="mx-auto grid max-w-[1360px] gap-x-12 gap-y-6 md:grid-cols-2 md:gap-x-16 md:gap-y-8">
         <Rise className="md:col-start-1 md:row-start-1">
-          <h2 className={H2}>Achievements</h2>
+          <h2 className={H2}>Milestones</h2>
           <p className={LEDE}>Every award and role since 2021. Climb Mission Peak with me at night, or read it all on one page.</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link href="/achievements" className={`${solid} bg-[#d9a83f] text-[#120e0c] hover:bg-[#e6b955]`}>
+            <Link href="/milestones" className={`${solid} bg-[#d9a83f] text-[#120e0c] hover:bg-[#e6b955]`}>
               Climb Mission Peak
             </Link>
-            <Link href="/achievements/resume" className={`${solid} bg-white/[0.08] text-[#f4efe6] hover:bg-white/[0.14]`}>
+            <Link href="/milestones/resume" className={`${solid} bg-white/[0.08] text-[#f4efe6] hover:bg-white/[0.14]`}>
               See the full list
             </Link>
           </div>
         </Rise>
         <Rise delay={0.08} className="md:col-start-1 md:row-start-2">
-          <Link href="/achievements" aria-label="Climb Mission Peak" className="group block aspect-[3/2] overflow-hidden rounded-[3px]">
+          <Link href="/milestones" aria-label="Climb Mission Peak" className="group block aspect-[3/2] overflow-hidden rounded-[3px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={asset("/img/missionpeak2026.jpg")}
@@ -175,7 +175,7 @@ function SayHello() {
   );
 }
 
-/** The close of the homepage: achievements, albums, then say hello. */
+/** The close of the homepage: milestones, albums, then say hello. */
 export function LandingClose() {
   return (
     <>
