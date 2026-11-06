@@ -10,8 +10,8 @@ import { PROFILE } from "@/lib/data";
 /*
  * The close of the homepage. The hero already opens the seven chapters, so the
  * end only carries what the hero doesn't — and gives each its own shape:
- * Achievements as a split (one photo, two ways in), Albums as a strip of
- * pictures, and Say hello as a field of gold.
+ * Achievements and Albums side by side (one photo against a grid of four),
+ * then Say hello as a field of gold.
  */
 
 function Rise({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) {
@@ -31,20 +31,28 @@ function Rise({ children, delay = 0, className }: { children: React.ReactNode; d
 
 const solid = "inline-flex h-14 items-center rounded-full px-7 text-[17px] font-semibold transition-[scale,background-color,color] duration-200 active:scale-[0.97]";
 
-/* ── achievements: one photo, two ways in ─────────────────────────── */
+/* ── achievements and albums, side by side ─────────────────────────── */
 
-function Achievements() {
+const H2 = "font-anton text-[clamp(3rem,5.4vw,5.6rem)] uppercase leading-[0.9] tracking-[-0.01em]";
+const LEDE = "mt-5 max-w-[36ch] text-[18px] leading-relaxed text-[#e6ded3] md:text-[20px]";
+const GROW = "transition-[scale] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]";
+
+const ALBUM_GRID = [
+  { src: "/img/ny-01.jpg", alt: "The Brooklyn Bridge at night", pos: "50% 55%" },
+  { src: "/img/winterball-1.jpg", alt: "The Winter Ball dance floor", pos: "50% 50%" },
+  { src: "/img/ncs-champions.jpg", alt: "MSJ varsity with the NCS banner", pos: "50% 45%" },
+  { src: "/img/umass-01.jpg", alt: "Presenting the poster at UMass", pos: "50% 40%" },
+];
+
+function Doors() {
   return (
-    <section id="close" aria-labelledby="ach-h" className="scroll-mt-24 px-5 pb-24 pt-24 md:px-9 md:pb-36 md:pt-36">
-      <div className="mx-auto grid max-w-[1360px] items-center gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-16">
-        <Rise>
-          <h2 id="ach-h" className="font-anton text-[clamp(3.4rem,7.4vw,7rem)] uppercase leading-[0.9] tracking-[-0.01em]">
-            Achievements
-          </h2>
-          <p className="mt-6 max-w-[34ch] text-[19px] leading-relaxed text-[#e6ded3] md:text-[21px]">
-            Every award and role since 2021. Climb Mission Peak with me at night, or read it all on one page.
-          </p>
-          <div className="mt-9 flex flex-wrap gap-3">
+    <section id="close" aria-label="Achievements and albums" className="scroll-mt-24 px-5 pb-24 pt-24 md:px-9 md:pb-36 md:pt-36">
+      {/* phones read each door top to bottom; desktop lines the two up — words on one row, pictures on the next */}
+      <div className="mx-auto grid max-w-[1360px] gap-x-12 gap-y-8 md:grid-cols-2 md:gap-x-16 md:gap-y-10">
+        <Rise className="md:col-start-1 md:row-start-1">
+          <h2 className={H2}>Achievements</h2>
+          <p className={LEDE}>Every award and role since 2021. Climb Mission Peak with me at night, or read it all on one page.</p>
+          <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/achievements" className={`${solid} bg-[#d9a83f] text-[#120e0c] hover:bg-[#e6b955]`}>
               Climb Mission Peak
             </Link>
@@ -53,66 +61,36 @@ function Achievements() {
             </Link>
           </div>
         </Rise>
-        <Rise delay={0.1}>
-          <Link href="/achievements" aria-label="Climb Mission Peak" className="group block overflow-hidden rounded-[3px]">
+        <Rise delay={0.08} className="md:col-start-1 md:row-start-2">
+          <Link href="/achievements" aria-label="Climb Mission Peak" className="group block aspect-[4/5] overflow-hidden rounded-[3px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={asset("/img/missionpeak2026.jpg")}
               alt="Jadon on the Mission Peak summit rocks at sunrise"
               loading="lazy"
-              className="aspect-[4/5] w-full object-cover transition-[scale] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] md:aspect-[5/6]"
+              className={`h-full w-full object-cover ${GROW}`}
               style={{ objectPosition: "50% 40%" }}
             />
           </Link>
         </Rise>
-      </div>
-    </section>
-  );
-}
 
-/* ── albums: a strip of real pictures, one height, native shapes ───── */
-
-const STRIP = [
-  { src: "/img/ny-01.jpg", alt: "The Brooklyn Bridge at night", ar: 0.75, phone: 0 },
-  { src: "/img/ncs-champions.jpg", alt: "MSJ varsity with the NCS banner", ar: 1.78, phone: 1 },
-  { src: "/img/winterball-1.jpg", alt: "The Winter Ball dance floor", ar: 0.86, phone: 0 },
-  { src: "/img/umass-01.jpg", alt: "Presenting the poster at UMass", ar: 1.5, phone: -1 },
-];
-
-function Albums() {
-  const rows = [STRIP.filter((p) => p.phone === 0), STRIP.filter((p) => p.phone === 1)];
-  const pic = (p: (typeof STRIP)[number]) => (
-    <span key={p.src} className="block overflow-hidden rounded-[3px]" style={{ flex: `${p.ar} 1 0%`, aspectRatio: p.ar }}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={asset(p.src)} alt={p.alt} loading="lazy" className="h-full w-full object-cover transition-[scale] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]" />
-    </span>
-  );
-  return (
-    <section aria-labelledby="alb-h" className="px-5 pb-24 md:px-9 md:pb-36">
-      <div className="mx-auto max-w-[1360px]">
-        <Rise className="flex flex-wrap items-end justify-between gap-x-10 gap-y-5">
-          <div>
-            <h2 id="alb-h" className="font-anton text-[clamp(3.4rem,7.4vw,7rem)] uppercase leading-[0.9] tracking-[-0.01em]">
-              Albums
-            </h2>
-            <p className="mt-5 max-w-[40ch] text-[19px] leading-relaxed text-[#e6ded3] md:text-[21px]">
-              Every original photo, and a 45-selfie match cut from summer 2026.
-            </p>
+        <Rise delay={0.12} className="mt-16 md:col-start-2 md:row-start-1 md:mt-0">
+          <h2 className={H2}>Albums</h2>
+          <p className={LEDE}>Every original photo, and a 45-selfie match cut from summer 2026.</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/albums" className={`${solid} bg-[#7c89e8] text-[#120e0c] hover:bg-[#949fee]`}>
+              Open the albums
+            </Link>
           </div>
-          <Link href="/albums" className={`${solid} bg-[#7c89e8] text-[#120e0c] hover:bg-[#949fee]`}>
-            Open the albums
-          </Link>
         </Rise>
-        <Rise delay={0.1} className="mt-10 md:mt-14">
-          <Link href="/albums" aria-label="Open the albums" className="group block">
-            <span className="hidden gap-3 md:flex">{STRIP.map(pic)}</span>
-            <span className="flex flex-col gap-2 md:hidden">
-              {rows.map((r, i) => (
-                <span key={i} className="flex gap-2">
-                  {r.map(pic)}
-                </span>
-              ))}
-            </span>
+        <Rise delay={0.2} className="md:col-start-2 md:row-start-2">
+          <Link href="/albums" aria-label="Open the albums" className="group grid aspect-[4/5] grid-cols-2 grid-rows-2 gap-2 md:gap-3">
+            {ALBUM_GRID.map((p) => (
+              <span key={p.src} className="block overflow-hidden rounded-[3px]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={asset(p.src)} alt={p.alt} loading="lazy" className={`h-full w-full object-cover ${GROW}`} style={{ objectPosition: p.pos }} />
+              </span>
+            ))}
           </Link>
         </Rise>
       </div>
@@ -201,8 +179,7 @@ function SayHello() {
 export function LandingClose() {
   return (
     <>
-      <Achievements />
-      <Albums />
+      <Doors />
       <SayHello />
     </>
   );

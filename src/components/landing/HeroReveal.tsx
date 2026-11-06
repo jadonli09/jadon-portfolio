@@ -49,7 +49,7 @@ const CLAUSES: Clause[] = [
   { id: "c3", after: "ncs", parts: [" team."] },
   { id: "l3", parts: [" I engineered a human pathogen to glow ", PILLS.red] },
   { id: "c4", after: "red", parts: [" at UMass Amherst, tagging clinical ", { em: "Fusarium oxysporum" }, " with mRFP to study how it interacts with its host. I also turned my eleven AP exams into ", PILLS.build] },
-  { id: "c5", after: "build", parts: [", a study app 500+ students now use."] },
+  { id: "c5", after: "build", parts: [", a study app with 2,000+ users."] },
   { id: "l4", parts: [" I document the whole pursuit on ", PILLS.locked] },
   { id: "c6", after: "locked", parts: [" (2.3M plays), and as the Mayor of Fremont's ", PILLS.mayor] },
   { id: "c7", after: "mayor", parts: [", I lead civic engagement initiatives and film my city's stories."] },
