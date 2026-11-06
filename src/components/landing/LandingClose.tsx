@@ -1,78 +1,186 @@
 "use client";
 
+import { useRef, useState } from "react";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { asset } from "@/lib/base";
 import { EASE } from "@/lib/motion";
+import { PROFILE } from "@/lib/data";
 
-/** The last three doors, printed as smaller "LOCKED IN" covers to match the hero stack. */
-const COVERS: { href: string; title: string; note: string; img: string; pos: string; color: string; accent: string }[] = [
-  { href: "/achievements", title: "Achievements", note: "Every award, role, and project, by year.", img: "/img/ironchef-win.jpg", pos: "50% 30%", color: "#d9a83f", accent: "#b07c1e" },
-  { href: "/albums", title: "Albums", note: "The court, the podium, the lab, the climb, and a 45-selfie match cut.", img: "/img/ny-01.jpg", pos: "50% 55%", color: "#7c89e8", accent: "#4f5fd6" },
-  { href: "/contact", title: "Say hello", note: "Email, Instagram, LinkedIn, or GitHub.", img: "/img/headshot1.jpg", pos: "14% 30%", color: "#e8689c", accent: "#d23f7c" },
+/*
+ * The close of the homepage. The hero already opens the seven chapters, so the
+ * end only carries what the hero doesn't — and gives each its own shape:
+ * Achievements and Albums side by side (one photo against a grid of four),
+ * then Say hello as a field of gold.
+ */
+
+function Rise({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const reduced = useReducedMotion();
+  return (
+    <motion.div
+      className={className}
+      initial={reduced ? false : { opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-10% 0px" }}
+      transition={{ delay, duration: 0.8, ease: EASE }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+const solid = "inline-flex h-14 items-center rounded-full px-7 text-[17px] font-semibold transition-[scale,background-color,color] duration-200 active:scale-[0.97]";
+
+/* ── achievements and albums, side by side ─────────────────────────── */
+
+const H2 = "font-anton text-[clamp(3rem,5.4vw,5.6rem)] uppercase leading-[0.9] tracking-[-0.01em]";
+const LEDE = "mt-5 max-w-[36ch] text-[18px] leading-relaxed text-[#e6ded3] md:text-[20px]";
+const GROW = "transition-[scale] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]";
+
+const ALBUM_GRID = [
+  { src: "/img/ny-01.jpg", alt: "The Brooklyn Bridge at night", pos: "50% 55%" },
+  { src: "/img/winterball-1.jpg", alt: "The Winter Ball dance floor", pos: "50% 50%" },
+  { src: "/img/ncs-champions.jpg", alt: "MSJ varsity with the NCS banner", pos: "50% 45%" },
+  { src: "/img/umass-01.jpg", alt: "Presenting the poster at UMass", pos: "50% 40%" },
 ];
 
-/** The final doorways, printed as three more covers. */
-export function LandingClose() {
+function Doors() {
   return (
-    <section id="close" className="relative scroll-mt-24 px-5 pb-16 pt-16 md:px-9 md:pb-20 md:pt-20">
-      <div className="mx-auto max-w-[1360px]">
-        <div className="grid gap-8 sm:grid-cols-3 md:gap-7">
-          {COVERS.map((c, i) => (
-            <Cover key={c.href} c={c} i={i} />
-          ))}
-        </div>
+    <section id="close" aria-label="Achievements and albums" className="scroll-mt-24 px-5 pb-24 pt-24 md:px-9 md:pb-36 md:pt-36">
+      {/* phones read each door top to bottom; desktop lines the two up — words on one row, pictures on the next */}
+      <div className="mx-auto grid max-w-[1360px] gap-x-12 gap-y-8 md:grid-cols-2 md:gap-x-16 md:gap-y-10">
+        <Rise className="md:col-start-1 md:row-start-1">
+          <h2 className={H2}>Achievements</h2>
+          <p className={LEDE}>Every award and role since 2021. Climb Mission Peak with me at night, or read it all on one page.</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/achievements" className={`${solid} bg-[#d9a83f] text-[#120e0c] hover:bg-[#e6b955]`}>
+              Climb Mission Peak
+            </Link>
+            <Link href="/achievements/resume" className={`${solid} bg-white/[0.08] text-[#f4efe6] hover:bg-white/[0.14]`}>
+              See the full list
+            </Link>
+          </div>
+        </Rise>
+        <Rise delay={0.08} className="md:col-start-1 md:row-start-2">
+          <Link href="/achievements" aria-label="Climb Mission Peak" className="group block aspect-[4/5] overflow-hidden rounded-[3px]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={asset("/img/missionpeak2026.jpg")}
+              alt="Jadon on the Mission Peak summit rocks at sunrise"
+              loading="lazy"
+              className={`h-full w-full object-cover ${GROW}`}
+              style={{ objectPosition: "50% 40%" }}
+            />
+          </Link>
+        </Rise>
 
+        <Rise delay={0.12} className="mt-16 md:col-start-2 md:row-start-1 md:mt-0">
+          <h2 className={H2}>Albums</h2>
+          <p className={LEDE}>Every original photo, and a 45-selfie match cut from summer 2026.</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/albums" className={`${solid} bg-[#7c89e8] text-[#120e0c] hover:bg-[#949fee]`}>
+              Open the albums
+            </Link>
+          </div>
+        </Rise>
+        <Rise delay={0.2} className="md:col-start-2 md:row-start-2">
+          <Link href="/albums" aria-label="Open the albums" className="group grid aspect-[4/5] grid-cols-2 grid-rows-2 gap-2 md:gap-3">
+            {ALBUM_GRID.map((p) => (
+              <span key={p.src} className="block overflow-hidden rounded-[3px]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={asset(p.src)} alt={p.alt} loading="lazy" className={`h-full w-full object-cover ${GROW}`} style={{ objectPosition: p.pos }} />
+              </span>
+            ))}
+          </Link>
+        </Rise>
       </div>
     </section>
   );
 }
 
-function Cover({ c, i }: { c: (typeof COVERS)[number]; i: number }) {
+/* ── say hello: a field of gold, the email as the headline ─────────── */
+
+function SayHello() {
+  const [copied, setCopied] = useState(false);
+  const timer = useRef<number | undefined>(undefined);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(PROFILE.email);
+      setCopied(true);
+      window.clearTimeout(timer.current);
+      timer.current = window.setTimeout(() => setCopied(false), 2200);
+    } catch {
+      window.location.href = `mailto:${PROFILE.email}`;
+    }
+  };
+  const links = [
+    { label: "Instagram", detail: PROFILE.links.instagramHandle, href: PROFILE.links.instagram },
+    { label: "LinkedIn", detail: "Jadon Li", href: PROFILE.links.linkedin },
+    { label: "GitHub", detail: PROFILE.links.githubUser, href: PROFILE.links.github },
+  ];
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10% 0px" }}
-      transition={{ delay: i * 0.08, duration: 0.9, ease: EASE }}
-    >
-      <Link
-        href={c.href}
-        data-cursor-hover
-        className="group relative block aspect-[3/4] overflow-hidden rounded-[3px] bg-black shadow-[0_24px_60px_rgba(0,0,0,0.55)] transition-[translate] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-2"
-        style={{ containerType: "inline-size" }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={asset(c.img)}
-          alt=""
-          loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover transition-[scale] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
-          style={{ objectPosition: c.pos }}
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.32), transparent 30%, transparent 50%, rgba(0,0,0,0.85))" }}
-        />
-        <div
-          aria-hidden
-          className="absolute inset-x-0 top-[2.6cqw] text-center font-anton text-[23.5cqw] leading-[0.9] tracking-[-0.005em]"
-          style={{ color: c.color }}
-        >
-          LOCKED IN
+    <footer aria-labelledby="backpage-h" className="relative bg-[#d9a83f] px-5 pb-10 pt-16 text-[#120e0c] md:px-9 md:pb-12 md:pt-24">
+      <div className="mx-auto max-w-[1360px]">
+        <div className="grid gap-12 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end md:gap-16">
+          <div>
+            <p className="text-[18px] md:text-[20px]">Say hello.</p>
+            <h2 id="backpage-h" className="mt-3 whitespace-nowrap font-display text-[7.4vw] leading-[1.02] tracking-[-0.02em] md:text-[min(4.4vw,4.1rem)]">
+              <a href={`mailto:${PROFILE.email}`} className="underline-offset-[0.12em] hover:underline">
+                {PROFILE.email}
+              </a>
+            </h2>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={copy}
+                className="inline-flex h-14 items-center rounded-full bg-[#120e0c] px-7 text-[17px] font-semibold text-[#f4efe6] transition-[scale,background-color] duration-200 hover:bg-black active:scale-[0.97]"
+                aria-live="polite"
+              >
+                {copied ? "Copied ✓" : "Copy email"}
+              </button>
+              <a
+                href={`mailto:${PROFILE.email}`}
+                className="inline-flex h-14 items-center rounded-full bg-[#120e0c]/10 px-7 text-[17px] font-semibold transition-[scale,background-color] duration-200 hover:bg-[#120e0c]/20 active:scale-[0.97]"
+              >
+                Write an email
+              </a>
+            </div>
+          </div>
+
+          <ul className="grid gap-1">
+            {links.map((l) => (
+              <li key={l.label}>
+                <a
+                  href={l.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex items-baseline justify-between gap-4 rounded-[3px] px-3 py-3 -mx-3 transition-colors hover:bg-[#120e0c]/10"
+                >
+                  <span className="font-display text-[1.6rem] leading-none md:text-[1.9rem]">{l.label}</span>
+                  <span className="text-[17px] text-[#120e0c]/75">
+                    {l.detail} <span aria-hidden className="inline-block transition-[translate] duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="absolute inset-x-[6cqw] bottom-[6cqw] text-white">
-          <h3 className="font-anton text-[12cqw] uppercase leading-[0.95]">{c.title}</h3>
-          <p className="mt-[2cqw] text-balance text-[max(15px,4.6cqw)] leading-snug text-white/90">{c.note}</p>
-          <span
-            className="mt-[4cqw] inline-flex h-12 items-center rounded-full px-5 text-base font-semibold text-white"
-            style={{ background: c.accent }}
-          >
-            Open →
-          </span>
-        </div>
-      </Link>
-    </motion.div>
+
+        <p className="mt-16 text-[16px] md:mt-24">
+          {PROFILE.name}, {PROFILE.school}, {PROFILE.gradeNote}
+        </p>
+      </div>
+    </footer>
+  );
+}
+
+/** The close of the homepage: achievements, albums, then say hello. */
+export function LandingClose() {
+  return (
+    <>
+      <Doors />
+      <SayHello />
+    </>
   );
 }

@@ -12,7 +12,6 @@ import {
 import { HeroCovers } from "@/components/landing/HeroCovers";
 import { asset } from "@/lib/base";
 import { LandingClose } from "@/components/landing/LandingClose";
-import { Footer } from "@/components/chrome/Footer";
 import { PROFILE } from "@/lib/data";
 import { EASE } from "@/lib/motion";
 
@@ -191,10 +190,8 @@ export function Landing() {
         <HeroCovers reveal />
       )}
 
-      {/* THE CLOSE — three more covers */}
+      {/* THE CLOSE — a contents page, then the back page (it is the footer) */}
       <LandingClose />
-
-      <Footer seamless />
     </main>
   );
 }
