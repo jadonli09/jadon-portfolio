@@ -10,7 +10,7 @@ import { PROFILE } from "@/lib/data";
 /*
  * The close of the homepage. The hero already opens the seven chapters, so the
  * end only carries what the hero doesn't — and gives each its own shape:
- * Achievements and Albums side by side (one photo against a grid of four),
+ * Achievements and Albums side by side (one wide photo against a grid of four),
  * then Say hello as a field of gold.
  */
 
@@ -46,13 +46,13 @@ const ALBUM_GRID = [
 
 function Doors() {
   return (
-    <section id="close" aria-label="Achievements and albums" className="scroll-mt-24 px-5 pb-24 pt-24 md:px-9 md:pb-36 md:pt-36">
+    <section id="close" aria-label="Achievements and albums" className="scroll-mt-24 px-5 pb-16 pt-16 md:px-9 md:pb-20 md:pt-20">
       {/* phones read each door top to bottom; desktop lines the two up — words on one row, pictures on the next */}
-      <div className="mx-auto grid max-w-[1360px] gap-x-12 gap-y-8 md:grid-cols-2 md:gap-x-16 md:gap-y-10">
+      <div className="mx-auto grid max-w-[1360px] gap-x-12 gap-y-6 md:grid-cols-2 md:gap-x-16 md:gap-y-8">
         <Rise className="md:col-start-1 md:row-start-1">
           <h2 className={H2}>Achievements</h2>
           <p className={LEDE}>Every award and role since 2021. Climb Mission Peak with me at night, or read it all on one page.</p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-6 flex flex-wrap gap-3">
             <Link href="/achievements" className={`${solid} bg-[#d9a83f] text-[#120e0c] hover:bg-[#e6b955]`}>
               Climb Mission Peak
             </Link>
@@ -62,7 +62,7 @@ function Doors() {
           </div>
         </Rise>
         <Rise delay={0.08} className="md:col-start-1 md:row-start-2">
-          <Link href="/achievements" aria-label="Climb Mission Peak" className="group block aspect-[4/5] overflow-hidden rounded-[3px]">
+          <Link href="/achievements" aria-label="Climb Mission Peak" className="group block aspect-[3/2] overflow-hidden rounded-[3px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={asset("/img/missionpeak2026.jpg")}
@@ -74,17 +74,17 @@ function Doors() {
           </Link>
         </Rise>
 
-        <Rise delay={0.12} className="mt-16 md:col-start-2 md:row-start-1 md:mt-0">
+        <Rise delay={0.12} className="mt-12 md:col-start-2 md:row-start-1 md:mt-0">
           <h2 className={H2}>Albums</h2>
           <p className={LEDE}>Every original photo, and a 45-selfie match cut from summer 2026.</p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-6 flex flex-wrap gap-3">
             <Link href="/albums" className={`${solid} bg-[#7c89e8] text-[#120e0c] hover:bg-[#949fee]`}>
               Open the albums
             </Link>
           </div>
         </Rise>
         <Rise delay={0.2} className="md:col-start-2 md:row-start-2">
-          <Link href="/albums" aria-label="Open the albums" className="group grid aspect-[4/5] grid-cols-2 grid-rows-2 gap-2 md:gap-3">
+          <Link href="/albums" aria-label="Open the albums" className="group grid aspect-[3/2] grid-cols-2 grid-rows-2 gap-2 md:gap-3">
             {ALBUM_GRID.map((p) => (
               <span key={p.src} className="block overflow-hidden rounded-[3px]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -120,9 +120,9 @@ function SayHello() {
   ];
 
   return (
-    <footer aria-labelledby="backpage-h" className="relative bg-[#d9a83f] px-5 pb-10 pt-16 text-[#120e0c] md:px-9 md:pb-12 md:pt-24">
+    <footer aria-labelledby="backpage-h" className="relative bg-[#d9a83f] px-5 pb-8 pt-12 text-[#120e0c] md:px-9 md:pb-8 md:pt-14">
       <div className="mx-auto max-w-[1360px]">
-        <div className="grid gap-12 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end md:gap-16">
+        <div className="grid gap-8 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end md:gap-16">
           <div>
             <p className="text-[18px] md:text-[20px]">Say hello.</p>
             <h2 id="backpage-h" className="mt-3 whitespace-nowrap font-display text-[7.4vw] leading-[1.02] tracking-[-0.02em] md:text-[min(4.4vw,4.1rem)]">
@@ -130,7 +130,7 @@ function SayHello() {
                 {PROFILE.email}
               </a>
             </h2>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-3">
               <button
                 type="button"
                 onClick={copy}
@@ -155,7 +155,7 @@ function SayHello() {
                   href={l.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="group flex items-baseline justify-between gap-4 rounded-[3px] px-3 py-3 -mx-3 transition-colors hover:bg-[#120e0c]/10"
+                  className="group flex items-baseline justify-between gap-4 rounded-[3px] px-3 py-2 -mx-3 transition-colors hover:bg-[#120e0c]/10"
                 >
                   <span className="font-display text-[1.6rem] leading-none md:text-[1.9rem]">{l.label}</span>
                   <span className="text-[17px] text-[#120e0c]/75">
@@ -167,7 +167,7 @@ function SayHello() {
           </ul>
         </div>
 
-        <p className="mt-16 text-[16px] md:mt-24">
+        <p className="mt-10 text-[16px] md:mt-12">
           {PROFILE.name}, {PROFILE.school}, {PROFILE.gradeNote}
         </p>
       </div>
