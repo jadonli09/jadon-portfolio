@@ -109,11 +109,4 @@ export const THREAD_DEFS: ThreadDef[] = [
       { title: "MSJ Makes President", label: "President" },
     ],
   },
-  {
-    id: "hopkins",
-    name: "Academic Excellence ×6",
-    color: "#9fb7ff",
-    spanFrom: 2021,
-    stages: [{ title: "6× Academic Excellence — Hopkins", label: "Six awards at Hopkins" }],
-  },
 ];

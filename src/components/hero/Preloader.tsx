@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Intro: light rays stream in toward the centre, "LOCKED IN" assembles from
+ * Intro: light rays stream in toward the centre, "JADON LI" assembles from
  * pixels riding those rays, then the whole screen breaks into tiles that
  * shrink away to reveal the hero underneath. One canvas, once per session.
  */
@@ -87,7 +87,7 @@ export function Preloader() {
       tctx.textAlign = "center";
       tctx.textBaseline = "middle";
       tctx.fillStyle = INK;
-      tctx.fillText("LOCKED IN", cx, cy);
+      tctx.fillText("JADON LI", cx, cy);
 
       // Sample the text into a pixel grid. Each pixel starts far out along the
       // ray that runs through its target, so the letters arrive on the light.

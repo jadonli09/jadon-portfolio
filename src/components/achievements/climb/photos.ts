@@ -76,7 +76,7 @@ export const TRAIL_PHOTOS: Record<string, ClimbPhoto> = {
   "The kitchen — feasts by design": { src: "/vid/cooking-feast1.jpg", alt: "A designed-menu feast night", pos: "50% 50%" },
   "Vancouver over the APs": { src: "/vid/pursuit/vancouver.jpg", alt: "The Vancouver spring-break vlog", pos: "50% 40%" },
   "Mission Peak — the sunrise climb": { src: "/img/missionpeak2026-1.jpg", alt: "Sunrise on the Mission Peak summit, 2026", pos: "50% 45%" },
-  "Five more AP 5s — eleven total": { src: "/vid/pursuit/war-is-over.jpg", alt: "2026 AP score reactions", pos: "50% 35%" },
+  "11 APs, all 5s": { src: "/vid/pursuit/war-is-over.jpg", alt: "2026 AP score reactions", pos: "50% 35%" },
   "NotebookLI — shipped": { src: "/embeds/notebookli.jpg", alt: "NotebookLI, a research-paper reader", pos: "50% 0%" },
   "CommonApp Student Advisory Commission": { src: "/img/commonapp-01.jpg", alt: "A Common App Student Advisory Commission session", pos: "40% 50%" },
   "FIRE Free Speech Forum — DC": { src: "/img/fire-01.jpg", alt: "The FIRE Free Speech Forum cohort", pos: "50% 45%" },
@@ -85,4 +85,29 @@ export const TRAIL_PHOTOS: Record<string, ClimbPhoto> = {
   "Green & White Assembly": { src: "/img/gw-01.jpg", alt: "On the mic at the Green & White Assembly", pos: "50% 40%" },
   "Head of L2 Video": { src: "/img/l2-vid-team.jpg", alt: "The Leadership II video team", pos: "50% 40%" },
   "East Coast — DC, Boston, New York": { src: "/img/ny-01.jpg", alt: "The Brooklyn Bridge at night", pos: "50% 50%" },
+
+  // entries with no photo of their own: his photos where one fits, else a freely licensed
+  // Wikimedia Commons stand-in (sources + licenses in public/img/climb/CREDITS.md)
+  "Hopkins Basketball A-Team": { src: "/img/aau-basketball.jpg", alt: "Driving the lane in a youth basketball game", pos: "30% 40%" },
+  "Lost ASB President by ~10 votes": { src: "/img/speaking-at-rally.jpg", alt: "On the mic at a school rally", pos: "75% 40%" },
+  "Link Crew Leader": { src: "/img/highschoolpanel-close.jpg", alt: "On the student leadership panel for incoming students", pos: "50% 40%" },
+  "ATDP Entrepreneurship — UC Berkeley": { src: "/img/climb/berkeley-campanile.jpg", alt: "Sather Tower at UC Berkeley", pos: "50% 30%" },
+  "Began journaling": { src: "/img/climb/journal.jpg", alt: "An open, hand-lettered journal", pos: "50% 50%" },
+  "Rigorous coursework — 3.98 GPA": { src: "/img/climb/chalkboard-math.jpg", alt: "A worked problem on a chalkboard", pos: "40% 50%" },
+  "DECA — top 10 BTDM at SVCDC": { src: "/img/climb/pitch-stage.jpg", alt: "A business pitch on stage", pos: "50% 45%" },
+  "China gym moment — 569k likes": { src: "/img/climb/xian-bell-tower.jpg", alt: "The Bell Tower in Xi'an, lit up at night", pos: "50% 50%" },
+  "Six weeks in China": { src: "/img/climb/xian-skyline.jpg", alt: "Xi'an at dusk, around the Bell Tower", pos: "50% 50%" },
+  "JP Basketball — co-founded": { src: "/img/climb/hoop-sunset.jpg", alt: "A basketball dropping through the hoop at sunset", pos: "50% 40%" },
+  "The milk-fridge crusade": { src: "/img/climb/school-milk.jpg", alt: "A school breakfast tray with a carton of milk", pos: "50% 50%" },
+  "Tutoring business — founded": { src: "/img/climb/tutoring.jpg", alt: "Working through a problem at a tutoring table", pos: "50% 50%" },
+  "City of Fremont Rec Director": { src: "/img/climb/lake-elizabeth.jpg", alt: "Lake Elizabeth in Fremont Central Park", pos: "50% 50%" },
+  "UK Biology Olympiad — Silver": { src: "/img/climb/microscope.jpg", alt: "A biology student at a microscope", pos: "60% 40%" },
+  "Varian tour": { src: "/img/climb/varian-clinac.jpg", alt: "A Varian Clinac radiation-therapy machine", pos: "50% 40%" },
+  "Fremont Stories": { src: "/img/climb/mission-san-jose.jpg", alt: "Mission San Jose in Fremont", pos: "50% 50%" },
+  "HG Nguyen for D7 — social media": { src: "/img/climb/san-jose-city-hall.jpg", alt: "San Jose City Hall", pos: "50% 40%" },
+  "Valentine's Scavenger Hunt": { src: "/img/climb/paper-hearts.jpg", alt: "Red paper hearts", pos: "50% 40%" },
+  "CO26 Graduation — led planning": { src: "/img/climb/caps-in-the-air.jpg", alt: "Graduation caps thrown in the air", pos: "50% 30%" },
+  // scores live only on the résumé page
+  "SAT 1540": { src: "/vid/pursuit/apush-calc.jpg", alt: "Back to studying, junior year", pos: "50% 40%" },
+  "ACT 35": { src: "/vid/pursuit/ap-scores.jpg", alt: "Checking scores", pos: "50% 40%" },
 };

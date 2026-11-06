@@ -1,5 +1,5 @@
 import {
-  Atom, Award, BookOpen, Briefcase, Calculator, Clapperboard, Flame, GraduationCap, Handshake,
+  Atom, BookOpen, Briefcase, Clapperboard, Flame, GraduationCap, Handshake,
   Heart, Lightbulb, Medal, Megaphone, Milk, NotebookPen, Plane, Sparkles, Trophy, Users, Vote,
   type LucideIcon,
 } from "lucide-react";
@@ -8,9 +8,6 @@ import {
 export const ENTRY_ICONS: Record<string, LucideIcon> = {
   "ATDP Entrepreneurship — UC Berkeley": Lightbulb,
   "Began journaling": NotebookPen,
-  "6× Academic Excellence — Hopkins": Award,
-  "Continental Math League — 30/30": Calculator,
-  "DECA Headstart — 2nd of 12": Briefcase,
   "Hopkins Basketball A-Team": Trophy,
   "China gym moment — 569k likes": Flame,
   "JP Basketball — co-founded": Users,

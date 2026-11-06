@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import Link from "next/link";
+import { useReducedMotion } from "motion/react";
 import { CAT_META, type Trophy } from "@/lib/data";
-import { CAMPS, SUMMIT_SCORES } from "./data";
+import { CAMPS } from "./data";
 import { CAMP_PHOTOS, SUMMIT_PHOTO, TRAIL_PHOTOS, type ClimbPhoto } from "./photos";
 import { ENTRY_ICONS, FALLBACK_ICON } from "./icons";
 import {
@@ -389,22 +390,8 @@ function Caption({ o }: { o: Showable }) {
     if (lane && lane.def.stages.length > 1) extra = <StoryStrip lane={lane} current={t} />;
   } else if (o.kind === "summit") {
     photo = SUMMIT_PHOTO;
-    meta = "2,517 feet";
-    title = "The summit.";
-    extra = (
-      <div className="mt-3 flex flex-wrap gap-x-10 gap-y-2">
-        {SUMMIT_SCORES.map((s) => (
-          <p key={s.label} className="flex items-baseline gap-2">
-            <span className="font-serif text-[2.4rem] leading-none md:text-[3rem]" style={{ color: GLOW }}>
-              {s.value}
-            </span>
-            <span className="text-[15px]" style={{ color: MUTED }}>
-              {s.label}
-            </span>
-          </p>
-        ))}
-      </div>
-    );
+    meta = "Mission Peak summit, 2,517 feet";
+    title = "Locked In.";
   } else {
     const camp = CAMP_BY_YEAR.get(o.year)!;
     photo = CAMP_PHOTOS[o.year];
@@ -441,6 +428,24 @@ const TILE_STARS = Array.from({ length: 14 }, (_, i) => ({
 }));
 const CAPTION_STOPS = MARKERS.map((m) => ({ x: m.x, o: m as Showable }));
 const CAPTION_REACH = 230; // px either side of a stop
+const CAPTION_KEEP = 520; // a caption stays up until the next stop takes over (no blank gaps)
+const CAPTION_SWITCH = 36; // px — the next stop must be clearly closer before it takes the slot
+const CAPTION_DWELL = 420; // ms — minimum time a caption stays before the next can replace it
+
+/** Warm the browser cache for the next few photos up the trail, so a caption never pops in. */
+const warmed = new Set<string>();
+function warm(src?: string) {
+  if (!src || warmed.has(src) || typeof window === "undefined") return;
+  warmed.add(src);
+  const im = new Image();
+  im.decoding = "async";
+  im.src = src;
+}
+function photoOf(o: Showable): string | undefined {
+  if (o.kind === "flag" || o.kind === "entry") return TRAIL_PHOTOS[o.t.title]?.src;
+  if (o.kind === "summit") return SUMMIT_PHOTO.src;
+  return CAMP_PHOTOS[o.year]?.src;
+}
 
 /* ── the game ───────────────────────────────────────────────── */
 
@@ -497,6 +502,8 @@ export function ClimbGame() {
   /* hovering (or tapping) a light borrows the caption slot; walking gives it back */
   const [api] = useState<HoverApi>(() => ({
     show: (o) => {
+      // the world slides under a still cursor while walking — those aren't real hovers
+      if (Math.abs(sim.current.v) > 25 || sim.current.auto !== null) return;
       window.clearTimeout(hideTimer.current);
       setHoverItem((cur) => (cur?.id === o.id ? cur : o));
     },
@@ -570,6 +577,8 @@ export function ClimbGame() {
     let lastFacing = 1;
     let lastRisen = 0;
     let lastCap: Showable | null = null;
+    let lastCapAt = 0;
+    let warmedUpTo = -1;
 
     const frame = (now: number) => {
       const dt = Math.min((now - last) / 1000, 0.05);
@@ -682,19 +691,31 @@ export function ClimbGame() {
         setRisen(n);
       }
 
-      // caption: the nearest stop within reach of the hiker
+      // caption: the nearest stop within reach — sticky, so it hands over instead of blinking
       let cap: Showable | null = null;
       let capD = CAPTION_REACH;
-      for (const c of CAPTION_STOPS) {
-        const d = Math.abs(c.x - s.x);
+      let capI = -1;
+      for (let i = 0; i < CAPTION_STOPS.length; i++) {
+        const d = Math.abs(CAPTION_STOPS[i].x - s.x);
         if (d < capD) {
           capD = d;
-          cap = c.o;
+          cap = CAPTION_STOPS[i].o;
+          capI = i;
         }
       }
-      if (cap !== lastCap) {
+      if (lastCap) {
+        const curD = Math.abs(CAPTION_STOPS.find((c) => c.o === lastCap)!.x - s.x);
+        if (!cap) cap = curD < CAPTION_KEEP ? lastCap : null;
+        else if (cap !== lastCap && capD > curD - CAPTION_SWITCH) cap = lastCap;
+      }
+      if (cap !== lastCap && (now - lastCapAt > CAPTION_DWELL || !lastCap || !cap)) {
         lastCap = cap;
+        lastCapAt = now;
         setWalkItem(cap);
+      }
+      if (capI > warmedUpTo) {
+        warmedUpTo = capI;
+        for (let k = capI; k < Math.min(capI + 4, CAPTION_STOPS.length); k++) warm(photoOf(CAPTION_STOPS[k].o));
       }
 
       let best: Marker | null = null;
@@ -744,6 +765,10 @@ export function ClimbGame() {
 
   const risenUpTo = risen > 0 ? SKY_ITEMS[risen - 1].x : -1;
   const shown = hoverItem ?? walkItem;
+  // two layers only — the caption on screen and the one fading out under it
+  const [cap, setCap] = useState<{ cur: Showable | null; prev: Showable | null }>({ cur: null, prev: null });
+  if (shown !== cap.cur) setCap({ cur: shown, prev: cap.cur });
+  const capLayers = [cap.prev, cap.cur].filter((o, i, a): o is Showable => !!o && (i === 1 || o.id !== a[1]?.id));
   const pill = "border border-white/25 bg-white/[0.04] backdrop-blur-md text-[#f4efe6] hover:bg-white/[0.1]";
 
   return (
@@ -762,7 +787,11 @@ export function ClimbGame() {
         @keyframes climb-bob { from { transform: translateY(0); } to { transform: translateY(-2px); } }
         .climb-twinkle { animation: climb-twinkle 3.2s ease-in-out infinite alternate; }
         @keyframes climb-twinkle { from { opacity: 0.25; } to { opacity: 1; } }
-        @media (prefers-reduced-motion: reduce) { .climb-twinkle { animation: none; } }
+        .climb-cap { transition: opacity 0.5s cubic-bezier(0.22,1,0.36,1), translate 0.5s cubic-bezier(0.22,1,0.36,1), visibility 0s; }
+        .climb-cap[data-on="1"] { opacity: 1; translate: 0 0; visibility: visible; }
+        @starting-style { .climb-cap[data-on="1"] { opacity: 0; translate: 0 10px; } }
+        .climb-cap[data-on="0"] { opacity: 0; translate: 0 -6px; visibility: hidden; transition-duration: 0.45s, 0.45s, 0s; transition-delay: 0s, 0s, 0.45s; }
+        @media (prefers-reduced-motion: reduce) { .climb-twinkle { animation: none; } .climb-cap { translate: none !important; } }
       `}</style>
 
       {/* sky */}
@@ -931,6 +960,12 @@ export function ClimbGame() {
               {r.label}
             </button>
           ))}
+          <Link
+            href="/achievements/resume"
+            className="ml-1 flex h-11 shrink-0 items-center whitespace-nowrap rounded-full bg-[#ffc94d] px-4 text-base font-medium text-[#0a1a30] transition-colors hover:bg-[#ffd877]"
+          >
+            Resume Achievements
+          </Link>
         </nav>
 
         <div className="pointer-events-auto flex shrink-0 gap-2 self-end">
@@ -964,20 +999,11 @@ export function ClimbGame() {
       {/* the caption — bottom third, crossfading as you walk */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[52%] bg-gradient-to-t from-[rgba(3,10,26,0.97)] via-[rgba(3,10,26,0.82)] to-transparent md:h-[54%] md:from-[rgba(3,10,26,0.96)] md:via-[rgba(3,10,26,0.74)]" aria-hidden />
       <div className="pointer-events-none absolute inset-x-0 bottom-[146px] z-20 px-4 md:bottom-[96px] md:px-12" aria-live="polite">
-        <AnimatePresence initial={false}>
-          {shown && (
-            <motion.div
-              key={shown.id}
-              className="absolute inset-x-4 bottom-0 md:inset-x-12"
-              initial={{ opacity: 0, y: reduced ? 0 : 14, scale: reduced ? 1 : 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: reduced ? 0 : -8, scale: reduced ? 1 : 1.01, transition: { duration: 0.14 } }}
-              transition={{ duration: 0.3, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <Caption o={shown} />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {capLayers.map((o) => (
+          <div key={o.id} data-on={o === cap.cur ? "1" : "0"} aria-hidden={o !== cap.cur} className="climb-cap absolute inset-x-4 bottom-0 md:inset-x-12">
+            <Caption o={o} />
+          </div>
+        ))}
       </div>
     </section>
   );

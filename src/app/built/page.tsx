@@ -14,7 +14,7 @@ import { PROFILE, PROJECTS } from "@/lib/data";
 export const metadata: Metadata = {
   title: "Things I've Built",
   description:
-    "AcornPrep, Hermes, NotebookLI and five more — real products with real users. 500+ users, #1 Google result, shipped by a high-school builder.",
+    "AcornPrep, Hermes, NotebookLI and five more — real products with real users. 2,000+ users, #1 Google result, shipped by a high-school builder.",
 };
 
 const bySlug = (s: string) => PROJECTS.find((p) => p.slug === s)!;
