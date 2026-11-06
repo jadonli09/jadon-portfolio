@@ -2,127 +2,127 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
 import { asset } from "@/lib/base";
 import { EASE } from "@/lib/motion";
-import { PROFILE, SENTENCE_DOORS } from "@/lib/data";
-import { startWorldTransition, WORLD_NAV_DELAY_MS } from "@/lib/transition";
+import { PROFILE } from "@/lib/data";
 
-/* ── the contents page: every door in one list, one picture that swaps ── */
+/*
+ * The close of the homepage. The hero already opens the seven chapters, so the
+ * end only carries what the hero doesn't — and gives each its own shape:
+ * Achievements as a split (one photo, two ways in), Albums as a strip of
+ * pictures, and Say hello as a field of gold.
+ */
 
-type Entry = { key: string; title: string; note: string; href: string; img: string; pos: string; accent: string; world?: string };
-
-const D = SENTENCE_DOORS;
-const ENTRIES: Entry[] = [
-  { key: "leads", title: "Leadership & Events", note: D.leads.peek, href: D.leads.href, img: "/img/covers/leads.jpg", pos: "50% 30%", accent: D.leads.color, world: D.leads.id },
-  { key: "films", title: "Civic & Storytelling", note: D.films.peek, href: D.films.href, img: "/img/covers/films.jpg", pos: "50% 30%", accent: D.films.color, world: D.films.id },
-  { key: "researches", title: "Research & STEM", note: D.researches.peek, href: D.researches.href, img: "/img/covers/researches.jpg", pos: "50% 30%", accent: D.researches.color, world: D.researches.id },
-  { key: "builds", title: "Things I've Built", note: D.builds.peek, href: D.builds.href, img: "/img/covers/builds.jpg", pos: "50% 30%", accent: D.builds.color, world: D.builds.id },
-  { key: "competes", title: "The Court", note: D.competes.peek, href: D.competes.href, img: "/img/covers/competes.jpg", pos: "50% 30%", accent: D.competes.color, world: D.competes.id },
-  { key: "documents", title: "Locked In", note: D.documents.peek, href: D.documents.href, img: "/img/covers/documents.jpg", pos: "50% 30%", accent: D.documents.color, world: D.documents.id },
-  { key: "person", title: "The Person", note: D.person.peek, href: D.person.href, img: "/img/covers/person.jpg", pos: "50% 30%", accent: D.person.color, world: D.person.id },
-  { key: "achievements", title: "Achievements", note: "Walk up Mission Peak, or read the whole list", href: "/achievements", img: "/img/missionpeak2026.jpg", pos: "50% 40%", accent: "#d9a83f" },
-  { key: "albums", title: "Albums", note: "Every original photo, and a 45-selfie match cut", href: "/albums", img: "/img/ny-01.jpg", pos: "50% 55%", accent: "#7c89e8" },
-];
-
-function Contents() {
-  const [active, setActive] = useState(0);
+function Rise({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) {
   const reduced = useReducedMotion();
-  const router = useRouter();
-  const navigating = useRef(false);
-
-  const go = (e: React.MouseEvent, en: Entry) => {
-    if (!en.world || e.metaKey || e.ctrlKey || e.shiftKey) return;
-    e.preventDefault();
-    if (navigating.current) return;
-    navigating.current = true;
-    startWorldTransition(en.world);
-    window.setTimeout(() => router.push(en.href), WORLD_NAV_DELAY_MS);
-  };
-
   return (
-    <section id="close" aria-labelledby="contents-h" className="relative scroll-mt-24 px-5 pb-28 pt-24 md:px-9 md:pb-40 md:pt-36">
-      <div className="mx-auto grid max-w-[1360px] gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,0.82fr)] md:gap-16">
-        <div>
-          <h2 id="contents-h" className="font-anton text-[clamp(3.2rem,8vw,7.5rem)] uppercase leading-[0.9] tracking-[-0.01em]">
-            Contents
-          </h2>
-          <ul className="mt-8 md:mt-12">
-            {ENTRIES.map((en, i) => {
-              const on = i === active;
-              return (
-                <motion.li
-                  key={en.key}
-                  initial={reduced ? false : { opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-8% 0px" }}
-                  transition={{ delay: i * 0.06, duration: 0.7, ease: EASE }}
-                >
-                  <Link
-                    href={en.href}
-                    data-cursor-hover
-                    onClick={(e) => go(e, en)}
-                    onPointerEnter={(e) => e.pointerType === "mouse" && setActive(i)}
-                    onFocus={() => setActive(i)}
-                    className="group flex items-center gap-4 py-3 outline-none md:py-3.5"
-                  >
-                    {/* phones have no hover: each row carries its own small picture */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={asset(en.img)}
-                      alt=""
-                      loading="lazy"
-                      className="size-16 shrink-0 rounded-[3px] object-cover md:hidden"
-                      style={{ objectPosition: en.pos }}
-                    />
-                    <span className="min-w-0 flex-1">
-                      <span
-                        className={`block font-display text-[1.65rem] leading-[1.08] transition-[color,translate] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-focus-visible:underline md:text-[clamp(2rem,3vw,2.9rem)] md:group-hover:translate-x-2 ${on ? "md:text-[var(--acc)]" : ""}`}
-                        style={{ ["--acc" as string]: en.accent }}
-                      >
-                        {en.title}
-                      </span>
-                      <span className="mt-1 block text-[15px] leading-snug text-[#cfc6bb] md:text-[17px]">{en.note}</span>
-                    </span>
-                    <span
-                      aria-hidden
-                      className="shrink-0 text-2xl transition-[translate,opacity] duration-300 md:opacity-0 md:group-hover:translate-x-1 md:group-hover:opacity-100 md:group-focus-visible:opacity-100"
-                      style={{ color: en.accent }}
-                    >
-                      →
-                    </span>
-                  </Link>
-                </motion.li>
-              );
-            })}
-          </ul>
-        </div>
+    <motion.div
+      className={className}
+      initial={reduced ? false : { opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-10% 0px" }}
+      transition={{ delay, duration: 0.8, ease: EASE }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
-        {/* desktop: one big picture, swapped by the row under the pointer */}
-        <div className="relative hidden md:block">
-          <div className="sticky top-24 aspect-[4/5] w-full overflow-hidden rounded-[3px] bg-black">
-            {ENTRIES.map((en, i) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                key={en.key}
-                src={asset(en.img)}
-                alt={i === active ? en.title : ""}
-                aria-hidden={i !== active}
-                className="absolute inset-0 h-full w-full object-cover transition-[opacity,scale] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                style={{ objectPosition: en.pos, opacity: i === active ? 1 : 0, scale: i === active || reduced ? "1" : "1.04" }}
-              />
-            ))}
+const solid = "inline-flex h-14 items-center rounded-full px-7 text-[17px] font-semibold transition-[scale,background-color,color] duration-200 active:scale-[0.97]";
+
+/* ── achievements: one photo, two ways in ─────────────────────────── */
+
+function Achievements() {
+  return (
+    <section id="close" aria-labelledby="ach-h" className="scroll-mt-24 px-5 pb-24 pt-24 md:px-9 md:pb-36 md:pt-36">
+      <div className="mx-auto grid max-w-[1360px] items-center gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-16">
+        <Rise>
+          <h2 id="ach-h" className="font-anton text-[clamp(3.4rem,7.4vw,7rem)] uppercase leading-[0.9] tracking-[-0.01em]">
+            Achievements
+          </h2>
+          <p className="mt-6 max-w-[34ch] text-[19px] leading-relaxed text-[#e6ded3] md:text-[21px]">
+            Every award and role since 2021. Climb Mission Peak with me at night, or read it all on one page.
+          </p>
+          <div className="mt-9 flex flex-wrap gap-3">
+            <Link href="/achievements" className={`${solid} bg-[#d9a83f] text-[#120e0c] hover:bg-[#e6b955]`}>
+              Climb Mission Peak
+            </Link>
+            <Link href="/achievements/resume" className={`${solid} bg-white/[0.08] text-[#f4efe6] hover:bg-white/[0.14]`}>
+              See the full list
+            </Link>
           </div>
-        </div>
+        </Rise>
+        <Rise delay={0.1}>
+          <Link href="/achievements" aria-label="Climb Mission Peak" className="group block overflow-hidden rounded-[3px]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={asset("/img/missionpeak2026.jpg")}
+              alt="Jadon on the Mission Peak summit rocks at sunrise"
+              loading="lazy"
+              className="aspect-[4/5] w-full object-cover transition-[scale] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] md:aspect-[5/6]"
+              style={{ objectPosition: "50% 40%" }}
+            />
+          </Link>
+        </Rise>
       </div>
     </section>
   );
 }
 
-/* ── the back page: the masthead once, then how to reach him ───────── */
+/* ── albums: a strip of real pictures, one height, native shapes ───── */
 
-function BackPage() {
+const STRIP = [
+  { src: "/img/ny-01.jpg", alt: "The Brooklyn Bridge at night", ar: 0.75, phone: 0 },
+  { src: "/img/ncs-champions.jpg", alt: "MSJ varsity with the NCS banner", ar: 1.78, phone: 1 },
+  { src: "/img/winterball-1.jpg", alt: "The Winter Ball dance floor", ar: 0.86, phone: 0 },
+  { src: "/img/umass-01.jpg", alt: "Presenting the poster at UMass", ar: 1.5, phone: -1 },
+];
+
+function Albums() {
+  const rows = [STRIP.filter((p) => p.phone === 0), STRIP.filter((p) => p.phone === 1)];
+  const pic = (p: (typeof STRIP)[number]) => (
+    <span key={p.src} className="block overflow-hidden rounded-[3px]" style={{ flex: `${p.ar} 1 0%`, aspectRatio: p.ar }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={asset(p.src)} alt={p.alt} loading="lazy" className="h-full w-full object-cover transition-[scale] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]" />
+    </span>
+  );
+  return (
+    <section aria-labelledby="alb-h" className="px-5 pb-24 md:px-9 md:pb-36">
+      <div className="mx-auto max-w-[1360px]">
+        <Rise className="flex flex-wrap items-end justify-between gap-x-10 gap-y-5">
+          <div>
+            <h2 id="alb-h" className="font-anton text-[clamp(3.4rem,7.4vw,7rem)] uppercase leading-[0.9] tracking-[-0.01em]">
+              Albums
+            </h2>
+            <p className="mt-5 max-w-[40ch] text-[19px] leading-relaxed text-[#e6ded3] md:text-[21px]">
+              Every original photo, and a 45-selfie match cut from summer 2026.
+            </p>
+          </div>
+          <Link href="/albums" className={`${solid} bg-[#7c89e8] text-[#120e0c] hover:bg-[#949fee]`}>
+            Open the albums
+          </Link>
+        </Rise>
+        <Rise delay={0.1} className="mt-10 md:mt-14">
+          <Link href="/albums" aria-label="Open the albums" className="group block">
+            <span className="hidden gap-3 md:flex">{STRIP.map(pic)}</span>
+            <span className="flex flex-col gap-2 md:hidden">
+              {rows.map((r, i) => (
+                <span key={i} className="flex gap-2">
+                  {r.map(pic)}
+                </span>
+              ))}
+            </span>
+          </Link>
+        </Rise>
+      </div>
+    </section>
+  );
+}
+
+/* ── say hello: a field of gold, the email as the headline ─────────── */
+
+function SayHello() {
   const [copied, setCopied] = useState(false);
   const timer = useRef<number | undefined>(undefined);
   const copy = async () => {
@@ -142,16 +142,12 @@ function BackPage() {
   ];
 
   return (
-    <footer aria-labelledby="backpage-h" className="relative bg-[#d9a83f] px-5 pb-10 pt-12 text-[#120e0c] md:px-9 md:pb-12 md:pt-16">
+    <footer aria-labelledby="backpage-h" className="relative bg-[#d9a83f] px-5 pb-10 pt-16 text-[#120e0c] md:px-9 md:pb-12 md:pt-24">
       <div className="mx-auto max-w-[1360px]">
-        <p aria-hidden className="select-none whitespace-nowrap text-center font-anton text-[calc((100vw-44px)/3.61)] leading-[0.82] tracking-[-0.01em] md:text-[min(calc((100vw-76px)/3.61),376px)]">
-          LOCKED IN
-        </p>
-
-        <div className="mt-12 grid gap-12 md:mt-20 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end md:gap-16">
+        <div className="grid gap-12 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end md:gap-16">
           <div>
             <p className="text-[18px] md:text-[20px]">Say hello.</p>
-            <h2 id="backpage-h" className="mt-3 whitespace-nowrap font-display text-[7.4vw] leading-[1.02] tracking-[-0.02em] md:text-[min(3.9vw,3.6rem)]">
+            <h2 id="backpage-h" className="mt-3 whitespace-nowrap font-display text-[7.4vw] leading-[1.02] tracking-[-0.02em] md:text-[min(4.4vw,4.1rem)]">
               <a href={`mailto:${PROFILE.email}`} className="underline-offset-[0.12em] hover:underline">
                 {PROFILE.email}
               </a>
@@ -201,12 +197,13 @@ function BackPage() {
   );
 }
 
-/** The close of the homepage: a contents page, then the back page. */
+/** The close of the homepage: achievements, albums, then say hello. */
 export function LandingClose() {
   return (
     <>
-      <Contents />
-      <BackPage />
+      <Achievements />
+      <Albums />
+      <SayHello />
     </>
   );
 }
