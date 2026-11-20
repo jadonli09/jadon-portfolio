@@ -65,6 +65,8 @@ export const TRAIL_PHOTOS: Record<string, ClimbPhoto> = {
   "Met the Governor & First Partner": { src: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg", alt: "With First Partner Jennifer Siebel Newsom", pos: "50% 40%" },
   "CueSheet — shipped": { src: "/embeds/cuesheet.jpg", alt: "CueSheet, live at cuesheet.xyz", pos: "50% 0%" },
   "MSJ Makes VP": { src: "/img/msjmakes-stoles.jpg", alt: "Senior stoles made by MSJ Makes", pos: "50% 50%" },
+  "Rung — 2nd of 81 at a16z SpeedHacks": { src: "/img/climb/speedhacks-challenge.jpg", alt: "The SpeedHacks challenge slide: give people their time back", pos: "50% 45%" },
+  "Salwan Central — live": { src: "/img/salwan/salwan-01.jpg", alt: "A student raising a cup of matcha with Mayor Raj Salwan", pos: "50% 45%" },
   "Hermes — live on @msjclubs": { src: "/embeds/hermes-story-card.jpg", alt: "A Hermes daily club-schedule story", pos: "50% 30%" },
   "msjhsasb.org — rebuilt the ASB site": { src: "/embeds/msjhsasb.jpg", alt: "The rebuilt msjhsasb.org", pos: "50% 0%" },
   "MSJ Car Meet": { src: "/img/carmeet1.jpg", alt: "The MSJ car meet", pos: "50% 50%" },

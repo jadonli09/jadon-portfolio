@@ -33,15 +33,17 @@ const SHOTS: Record<string, Shot> = {
   tips: { src: "/embeds/stream/acorn-tips.jpg", aspect: 1.5534, slug: "acornprep", alt: "AcornPrep study modes" },
   ysj: { src: "/embeds/stream/ysj.jpg", aspect: 1.6, slug: "youth-stem-journal", alt: "Youth STEM Journal" },
   acorn: { src: "/embeds/stream/acornprep.jpg", aspect: 1.6, slug: "acornprep", alt: "AcornPrep" },
+  salwan: { src: "/embeds/stream/salwan.jpg", aspect: 1.6, slug: "salwan-central", alt: "Salwan Central" },
+  rung: { src: "/embeds/stream/rung.jpg", aspect: 1.6, slug: "rung", alt: "Rung's callback queue" },
   site: { src: "/embeds/stream/jadonli.jpg", aspect: 1.6, slug: "jadonli-com", alt: "jadonli.com" },
 };
 
 /** One portrait per column, and no product twice in a row. */
 const COLUMNS = [
-  { shots: ["mcq", "story", "asb", "reader", "tips", "site"], seconds: 64, reverse: false },
-  { shots: ["cuesheet", "tutor", "makes", "frq", "ysj", "acorn"], seconds: 76, reverse: true },
+  { shots: ["salwan", "story", "asb", "reader", "tips", "site"], seconds: 64, reverse: false },
+  { shots: ["rung", "tutor", "makes", "frq", "ysj", "acorn"], seconds: 76, reverse: true },
 ];
-const ROW = ["acorn", "story", "cuesheet", "reader", "tutor", "asb", "mcq", "makes", "ysj", "frq", "site", "tips"];
+const ROW = ["salwan", "rung", "acorn", "story", "cuesheet", "reader", "tutor", "asb", "mcq", "makes", "ysj", "frq", "site", "tips"];
 
 const NAME = Object.fromEntries(PROJECTS.map((p) => [p.slug, p.name]));
 

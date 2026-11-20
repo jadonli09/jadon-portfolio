@@ -145,7 +145,7 @@ export const SENTENCE_DOORS = {
   leads: { id: "leadership", num: "01", kicker: "The Operator", word: "leads", href: "/leadership", color: "#d9a83f", accent: "#b07c1e", photo: "/img/asb-officers.jpg", peek: "3× Class President → ASB President, in office", desc: "Elected class president three years running, now ASB President in office — the operator behind the rallies, Winter Ball, and $15k raised for the Class of 2027.", title: "Elected to lead, every year.", lede: "That discipline found a stage. Three-time Class President, now ASB President — he lost his way into winning, and runs events at the scale of a city.", cta: "Into leadership & events" },
   films: { id: "civic", num: "02", kicker: "The Storyteller", word: "films", href: "/civic", color: "#e0644e", accent: "#c2402c", photo: "/img/voices-of-fremont-with-jennifersiebalnewsom.jpg", peek: "The Mayor's videographer · Voices of Fremont", desc: "Films for the Mayor of Fremont — civic stories like Voices of Fremont that pull 20k+ views a video.", title: "Documenting a city, and himself.", lede: "Then he picked up a camera. He tells a city's stories — directing the Voices of Fremont podcast with the Mayor, a viral push to revive a beloved restaurant, and a paid role as the Mayor's videographer.", cta: "Into civic & storytelling" },
   researches: { id: "research", num: "03", kicker: "The Scientist", word: "researches", href: "/research", color: "#2fc4ad", accent: "#0c9c86", photo: "/img/umass-01.jpg", peek: "ACSEF 3rd · a glowing fungus at UMass", desc: "Computational biology on gout pain (3rd in comp bio at ACSEF) — then a summer in a UMass Amherst lab engineering a red-fluorescent Fusarium.", title: "Reading the genome of pain.", lede: "Curiosity pulled him into the lab. Trained in R by a Stanford professor, he hunted the mediators of gout pain in a mouse model — then spent six weeks at UMass Amherst making a human-pathogenic fungus glow red.", cta: "Into research & STEM" },
-  builds: { id: "built", num: "04", kicker: "The Builder", word: "builds", href: "/built", color: "#7c89e8", accent: "#4f5fd6", photo: "/img/presenting-acornprep-at-gemini-meetup.jpg", peek: "AcornPrep · 2,000+ users · NotebookLI", desc: "Built AcornPrep, an AP study app with 2,000+ users (#1 on Google), and NotebookLI, a reader that makes dense research papers legible.", title: "Ship it. Then ship the next.", lede: "What he learned, he shipped. AcornPrep turned eleven AP exams, every one a 5, into a study tool 2,000+ people actually use — the #1 Google result, pitched at Stanford. Then NotebookLI, built mid-research so dense papers read like conversations.", cta: "Into the things he's built" },
+  builds: { id: "built", num: "04", kicker: "The Builder", word: "builds", href: "/built", color: "#7c89e8", accent: "#4f5fd6", photo: "/img/presenting-acornprep-at-gemini-meetup.jpg", peek: "Salwan Central · Rung · AcornPrep", desc: "Builds tools that connect people: Salwan Central, the hub Mayor Salwan's office runs its resident conversations on, and Rung, an AI phone line that took 2nd of 81 at a16z SpeedHacks.", title: "Ship it. Then ship the next.", lede: "What he learned, he shipped. Salwan Central turned coffee with the Mayor into follow-through, Rung took 2nd of 81 at a16z SpeedHacks, and AcornPrep has 2,000+ users.", cta: "Into the things he's built" },
   competes: { id: "court", num: "05", kicker: "The Competitor", word: "competes", href: "/court", color: "#f0703a", accent: "#e04e12", photo: "/img/ncs-champions.jpg", peek: "First NCS title in school history", desc: "Varsity basketball — started on the team that won the first NCS title in school history.", title: "First in school history.", lede: "And through all of it, the court. He started in the first five the year Mission San Jose won its first NCS title in school and district history.", cta: "Into the court" },
   documents: { id: "lockedin", num: "06", kicker: "The Pursuit", word: "documents all of it", href: "/locked-in", color: "#e8689c", accent: "#d23f7c", photo: "/img/headshot1.jpg", peek: "@li_locked.in · 2.3M plays and counting", desc: "Posts the whole journey on @li_locked.in — 100 reels and 2.3M plays so far.", title: "The pursuit of happiness.", lede: "And the whole thing is documented. @li_locked.in is the public journal — 100 reels, 2.3 million plays — all pointing one direction: the pursuit of happiness.", cta: "Into Locked In" },
   person: { id: "about", num: "07", kicker: "The Person", word: "person", href: "/about", color: "#c98a5d", accent: "#a9683f", photo: "/img/missionpeak2026-1.jpg", peek: "Mission Peak every birthday · journaling since 8th grade", desc: "The person underneath it all: Mission Peak every birthday, journaling since 8th grade.", title: "A stopwatch, a journal, a kitchen.", lede: "Start with the person. Every birthday since he was twelve, Jadon runs Mission Peak alone. He's journaled since eighth grade, cooks feasts with designed menus for his friends — and recommends a good nap.", cta: "Into the person" },
@@ -165,10 +165,10 @@ export type HeroCover = {
 /** In sentence order: the name (the person) first, then the six verbs. */
 export const HERO_COVERS: HeroCover[] = [
   { door: "person", img: "/img/covers/person.jpg", cut: "/img/covers/person-cut.webp", line: "A stopwatch, a journal, a kitchen", sub: "Mission Peak every birthday since twelve", cta: "Meet the person" },
+  { door: "builds", img: "/img/covers/builds.jpg", line: "Built for the Mayor's office", sub: "Salwan Central, and Rung: 2nd of 81 at a16z SpeedHacks", cta: "Things he's built" },
   { door: "leads", img: "/img/covers/leads.jpg", cut: "/img/covers/leads-cut.webp", line: "Three-time president", sub: "Class president every year, now ASB President", cta: "Leadership & events" },
   { door: "films", img: "/img/covers/films.jpg", cut: "/img/covers/films-cut.webp", line: "The Mayor's videographer", sub: "Voices of Fremont, 20k+ views a video", cta: "Civic & storytelling" },
   { door: "researches", img: "/img/covers/researches.jpg", cut: "/img/covers/researches-cut.webp", line: "Why a fungus glows red", sub: "Six weeks in a UMass Amherst lab, after 3rd at ACSEF", cta: "Research & STEM" },
-  { door: "builds", img: "/img/covers/builds.jpg", line: "I'm the builder", sub: "AcornPrep, Hermes, NotebookLI and more", cta: "Things he's built" },
   { door: "competes", img: "/img/covers/competes.jpg", cut: "/img/covers/competes-cut.webp", line: "First in school history", sub: "Starter on Mission\u00a0San\u00a0Jose's first NCS title team", cta: "The court" },
   { door: "documents", img: "/img/covers/documents.jpg", cut: "/img/covers/documents-cut.webp", line: "2.3M plays and counting", sub: "100 reels on @li_locked.in", cta: "Locked In" },
 ];
@@ -578,6 +578,48 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
+    name: "Salwan Central",
+    url: "https://salwan-central.vercel.app",
+    domain: "salwan-central.vercel.app",
+    embeddable: true,
+    shot: "/embeds/salwan-central/home.jpg",
+    logo: "/img/logos/salwan-central.svg",
+    tagline: "Where a coffee with the Mayor becomes a project.",
+    // Figures from Jadon, 2026-11-17 (40 conversations, 200 applications).
+    stats: [
+      { value: "40", label: "Conversations held" },
+      { value: "200", label: "Student applications" },
+      { value: "73", label: "Residents on the waitlist" },
+      { value: "36", label: "Follow-up workspaces" },
+    ],
+    body:
+      "As a lead intern for Mayor Raj Salwan, Jadon watched good ideas from residents and students end when the coffee did. He built Salwan Central alone: Sips with Salwan sign-ups for residents, Matcha with the Mayor applications and prep calls for students, a civic-internship workspace, and a private follow-up workspace where each idea keeps moving with the Mayor's team. Live since October 18, 2026, with 314 automated tests behind it. Run by the Mayor's team; not an official City of Fremont website.",
+    stack: ["Next.js", "Supabase", "Postgres RLS", "Claude Code"],
+    tier: 1,
+    slug: "salwan-central",
+    launched: "10/18/2026",
+  },
+  {
+    name: "Rung",
+    url: "https://www.tryrung.today",
+    domain: "tryrung.today",
+    embeddable: true,
+    shot: "/embeds/rung/hero.jpg",
+    logo: "/img/logos/rung.svg",
+    tagline: "Never on hold. Never a stranger.",
+    stats: [
+      { value: "2nd", label: "of 81 teams at a16z SpeedHacks" },
+      { value: "Best", label: "Use of Dial" },
+      { value: "12", label: "Hours from idea to a live phone line" },
+    ],
+    body:
+      "Built at SpeedHacks, the a16z speedrun hackathon at SF Tech Week (Oct 11, 2026), around one prompt: give people their time back. An AI voice agent answers every support call on a real phone number, verifies the caller with a texted code, writes the rep a three-line brief, and ranks everyone for a human callback, most urgent first. Call again and it already knows you. Jadon wrote most of the code and was the lead presenter, with Reid Mariotti and Conrad Spaudie. 2nd of 81 teams and Best Use of Dial, the first high schoolers to place; Dial asked to partner on taking it to enterprise.",
+    stack: ["Dial", "MCP", "Claude", "Supabase", "React"],
+    tier: 1,
+    slug: "rung",
+    launched: "10/11/2026",
+  },
+  {
     name: "AcornPrep",
     url: "https://acornprep.com",
     domain: "acornprep.com",
@@ -587,12 +629,12 @@ export const PROJECTS: Project[] = [
     tagline: "Unconventionally productive AP study tools.",
     stats: [
       { value: "2,000+", label: "Users" },
-      { value: "13,000", label: "MCQs practiced" },
+      { value: "52,000+", label: "Questions answered" },
       { value: "10", label: "AP courses" },
       { value: "#1", label: "Google result" },
     ],
     body:
-      "Built by an 11-AP veteran — every exam a 5 — for a high-stress school with no centralized study materials. AcornPrep packages AP prep into modes that fit how people actually study — unlimited MCQ practice, graded FRQ practice, flashcards, podcasts, study guides, tips & tricks, worked examples, and mind maps, with AI tutor guidance. Released to Mission San Jose on 04/11/2026; 100 users in the first 24 hours, 2,000+ since, 13,000 MCQs practiced. Endorsed by 4 AP teachers, #1 Google result, and rebuilt from scratch with Claude Code on a real dev pipeline. Pitched at Stanford's Youth Business Venture Competition (Aug 15, 2026) as a top-15 finalist of 300+ entries — the judges' verdict: strong pitch, crowded market. Next: SAT prep. Partner: Pradyun Kanuparthi.",
+      "Built by an 11-AP veteran — every exam a 5 — for a high-stress school with no centralized study materials. AcornPrep packages AP prep into modes that fit how people actually study — unlimited MCQ practice, graded FRQ practice, flashcards, podcasts, study guides, tips & tricks, worked examples, and mind maps, with AI tutor guidance. Released to Mission San Jose on 04/11/2026; 100 users in the first 24 hours, 2,000+ since, 52,000+ questions answered. Endorsed by 4 AP teachers, #1 Google result, and rebuilt from scratch with Claude Code on a real dev pipeline. Pitched at Stanford's Youth Business Venture Competition (Aug 15, 2026) as a top-15 finalist of 300+ entries — the judges' verdict: strong pitch, crowded market. Next: SAT prep. Partner: Pradyun Kanuparthi.",
     stack: ["React", "TypeScript", "AI grading"],
     tier: 1,
     slug: "acornprep",
@@ -621,25 +663,6 @@ export const PROJECTS: Project[] = [
     launched: "08/2026",
   },
   {
-    name: "NotebookLI",
-    url: "https://notebookli.vercel.app",
-    domain: "notebookli.vercel.app",
-    embeddable: true,
-    shot: "/embeds/notebookli.jpg",
-    logo: "/img/logos/notebookli.svg",
-    tagline: "Actually understand the research paper.",
-    stats: [
-      { value: "Live", label: "notebookli.vercel.app" },
-      { value: "6", label: "Papers read with it at UMass" },
-    ],
-    body:
-      "Built mid-research at UMass, when six dense Fusarium papers were the reading list. Search PubMed or upload a PDF, then read it in a structured reader: define any term in place, highlight and annotate, ask a chatbot that scrolls to the exact paragraph it cites, and fill a journal-club worksheet as you go. Named after NotebookLM — but LI. Friends in the lab used it too.",
-    stack: ["Next.js", "Claude API", "Supabase"],
-    tier: 2,
-    slug: "notebookli",
-    launched: "Summer 2026",
-  },
-  {
     name: "MSJHS ASB",
     url: "https://msjhsasb.org",
     domain: "msjhsasb.org",
@@ -656,6 +679,25 @@ export const PROJECTS: Project[] = [
     stack: ["Web", "Search", "ASB"],
     tier: 3,
     slug: "msjhs-asb",
+  },
+  {
+    name: "NotebookLI",
+    url: "https://notebookli.vercel.app",
+    domain: "notebookli.vercel.app",
+    embeddable: true,
+    shot: "/embeds/notebookli.jpg",
+    logo: "/img/logos/notebookli.svg",
+    tagline: "Actually understand the research paper.",
+    stats: [
+      { value: "Live", label: "notebookli.vercel.app" },
+      { value: "6", label: "Papers read with it at UMass" },
+    ],
+    body:
+      "Built mid-research at UMass, when six dense Fusarium papers were the reading list. Search PubMed or upload a PDF, then read it in a structured reader: define any term in place, highlight and annotate, ask a chatbot that scrolls to the exact paragraph it cites, and fill a journal-club worksheet as you go. Named after NotebookLM — but LI. Friends in the lab used it too.",
+    stack: ["Next.js", "Claude API", "Supabase"],
+    tier: 3,
+    slug: "notebookli",
+    launched: "Summer 2026",
   },
   {
     name: "Youth STEM Journal",
@@ -1198,11 +1240,13 @@ export const TROPHIES: Trophy[] = [
   { year: "2025", title: "ACWD Water Clips — 3rd", cat: "civic", w: 2, detail: "A second entry placed 3rd · $100." },
   { year: "2025", title: "Met the Governor & First Partner", cat: "civic", w: 3, detail: "At a California Love, California Strong event." },
   // ── Junior — built ──
-  { year: "2026", title: "AcornPrep — launched", cat: "built", w: 5, detail: "AI AP study tool: 2,000+ users, 13,000 MCQs, #1 Google result, 4 AP-teacher endorsements." },
+  { year: "2026", title: "AcornPrep — launched", cat: "built", w: 5, detail: "AI AP study tool: 2,000+ users, 52,000+ questions answered, #1 Google result, 4 AP-teacher endorsements." },
   { year: "2025", title: "CueSheet — shipped", cat: "built", w: 3, detail: "A music-supervision tool, live at cuesheet.xyz." },
   { year: "2025", title: "MSJ Makes VP", cat: "built", w: 3, detail: "Led merch design; 40 senior stoles — $700 revenue, $400 profit on that job alone." },
   { year: "2026", title: "MSJ Makes President", cat: "built", w: 4, detail: "VP → President; runs the maker-and-merch operation — ~$4,000 profit across club jobs." },
   { year: "2026", title: "MSJ STEM-PAC Co-President", cat: "research", w: 4, detail: "Co-leads the projects-and-competitions club he founded; ACSEF + olympiad pipeline." },
+  { year: "2026", title: "Rung — 2nd of 81 at a16z SpeedHacks", cat: "built", w: 5, detail: "An AI phone line that answers, verifies and ranks support calls for a human callback. Built in 12 hours with Reid Mariotti and Conrad Spaudie; also Best Use of Dial. Lead presenter." },
+  { year: "2026", title: "Salwan Central — live", cat: "built", w: 5, detail: "The hub Mayor Raj Salwan's office runs Sips with Salwan, Matcha with the Mayor and their follow-ups on. Built solo." },
   { year: "2026", title: "Hermes — live on @msjclubs", cat: "built", w: 3, detail: "A scraper + Claude pipeline that turns 93 school Instagram feeds into one clean daily schedule story, every weekday since August 2026." },
   { year: "2026", title: "msjhsasb.org — rebuilt the ASB site", cat: "built", w: 3, detail: "With Kaiwei Parks: 87 clubs searchable, every form, minutes, checks, and who to email — replacing a site nobody could navigate." },
   // ── Junior — leadership / events ──

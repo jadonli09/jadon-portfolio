@@ -39,7 +39,7 @@ const LEAVING = { transform: "translateX(72%) rotate(14deg)", filter: "brightnes
 
 export function HeroCovers({ reveal = false }: { reveal?: boolean }) {
   const reduce = useReducedMotion();
-  const [cur, setCur] = useState(0);
+  const [cur, setCur] = useState(1);
   const [leaving, setLeaving] = useState<number | null>(null);
   const [paused, setPaused] = useState(false);
   /** a word is hovered: its cover holds and its underline sits full */
@@ -49,7 +49,7 @@ export function HeroCovers({ reveal = false }: { reveal?: boolean }) {
   const swiped = useRef(false);
   const swipeX = useRef<number | null>(null);
 
-  const curRef = useRef(0);
+  const curRef = useRef(1);
   const show = useCallback((n: number) => {
     if (curRef.current === n) return;
     setLeaving(curRef.current);

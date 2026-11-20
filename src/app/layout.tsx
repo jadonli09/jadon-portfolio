@@ -26,18 +26,18 @@ export const metadata: Metadata = {
     template: "%s · Jadon Li",
   },
   description:
-    "Jadon Li — senior at Mission San Jose High School, Class of 2027. Student leader, civic storyteller, researcher, builder, and athlete. One person, locked in — a portfolio in seven worlds.",
+    "Jadon Li, senior in Fremont, CA. Builds tools that connect people: Salwan Central for Mayor Raj Salwan's office, and Rung, 2nd of 81 at a16z SpeedHacks. Chair of Fremont's Youth Advisory Commission and ASB President.",
   openGraph: {
     title: "Jadon Li — Locked In",
     description:
-      "Jadon Li — senior, Class of 2027. Student leader · civic storyteller · researcher · builder · athlete. One person, locked in.",
+      "Builds tools that connect people: Salwan Central for Mayor Raj Salwan's office, and Rung, 2nd of 81 at a16z SpeedHacks.",
     type: "website",
     images: [{ url: ogImage, width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     description:
-      "Jadon Li — senior, Class of 2027. Student leader · civic storyteller · researcher · builder · athlete. One person, locked in.",
+      "Builds tools that connect people: Salwan Central for Mayor Raj Salwan's office, and Rung, 2nd of 81 at a16z SpeedHacks.",
     images: [ogImage],
   },
 };

@@ -8,13 +8,12 @@ import { HermesFlow } from "@/components/built/HermesFlow";
 import { Fleet } from "@/components/built/Fleet";
 import { Dock } from "@/components/built/Dock";
 import { Closing } from "@/components/built/Closing";
-import { NotebookShowcase } from "@/components/built/NotebookShowcase";
 import { PROFILE, PROJECTS } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Things I've Built",
   description:
-    "AcornPrep, Hermes, NotebookLI and five more — real products with real users. 2,000+ users, #1 Google result, shipped by a high-school builder.",
+    "Salwan Central, the hub Fremont Mayor Raj Salwan's office runs its resident conversations on; Rung, 2nd of 81 at a16z SpeedHacks; AcornPrep, 2,000+ users; and more.",
 };
 
 const bySlug = (s: string) => PROJECTS.find((p) => p.slug === s)!;
@@ -25,6 +24,30 @@ const bySlug = (s: string) => PROJECTS.find((p) => p.slug === s)!;
  * AcornPrep has a photo strip, and that is the point: the extra height is what
  * makes it outrank the chapters below without a label saying so.
  */
+/** Real sessions run on Salwan Central, shot on Jadon's camera for the Mayor's media team. */
+const SALWAN_PHOTOS = [
+  {
+    src: "/img/salwan/salwan-01.jpg",
+    alt: "A student raising a cup of matcha with Mayor Raj Salwan at a café table",
+    caption: "Matcha with the Mayor, Session 1",
+  },
+  {
+    src: "/img/salwan/salwan-02.jpg",
+    alt: "Mayor Raj Salwan talking with a table of high school students over matcha",
+    caption: "Students bring the topic",
+  },
+  {
+    src: "/img/salwan/salwan-06.jpg",
+    alt: "A resident and Mayor Raj Salwan raising coffee cups in a café at night",
+    caption: "Sips with Salwan, Session 2",
+  },
+  {
+    src: "/img/salwan/salwan-09.jpg",
+    alt: "Jadon Li holding a certificate beside Mayor Raj Salwan",
+    caption: "With Mayor Salwan",
+  },
+];
+
 const ACORNPREP_PHOTOS = [
   {
     src: "/img/acornprep-cofounders.jpg",
@@ -56,7 +79,13 @@ export default function BuiltPage() {
     <World id="built">
       <StreamHero />
 
-      <ProjectChapter project={bySlug("acornprep")} index={1}>
+      <ProjectChapter project={bySlug("salwan-central")} index={1}>
+        <PhotoStrip photos={SALWAN_PHOTOS} />
+      </ProjectChapter>
+
+      <ProjectChapter project={bySlug("rung")} index={2} />
+
+      <ProjectChapter project={bySlug("acornprep")} index={3}>
         <PhotoStrip photos={ACORNPREP_PHOTOS} />
       </ProjectChapter>
 
@@ -70,11 +99,9 @@ export default function BuiltPage() {
           matter to a reader are in the figures row above. */}
       <ProjectChapter
         project={bySlug("hermes")}
-        index={2}
+        index={4}
         stage={<HermesFlow key="hermes-flow" shot="/embeds/hermes-story.jpg" />}
       />
-
-      <ProjectChapter project={bySlug("notebookli")} index={3} stage={<NotebookShowcase key="notebook-showcase" />} />
 
       <Fleet />
 

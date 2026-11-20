@@ -1082,3 +1082,26 @@ body:has([data-world="built"]) .grain {
   from { opacity: 0; translate: 0 6px; }
   to { opacity: 1; translate: 0 0; }
 }
+
+/* ── ACADEMY EDITION ─────────────────────────────────────────── */
+/* neutral scrim so the caption (and, with no script, the headline) reads on the photo */
+.academy .ac-hero-pic::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0) 45%);
+  pointer-events: none;
+}
+.academy .ac-hero-caption { z-index: 1; }
+/* the frames' photographs drift slowly: the page's one ambient move */
+@keyframes ac-drift { from { transform: scale(1.04); } to { transform: scale(1.1); } }
+.academy .ac-drift { animation: ac-drift 18s ease-in-out infinite alternate; }
+@media (prefers-reduced-motion: reduce) {
+  .academy .ac-drift { animation: none; }
+}
+@keyframes ac-fill { from { width: 0%; } to { width: 100%; } }
+/* Hermes: the stories run past like a feed; hover holds them */
+@keyframes ac-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.academy .ac-marquee { animation: ac-marquee 48s linear infinite; }
+.academy .ac-marquee-wrap:hover .ac-marquee { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .academy .ac-marquee { animation: none; } }

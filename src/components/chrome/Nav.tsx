@@ -28,6 +28,9 @@ export function Nav() {
     };
   }, [open]);
 
+  // The Academy edition carries its own bar, with the way back to the full site.
+  if (pathname?.startsWith("/academy")) return null;
+
   return (
     <>
       <header

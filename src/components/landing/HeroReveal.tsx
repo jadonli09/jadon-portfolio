@@ -28,31 +28,32 @@ const p = (pill: string, label: string, door: DoorKey): Pill => ({ pill, label, 
 /** One pill per world, so every card in the stack has a way in. */
 const PILLS = {
   jadon: p("jadon", "Jadon", "person"),
-  asb: p("asb", "ASB President", "leads"),
+  build: p("build", "Salwan Central", "builds"),
   mayor: p("mayor", "lead intern", "films"),
+  asb: p("asb", "ASB President", "leads"),
   red: p("red", "red", "researches"),
-  build: p("build", "AcornPrep", "builds"),
   locked: p("locked", "@li_locked.in", "documents"),
   ncs: p("ncs", "NCS title", "competes"),
 };
 const ALL_PILLS = Object.values(PILLS);
 
 /**
- * The paragraph, in reading order: who, school, the lab and the builds, the
- * camera. Each run opens on a sharp lead (no `after`).
+ * The paragraph, in reading order: who, what he builds, the city, the
+ * school, the lab, the camera. Each run opens on a sharp lead (no `after`).
  */
 const CLAUSES: Clause[] = [
   { id: "l1", parts: ["Hey, I'm ", PILLS.jadon] },
-  { id: "c1", after: "jadon", parts: [" Li, a senior at Mission San Jose. I love cooking for my friends, climbing Mission Peak, and running at sunset."] },
-  { id: "l2", parts: [" I serve as ", PILLS.asb] },
-  { id: "c2", after: "asb", parts: [" after three years as elected class president, and started on our school's first ", PILLS.ncs] },
-  { id: "c3", after: "ncs", parts: [" team."] },
-  { id: "l3", parts: [" I engineered a human pathogen to glow ", PILLS.red] },
-  { id: "c4", after: "red", parts: [" at UMass Amherst, tagging clinical ", { em: "Fusarium oxysporum" }, " with mRFP to study how it interacts with its host. I also turned my eleven AP exams into ", PILLS.build] },
-  { id: "c5", after: "build", parts: [", a study app with 2,000+ users."] },
-  { id: "l4", parts: [" I document the whole pursuit on ", PILLS.locked] },
-  { id: "c6", after: "locked", parts: [" (2.3M plays), and as the Mayor of Fremont's ", PILLS.mayor] },
-  { id: "c7", after: "mayor", parts: [", I lead civic engagement initiatives and film my city's stories."] },
+  { id: "c1", after: "jadon", parts: [" Li, a senior in Fremont, California."] },
+  { id: "l2", parts: [" I build tools that connect people, like ", PILLS.build] },
+  { id: "c2", after: "build", parts: [" for our Mayor's office, and Rung, 2nd of 81 at a16z SpeedHacks."] },
+  { id: "l3", parts: [" As the Mayor's ", PILLS.mayor] },
+  { id: "c3", after: "mayor", parts: [", I run civic programs and film the city's stories. At school I'm ", PILLS.asb] },
+  { id: "c4", after: "asb", parts: [" and started on our first ", PILLS.ncs] },
+  { id: "c5", after: "ncs", parts: [" team."] },
+  { id: "l4", parts: [" I made a pathogen glow ", PILLS.red] },
+  { id: "c6", after: "red", parts: [" at UMass Amherst."] },
+  { id: "l5", parts: [" I document it all on ", PILLS.locked] },
+  { id: "c7", after: "locked", parts: ["."] },
 ];
 
 /** how long a freshly opened clause keeps its world colour */

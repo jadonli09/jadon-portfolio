@@ -21,9 +21,10 @@ import { cn } from "@/lib/cn";
    ──────────────────────────────────────────────────────────────────── */
 
 const SECTIONS = [
+  { id: "salwan-central", label: "Salwan Central", short: "Salwan" },
+  { id: "rung", label: "Rung", short: "Rung" },
   { id: "acornprep", label: "AcornPrep", short: "Acorn" },
   { id: "hermes", label: "Hermes", short: "Hermes" },
-  { id: "notebookli", label: "NotebookLI", short: "Notebook" },
   { id: "fleet", label: "More projects", short: "More" },
 ] as const;
 

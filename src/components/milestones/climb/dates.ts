@@ -84,6 +84,8 @@ export const ENTRY_DATES: Record<string, string> = {
   "FIRE Free Speech Forum — DC": "2026-07-28",
   "YSJC 2026 — led a team of 4 mentors": "2026-08-05",
   "Hermes — live on @msjclubs": "2026-08-12",
+  "Rung — 2nd of 81 at a16z SpeedHacks": "2026-10-11",
+  "Salwan Central — live": "2026-10-18",
   "YBVC finalist — pitched at Stanford": "2026-08-15",
   "East Coast — DC, Boston, New York": "2026-08-18",
   "Head of L2 Video": "2026-08-19",

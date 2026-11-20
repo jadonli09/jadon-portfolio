@@ -35,6 +35,64 @@ export type Story = {
 
 export const STORIES: Record<string, Story> = {
   /**
+   * Four real screens from the live public site, captured 2026-11-17. The
+   * staff side sits behind Google sign-in with residents' data in it, so the
+   * session photographs under the chapter carry that half of the story.
+   */
+  "salwan-central": {
+    lede: "Ideas from coffee with the Mayor used to end when the coffee did. Now they have somewhere to go.",
+    beats: [
+      {
+        label: "Meet",
+        line: "Residents sign up with a name and an email.",
+        shot: "/embeds/salwan-central/home.jpg",
+      },
+      {
+        label: "Apply",
+        line: "Students pitch the topic they want to bring.",
+        shot: "/embeds/salwan-central/apply.jpg",
+      },
+      {
+        label: "Programs",
+        line: "Sips, Matcha and the internship in one hub.",
+        shot: "/embeds/salwan-central/programs.jpg",
+      },
+      {
+        label: "Follow up",
+        line: "Each idea gets a private workspace with the team.",
+        shot: "/embeds/salwan-central/follow-up.jpg",
+      },
+    ],
+  },
+
+  /** Four screens from tryrung.today, captured 2026-11-17. */
+  rung: {
+    lede: "AI that keeps people off hold, so the human on the other end can actually help.",
+    beats: [
+      {
+        label: "Pick up",
+        line: "An AI agent answers on the first ring.",
+        shot: "/embeds/rung/hero.jpg",
+      },
+      {
+        label: "Verify",
+        line: "A texted code proves who is calling.",
+        shot: "/embeds/rung/verify.jpg",
+      },
+      {
+        label: "Remember",
+        line: "Call back and it already knows you.",
+        shot: "/embeds/rung/returning.jpg",
+      },
+      {
+        label: "Rank",
+        line: "Reps call back the most urgent first, briefed.",
+        shot: "/embeds/rung/queue.jpg",
+      },
+    ],
+  },
+
+  /**
    * Four real screens, published by AcornPrep itself at
    * acornprep.com/landing/*-preview.png — the practice, grading, tutor and
    * study-mode surfaces. The product proper sits behind a sign-up wall, so
@@ -131,6 +189,12 @@ export const FLEET_CARDS: Record<string, FleetCard> = {
     title: "MSJHS\nASB",
     facts: ["87 CLUBS", "⌘K SEARCH"],
     accent: "#2f6d4f",
+  },
+  notebookli: {
+    title: "Notebook\nLI",
+    facts: ["READ AT UMASS", "CLAUDE API"],
+    accent: "#3b5bdb",
+    when: "Summer 2026",
   },
   "youth-stem-journal": {
     title: "Youth STEM\nJournal",
