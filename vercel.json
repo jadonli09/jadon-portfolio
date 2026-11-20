@@ -1,6 +1,17 @@
 {
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "academy.jadonli.com"
+        }
+      ],
+      "destination": "/academy/",
+      "permanent": false
+    },
+    {
       "source": "/achievements",
       "destination": "/milestones/",
       "permanent": true
@@ -19,18 +30,6 @@
       "source": "/achievements/resume/",
       "destination": "/milestones/resume/",
       "permanent": true
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/",
-      "has": [
-        {
-          "type": "host",
-          "value": "academy.jadonli.com"
-        }
-      ],
-      "destination": "/academy/"
     }
   ]
 }
