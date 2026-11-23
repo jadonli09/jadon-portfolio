@@ -9,6 +9,7 @@ import { Nav } from "@/components/chrome/Nav";
 import { Grain } from "@/components/chrome/Grain";
 import { Develop } from "@/components/chrome/Develop";
 import { BASE } from "@/lib/base";
+import { PersonJsonLd } from "@/components/chrome/PersonJsonLd";
 
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", display: "swap" });
 const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo", display: "swap" });
@@ -25,6 +26,9 @@ export const metadata: Metadata = {
     default: "Jadon Li — Locked In",
     template: "%s · Jadon Li",
   },
+  // Self-referencing canonical per route, so academy.jadonli.com and the
+  // GitHub Pages copy point Google at jadonli.com.
+  alternates: { canonical: "./" },
   description:
     "Jadon Li, senior in Fremont, CA. Builds tools that connect people: Salwan Central for Mayor Raj Salwan's office, and Rung, 2nd of 81 at a16z SpeedHacks. Chair of Fremont's Youth Advisory Commission and ASB President.",
   openGraph: {
@@ -49,6 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         data-cursor="on"
         className={`${fraunces.variable} ${archivo.variable} ${instrument.variable} ${jetbrains.variable} ${anton.variable} ${caveat.variable} antialiased`}
       >
+        <PersonJsonLd />
         <MotionConfig reducedMotion="user">
           <Grain />
           <Cursor />

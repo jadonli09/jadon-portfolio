@@ -5,6 +5,7 @@ import { Magnetic } from "@/components/primitives/Magnetic";
 
 export const metadata: Metadata = {
   title: "Off the Map",
+  alternates: { canonical: null },
 };
 
 export default function NotFound() {
